@@ -18,8 +18,16 @@ import { useTheme } from '@umituz/react-native-design-system-theme';
 import { ScreenLayout } from '@umituz/react-native-design-system';
 import { SettingItem } from '../components/SettingItem';
 import { getLanguageByCode, useLocalization } from '@umituz/react-native-localization';
-import { notificationService } from '@umituz/react-native-notifications';
 import { useTranslation } from 'react-i18next';
+
+// Optional notification service - only import if package is available
+let notificationService: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  notificationService = require('@umituz/react-native-notifications').notificationService;
+} catch {
+  // Package not available, notificationService will be null
+}
 
 export const SettingsScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -44,9 +52,11 @@ export const SettingsScreen: React.FC = () => {
   };
 
   const handleNotificationsPress = async () => {
-    const hasPermissions = await notificationService.hasPermissions();
-    if (!hasPermissions) {
-      await notificationService.requestPermissions();
+    if (notificationService) {
+      const hasPermissions = await notificationService.hasPermissions();
+      if (!hasPermissions) {
+        await notificationService.requestPermissions();
+      }
     }
     navigation.navigate('Notifications' as never);
   };

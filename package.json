@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Settings management for React Native apps - user preferences, theme, language, notifications",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -33,7 +33,6 @@
     "@umituz/react-native-design-system": "latest",
     "@umituz/react-native-design-system-theme": "latest",
     "@umituz/react-native-localization": "latest",
-    "@umituz/react-native-notifications": "latest",
     "react-native-paper": "^5.12.3",
     "expo-linear-gradient": "~14.0.0"
   },

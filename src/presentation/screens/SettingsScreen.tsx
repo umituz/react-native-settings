@@ -13,10 +13,11 @@
 
 import React, { useMemo } from 'react';
 import { List, Divider } from 'react-native-paper';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@umituz/react-native-design-system-theme';
-import { ScreenLayout } from '@umituz/react-native-design-system';
+import { useTheme, useAppDesignTokens } from '@umituz/react-native-design-system-theme';
+import { ScreenLayout, AtomicIcon, AtomicText } from '@umituz/react-native-design-system';
 import { SettingItem } from '../components/SettingItem';
 import { getLanguageByCode, useLocalization } from '@umituz/react-native-localization';
 import { SettingsConfig } from './types';
@@ -76,6 +77,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 }) => {
   const navigation = useNavigation();
   const { theme, themeMode } = useTheme();
+  const tokens = useAppDesignTokens();
   const { currentLanguage, t } = useLocalization();
 
   const currentLang = getLanguageByCode(currentLanguage);
@@ -125,6 +127,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     navigation.navigate('Notifications' as never);
   };
 
+  const handleClose = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
+
   // Debug: Log features to help diagnose empty screen issues
   /* eslint-disable-next-line no-console */
   if (__DEV__) {
@@ -138,6 +146,21 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   return (
     <ScreenLayout testID="settings-screen" hideScrollIndicator>
+      {/* Header with Close Button */}
+      <View style={[styles.header, { borderBottomColor: theme.colors.borderLight }]}>
+        <AtomicText type="headlineLarge" style={{ color: theme.colors.textPrimary, flex: 1 }}>
+          {t('navigation.settings') || 'Settings'}
+        </AtomicText>
+        <TouchableOpacity
+          onPress={handleClose}
+          style={styles.closeButton}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          testID="close-settings-button"
+        >
+          <AtomicIcon name="X" size="lg" color="textPrimary" />
+        </TouchableOpacity>
+      </View>
+
       {/* Appearance Section */}
       {features.appearance && (
         <List.Section style={{ marginBottom: 8 }}>
@@ -207,4 +230,18 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     </ScreenLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  closeButton: {
+    padding: 4,
+  },
+});
 

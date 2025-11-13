@@ -19,7 +19,6 @@ import { useTheme } from '@umituz/react-native-design-system-theme';
 import { ScreenLayout } from '@umituz/react-native-design-system';
 import { SettingItem } from '../components/SettingItem';
 import { getLanguageByCode, useLocalization } from '@umituz/react-native-localization';
-import { useTranslation } from 'react-i18next';
 import { SettingsConfig } from './types';
 
 // Optional notification service - only import if package is available
@@ -77,8 +76,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 }) => {
   const navigation = useNavigation();
   const { theme, themeMode } = useTheme();
-  const { currentLanguage } = useLocalization();
-  const { t } = useTranslation();
+  const { currentLanguage, t } = useLocalization();
 
   const currentLang = getLanguageByCode(currentLanguage);
   const languageDisplay = currentLang ? `${currentLang.flag} ${currentLang.nativeName}` : 'English';

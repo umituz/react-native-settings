@@ -14,6 +14,7 @@
 import React, { useMemo } from 'react';
 import { List, Divider } from 'react-native-paper';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNavigation } from '@react-navigation/native';
 import { useTheme, useAppDesignTokens } from '@umituz/react-native-design-system-theme';
@@ -78,6 +79,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const navigation = useNavigation();
   const { theme, themeMode } = useTheme();
   const tokens = useAppDesignTokens();
+  const insets = useSafeAreaInsets();
   const { currentLanguage, t } = useLocalization();
 
   const currentLang = getLanguageByCode(currentLanguage);
@@ -147,7 +149,14 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   return (
     <ScreenLayout testID="settings-screen" hideScrollIndicator>
       {/* Header with Close Button */}
-      <View style={[styles.header, { borderBottomColor: theme.colors.borderLight }]}>
+      <View style={[
+        styles.header, 
+        { 
+          borderBottomColor: theme.colors.borderLight,
+          backgroundColor: theme.colors.surface,
+          paddingTop: insets.top,
+        }
+      ]}>
         <AtomicText type="headlineLarge" style={{ color: theme.colors.textPrimary, flex: 1 }}>
           {t('navigation.settings') || 'Settings'}
         </AtomicText>
@@ -237,11 +246,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingBottom: 12,
+    paddingTop: 12,
     borderBottomWidth: 1,
+    zIndex: 1000,
   },
   closeButton: {
-    padding: 4,
+    padding: 8,
+    marginLeft: 8,
   },
 });
 

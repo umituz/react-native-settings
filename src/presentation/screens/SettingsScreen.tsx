@@ -140,8 +140,16 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   };
 
   const handleClose = () => {
+    // Try to go back in current navigator first
     if (navigation.canGoBack()) {
       navigation.goBack();
+    } else {
+      // If we can't go back in current navigator, try parent navigator
+      // This handles the case where Settings is the root screen of a stack
+      const parent = navigation.getParent();
+      if (parent?.canGoBack()) {
+        parent.goBack();
+      }
     }
   };
 
@@ -157,8 +165,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
       await onboardingStore.reset();
       // Emit event to trigger navigation to onboarding
       DeviceEventEmitter.emit('reset-onboarding');
-      // Close settings first
-      navigation.goBack();
+      // Close settings first - try parent navigator if current can't go back
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        const parent = navigation.getParent();
+        if (parent?.canGoBack()) {
+          parent.goBack();
+        }
+      }
       // Small delay to ensure navigation completes
       setTimeout(() => {
         DeviceEventEmitter.emit('show-onboarding');

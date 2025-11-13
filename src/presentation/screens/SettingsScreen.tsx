@@ -261,7 +261,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           testID="close-settings-button"
         >
-          <AtomicIcon name="X" size="lg" color="textPrimary" />
+          <AtomicIcon name="X" size="lg" color="primary" />
         </TouchableOpacity>
       </View>
 

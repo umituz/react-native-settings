@@ -125,6 +125,17 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     navigation.navigate('Notifications' as never);
   };
 
+  // Debug: Log features to help diagnose empty screen issues
+  /* eslint-disable-next-line no-console */
+  if (__DEV__) {
+    console.log('[SettingsScreen] Features:', features);
+    console.log('[SettingsScreen] Config:', config);
+    console.log('[SettingsScreen] Navigation state:', navigation.getState());
+  }
+
+  // Check if any features are enabled
+  const hasAnyFeatures = features.appearance || features.notifications || features.about || features.legal;
+
   return (
     <ScreenLayout testID="settings-screen" hideScrollIndicator>
       {/* Appearance Section */}
@@ -182,6 +193,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               testID="legal-button"
             />
           )}
+        </List.Section>
+      )}
+
+      {/* Fallback: Show message if no features are enabled */}
+      {!hasAnyFeatures && (
+        <List.Section>
+          <List.Subheader style={{ color: theme.colors.textSecondary }}>
+            {t('settings.noOptionsAvailable') || 'No settings available'}
+          </List.Subheader>
         </List.Section>
       )}
     </ScreenLayout>

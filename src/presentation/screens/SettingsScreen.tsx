@@ -16,7 +16,7 @@ import { List, Divider } from 'react-native-paper';
 import { DeviceEventEmitter, Alert, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { useTheme, useAppDesignTokens } from '@umituz/react-native-design-system-theme';
 import { ScreenLayout, AtomicIcon, AtomicText } from '@umituz/react-native-design-system';
 import { SettingItem } from '../components/SettingItem';
@@ -143,12 +143,34 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     // Try to go back in current navigator first
     if (navigation.canGoBack()) {
       navigation.goBack();
-    } else {
-      // If we can't go back in current navigator, try parent navigator
-      // This handles the case where Settings is the root screen of a stack
-      const parent = navigation.getParent();
-      if (parent?.canGoBack()) {
+      return;
+    }
+    
+    // If we can't go back in current navigator, try to find parent navigator
+    // This handles the case where Settings is the root screen of a stack
+    let parent = navigation.getParent();
+    let depth = 0;
+    const maxDepth = 5; // Safety limit to prevent infinite loops
+    
+    // Traverse up the navigation tree to find a navigator that can go back
+    while (parent && depth < maxDepth) {
+      if (parent.canGoBack()) {
         parent.goBack();
+        return;
+      }
+      parent = parent.getParent();
+      depth++;
+    }
+    
+    // If no parent can go back, try using CommonActions to go back
+    // This is a fallback for edge cases
+    try {
+      navigation.dispatch(CommonActions.goBack());
+    } catch (error) {
+      // If all else fails, silently fail (close button just won't work)
+      /* eslint-disable-next-line no-console */
+      if (__DEV__) {
+        console.warn('[SettingsScreen] Could not navigate back:', error);
       }
     }
   };
@@ -169,9 +191,30 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
       if (navigation.canGoBack()) {
         navigation.goBack();
       } else {
-        const parent = navigation.getParent();
-        if (parent?.canGoBack()) {
-          parent.goBack();
+        // Try to find parent navigator that can go back
+        let parent = navigation.getParent();
+        let depth = 0;
+        const maxDepth = 5;
+        
+        while (parent && depth < maxDepth) {
+          if (parent.canGoBack()) {
+            parent.goBack();
+            break;
+          }
+          parent = parent.getParent();
+          depth++;
+        }
+        
+        // Fallback to CommonActions
+        if (!parent || depth >= maxDepth) {
+          try {
+            navigation.dispatch(CommonActions.goBack());
+          } catch (error) {
+            /* eslint-disable-next-line no-console */
+            if (__DEV__) {
+              console.warn('[SettingsScreen] Could not navigate back:', error);
+            }
+          }
         }
       }
       // Small delay to ensure navigation completes

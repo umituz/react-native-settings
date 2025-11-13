@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Settings management for React Native apps - user preferences, theme, language, notifications",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

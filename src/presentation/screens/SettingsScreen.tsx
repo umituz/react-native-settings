@@ -13,7 +13,7 @@
 
 import React, { useMemo } from 'react';
 import { List, Divider } from 'react-native-paper';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { DeviceEventEmitter, Alert, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +30,16 @@ try {
   notificationService = require('@umituz/react-native-notifications').notificationService;
 } catch {
   // Package not available, notificationService will be null
+}
+
+// Optional onboarding store - only import if package is available
+let useOnboardingStore: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const onboardingPackage = require('@umituz/react-native-onboarding');
+  useOnboardingStore = onboardingPackage.useOnboardingStore;
+} catch {
+  // Package not available, useOnboardingStore will be null
 }
 
 /**
@@ -135,6 +145,33 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     }
   };
 
+  const handleShowOnboarding = async () => {
+    if (!useOnboardingStore) {
+      Alert.alert('Error', 'Onboarding package is not available');
+      return;
+    }
+
+    try {
+      const onboardingStore = useOnboardingStore.getState();
+      // Reset onboarding state
+      await onboardingStore.reset();
+      // Emit event to trigger navigation to onboarding
+      DeviceEventEmitter.emit('reset-onboarding');
+      // Close settings first
+      navigation.goBack();
+      // Small delay to ensure navigation completes
+      setTimeout(() => {
+        DeviceEventEmitter.emit('show-onboarding');
+      }, 100);
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        'Failed to show onboarding. Please try again.',
+        [{ text: 'OK' }],
+      );
+    }
+  };
+
   // Debug: Log features to help diagnose empty screen issues
   /* eslint-disable-next-line no-console */
   if (__DEV__) {
@@ -196,6 +233,21 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             description={t('settings.notifications.description')}
             onPress={handleNotificationsPress}
             testID="notifications-button"
+          />
+        </List.Section>
+      )}
+
+      {/* Development/Test: Show Onboarding */}
+      {__DEV__ && useOnboardingStore && (
+        <List.Section style={{ marginBottom: 8 }}>
+          <List.Subheader style={{ color: theme.colors.textSecondary }}>Development</List.Subheader>
+          <SettingItem
+            icon="Play"
+            iconGradient={theme.colors.settingGradients.info as unknown as string[]}
+            title="Show Onboarding (Dev)"
+            description="Navigate to onboarding screen"
+            onPress={handleShowOnboarding}
+            testID="show-onboarding-button"
           />
         </List.Section>
       )}

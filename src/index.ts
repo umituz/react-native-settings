@@ -33,8 +33,15 @@ export {
 // =============================================================================
 
 export { SettingsScreen } from './presentation/screens/SettingsScreen';
+export type { SettingsScreenProps } from './presentation/screens/SettingsScreen';
 export { AppearanceScreen } from './presentation/screens/AppearanceScreen';
 export { LanguageSelectionScreen } from './presentation/screens/LanguageSelectionScreen';
+
+// =============================================================================
+// PRESENTATION LAYER - Types
+// =============================================================================
+
+export type { SettingsConfig } from './presentation/screens/types';
 
 // =============================================================================
 // PRESENTATION LAYER - Components

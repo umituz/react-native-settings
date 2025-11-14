@@ -15,7 +15,7 @@ import {
   TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme, useAppDesignTokens, withAlpha, STATIC_TOKENS, type DesignTokens } from '@umituz/react-native-design-system-theme';
+import { useAppDesignTokens, withAlpha, STATIC_TOKENS, type DesignTokens } from '@umituz/react-native-design-system-theme';
 import { AtomicIcon, AtomicText, ScreenLayout } from '@umituz/react-native-design-system';
 import { useLocalization, searchLanguages, Language, LANGUAGES } from '@umituz/react-native-localization';
 

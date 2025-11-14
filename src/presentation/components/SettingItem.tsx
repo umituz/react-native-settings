@@ -12,8 +12,7 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { List } from 'react-native-paper';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import { useAppDesignTokens } from '@umituz/react-native-design-system-theme';
@@ -63,74 +62,77 @@ export const SettingItem: React.FC<SettingItemProps> = ({
     ? (iconGradient as unknown as readonly [string, string, ...string[]])
     : [tokens.colors.surface, tokens.colors.surface] as const;
 
-  // Render gradient icon container for left prop
-  const renderLeft = (props: any) => (
-    <View style={styles.leftContainer}>
-      <LinearGradient
-        colors={gradientColors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.iconContainer}
-      >
-        <AtomicIcon name={icon} size="md" color="primary" />
-      </LinearGradient>
+  const content = (
+    <View style={[styles.listItem, disabled && styles.disabled]}>
+      {/* Left: Icon with gradient */}
+      <View style={styles.leftContainer}>
+        <LinearGradient
+          colors={gradientColors}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.iconContainer}
+        >
+          <AtomicIcon name={icon} size="md" color="primary" />
+        </LinearGradient>
+      </View>
+
+      {/* Center: Title and description */}
+      <View style={styles.contentContainer}>
+        <AtomicText type="bodyLarge" color="textPrimary" style={styles.title} numberOfLines={2}>
+          {title}
+        </AtomicText>
+        {description && (
+          <AtomicText type="bodySmall" color="textSecondary" style={styles.description} numberOfLines={2}>
+            {description}
+          </AtomicText>
+        )}
+      </View>
+
+      {/* Right: Value, chevron, or custom element */}
+      <View style={styles.rightContainer}>
+        {rightElement ? (
+          rightElement
+        ) : value ? (
+          <AtomicText type="bodyMedium" color="textSecondary" style={styles.value} numberOfLines={2}>
+            {value}
+          </AtomicText>
+        ) : (showChevron ?? true) && onPress ? (
+          <AtomicIcon name="ChevronRight" size="sm" color="textSecondary" style={styles.chevron} />
+        ) : null}
+      </View>
     </View>
   );
 
-  // Render right side content for right prop
-  const renderRight = (props: any) => {
-    if (rightElement) {
-      return <View style={styles.rightContainer}>{rightElement}</View>;
-    }
+  if (onPress && !disabled) {
+    return (
+      <Pressable onPress={onPress} testID={testID} style={styles.pressable}>
+        {content}
+      </Pressable>
+    );
+  }
 
-    if (value) {
-      return (
-        <View style={styles.rightContainer}>
-          <AtomicText type="bodyMedium" color="secondary" style={styles.value} numberOfLines={2}>
-            {value}
-          </AtomicText>
-        </View>
-      );
-    }
-
-    // Show chevron if onPress exists and not explicitly disabled
-    if ((showChevron ?? true) && onPress) {
-      return (
-        <View style={styles.rightContainer}>
-          <AtomicIcon name="ChevronRight" size="sm" color="secondary" style={styles.chevron} />
-        </View>
-      );
-    }
-
-    return null;
-  };
-
-  return (
-    <List.Item
-      title={title}
-      description={description}
-      left={renderLeft}
-      right={renderRight}
-      onPress={onPress}
-      disabled={disabled}
-      testID={testID}
-      style={styles.listItem}
-      titleStyle={styles.title}
-      descriptionStyle={styles.description}
-      titleNumberOfLines={2}
-      titleEllipsizeMode="tail"
-      descriptionNumberOfLines={2}
-      descriptionEllipsizeMode="tail"
-    />
-  );
+  return <View testID={testID}>{content}</View>;
 };
 
 const getStyles = (tokens: DesignTokens) =>
   StyleSheet.create({
+    pressable: {
+      borderRadius: tokens.borders.radius.md,
+    },
     listItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
       paddingVertical: tokens.spacing.sm,
       paddingHorizontal: tokens.spacing.md,
       minHeight: 64,
+    },
+    disabled: {
+      opacity: 0.5,
+    },
+    contentContainer: {
+      flex: 1,
+      marginLeft: tokens.spacing.md,
+      marginRight: tokens.spacing.md,
     },
     leftContainer: {
       marginRight: tokens.spacing.md,
@@ -147,17 +149,12 @@ const getStyles = (tokens: DesignTokens) =>
       borderColor: `${tokens.colors.primary}20`,
     },
     title: {
-      fontSize: tokens.typography.bodyLarge.fontSize,
       fontWeight: '600',
-      color: tokens.colors.textPrimary,
-      flexShrink: 1,
+      marginBottom: tokens.spacing.xs,
     },
     description: {
-      fontSize: tokens.typography.bodySmall.fontSize,
-      color: tokens.colors.textSecondary,
       marginTop: tokens.spacing.xs,
       opacity: 0.8,
-      flexShrink: 1,
     },
     rightContainer: {
       justifyContent: 'center',

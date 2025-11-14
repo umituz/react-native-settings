@@ -11,10 +11,9 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { List } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
-import { useTheme, useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system-theme';
+import { useDesignSystemTheme, useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system-theme';
 import { AtomicText, ScreenLayout } from '@umituz/react-native-design-system';
 import { useLocalization, getLanguageByCode } from '@umituz/react-native-localization';
 import { SettingItem } from '../components/SettingItem';
@@ -22,7 +21,7 @@ import { SettingItem } from '../components/SettingItem';
 export const AppearanceScreen: React.FC = () => {
   const { t, currentLanguage } = useLocalization();
   const navigation = useNavigation();
-  const { themeMode, toggleTheme } = useTheme();
+  const { themeMode, setThemeMode } = useDesignSystemTheme();
   const tokens = useAppDesignTokens();
   const styles = getStyles(tokens);
 
@@ -35,7 +34,8 @@ export const AppearanceScreen: React.FC = () => {
   };
 
   const handleThemeToggle = () => {
-    toggleTheme();
+    const newMode = themeMode === 'dark' ? 'light' : 'dark';
+    setThemeMode(newMode);
   };
 
   return (
@@ -51,8 +51,10 @@ export const AppearanceScreen: React.FC = () => {
       </View>
 
       {/* Language Section */}
-      <List.Section>
-        <List.Subheader style={{ color: tokens.colors.textSecondary }}>{t('settings.language')}</List.Subheader>
+      <View style={{ marginBottom: tokens.spacing.md }}>
+        <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
+          {t('settings.language')}
+        </AtomicText>
         <SettingItem
           icon="Languages"
           iconGradient={((tokens.colors as any).settingGradients?.language as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
@@ -61,11 +63,13 @@ export const AppearanceScreen: React.FC = () => {
           onPress={handleLanguagePress}
           testID="language-button"
         />
-      </List.Section>
+      </View>
 
       {/* Theme Section */}
-      <List.Section>
-        <List.Subheader style={{ color: tokens.colors.textSecondary }}>{t('settings.appearance.darkMode')}</List.Subheader>
+      <View style={{ marginBottom: tokens.spacing.md }}>
+        <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
+          {t('settings.appearance.darkMode')}
+        </AtomicText>
         <SettingItem
           icon={themeMode === 'dark' ? 'Moon' : 'Sun'}
           iconGradient={
@@ -78,7 +82,7 @@ export const AppearanceScreen: React.FC = () => {
           onPress={handleThemeToggle}
           testID="theme-button"
         />
-      </List.Section>
+      </View>
     </ScreenLayout>
   );
 };
@@ -88,11 +92,21 @@ const getStyles = (tokens: DesignTokens) =>
     header: {
       paddingBottom: tokens.spacing.lg,
       paddingTop: tokens.spacing.md,
+      paddingHorizontal: tokens.spacing.lg,
     },
     headerSubtitle: {
       marginTop: tokens.spacing.sm,
       lineHeight: 20,
       opacity: 0.8,
+    },
+    sectionHeader: {
+      paddingHorizontal: tokens.spacing.lg,
+      paddingTop: tokens.spacing.lg,
+      paddingBottom: tokens.spacing.md,
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+      fontWeight: '600',
+      fontSize: 12,
     },
   });
 

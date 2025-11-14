@@ -12,12 +12,11 @@
  */
 
 import React, { useMemo } from 'react';
-import { List, Divider } from 'react-native-paper';
 import { DeviceEventEmitter, Alert, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNavigation, CommonActions } from '@react-navigation/native';
-import { useTheme, useAppDesignTokens } from '@umituz/react-native-design-system-theme';
+import { useDesignSystemTheme, useAppDesignTokens } from '@umituz/react-native-design-system-theme';
 import { ScreenLayout, AtomicIcon, AtomicText } from '@umituz/react-native-design-system';
 import { SettingItem } from '../components/SettingItem';
 import { getLanguageByCode, useLocalization } from '@umituz/react-native-localization';
@@ -87,10 +86,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   config = {} 
 }) => {
   const navigation = useNavigation();
-  const { theme, themeMode } = useTheme();
+  const { themeMode } = useDesignSystemTheme();
   const tokens = useAppDesignTokens();
   const insets = useSafeAreaInsets();
   const { currentLanguage, t } = useLocalization();
+  const styles = getStyles(tokens);
 
   const currentLang = getLanguageByCode(currentLanguage);
   const languageDisplay = currentLang ? `${currentLang.flag} ${currentLang.nativeName}` : 'English';
@@ -247,12 +247,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
       <View style={[
         styles.header, 
         { 
-          borderBottomColor: theme.colors.borderLight,
-          backgroundColor: theme.colors.surface,
+          borderBottomColor: tokens.colors.borderLight,
+          backgroundColor: tokens.colors.surface,
           paddingTop: insets.top,
         }
       ]}>
-        <AtomicText type="headlineLarge" style={{ color: theme.colors.textPrimary, flex: 1 }}>
+        <AtomicText type="headlineLarge" style={{ color: tokens.colors.textPrimary, flex: 1 }}>
           {t('navigation.settings') || 'Settings'}
         </AtomicText>
         <TouchableOpacity
@@ -267,103 +267,122 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
       {/* Appearance Section */}
       {features.appearance && (
-        <List.Section style={{ marginBottom: 8 }}>
-          <List.Subheader style={{ color: theme.colors.textSecondary }}>{t('settings.sections.appearance')}</List.Subheader>
+        <View style={{ marginBottom: tokens.spacing.md }}>
+          <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
+            {t('settings.sections.appearance')}
+          </AtomicText>
           <SettingItem
             icon="Palette"
-            iconGradient={theme.colors.settingGradients.themeLight as unknown as string[]}
+            iconGradient={((tokens.colors as any).settingGradients?.themeLight as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
             title={t('settings.appearance.title')}
             description={t('settings.appearance.themeDescription')}
             onPress={handleAppearancePress}
             testID="appearance-button"
           />
-        </List.Section>
+        </View>
       )}
 
       {/* General Section - Notifications */}
       {features.notifications && (
-        <List.Section style={{ marginBottom: 8 }}>
-          <List.Subheader style={{ color: theme.colors.textSecondary }}>{t('settings.sections.general')}</List.Subheader>
+        <View style={{ marginBottom: tokens.spacing.md }}>
+          <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
+            {t('settings.sections.general')}
+          </AtomicText>
           <SettingItem
             icon="Bell"
-            iconGradient={theme.colors.settingGradients.notifications as unknown as string[]}
+            iconGradient={((tokens.colors as any).settingGradients?.notifications as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
             title={t('settings.notifications.title')}
             description={t('settings.notifications.description')}
             onPress={handleNotificationsPress}
             testID="notifications-button"
           />
-        </List.Section>
+        </View>
       )}
 
       {/* Development/Test: Show Onboarding */}
       {__DEV__ && useOnboardingStore && (
-        <List.Section style={{ marginBottom: 8 }}>
-          <List.Subheader style={{ color: theme.colors.textSecondary }}>Development</List.Subheader>
+        <View style={{ marginBottom: tokens.spacing.md }}>
+          <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
+            Development
+          </AtomicText>
           <SettingItem
             icon="Play"
-            iconGradient={theme.colors.settingGradients.info as unknown as string[]}
+            iconGradient={((tokens.colors as any).settingGradients?.info as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
             title="Show Onboarding (Dev)"
             description="Navigate to onboarding screen"
             onPress={handleShowOnboarding}
             testID="show-onboarding-button"
           />
-        </List.Section>
+        </View>
       )}
 
       {/* About & Legal Section */}
       {(features.about || features.legal) && (
-        <List.Section style={{ marginBottom: 8 }}>
-          <List.Subheader style={{ color: theme.colors.textSecondary }}>{t('settings.sections.about')}</List.Subheader>
+        <View style={{ marginBottom: tokens.spacing.md }}>
+          <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
+            {t('settings.sections.about')}
+          </AtomicText>
           {features.about && (
             <SettingItem
               icon="Info"
-              iconGradient={theme.colors.settingGradients.info as unknown as string[]}
+              iconGradient={((tokens.colors as any).settingGradients?.info as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
               title={t('settings.about.title')}
               description={t('settings.about.description')}
               onPress={handleAboutPress}
               testID="about-button"
             />
           )}
-          {features.about && features.legal && <Divider />}
+          {features.about && features.legal && (
+            <View style={{ height: 1, backgroundColor: tokens.colors.borderLight, marginVertical: tokens.spacing.sm }} />
+          )}
           {features.legal && (
             <SettingItem
               icon="FileText"
-              iconGradient={theme.colors.settingGradients.info as unknown as string[]}
+              iconGradient={((tokens.colors as any).settingGradients?.info as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
               title={t('settings.legal.title')}
               description={t('settings.legal.description')}
               onPress={handleLegalPress}
               testID="legal-button"
             />
           )}
-        </List.Section>
+        </View>
       )}
 
       {/* Fallback: Show message if no features are enabled */}
       {!hasAnyFeatures && (
-        <List.Section>
-          <List.Subheader style={{ color: theme.colors.textSecondary }}>
+        <View>
+          <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
             {t('settings.noOptionsAvailable') || 'No settings available'}
-          </List.Subheader>
-        </List.Section>
+          </AtomicText>
+        </View>
       )}
     </ScreenLayout>
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: any) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    paddingTop: 12,
+    paddingHorizontal: tokens.spacing.md,
+    paddingBottom: tokens.spacing.md,
+    paddingTop: tokens.spacing.md,
     borderBottomWidth: 1,
     zIndex: 1000,
   },
+  sectionHeader: {
+    paddingHorizontal: tokens.spacing.lg,
+    paddingTop: tokens.spacing.lg,
+    paddingBottom: tokens.spacing.md,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    fontWeight: '600',
+    fontSize: 12,
+  },
   closeButton: {
-    padding: 8,
-    marginLeft: 8,
+    padding: tokens.spacing.sm,
+    marginLeft: tokens.spacing.sm,
   },
 });
 

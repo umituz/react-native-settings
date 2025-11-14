@@ -33,7 +33,6 @@
     "@umituz/react-native-design-system": "latest",
     "@umituz/react-native-design-system-theme": "latest",
     "@umituz/react-native-localization": "latest",
-    "react-native-paper": "^5.12.3",
     "expo-linear-gradient": "~14.0.0"
   },
   "devDependencies": {

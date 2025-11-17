@@ -17,7 +17,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { useDesignSystemTheme, useAppDesignTokens } from '@umituz/react-native-design-system-theme';
-import { ScreenLayout, AtomicIcon, AtomicText } from '@umituz/react-native-design-system';
+import { ScreenLayout } from '@umituz/react-native-design-system-organisms';
+import { AtomicIcon, AtomicText } from '@umituz/react-native-design-system-atoms';
 import { SettingItem } from '../components/SettingItem';
 import { getLanguageByCode, useLocalization } from '@umituz/react-native-localization';
 import { SettingsConfig } from './types';

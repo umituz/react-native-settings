@@ -14,10 +14,10 @@
 import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system-atoms';
 import { useAppDesignTokens } from '@umituz/react-native-design-system-theme';
-import type { IconName } from '@umituz/react-native-design-system';
-import type { DesignTokens } from '@umituz/react-native-design-system';
+import type { IconName } from '@umituz/react-native-design-system-atoms';
+import type { DesignTokens } from '@umituz/react-native-design-system-theme';
 
 interface SettingItemProps {
   /** Icon name from Lucide library */
@@ -97,7 +97,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
             {value}
           </AtomicText>
         ) : (showChevron ?? true) && onPress ? (
-          <AtomicIcon name="ChevronRight" size="sm" color="textSecondary" style={styles.chevron} />
+          <AtomicIcon name="ChevronRight" size="sm" customColor={tokens.colors.textSecondary} style={styles.chevron} />
         ) : null}
       </View>
     </View>

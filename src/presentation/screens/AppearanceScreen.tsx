@@ -14,7 +14,8 @@ import { View, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDesignSystemTheme, useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system-theme';
-import { AtomicText, ScreenLayout } from '@umituz/react-native-design-system';
+import { AtomicText } from '@umituz/react-native-design-system-atoms';
+import { ScreenLayout } from '@umituz/react-native-design-system-organisms';
 import { useLocalization, getLanguageByCode } from '@umituz/react-native-localization';
 import { SettingItem } from '../components/SettingItem';
 

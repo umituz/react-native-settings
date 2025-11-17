@@ -16,7 +16,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDesignTokens, withAlpha, STATIC_TOKENS, type DesignTokens } from '@umituz/react-native-design-system-theme';
-import { AtomicIcon, AtomicText, ScreenLayout } from '@umituz/react-native-design-system';
+import { AtomicIcon, AtomicText } from '@umituz/react-native-design-system-atoms';
+import { ScreenLayout } from '@umituz/react-native-design-system-organisms';
 import { useLocalization, searchLanguages, Language, LANGUAGES } from '@umituz/react-native-localization';
 
 /**

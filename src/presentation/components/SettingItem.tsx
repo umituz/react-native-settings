@@ -6,12 +6,12 @@
 
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from "react-native";
-import { ChevronRight } from "lucide-react-native";
+import { ChevronRight, type LucideIcon } from "lucide-react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 
 export interface SettingItemProps {
   /** Icon component from lucide-react-native */
-  icon: React.ComponentType<{ size?: number; color?: string }>;
+  icon: LucideIcon | React.ComponentType<{ size?: number; color?: string }>;
   /** Main title text */
   title: string;
   /** Optional description/value text */

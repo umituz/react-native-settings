@@ -86,14 +86,17 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         showsVerticalScrollIndicator={false}
       >
         {showUserProfile && (
-          <UserProfileHeader
-            displayName={userProfile?.displayName}
-            userId={userProfile?.userId}
-            isGuest={userProfile?.isGuest}
-            avatarUrl={userProfile?.avatarUrl}
-            accountSettingsRoute={userProfile?.accountSettingsRoute}
-            onPress={userProfile?.onPress}
-          />
+          <>
+            <UserProfileHeader
+              displayName={userProfile?.displayName}
+              userId={userProfile?.userId}
+              isGuest={userProfile?.isGuest}
+              avatarUrl={userProfile?.avatarUrl}
+              accountSettingsRoute={userProfile?.accountSettingsRoute}
+              onPress={userProfile?.onPress}
+            />
+            <View style={{ height: 24 }} />
+          </>
         )}
 
         {features.appearance && (

@@ -4,13 +4,14 @@
  */
 
 import React from "react";
-import { View, ScrollView, StatusBar, StyleSheet } from "react-native";
+import { View, ScrollView, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import {
   useDesignSystemTheme,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system-theme";
+import { AtomicIcon } from "@umituz/react-native-design-system-atoms";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../components/SettingsFooter";
 import { UserProfileHeader } from "../components/UserProfileHeader";
@@ -41,6 +42,10 @@ export interface SettingsScreenProps {
   footerText?: string;
   /** Custom sections to render */
   customSections?: CustomSettingsSection[];
+  /** Show close button in header */
+  showCloseButton?: boolean;
+  /** Custom close handler */
+  onClose?: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
@@ -50,6 +55,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   showFooter = true,
   footerText,
   customSections = [],
+  showCloseButton = false,
+  onClose,
 }) => {
   const navigation = useNavigation();
   const { themeMode } = useDesignSystemTheme();
@@ -71,16 +78,49 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     features.legal ||
     customSections.length > 0;
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: colors.backgroundPrimary }]}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+
+      {showCloseButton && (
+        <View
+          style={[
+            styles.closeButtonContainer,
+            {
+              paddingTop: insets.top + spacing.xs,
+              paddingRight: spacing.md,
+            },
+          ]}
+        >
+          <TouchableOpacity
+            onPress={handleClose}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: colors.surface,
+              },
+            ]}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <AtomicIcon name="X" size="lg" color="primary" />
+          </TouchableOpacity>
+        </View>
+      )}
 
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[
           styles.scrollContent,
           {
-            paddingTop: insets.top + spacing.md,
+            paddingTop: showCloseButton ? spacing.md : insets.top + spacing.md,
             paddingBottom: spacing.xxxl + spacing.xl,
             paddingHorizontal: 0,
           },
@@ -151,6 +191,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  closeButtonContainer: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    zIndex: 10,
+    alignItems: "flex-end",
+  },
+  closeButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollView: {
     flex: 1,

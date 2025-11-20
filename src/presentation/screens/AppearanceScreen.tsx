@@ -1,23 +1,21 @@
 /**
  * Appearance Settings Screen
- *
- * Modern appearance settings with Paper List.Section:
- * - React Native Paper List.Section pattern
- * - Lucide icons (Languages, Moon, Sun)
- * - Language + Theme settings combined
- * - Dynamic icon based on theme mode
- * - Material Design 3 compliance
+ * Modern appearance settings with language and theme controls
  */
 
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-
-import { useNavigation } from '@react-navigation/native';
-import { useDesignSystemTheme, useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system-theme';
-import { AtomicText } from '@umituz/react-native-design-system-atoms';
-import { ScreenLayout } from '@umituz/react-native-design-system-organisms';
-import { useLocalization, getLanguageByCode } from '@umituz/react-native-localization';
-import { SettingItem } from '../components/SettingItem';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { Languages, Moon, Sun } from "lucide-react-native";
+import { useNavigation } from "@react-navigation/native";
+import {
+  useDesignSystemTheme,
+  useAppDesignTokens,
+  type DesignTokens,
+} from "@umituz/react-native-design-system-theme";
+import { ScreenLayout } from "@umituz/react-native-design-system-organisms";
+import { useLocalization, getLanguageByCode } from "@umituz/react-native-localization";
+import { SettingItem } from "../components/SettingItem";
+import { SettingsSection } from "../components/SettingsSection";
 
 export const AppearanceScreen: React.FC = () => {
   const { t, currentLanguage } = useLocalization();
@@ -27,63 +25,43 @@ export const AppearanceScreen: React.FC = () => {
   const styles = getStyles(tokens);
 
   const currentLang = getLanguageByCode(currentLanguage);
-  const languageDisplay = currentLang ? `${currentLang.flag} ${currentLang.nativeName}` : 'English';
-  const themeDisplay = themeMode === 'dark' ? t('settings.darkMode') : t('settings.lightMode');
+  const languageDisplay = currentLang
+    ? `${currentLang.flag} ${currentLang.nativeName}`
+    : "English";
+  const themeDisplay =
+    themeMode === "dark" ? t("settings.darkMode") : t("settings.lightMode");
 
   const handleLanguagePress = () => {
-    navigation.navigate('LanguageSelection' as never);
+    navigation.navigate("LanguageSelection" as never);
   };
 
   const handleThemeToggle = () => {
-    const newMode = themeMode === 'dark' ? 'light' : 'dark';
+    const newMode = themeMode === "dark" ? "light" : "dark";
     setThemeMode(newMode);
   };
 
   return (
     <ScreenLayout testID="appearance-screen" hideScrollIndicator>
-      {/* Header */}
-      <View style={styles.header}>
-        <AtomicText type="headlineLarge" color="primary">
-          {t('settings.appearance.title')}
-        </AtomicText>
-        <AtomicText type="bodyMedium" color="secondary" style={styles.headerSubtitle}>
-          {t('settings.appearance.themeDescription')}
-        </AtomicText>
-      </View>
-
       {/* Language Section */}
-      <View style={{ marginBottom: tokens.spacing.md }}>
-        <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
-          {t('settings.language')}
-        </AtomicText>
+      <SettingsSection title={t("settings.language")}>
         <SettingItem
-          icon="Languages"
-          iconGradient={((tokens.colors as any).settingGradients?.language as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary]}
-          title={t('settings.language')}
+          icon={Languages}
+          title={t("settings.language")}
           value={languageDisplay}
           onPress={handleLanguagePress}
-          testID="language-button"
         />
-      </View>
+      </SettingsSection>
 
       {/* Theme Section */}
-      <View style={{ marginBottom: tokens.spacing.md }}>
-        <AtomicText type="labelMedium" color="textSecondary" style={styles.sectionHeader}>
-          {t('settings.appearance.darkMode')}
-        </AtomicText>
+      <SettingsSection title={t("settings.appearance.darkMode")}>
         <SettingItem
-          icon={themeMode === 'dark' ? 'Moon' : 'Sun'}
-          iconGradient={
-            themeMode === 'dark'
-              ? (((tokens.colors as any).settingGradients?.themeDark as unknown as string[]) || [tokens.colors.primary, tokens.colors.secondary])
-              : (((tokens.colors as any).settingGradients?.themeLight as unknown as string[]) || [tokens.colors.secondary, tokens.colors.primary])
-          }
-          title={t('settings.appearance.darkMode')}
+          icon={themeMode === "dark" ? Moon : Sun}
+          title={t("settings.appearance.darkMode")}
           value={themeDisplay}
           onPress={handleThemeToggle}
-          testID="theme-button"
+          isLast={true}
         />
-      </View>
+      </SettingsSection>
     </ScreenLayout>
   );
 };
@@ -91,23 +69,20 @@ export const AppearanceScreen: React.FC = () => {
 const getStyles = (tokens: DesignTokens) =>
   StyleSheet.create({
     header: {
-      paddingBottom: tokens.spacing.lg,
-      paddingTop: tokens.spacing.md,
       paddingHorizontal: tokens.spacing.lg,
+      paddingTop: tokens.spacing.lg,
+      paddingBottom: tokens.spacing.md,
     },
     headerSubtitle: {
-      marginTop: tokens.spacing.sm,
-      lineHeight: 20,
-      opacity: 0.8,
+      marginTop: tokens.spacing.xs,
     },
     sectionHeader: {
       paddingHorizontal: tokens.spacing.lg,
       paddingTop: tokens.spacing.lg,
       paddingBottom: tokens.spacing.md,
-      textTransform: 'uppercase',
+      textTransform: "uppercase",
       letterSpacing: 1,
-      fontWeight: '600',
+      fontWeight: "600",
       fontSize: 12,
     },
   });
-

@@ -1,82 +1,29 @@
 /**
  * Settings Screen
- * Modern settings screen with user profile header and organized sections
+ * Presentation layer - Composition only, no business logic
  */
 
-import React, { useMemo, useState } from "react";
-import {
-  View,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Alert,
-  DeviceEventEmitter,
-} from "react-native";
+import React from "react";
+import { View, ScrollView, StatusBar, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNavigation, CommonActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import {
   useDesignSystemTheme,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system-theme";
-import { Palette, Bell, Info, FileText } from "lucide-react-native";
 import { useLocalization } from "@umituz/react-native-localization";
-import { SettingItem } from "../components/SettingItem";
-import { SettingsSection } from "../components/SettingsSection";
 import { SettingsFooter } from "../components/SettingsFooter";
 import { UserProfileHeader } from "../components/UserProfileHeader";
-import { SettingsConfig, CustomSettingsSection } from "./types";
-
-// Optional notification service
-let notificationService: any = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  notificationService = require("@umituz/react-native-notifications")
-    .notificationService;
-} catch {
-  // Package not available
-}
-
-// Optional onboarding store
-let useOnboardingStore: any = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const onboardingPackage = require("@umituz/react-native-onboarding");
-  useOnboardingStore = onboardingPackage.useOnboardingStore;
-} catch {
-  // Package not available
-}
-
-/**
- * Check if navigation screen exists
- */
-const hasNavigationScreen = (
-  navigation: any,
-  screenName: string,
-): boolean => {
-  try {
-    const state = navigation.getState();
-    if (!state) return false;
-
-    const checkRoutes = (routes: any[]): boolean => {
-      if (!routes || !Array.isArray(routes)) return false;
-
-      for (const route of routes) {
-        if (route.name === screenName) return true;
-        if (route.state?.routes && checkRoutes(route.state.routes)) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    return checkRoutes(state.routes || []);
-  } catch {
-    return false;
-  }
-};
+import { SettingsSection } from "../components/SettingsSection";
+import { AppearanceSection } from "./components/AppearanceSection";
+import { NotificationsSection } from "./components/NotificationsSection";
+import { AboutLegalSection } from "./components/AboutLegalSection";
+import { normalizeSettingsConfig } from "./utils/normalizeConfig";
+import { useFeatureDetection } from "./hooks/useFeatureDetection";
+import type { CustomSettingsSection } from "./types";
 
 export interface SettingsScreenProps {
-  config?: SettingsConfig;
+  config?: any;
   /** Show user profile header */
   showUserProfile?: boolean;
   /** User profile props */
@@ -109,61 +56,19 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const tokens = useAppDesignTokens();
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   const isDark = themeMode === "dark";
   const colors = tokens.colors;
 
-  const features = useMemo(() => {
-    const appearanceConfig = config?.appearance ?? "auto";
-    const notificationsConfig = config?.notifications ?? "auto";
-    const aboutConfig = config?.about ?? "auto";
-    const legalConfig = config?.legal ?? "auto";
-
-    return {
-      appearance:
-        appearanceConfig === true ||
-        (appearanceConfig === "auto" &&
-          hasNavigationScreen(navigation, "Appearance")),
-      notifications:
-        notificationsConfig === true ||
-        (notificationsConfig === "auto" &&
-          notificationService !== null &&
-          hasNavigationScreen(navigation, "Notifications")),
-      about:
-        aboutConfig === true ||
-        (aboutConfig === "auto" && hasNavigationScreen(navigation, "About")),
-      legal:
-        legalConfig === true ||
-        (legalConfig === "auto" && hasNavigationScreen(navigation, "Legal")),
-    };
-  }, [config, navigation]);
-
-  const handleNotificationsToggle = async (value: boolean) => {
-    if (notificationService && !value) {
-      const hasPermissions = await notificationService.hasPermissions();
-      if (!hasPermissions) {
-        await notificationService.requestPermissions();
-      }
-    }
-    setNotificationsEnabled(value);
-  };
-
-  const handleNotificationsPress = async () => {
-    if (notificationService) {
-      const hasPermissions = await notificationService.hasPermissions();
-      if (!hasPermissions) {
-        await notificationService.requestPermissions();
-      }
-    }
-    navigation.navigate("Notifications" as never);
-  };
+  const normalizedConfig = normalizeSettingsConfig(config);
+  const features = useFeatureDetection(normalizedConfig, navigation);
 
   const hasAnyFeatures =
     features.appearance ||
     features.notifications ||
     features.about ||
-    features.legal;
+    features.legal ||
+    customSections.length > 0;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.backgroundPrimary }]}>
@@ -192,61 +97,38 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         )}
 
         {features.appearance && (
-          <SettingsSection title={t("settings.sections.app.title")}>
-            <SettingItem
-              icon={Palette}
-              title={t("settings.appearance.title")}
-              value={t("settings.appearance.description")}
-              onPress={() => navigation.navigate("Appearance" as never)}
-            />
-          </SettingsSection>
+          <AppearanceSection config={normalizedConfig.appearance.config} />
         )}
 
         {features.notifications && (
-          <SettingsSection title={t("settings.sections.general")}>
-            <SettingItem
-              icon={Bell}
-              title={t("settings.notifications.title")}
-              showSwitch={true}
-              switchValue={notificationsEnabled}
-              onSwitchChange={handleNotificationsToggle}
-              isLast={true}
-            />
-          </SettingsSection>
+          <NotificationsSection config={normalizedConfig.notifications.config} />
         )}
 
         {(features.about || features.legal) && (
-          <SettingsSection title={t("settings.sections.about")}>
-            {features.about && (
-              <SettingItem
-                icon={Info}
-                title={t("settings.about.title")}
-                value={t("settings.about.description")}
-                onPress={() => navigation.navigate("About" as never)}
-              />
-            )}
-            {features.legal && (
-              <SettingItem
-                icon={FileText}
-                title={t("settings.legal.title")}
-                value={t("settings.legal.description")}
-                onPress={() => navigation.navigate("Legal" as never)}
-                isLast={true}
-              />
-            )}
-          </SettingsSection>
+          <AboutLegalSection
+            showAbout={features.about}
+            showLegal={features.legal}
+            aboutConfig={normalizedConfig.about.config}
+            legalConfig={normalizedConfig.legal.config}
+          />
         )}
 
-        {/* Custom Sections */}
-        {customSections
-          .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
-          .map((section, index) => (
-            <SettingsSection key={`custom-${index}`} title={section.title}>
-              {section.content}
-            </SettingsSection>
-          ))}
+        {customSections && customSections.length > 0 && (
+          <>
+            {customSections
+              .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+              .map((section, index) => (
+                <SettingsSection
+                  key={section.id || `custom-${index}`}
+                  title={section.title}
+                >
+                  {section.content}
+                </SettingsSection>
+              ))}
+          </>
+        )}
 
-        {!hasAnyFeatures && customSections.length === 0 && (
+        {!hasAnyFeatures && (
           <View style={styles.emptyContainer}>
             <SettingsSection
               title={t("settings.noOptionsAvailable") || "No settings available"}

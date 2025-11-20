@@ -48,5 +48,16 @@ export type { SettingsConfig } from './presentation/screens/types';
 // =============================================================================
 
 export { SettingItem } from './presentation/components/SettingItem';
+export type { SettingItemProps } from './presentation/components/SettingItem';
+
+export { SettingsSection } from './presentation/components/SettingsSection';
+export type { SettingsSectionProps } from './presentation/components/SettingsSection';
+
+export { SettingsFooter } from './presentation/components/SettingsFooter';
+export type { SettingsFooterProps } from './presentation/components/SettingsFooter';
+
+export { UserProfileHeader } from './presentation/components/UserProfileHeader';
+export type { UserProfileHeaderProps } from './presentation/components/UserProfileHeader';
+
 export { DisclaimerSetting } from './presentation/components/DisclaimerSetting';
 

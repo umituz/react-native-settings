@@ -20,7 +20,7 @@ npm install @umituz/react-native-settings
 ## Peer Dependencies
 
 ```bash
-npm install zustand @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-design-system-theme @umituz/react-native-localization @umituz/react-native-notifications react-native-paper expo-linear-gradient
+npm install zustand lucide-react-native @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-design-system-theme @umituz/react-native-localization @umituz/react-native-notifications react-native-paper expo-linear-gradient
 ```
 
 ## Usage
@@ -55,8 +55,25 @@ const MyComponent = () => {
 ```tsx
 import { SettingsScreen } from '@umituz/react-native-settings';
 
-// In your navigation stack
+// Basic usage
 <Stack.Screen name="Settings" component={SettingsScreen} />
+
+// With user profile header
+<SettingsScreen
+  showUserProfile={true}
+  userProfile={{
+    displayName: "John Doe",
+    userId: "user123",
+    isGuest: false,
+    accountSettingsRoute: "AccountSettings",
+  }}
+  config={{
+    appearance: true,
+    notifications: true,
+    about: true,
+    legal: true,
+  }}
+/>
 ```
 
 ### Appearance Screen
@@ -81,15 +98,80 @@ import { LanguageSelectionScreen } from '@umituz/react-native-settings';
 
 ```tsx
 import { SettingItem } from '@umituz/react-native-settings';
+import { Palette, Bell } from 'lucide-react-native';
 
+// Basic setting item
 <SettingItem
-  icon="Palette"
-  title="Theme"
-  description="Change app theme"
-  value="Dark"
+  icon={Palette}
+  title="Appearance"
+  value="Theme and language settings"
   onPress={() => navigation.navigate('Appearance')}
-  iconGradient={['#FF6B6B', '#4ECDC4']}
 />
+
+// With switch
+<SettingItem
+  icon={Bell}
+  title="Notifications"
+  showSwitch={true}
+  switchValue={enabled}
+  onSwitchChange={setEnabled}
+/>
+
+// Custom colors
+<SettingItem
+  icon={Palette}
+  title="Appearance"
+  iconColor="#F59E0B"
+  titleColor="#F59E0B"
+  onPress={() => {}}
+/>
+```
+
+### Settings Section Component
+
+```tsx
+import { SettingsSection, SettingItem } from '@umituz/react-native-settings';
+import { Palette, Bell } from 'lucide-react-native';
+
+<SettingsSection title="APP SETTINGS">
+  <SettingItem
+    icon={Palette}
+    title="Appearance"
+    value="Theme and language settings"
+    onPress={() => navigation.navigate('Appearance')}
+  />
+  <SettingItem
+    icon={Bell}
+    title="Notifications"
+    showSwitch={true}
+    switchValue={enabled}
+    onSwitchChange={setEnabled}
+    isLast={true}
+  />
+</SettingsSection>
+```
+
+### User Profile Header Component
+
+```tsx
+import { UserProfileHeader } from '@umituz/react-native-settings';
+
+<UserProfileHeader
+  displayName="John Doe"
+  userId="user123"
+  isGuest={false}
+  avatarUrl="https://example.com/avatar.jpg"
+  accountSettingsRoute="AccountSettings"
+  onPress={() => navigation.navigate('AccountSettings')}
+/>
+```
+
+### Settings Footer Component
+
+```tsx
+import { SettingsFooter } from '@umituz/react-native-settings';
+
+<SettingsFooter versionText="Version 1.0.0" />
 ```
 
 ### Disclaimer Setting Component
@@ -122,7 +204,14 @@ Direct access to Zustand store.
 
 ### `SettingsScreen`
 
-Main settings screen component with sections for Appearance, General, About & Legal.
+Modern settings screen with organized sections and optional user profile header.
+
+**Props:**
+- `config?: SettingsConfig` - Configuration for which features to show
+- `showUserProfile?: boolean` - Show user profile header
+- `userProfile?: UserProfileHeaderProps` - User profile props
+- `showFooter?: boolean` - Show footer with version
+- `footerText?: string` - Custom footer text
 
 ### `AppearanceScreen`
 
@@ -134,19 +223,46 @@ Language selection screen with search functionality.
 
 ### `SettingItem`
 
-Reusable setting item component with gradient icons and Material Design styling.
+Modern setting item component with Lucide icons and switch support.
 
 **Props:**
-- `icon: IconName` - Icon name from Lucide library
+- `icon: React.ComponentType` - Icon component from lucide-react-native
 - `title: string` - Main title text
-- `description?: string` - Optional description
-- `value?: string` - Optional value to display on right
+- `value?: string` - Optional description/value text (shown below title)
 - `onPress?: () => void` - Callback when pressed
-- `showChevron?: boolean` - Show chevron arrow (default: true if onPress exists)
-- `rightElement?: React.ReactNode` - Custom right element
-- `iconGradient?: string[]` - Gradient colors for icon background
-- `disabled?: boolean` - Disable item
-- `testID?: string` - Test ID
+- `showSwitch?: boolean` - Show switch instead of chevron
+- `switchValue?: boolean` - Switch value
+- `onSwitchChange?: (value: boolean) => void` - Switch change handler
+- `isLast?: boolean` - Is last item (no divider)
+- `iconColor?: string` - Custom icon color
+- `titleColor?: string` - Custom title color
+
+### `SettingsSection`
+
+Section container with title and styled content area.
+
+**Props:**
+- `title: string` - Section title (uppercase)
+- `children: React.ReactNode` - Section content
+
+### `UserProfileHeader`
+
+User profile header with avatar, name, and ID.
+
+**Props:**
+- `displayName?: string` - User display name
+- `userId?: string` - User ID
+- `isGuest?: boolean` - Whether user is guest
+- `avatarUrl?: string` - Custom avatar URL
+- `accountSettingsRoute?: string` - Navigation route for account settings
+- `onPress?: () => void` - Custom onPress handler
+
+### `SettingsFooter`
+
+Footer component displaying app version.
+
+**Props:**
+- `versionText?: string` - Custom version text (optional)
 
 ### `DisclaimerSetting`
 

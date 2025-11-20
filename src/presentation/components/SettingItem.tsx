@@ -49,6 +49,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
+  const spacing = tokens.spacing;
 
   return (
     <>
@@ -166,6 +167,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    marginLeft: 68,
+    marginLeft: 80,
   },
 });

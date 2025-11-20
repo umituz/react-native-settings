@@ -59,6 +59,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   const isDark = themeMode === "dark";
   const colors = tokens.colors;
+  const spacing = tokens.spacing;
 
   const normalizedConfig = normalizeSettingsConfig(config);
   const features = useFeatureDetection(normalizedConfig, navigation);
@@ -79,14 +80,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         contentContainerStyle={[
           styles.scrollContent,
           {
-            paddingTop: insets.top + 16,
-            paddingBottom: 100,
+            paddingTop: insets.top + spacing.md,
+            paddingBottom: spacing.xxxl + spacing.xl,
+            paddingHorizontal: 0,
           },
         ]}
         showsVerticalScrollIndicator={false}
       >
         {showUserProfile && (
-          <>
+          <View style={styles.profileContainer}>
             <UserProfileHeader
               displayName={userProfile?.displayName}
               userId={userProfile?.userId}
@@ -95,8 +97,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               accountSettingsRoute={userProfile?.accountSettingsRoute}
               onPress={userProfile?.onPress}
             />
-            <View style={{ height: 24 }} />
-          </>
+          </View>
         )}
 
         {features.appearance && (
@@ -156,6 +157,10 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+  },
+  profileContainer: {
+    marginBottom: 32,
+    paddingHorizontal: 0,
   },
   emptyContainer: {
     paddingVertical: 24,

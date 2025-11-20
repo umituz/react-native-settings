@@ -36,6 +36,7 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   const tokens = useAppDesignTokens();
   const navigation = useNavigation();
   const colors = tokens.colors;
+  const spacing = tokens.spacing;
 
   const finalDisplayName = displayName || (isGuest ? "Guest" : "User");
   const finalUserId = userId || "Unknown";
@@ -94,12 +95,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     marginHorizontal: 16,
     marginTop: 0,
     marginBottom: 0,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
   },
   content: {
@@ -108,13 +109,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 2,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 2.5,
   },
   textContainer: {
-    marginLeft: 12,
+    marginLeft: 16,
     flex: 1,
   },
   name: {

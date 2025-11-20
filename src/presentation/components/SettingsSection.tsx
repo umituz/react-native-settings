@@ -20,6 +20,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
+  const spacing = tokens.spacing;
 
   return (
     <View style={styles.container}>
@@ -40,18 +41,20 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 24,
+    marginTop: 0,
+    marginBottom: 32,
   },
   title: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "700",
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 1.2,
     paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingBottom: 12,
+    marginBottom: 0,
   },
   content: {
-    borderRadius: 12,
+    borderRadius: 16,
     marginHorizontal: 16,
     overflow: "hidden",
   },

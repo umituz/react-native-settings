@@ -30,6 +30,8 @@ export interface SettingItemProps {
   iconColor?: string;
   /** Custom title color */
   titleColor?: string;
+  /** Test ID for E2E testing */
+  testID?: string;
 }
 
 export const SettingItem: React.FC<SettingItemProps> = ({
@@ -43,6 +45,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   isLast = false,
   iconColor,
   titleColor,
+  testID,
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
@@ -57,6 +60,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
         onPress={onPress}
         disabled={showSwitch}
         activeOpacity={0.7}
+        testID={testID}
       >
         <View style={styles.content}>
           <View

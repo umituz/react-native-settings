@@ -5,9 +5,10 @@
  */
 
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { ChevronRight } from "lucide-react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
+import { AtomicText } from "@umituz/react-native-design-system-atoms";
 import { useNavigation } from "@react-navigation/native";
 
 export interface UserProfileHeaderProps {
@@ -58,34 +59,42 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
       style={[
         styles.container,
         {
-          backgroundColor: colors.backgroundPrimary,
-          borderColor: colors.borderLight,
+          backgroundColor: colors.surface,
+          paddingHorizontal: spacing.md,
+          paddingVertical: spacing.md,
+          marginHorizontal: spacing.md,
         },
       ]}
       onPress={handlePress}
       activeOpacity={0.7}
     >
       <View style={styles.content}>
-        <Image
-          source={{ uri: finalAvatarUrl }}
-          style={[styles.avatar, { borderColor: `${colors.primary}40` }]}
-        />
-        <View style={styles.textContainer}>
-          <Text
-            style={[styles.name, { color: colors.textPrimary }]}
+        <View style={[styles.avatarContainer, { borderColor: `${colors.primary}30` }]}>
+          <Image
+            source={{ uri: finalAvatarUrl }}
+            style={styles.avatar}
+          />
+        </View>
+        <View style={[styles.textContainer, { marginLeft: spacing.md }]}>
+          <AtomicText
+            type="headlineSmall"
+            style={[styles.name, { color: colors.textPrimary, marginBottom: spacing.xs }]}
             numberOfLines={1}
           >
             {finalDisplayName}
-          </Text>
-          <Text
+          </AtomicText>
+          <AtomicText
+            type="bodySmall"
             style={[styles.id, { color: colors.textSecondary }]}
             numberOfLines={1}
           >
-            ID: {finalUserId.substring(0, 8)}...
-          </Text>
+            ID: {finalUserId.substring(0, 10)}...
+          </AtomicText>
         </View>
       </View>
-      <ChevronRight size={20} color={colors.textSecondary} />
+      <View style={[styles.chevronContainer, { marginLeft: spacing.sm }]}>
+        <ChevronRight size={22} color={colors.textSecondary} strokeWidth={2.5} />
+      </View>
     </TouchableOpacity>
   );
 };
@@ -95,37 +104,42 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    marginHorizontal: 16,
     marginTop: 0,
     marginBottom: 0,
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: 20,
+    minHeight: 80,
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
   },
+  avatarContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 2,
+    overflow: "hidden",
+    backgroundColor: "transparent",
+  },
   avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    borderWidth: 2.5,
+    width: "100%",
+    height: "100%",
   },
   textContainer: {
-    marginLeft: 16,
     flex: 1,
   },
   name: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 4,
+    fontWeight: "700",
   },
   id: {
-    fontSize: 12,
-    fontWeight: "400",
+    fontWeight: "500",
+    opacity: 0.7,
+  },
+  chevronContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
+
 

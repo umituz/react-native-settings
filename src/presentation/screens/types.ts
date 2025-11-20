@@ -33,3 +33,16 @@ export interface SettingsConfig {
   legal?: boolean | 'auto';
 }
 
+/**
+ * Custom Settings Section
+ * Allows apps to add custom sections to the settings screen
+ */
+export interface CustomSettingsSection {
+  /** Section title */
+  title: string;
+  /** Section content (React nodes) */
+  content: React.ReactNode;
+  /** Section order (lower = higher in list) */
+  order?: number;
+}
+

@@ -41,7 +41,7 @@ export { LanguageSelectionScreen } from './presentation/screens/LanguageSelectio
 // PRESENTATION LAYER - Types
 // =============================================================================
 
-export type { SettingsConfig } from './presentation/screens/types';
+export type { SettingsConfig, CustomSettingsSection } from './presentation/screens/types';
 
 // =============================================================================
 // PRESENTATION LAYER - Components

@@ -24,7 +24,7 @@ import { SettingItem } from "../components/SettingItem";
 import { SettingsSection } from "../components/SettingsSection";
 import { SettingsFooter } from "../components/SettingsFooter";
 import { UserProfileHeader } from "../components/UserProfileHeader";
-import { SettingsConfig } from "./types";
+import { SettingsConfig, CustomSettingsSection } from "./types";
 
 // Optional notification service
 let notificationService: any = null;
@@ -92,6 +92,8 @@ export interface SettingsScreenProps {
   showFooter?: boolean;
   /** Custom footer text */
   footerText?: string;
+  /** Custom sections to render */
+  customSections?: CustomSettingsSection[];
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
@@ -100,6 +102,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   userProfile,
   showFooter = true,
   footerText,
+  customSections = [],
 }) => {
   const navigation = useNavigation();
   const { themeMode } = useDesignSystemTheme();
@@ -234,7 +237,16 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           </SettingsSection>
         )}
 
-        {!hasAnyFeatures && (
+        {/* Custom Sections */}
+        {customSections
+          .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+          .map((section, index) => (
+            <SettingsSection key={`custom-${index}`} title={section.title}>
+              {section.content}
+            </SettingsSection>
+          ))}
+
+        {!hasAnyFeatures && customSections.length === 0 && (
           <View style={styles.emptyContainer}>
             <SettingsSection
               title={t("settings.noOptionsAvailable") || "No settings available"}

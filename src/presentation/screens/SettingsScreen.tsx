@@ -115,7 +115,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
         {customSections && customSections.length > 0 && (
           <>
-            {customSections
+            {Array.from(customSections)
               .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
               .map((section, index) => (
                 <SettingsSection

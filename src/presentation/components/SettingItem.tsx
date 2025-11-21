@@ -32,6 +32,8 @@ export interface SettingItemProps {
   titleColor?: string;
   /** Test ID for E2E testing */
   testID?: string;
+  /** Disable the item */
+  disabled?: boolean;
 }
 
 export const SettingItem: React.FC<SettingItemProps> = ({
@@ -46,6 +48,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   iconColor,
   titleColor,
   testID,
+  disabled = false,
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
@@ -59,8 +62,8 @@ export const SettingItem: React.FC<SettingItemProps> = ({
           { backgroundColor: colors.backgroundPrimary },
         ]}
         onPress={onPress}
-        disabled={showSwitch}
-        activeOpacity={0.7}
+        disabled={showSwitch || disabled}
+        activeOpacity={disabled ? 1 : 0.7}
         testID={testID}
       >
         <View style={styles.content}>
@@ -80,7 +83,12 @@ export const SettingItem: React.FC<SettingItemProps> = ({
             <Text
               style={[
                 styles.title,
-                { color: titleColor || colors.textPrimary },
+                {
+                  color: disabled
+                    ? colors.textSecondary
+                    : titleColor || colors.textPrimary,
+                  opacity: disabled ? 0.5 : 1,
+                },
               ]}
               numberOfLines={1}
             >

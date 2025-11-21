@@ -61,3 +61,9 @@ export type { UserProfileHeaderProps } from './presentation/components/UserProfi
 
 export { DisclaimerSetting } from './presentation/components/DisclaimerSetting';
 
+export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';
+export type { CloudSyncSettingProps } from './presentation/components/CloudSyncSetting';
+
+export { StorageClearSetting } from './presentation/components/StorageClearSetting';
+export type { StorageClearSettingProps } from './presentation/components/StorageClearSetting';
+

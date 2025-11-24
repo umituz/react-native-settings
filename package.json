@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "Settings management for React Native apps - user preferences, theme, language, notifications",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -30,12 +30,16 @@
     "react-native": ">=0.74.0",
     "zustand": "^5.0.2",
     "lucide-react-native": "^0.468.0",
+    "@react-navigation/native": "^6.1.18",
+    "react-native-safe-area-context": "~5.6.0",
     "@umituz/react-native-storage": "latest",
     "@umituz/react-native-design-system": "latest",
+    "@umituz/react-native-design-system-atoms": "latest",
+    "@umituz/react-native-design-system-organisms": "latest",
     "@umituz/react-native-design-system-theme": "latest",
     "@umituz/react-native-localization": "latest",
     "@umituz/react-native-appearance": "latest",
-    "expo-linear-gradient": "~14.0.0"
+    "expo-linear-gradient": "^15.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.45",

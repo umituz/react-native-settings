@@ -20,19 +20,13 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
-  const spacing = tokens.spacing;
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.title, { color: colors.textSecondary }]}>
+    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+      <Text style={[styles.title, { color: colors.textPrimary }]}>
         {title}
       </Text>
-      <View
-        style={[
-          styles.content,
-          { backgroundColor: `${colors.textSecondary}10` },
-        ]}
-      >
+      <View style={styles.content}>
         {children}
       </View>
     </View>
@@ -41,22 +35,19 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 0,
-    marginBottom: 32,
+    marginBottom: 16,
+    borderRadius: 12,
+    overflow: "hidden",
   },
   title: {
-    fontSize: 11,
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: 1.2,
+    fontSize: 18,
+    fontWeight: "600",
     paddingHorizontal: 16,
-    paddingBottom: 12,
-    marginBottom: 0,
+    paddingTop: 16,
+    paddingBottom: 8,
   },
   content: {
-    borderRadius: 16,
-    marginHorizontal: 16,
-    overflow: "hidden",
+    borderRadius: 0,
   },
 });
 

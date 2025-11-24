@@ -1,11 +1,11 @@
 /**
  * Setting Item Component
  * Single Responsibility: Render a single settings item
- * Modern design with Lucide icons and switch support
+ * Material Design 3 style with hover effects and modern spacing
  */
 
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Switch } from "react-native";
+import { View, Text, Pressable, StyleSheet, Switch } from "react-native";
 import { ChevronRight, type LucideIcon } from "lucide-react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 
@@ -56,14 +56,17 @@ export const SettingItem: React.FC<SettingItemProps> = ({
 
   return (
     <>
-      <TouchableOpacity
-        style={[
+      <Pressable
+        style={({ pressed }) => [
           styles.container,
-          { backgroundColor: colors.backgroundPrimary },
+          {
+            backgroundColor: pressed && !disabled && !showSwitch
+              ? `${colors.primary}08`
+              : 'transparent',
+          },
         ]}
         onPress={onPress}
         disabled={showSwitch || disabled}
-        activeOpacity={disabled ? 1 : 0.7}
         testID={testID}
       >
         <View style={styles.content}>
@@ -77,7 +80,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
               },
             ]}
           >
-            <Icon size={20} color={iconColor || colors.primary} />
+            <Icon size={24} color={iconColor || colors.primary} />
           </View>
           <View style={styles.textContainer}>
             <Text
@@ -97,7 +100,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
             {value && !showSwitch && (
               <Text
                 style={[styles.value, { color: colors.textSecondary }]}
-                numberOfLines={1}
+                numberOfLines={2}
               >
                 {value}
               </Text>
@@ -115,12 +118,13 @@ export const SettingItem: React.FC<SettingItemProps> = ({
                 true: colors.primary,
               }}
               thumbColor="#FFFFFF"
+              ios_backgroundColor={`${colors.textSecondary}30`}
             />
           ) : (
-            <ChevronRight size={18} color={colors.textSecondary} />
+            <ChevronRight size={20} color={colors.textSecondary} />
           )}
         </View>
-      </TouchableOpacity>
+      </Pressable>
 
       {!isLast && (
         <View
@@ -139,9 +143,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-    minHeight: 64,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    minHeight: 72,
   },
   content: {
     flexDirection: "row",
@@ -149,8 +153,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconContainer: {
-    width: 44,
-    height: 44,
+    width: 48,
+    height: 48,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
@@ -163,11 +167,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "500",
+    lineHeight: 20,
   },
   value: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "400",
-    marginTop: 2,
+    marginTop: 4,
+    lineHeight: 18,
   },
   rightContainer: {
     flexDirection: "row",

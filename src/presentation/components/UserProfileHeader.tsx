@@ -31,7 +31,7 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   userId,
   isGuest = false,
   avatarUrl,
-  accountSettingsRoute = "AccountSettings",
+  accountSettingsRoute,
   onPress,
 }) => {
   const tokens = useAppDesignTokens();
@@ -40,7 +40,6 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   const spacing = tokens.spacing;
 
   const finalDisplayName = displayName || (isGuest ? "Guest" : "User");
-  const finalUserId = userId || "Unknown";
   const avatarName = isGuest ? "Guest" : finalDisplayName;
   const finalAvatarUrl =
     avatarUrl ||
@@ -54,20 +53,21 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
     }
   };
 
-  return (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.surface,
-          paddingHorizontal: spacing.md,
-          paddingVertical: spacing.md,
-          marginHorizontal: spacing.md,
-        },
-      ]}
-      onPress={handlePress}
-      activeOpacity={0.7}
-    >
+  const shouldShowChevron = !!(onPress || accountSettingsRoute);
+  const isPressable = !!(onPress || accountSettingsRoute);
+
+  const containerStyle = [
+    styles.container,
+    {
+      backgroundColor: colors.surface,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+      marginHorizontal: spacing.md,
+    },
+  ];
+
+  const content = (
+    <>
       <View style={styles.content}>
         <View style={[styles.avatarContainer, { borderColor: `${colors.primary}30` }]}>
           <Image
@@ -78,25 +78,34 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
         <View style={[styles.textContainer, { marginLeft: spacing.md }]}>
           <AtomicText
             type="headlineSmall"
-            style={[styles.name, { color: colors.textPrimary, marginBottom: spacing.xs }]}
+            style={[styles.name, { color: colors.textPrimary }]}
             numberOfLines={1}
           >
             {finalDisplayName}
           </AtomicText>
-          <AtomicText
-            type="bodySmall"
-            style={[styles.id, { color: colors.textSecondary }]}
-            numberOfLines={1}
-          >
-            ID: {finalUserId.substring(0, 10)}...
-          </AtomicText>
         </View>
       </View>
-      <View style={[styles.chevronContainer, { marginLeft: spacing.sm }]}>
-        <ChevronRight size={22} color={colors.textSecondary} strokeWidth={2.5} />
-      </View>
-    </TouchableOpacity>
+      {shouldShowChevron && (
+        <View style={[styles.chevronContainer, { marginLeft: spacing.sm }]}>
+          <ChevronRight size={22} color={colors.textSecondary} strokeWidth={2.5} />
+        </View>
+      )}
+    </>
   );
+
+  if (isPressable) {
+    return (
+      <TouchableOpacity
+        style={containerStyle}
+        onPress={handlePress}
+        activeOpacity={0.7}
+      >
+        {content}
+      </TouchableOpacity>
+    );
+  }
+
+  return <View style={containerStyle}>{content}</View>;
 };
 
 const styles = StyleSheet.create({

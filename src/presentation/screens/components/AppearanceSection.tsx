@@ -1,6 +1,6 @@
 /**
  * Appearance Section Component
- * Single Responsibility: Render appearance settings section
+ * Single Responsibility: Render appearance settings section (theme customization)
  */
 
 import React from "react";

@@ -23,13 +23,25 @@ export interface AppearanceConfig {
   enabled?: FeatureVisibility;
   /** Custom navigation route for appearance screen */
   route?: string;
-  /** Show language selection */
-  showLanguage?: boolean;
   /** Show theme toggle */
   showTheme?: boolean;
   /** Custom appearance title */
   title?: string;
   /** Custom appearance description */
+  description?: string;
+}
+
+/**
+ * Language Settings Configuration
+ */
+export interface LanguageConfig {
+  /** Show language section */
+  enabled?: FeatureVisibility;
+  /** Custom navigation route for language selection screen */
+  route?: string;
+  /** Custom language title */
+  title?: string;
+  /** Custom language description */
   description?: string;
 }
 
@@ -187,10 +199,16 @@ export interface DeveloperConfig {
  */
 export interface SettingsConfig {
   /**
-   * Appearance settings (Theme & Language)
+   * Appearance settings (Theme customization)
    * @default 'auto'
    */
   appearance?: FeatureVisibility | AppearanceConfig;
+
+  /**
+   * Language settings
+   * @default 'auto'
+   */
+  language?: FeatureVisibility | LanguageConfig;
 
   /**
    * Notifications settings

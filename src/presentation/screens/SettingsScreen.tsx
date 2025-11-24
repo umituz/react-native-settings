@@ -17,6 +17,7 @@ import { SettingsFooter } from "../components/SettingsFooter";
 import { UserProfileHeader } from "../components/UserProfileHeader";
 import { SettingsSection } from "../components/SettingsSection";
 import { AppearanceSection } from "./components/AppearanceSection";
+import { LanguageSection } from "./components/LanguageSection";
 import { NotificationsSection } from "./components/NotificationsSection";
 import { AboutLegalSection } from "./components/AboutLegalSection";
 import { normalizeSettingsConfig } from "./utils/normalizeConfig";
@@ -73,6 +74,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   const hasAnyFeatures =
     features.appearance ||
+    features.language ||
     features.notifications ||
     features.about ||
     features.legal ||
@@ -142,6 +144,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
         {features.appearance && (
           <AppearanceSection config={normalizedConfig.appearance.config} />
+        )}
+
+        {features.language && (
+          <LanguageSection config={normalizedConfig.language.config} />
         )}
 
         {features.notifications && (

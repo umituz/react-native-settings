@@ -6,6 +6,7 @@
 import type {
   FeatureVisibility,
   AppearanceConfig,
+  LanguageConfig,
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
@@ -18,6 +19,10 @@ export interface NormalizedConfig {
   appearance: {
     enabled: boolean;
     config?: AppearanceConfig;
+  };
+  language: {
+    enabled: boolean;
+    config?: LanguageConfig;
   };
   notifications: {
     enabled: boolean;
@@ -78,6 +83,7 @@ export function normalizeSettingsConfig(
 ): NormalizedConfig {
   return {
     appearance: normalizeConfigValue(config?.appearance, "auto"),
+    language: normalizeConfigValue(config?.language, "auto"),
     notifications: normalizeConfigValue(config?.notifications, "auto"),
     about: normalizeConfigValue(config?.about, "auto"),
     legal: normalizeConfigValue(config?.legal, "auto"),

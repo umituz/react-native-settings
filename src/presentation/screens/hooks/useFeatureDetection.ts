@@ -53,7 +53,7 @@ export function useFeatureDetection(
   navigation: any,
 ) {
   return useMemo(() => {
-    const { appearance, notifications, about, legal, account, support, developer } =
+    const { appearance, language, notifications, about, legal, account, support, developer } =
       normalizedConfig;
 
     return {
@@ -64,6 +64,14 @@ export function useFeatureDetection(
             hasNavigationScreen(
               navigation,
               appearance.config?.route || "Appearance",
+            ))),
+      language:
+        language.enabled &&
+        (language.config?.enabled === true ||
+          (language.config?.enabled !== false &&
+            hasNavigationScreen(
+              navigation,
+              language.config?.route || "LanguageSelection",
             ))),
       notifications:
         notifications.enabled &&

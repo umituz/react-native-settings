@@ -34,6 +34,13 @@ export interface SettingItemProps {
   testID?: string;
   /** Disable the item */
   disabled?: boolean;
+  /** Custom switch thumb color */
+  switchThumbColor?: string;
+  /** Custom switch track colors */
+  switchTrackColors?: {
+    false: string;
+    true: string;
+  };
 }
 
 export const SettingItem: React.FC<SettingItemProps> = ({
@@ -49,6 +56,8 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   titleColor,
   testID,
   disabled = false,
+  switchThumbColor,
+  switchTrackColors,
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
@@ -113,11 +122,11 @@ export const SettingItem: React.FC<SettingItemProps> = ({
             <Switch
               value={switchValue}
               onValueChange={onSwitchChange}
-              trackColor={{
+              trackColor={switchTrackColors || {
                 false: `${colors.textSecondary}30`,
                 true: colors.primary,
               }}
-              thumbColor="#FFFFFF"
+              thumbColor={switchThumbColor || "#FFFFFF"}
               ios_backgroundColor={`${colors.textSecondary}30`}
             />
           ) : (

@@ -51,10 +51,15 @@ function hasNavigationScreen(
 export function useFeatureDetection(
   normalizedConfig: NormalizedConfig,
   navigation: any,
+  options?: {
+    notificationServiceAvailable?: boolean;
+  },
 ) {
   return useMemo(() => {
     const { appearance, language, notifications, about, legal, account, support, developer } =
       normalizedConfig;
+    
+    const notificationServiceAvailable = options?.notificationServiceAvailable ?? notificationService !== null;
 
     return {
       appearance:
@@ -77,7 +82,7 @@ export function useFeatureDetection(
         notifications.enabled &&
         (notifications.config?.enabled === true ||
           (notifications.config?.enabled !== false &&
-            notificationService !== null &&
+            notificationServiceAvailable &&
             hasNavigationScreen(
               navigation,
               notifications.config?.route || "Notifications",

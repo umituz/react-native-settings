@@ -1,8 +1,8 @@
 /**
  * DisclaimerSetting Component
  *
- * Displays health/wellness app disclaimer with important legal notice
- * Used in About screens for apps that require medical/health disclaimers
+ * Displays customizable disclaimer with important legal notice
+ * Used in About screens for apps that require disclaimers
  *
  * Features:
  * - Tappable card that opens full disclaimer modal
@@ -30,20 +30,52 @@ import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-syste
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system-atoms';
 import { useLocalization } from '@umituz/react-native-localization';
 
-type DesignTokens = ReturnType<typeof useAppDesignTokens>;
+export interface DisclaimerSettingProps {
+  /** Custom title translation key */
+  titleKey?: string;
+  /** Custom message translation key */
+  messageKey?: string;
+  /** Custom short message translation key */
+  shortMessageKey?: string;
+  /** Custom icon name */
+  iconName?: string;
+  /** Custom icon color */
+  iconColor?: string;
+  /** Custom background color */
+  backgroundColor?: string;
+  /** Custom modal title */
+  modalTitle?: string;
+  /** Custom modal content */
+  modalContent?: string;
+}
 
-export const DisclaimerSetting: React.FC = () => {
+export const DisclaimerSetting: React.FC<DisclaimerSettingProps> = ({
+  titleKey = "settings.disclaimer.title",
+  messageKey = "settings.disclaimer.message",
+  shortMessageKey = "settings.disclaimer.shortMessage",
+  iconName = "AlertTriangle",
+  iconColor,
+  backgroundColor,
+  modalTitle,
+  modalContent,
+}) => {
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
   const styles = getStyles(tokens);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const title = modalTitle || t(titleKey);
+  const content = modalContent || t(messageKey);
+  const shortMessage = t(shortMessageKey);
+  const finalIconColor = iconColor || tokens.colors.warning;
+  const finalBackgroundColor = backgroundColor || withAlpha(finalIconColor, 0.1);
 
   return (
     <>
       <TouchableOpacity
         style={[
           styles.container,
-          { backgroundColor: withAlpha(tokens.colors.warning, 0.1) },
+          { backgroundColor: finalBackgroundColor },
         ]}
         onPress={() => setModalVisible(true)}
         activeOpacity={0.7}
@@ -55,16 +87,16 @@ export const DisclaimerSetting: React.FC = () => {
             style={[
               styles.iconContainer,
               {
-                backgroundColor: withAlpha(tokens.colors.warning, 0.2),
-                borderColor: withAlpha(tokens.colors.warning, 0.4),
+                backgroundColor: withAlpha(finalIconColor, 0.2),
+                borderColor: withAlpha(finalIconColor, 0.4),
                 borderWidth: 1,
               },
             ]}
           >
-            <AtomicIcon name="AlertTriangle" color="warning" />
+            <AtomicIcon name={iconName} color={iconColor || "warning" as any} />
           </View>
           <AtomicText type="bodyLarge" color="primary" style={styles.title}>
-            {t('settings.disclaimer.title')}
+            {title}
           </AtomicText>
           <AtomicIcon name="ArrowRight" color="secondary" size="sm" />
         </View>
@@ -75,7 +107,7 @@ export const DisclaimerSetting: React.FC = () => {
           color="secondary"
           style={styles.shortMessage}
         >
-          {t('settings.disclaimer.shortMessage')}
+          {shortMessage}
         </AtomicText>
       </TouchableOpacity>
 
@@ -100,7 +132,7 @@ export const DisclaimerSetting: React.FC = () => {
             ]}
           >
             <AtomicText type="headlineMedium" color="primary">
-              {t('settings.disclaimer.title')}
+              {title}
             </AtomicText>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
@@ -120,7 +152,7 @@ export const DisclaimerSetting: React.FC = () => {
               color="primary"
               style={styles.modalText}
             >
-              {t('settings.disclaimer.message')}
+              {content}
             </AtomicText>
           </ScrollView>
         </View>
@@ -129,7 +161,7 @@ export const DisclaimerSetting: React.FC = () => {
   );
 };
 
-const getStyles = (tokens: DesignTokens) =>
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: tokens.spacing.md,

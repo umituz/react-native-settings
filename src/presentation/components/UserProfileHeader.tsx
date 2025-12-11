@@ -24,6 +24,10 @@ export interface UserProfileHeaderProps {
   accountSettingsRoute?: string;
   /** Custom onPress handler */
   onPress?: () => void;
+  /** Custom guest user display name */
+  guestDisplayName?: string;
+  /** Custom avatar service URL */
+  avatarServiceUrl?: string;
 }
 
 export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
@@ -33,17 +37,21 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   avatarUrl,
   accountSettingsRoute,
   onPress,
+  guestDisplayName,
+  avatarServiceUrl,
 }) => {
   const tokens = useAppDesignTokens();
   const navigation = useNavigation();
   const colors = tokens.colors;
   const spacing = tokens.spacing;
 
-  const finalDisplayName = displayName || (isGuest ? "Guest" : "User");
-  const avatarName = isGuest ? "Guest" : finalDisplayName;
+  const finalDisplayName = displayName || (isGuest ? guestDisplayName || "Guest" : "User");
+  const avatarName = isGuest ? guestDisplayName || "Guest" : finalDisplayName;
+  
+  const defaultAvatarService = avatarServiceUrl || "https://ui-avatars.com/api";
   const finalAvatarUrl =
     avatarUrl ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(avatarName)}&background=${colors.primary.replace("#", "")}&color=fff&size=64`;
+    `${defaultAvatarService}/?name=${encodeURIComponent(avatarName)}&background=${colors.primary.replace("#", "")}&color=fff&size=64`;
 
   const handlePress = () => {
     if (onPress) {

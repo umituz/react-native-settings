@@ -1,0 +1,1 @@
+{"version":3,"file":"SettingsHeader.d.ts","sourceRoot":"","sources":["../../../../src/presentation/screens/components/SettingsHeader.tsx"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,MAAM,OAAO,CAAC;AAO1B,UAAU,mBAAmB;IAC3B,eAAe,CAAC,EAAE,OAAO,CAAC;IAC1B,OAAO,CAAC,EAAE,MAAM,IAAI,CAAC;CACtB;AAED,eAAO,MAAM,cAAc,EAAE,KAAK,CAAC,EAAE,CAAC,mBAAmB,CA4CxD,CAAC"}

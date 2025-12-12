@@ -7,11 +7,16 @@ import { useMemo } from "react";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 
 // Optional notification service
-let notificationService: any = null;
+let notificationService: {
+  hasPermissions?: () => Promise<boolean>;
+  requestPermissions?: () => Promise<void>;
+} | null = null;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  notificationService = require("@umituz/react-native-notifications")
-    .notificationService;
+  const module = require("@umituz/react-native-notifications");
+  if (module?.notificationService && typeof module.notificationService === 'object') {
+    notificationService = module.notificationService;
+  }
 } catch {
   // Package not available
 }
@@ -108,6 +113,6 @@ export function useFeatureDetection(
       support: support.enabled,
       developer: developer.enabled && __DEV__,
     };
-  }, [normalizedConfig, navigation]);
+  }, [normalizedConfig, navigation, options]);
 }
 

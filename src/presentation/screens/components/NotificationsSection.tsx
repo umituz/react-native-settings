@@ -12,11 +12,16 @@ import { SettingsSection } from "../../components/SettingsSection";
 import type { NotificationsConfig } from "../types";
 
 // Optional notification service
-let notificationService: any = null;
+let notificationService: {
+  hasPermissions?: () => Promise<boolean>;
+  requestPermissions?: () => Promise<void>;
+} | null = null;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  notificationService = require("@umituz/react-native-notifications")
-    .notificationService;
+  const module = require("@umituz/react-native-notifications");
+  if (module?.notificationService && typeof module.notificationService === 'object') {
+    notificationService = module.notificationService;
+  }
 } catch {
   // Package not available
 }
@@ -28,7 +33,7 @@ interface NotificationsSectionProps {
 export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
   config,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { t } = useLocalization();
   const [notificationsEnabled, setNotificationsEnabled] = useState(
     config?.initialValue ?? true,
@@ -38,13 +43,13 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
     if (config?.initialValue !== undefined) {
       setNotificationsEnabled(config.initialValue);
     }
-  }, [config?.initialValue]);
+  }, [config?.initialValue, config]);
 
   const handleToggle = async (value: boolean) => {
     if (notificationService && !value) {
-      const hasPermissions = await notificationService.hasPermissions();
+      const hasPermissions = await notificationService.hasPermissions?.();
       if (!hasPermissions) {
-        await notificationService.requestPermissions();
+        await notificationService.requestPermissions?.();
       }
     }
 
@@ -54,12 +59,12 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
 
   const handlePress = async () => {
     if (notificationService) {
-      const hasPermissions = await notificationService.hasPermissions();
+      const hasPermissions = await notificationService.hasPermissions?.();
       if (!hasPermissions) {
-        await notificationService.requestPermissions();
+        await notificationService.requestPermissions?.();
       }
     }
-    navigation.navigate((config?.route || "Notifications") as never);
+    navigation.navigate(config?.route || "Notifications" as any);
   };
 
   const title = config?.title || t("settings.notifications.title");

@@ -13,6 +13,7 @@ import type {
   AccountConfig,
   SupportConfig,
   DeveloperConfig,
+  SettingsConfig,
 } from "../types";
 
 export interface NormalizedConfig {
@@ -79,7 +80,7 @@ function normalizeConfigValue<T>(
  * Normalize entire SettingsConfig to consistent format
  */
 export function normalizeSettingsConfig(
-  config: any,
+  config: SettingsConfig | undefined,
 ): NormalizedConfig {
   return {
     appearance: normalizeConfigValue(config?.appearance, "auto"),

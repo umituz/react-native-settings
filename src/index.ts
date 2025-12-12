@@ -61,6 +61,14 @@ export type { UserProfileHeaderProps } from './presentation/components/UserProfi
 export { DisclaimerSetting } from './presentation/components/DisclaimerSetting';
 export type { DisclaimerSettingProps } from './presentation/components/DisclaimerSetting';
 
+export { DisclaimerCard } from './presentation/components/DisclaimerCard';
+export type { DisclaimerCardProps } from './presentation/components/DisclaimerCard';
+
+export { DisclaimerModal } from './presentation/components/DisclaimerModal';
+export type { DisclaimerModalProps } from './presentation/components/DisclaimerModal';
+
+export { SettingsErrorBoundary } from './presentation/components/SettingsErrorBoundary';
+
 export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';
 export type { CloudSyncSettingProps } from './presentation/components/CloudSyncSetting';
 

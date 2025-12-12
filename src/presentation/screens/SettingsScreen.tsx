@@ -12,6 +12,7 @@ import {
 } from "@umituz/react-native-design-system-theme";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";
+import { SettingsErrorBoundary } from "../components/SettingsErrorBoundary";
 import { normalizeSettingsConfig } from "./utils/normalizeConfig";
 import { useFeatureDetection } from "./hooks/useFeatureDetection";
 import type { SettingsConfig, CustomSettingsSection } from "./types";
@@ -74,16 +75,18 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
       
       <SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />
       
-      <SettingsContent
-        normalizedConfig={normalizedConfig}
-        features={features}
-        showUserProfile={showUserProfile}
-        userProfile={userProfile}
-        showFooter={showFooter}
-        footerText={footerText}
-        customSections={customSections}
-        showCloseButton={showCloseButton}
-      />
+      <SettingsErrorBoundary>
+        <SettingsContent
+          normalizedConfig={normalizedConfig}
+          features={features}
+          showUserProfile={showUserProfile}
+          userProfile={userProfile}
+          showFooter={showFooter}
+          footerText={footerText}
+          customSections={customSections}
+          showCloseButton={showCloseButton}
+        />
+      </SettingsErrorBoundary>
     </View>
   );
 };

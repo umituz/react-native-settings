@@ -9,6 +9,11 @@ lib/
 dist/
 build/
 *.tsbuildinfo
+out/
+next/
+.nuxt/
+.cache/
+.parcel-cache/
 
 # Environment variables
 .env

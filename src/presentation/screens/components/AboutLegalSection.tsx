@@ -7,6 +7,7 @@ import React from "react";
 import { Info, FileText } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
+import type { NavigationProp } from "@react-navigation/native";
 import { SettingItem } from "../../components/SettingItem";
 import { SettingsSection } from "../../components/SettingsSection";
 import type { AboutConfig, LegalConfig } from "../types";
@@ -18,13 +19,21 @@ interface AboutLegalSectionProps {
   legalConfig?: LegalConfig;
 }
 
+type RootStackParamList = {
+  About: undefined;
+  Legal: undefined;
+  [key: string]: undefined;
+};
+
+type NavigationType = NavigationProp<RootStackParamList>;
+
 export const AboutLegalSection: React.FC<AboutLegalSectionProps> = ({
   showAbout,
   showLegal,
   aboutConfig,
   legalConfig,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationType>();
   const { t } = useLocalization();
 
   if (!showAbout && !showLegal) {
@@ -48,7 +57,7 @@ export const AboutLegalSection: React.FC<AboutLegalSectionProps> = ({
           icon={Info}
           title={aboutTitle}
           value={aboutDescription}
-          onPress={() => navigation.navigate(aboutRoute as never)}
+          onPress={() => navigation.navigate(aboutRoute as string)}
         />
       )}
       {showLegal && (
@@ -56,7 +65,7 @@ export const AboutLegalSection: React.FC<AboutLegalSectionProps> = ({
           icon={FileText}
           title={legalTitle}
           value={legalDescription}
-          onPress={() => navigation.navigate(legalRoute as never)}
+          onPress={() => navigation.navigate(legalRoute as string)}
           isLast={true}
         />
       )}

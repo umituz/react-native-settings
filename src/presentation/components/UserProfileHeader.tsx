@@ -4,7 +4,7 @@
  * Works for both guest and authenticated users
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { ChevronRight } from "lucide-react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
@@ -44,13 +44,14 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   const navigation = useNavigation();
   const colors = tokens.colors;
   const spacing = tokens.spacing;
+  const [imageError, setImageError] = useState(false);
 
   const finalDisplayName = displayName || (isGuest ? guestDisplayName || "Guest" : "User");
   const avatarName = isGuest ? guestDisplayName || "Guest" : finalDisplayName;
   
   const defaultAvatarService = avatarServiceUrl || "https://ui-avatars.com/api";
   const finalAvatarUrl =
-    avatarUrl ||
+    (imageError ? null : avatarUrl) ||
     `${defaultAvatarService}/?name=${encodeURIComponent(avatarName)}&background=${colors.primary.replace("#", "")}&color=fff&size=64`;
 
   const handlePress = () => {
@@ -78,10 +79,23 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
     <>
       <View style={styles.content}>
         <View style={[styles.avatarContainer, { borderColor: `${colors.primary}30` }]}>
-          <Image
-            source={{ uri: finalAvatarUrl }}
-            style={styles.avatar}
-          />
+          {finalAvatarUrl ? (
+            <Image
+              source={{ uri: finalAvatarUrl }}
+              style={styles.avatar}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <View style={[styles.avatarFallback, { backgroundColor: `${colors.primary}20` }]}>
+              <AtomicText
+                type="headlineMedium"
+                color="primary"
+                style={styles.avatarText}
+              >
+                {avatarName.charAt(0).toUpperCase()}
+              </AtomicText>
+            </View>
+          )}
         </View>
         <View style={[styles.textContainer, { marginLeft: spacing.md }]}>
           <AtomicText
@@ -142,6 +156,15 @@ const styles = StyleSheet.create({
   avatar: {
     width: "100%",
     height: "100%",
+  },
+  avatarFallback: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatarText: {
+    fontWeight: "700",
   },
   textContainer: {
     flex: 1,

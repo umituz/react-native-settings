@@ -3,7 +3,7 @@
  * Renders all settings sections and custom content
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
@@ -58,13 +58,20 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
 
-  const hasAnyFeatures =
+  const hasAnyFeatures = useMemo(() => 
     features.appearance ||
     features.language ||
     features.notifications ||
     features.about ||
     features.legal ||
-    customSections.length > 0;
+    customSections.length > 0,
+    [features, customSections.length]
+  );
+
+  const sortedSections = useMemo(() => {
+    return Array.from(customSections)
+      .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  }, [customSections]);
 
   return (
     <ScrollView
@@ -115,16 +122,14 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {customSections && customSections.length > 0 && (
         <>
-          {Array.from(customSections)
-            .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
-            .map((section, index) => (
-              <SettingsSection
-                key={section.id || `custom-${index}`}
-                title={section.title}
-              >
-                {section.content}
-              </SettingsSection>
-            ))}
+          {sortedSections.map((section, index) => (
+            <SettingsSection
+              key={section.id || `custom-${index}`}
+              title={section.title}
+            >
+              {section.content}
+            </SettingsSection>
+          ))}
         </>
       )}
 

@@ -2,7 +2,7 @@
  * Config Normalization Utilities
  * Single Responsibility: Normalize config values to consistent format
  */
-import type { AppearanceConfig, LanguageConfig, NotificationsConfig, AboutConfig, LegalConfig, AccountConfig, SupportConfig, DeveloperConfig } from "../types";
+import type { AppearanceConfig, LanguageConfig, NotificationsConfig, AboutConfig, LegalConfig, AccountConfig, SupportConfig, DeveloperConfig, SettingsConfig } from "../types";
 export interface NormalizedConfig {
     appearance: {
         enabled: boolean;
@@ -40,5 +40,5 @@ export interface NormalizedConfig {
 /**
  * Normalize entire SettingsConfig to consistent format
  */
-export declare function normalizeSettingsConfig(config: any): NormalizedConfig;
+export declare function normalizeSettingsConfig(config: SettingsConfig | undefined): NormalizedConfig;
 //# sourceMappingURL=normalizeConfig.d.ts.map

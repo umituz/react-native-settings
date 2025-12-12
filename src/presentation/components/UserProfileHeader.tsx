@@ -4,7 +4,7 @@
  * Works for both guest and authenticated users
  */
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { ChevronRight } from "lucide-react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
@@ -28,6 +28,10 @@ export interface UserProfileHeaderProps {
   guestDisplayName?: string;
   /** Custom avatar service URL */
   avatarServiceUrl?: string;
+  /** Default user display name when no displayName provided */
+  defaultUserDisplayName?: string;
+  /** Default guest display name */
+  defaultGuestDisplayName?: string;
 }
 
 export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
@@ -39,6 +43,8 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   onPress,
   guestDisplayName,
   avatarServiceUrl,
+  defaultUserDisplayName,
+  defaultGuestDisplayName,
 }) => {
   const tokens = useAppDesignTokens();
   const navigation = useNavigation();
@@ -46,21 +52,21 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   const spacing = tokens.spacing;
   const [imageError, setImageError] = useState(false);
 
-  const finalDisplayName = displayName || (isGuest ? guestDisplayName || "Guest" : "User");
-  const avatarName = isGuest ? guestDisplayName || "Guest" : finalDisplayName;
+  const finalDisplayName = displayName || (isGuest ? guestDisplayName || defaultGuestDisplayName || "Guest" : defaultUserDisplayName || "User");
+  const avatarName = isGuest ? guestDisplayName || defaultGuestDisplayName || defaultGuestDisplayName || "Guest" : finalDisplayName;
   
   const defaultAvatarService = avatarServiceUrl || "https://ui-avatars.com/api";
   const finalAvatarUrl =
     (imageError ? null : avatarUrl) ||
     `${defaultAvatarService}/?name=${encodeURIComponent(avatarName)}&background=${colors.primary.replace("#", "")}&color=fff&size=64`;
 
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     if (onPress) {
       onPress();
     } else if (accountSettingsRoute) {
       navigation.navigate(accountSettingsRoute as never);
     }
-  };
+  }, [onPress, accountSettingsRoute, navigation]);
 
   const shouldShowChevron = !!(onPress || accountSettingsRoute);
   const isPressable = !!(onPress || accountSettingsRoute);

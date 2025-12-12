@@ -17,7 +17,7 @@
  * - Requires translations: settings.disclaimer.title, settings.disclaimer.message, settings.disclaimer.shortMessage
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'react-native';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system-theme';
@@ -70,19 +70,19 @@ export const DisclaimerSetting: React.FC<DisclaimerSettingProps> = ({
   const finalIconColor = iconColor || tokens.colors.warning;
   const finalBackgroundColor = backgroundColor || withAlpha(finalIconColor, 0.1);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = useCallback(() => {
     setModalVisible(true);
     if (__DEV__) {
       console.log('DisclaimerSetting: Modal opened');
     }
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModalVisible(false);
     if (__DEV__) {
       console.log('DisclaimerSetting: Modal closed');
     }
-  };
+  }, []);
 
   return (
     <>

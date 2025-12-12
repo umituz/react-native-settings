@@ -18,13 +18,18 @@ export interface StorageClearSettingProps {
 }
 
 export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
-  title = "Clear All Storage",
-  description = "Clear all local storage data (DEV only)",
+  title,
+  description,
   onPress,
-  iconColor = "#EF4444",
-  titleColor = "#EF4444",
+  iconColor,
+  titleColor,
   isLast = false,
 }) => {
+  // Default values for DEV mode
+  const defaultTitle = title || "Clear All Storage";
+  const defaultDescription = description || "Clear all local storage data (DEV only)";
+  const defaultIconColor = iconColor || "#EF4444";
+  const defaultTitleColor = titleColor || "#EF4444";
   // Only render in DEV mode
   if (!__DEV__) {
     return null;
@@ -33,11 +38,11 @@ export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
   return (
     <SettingItem
       icon={Trash2}
-      title={title}
-      value={description}
+      title={defaultTitle}
+      value={defaultDescription}
       onPress={onPress}
-      iconColor={iconColor}
-      titleColor={titleColor}
+      iconColor={defaultIconColor}
+      titleColor={defaultTitleColor}
       isLast={isLast}
     />
   );

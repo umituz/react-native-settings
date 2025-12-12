@@ -2,7 +2,7 @@
  * Tests for useFeatureDetection Hook
  */
 
-import { renderHook } from '@testing-library-react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import { useFeatureDetection } from '../useFeatureDetection';
 import type { NormalizedConfig } from '../../utils/normalizeConfig';
 

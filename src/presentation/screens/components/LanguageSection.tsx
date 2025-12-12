@@ -26,9 +26,10 @@ export const LanguageSection: React.FC<LanguageSectionProps> = ({
   const description = config?.description || "";
 
   const currentLang = getLanguageByCode(currentLanguage);
+  const defaultLanguageDisplay = config?.defaultLanguageDisplay || "English";
   const languageDisplay = currentLang
     ? `${currentLang.flag} ${currentLang.nativeName}`
-    : "English";
+    : defaultLanguageDisplay;
 
   return (
     <SettingsSection title={t("settings.sections.app.title")}>

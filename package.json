@@ -1,11 +1,11 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Settings management for React Native apps - user preferences, theme, language, notifications",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --skipLibCheck",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "test": "jest",
@@ -44,12 +44,14 @@
     "react": ">=18.2.0",
     "react-native": ">=0.74.0",
     "react-native-safe-area-context": "~5.6.0",
+    "react-native-svg": "^15.0.0",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.28.5",
     "@react-native/babel-preset": "^0.83.0",
     "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/react-native": "^12.9.0",
     "@types/jest": "^29.5.14",
     "@types/react": "^18.2.45",
@@ -67,6 +69,7 @@
     "metro-react-native-babel-preset": "^0.77.0",
     "react": "^18.2.0",
     "react-native": "^0.74.0",
+    "react-native-svg": "^15.15.1",
     "react-test-renderer": "^18.3.1",
     "typescript": "^5.3.3"
   },

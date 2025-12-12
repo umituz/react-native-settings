@@ -21,7 +21,7 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
   const navigation = useNavigation();
   const { t } = useLocalization();
 
-  const route = config?.route || "Appearance";
+  const route = config?.route || config?.defaultRoute || "Appearance";
   const title = config?.title || t("settings.appearance.title");
   const description = config?.description || t("settings.appearance.description");
 

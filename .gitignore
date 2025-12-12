@@ -15,6 +15,25 @@ next/
 .cache/
 .parcel-cache/
 
+# TypeScript
+*.tsbuildinfo
+
+# React Native
+.expo/
+.expo-shared/
+
+# Metro
+.metro-health-check*
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+
 # Environment variables
 .env
 .env.local

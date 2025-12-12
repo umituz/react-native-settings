@@ -3,7 +3,7 @@
  * Single Responsibility: Render notifications settings section
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Bell } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
@@ -43,9 +43,9 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
     if (config?.initialValue !== undefined) {
       setNotificationsEnabled(config.initialValue);
     }
-  }, [config?.initialValue, config]);
+  }, [config?.initialValue]);
 
-  const handleToggle = async (value: boolean) => {
+  const handleToggle = useCallback(async (value: boolean) => {
     if (notificationService && !value) {
       const hasPermissions = await notificationService.hasPermissions?.();
       if (!hasPermissions) {
@@ -55,17 +55,17 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
 
     setNotificationsEnabled(value);
     config?.onToggleChange?.(value);
-  };
+  }, [config?.onToggleChange]);
 
-  const handlePress = async () => {
+  const handlePress = useCallback(async () => {
     if (notificationService) {
       const hasPermissions = await notificationService.hasPermissions?.();
       if (!hasPermissions) {
         await notificationService.requestPermissions?.();
       }
     }
-    navigation.navigate(config?.route || "Notifications" as any);
-  };
+    navigation.navigate(config?.route || config?.defaultRoute || "Notifications" as any);
+  }, [navigation, config?.route, config?.defaultRoute]);
 
   const title = config?.title || t("settings.notifications.title");
   const description = config?.description || t("settings.notifications.description");

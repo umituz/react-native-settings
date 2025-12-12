@@ -21,6 +21,10 @@ export interface UserProfileHeaderProps {
     guestDisplayName?: string;
     /** Custom avatar service URL */
     avatarServiceUrl?: string;
+    /** Default user display name when no displayName provided */
+    defaultUserDisplayName?: string;
+    /** Default guest display name */
+    defaultGuestDisplayName?: string;
 }
 export declare const UserProfileHeader: React.FC<UserProfileHeaderProps>;
 //# sourceMappingURL=UserProfileHeader.d.ts.map

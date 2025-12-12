@@ -89,5 +89,9 @@ export interface SettingsConfig {
      * @default false
      */
     developer?: boolean | DeveloperConfig;
+    /**
+     * Custom empty state text when no settings are available
+     */
+    emptyStateText?: string;
 }
 //# sourceMappingURL=SettingsConfig.d.ts.map

@@ -40,12 +40,12 @@ export const AboutLegalSection: React.FC<AboutLegalSectionProps> = ({
     return null;
   }
 
-  const aboutRoute = aboutConfig?.route || "About";
+  const aboutRoute = aboutConfig?.route || aboutConfig?.defaultRoute || "About";
   const aboutTitle = aboutConfig?.title || t("settings.about.title");
   const aboutDescription =
     aboutConfig?.description || t("settings.about.description");
 
-  const legalRoute = legalConfig?.route || "Legal";
+  const legalRoute = legalConfig?.route || legalConfig?.defaultRoute || "Legal";
   const legalTitle = legalConfig?.title || t("settings.legal.title");
   const legalDescription =
     legalConfig?.description || t("settings.legal.description");

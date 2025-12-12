@@ -23,6 +23,8 @@ export interface AppearanceConfig {
     title?: string;
     /** Custom appearance description */
     description?: string;
+    /** Default route name when no custom route provided */
+    defaultRoute?: string;
 }
 /**
  * Language Settings Configuration
@@ -36,6 +38,8 @@ export interface LanguageConfig {
     title?: string;
     /** Custom language description */
     description?: string;
+    /** Default language display when no language is detected */
+    defaultLanguageDisplay?: string;
 }
 /**
  * Notifications Settings Configuration
@@ -43,18 +47,20 @@ export interface LanguageConfig {
 export interface NotificationsConfig {
     /** Show notifications section */
     enabled?: FeatureVisibility;
+    /** Show notification toggle switch */
+    showToggle?: boolean;
+    /** Initial toggle value */
+    initialValue?: boolean;
+    /** Toggle change handler */
+    onToggleChange?: (value: boolean) => void;
     /** Custom navigation route for notifications screen */
     route?: string;
-    /** Show notifications toggle switch */
-    showToggle?: boolean;
-    /** Initial notifications state */
-    initialValue?: boolean;
-    /** Custom toggle handler */
-    onToggleChange?: (value: boolean) => void;
     /** Custom notifications title */
     title?: string;
     /** Custom notifications description */
     description?: string;
+    /** Default route name when no custom route provided */
+    defaultRoute?: string;
 }
 /**
  * About Settings Configuration
@@ -68,6 +74,8 @@ export interface AboutConfig {
     title?: string;
     /** Custom about description */
     description?: string;
+    /** Default route name when no custom route provided */
+    defaultRoute?: string;
 }
 /**
  * Legal Settings Configuration
@@ -81,5 +89,7 @@ export interface LegalConfig {
     title?: string;
     /** Custom legal description */
     description?: string;
+    /** Default route name when no custom route provided */
+    defaultRoute?: string;
 }
 //# sourceMappingURL=FeatureConfig.d.ts.map

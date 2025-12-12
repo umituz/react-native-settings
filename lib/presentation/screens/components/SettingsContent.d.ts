@@ -7,6 +7,7 @@ import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
 interface SettingsContentProps {
     normalizedConfig: NormalizedConfig;
+    config?: any;
     features: {
         appearance: boolean;
         language: boolean;

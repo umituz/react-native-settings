@@ -20,6 +20,7 @@ import type { CustomSettingsSection } from "../types";
 
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
+  config?: any; // Original config for emptyStateText
   features: {
     appearance: boolean;
     language: boolean;
@@ -46,6 +47,7 @@ interface SettingsContentProps {
 
 export const SettingsContent: React.FC<SettingsContentProps> = ({
   normalizedConfig,
+  config,
   features,
   showUserProfile = false,
   userProfile,
@@ -136,7 +138,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       {!hasAnyFeatures && (
         <View style={styles.emptyContainer}>
           <SettingsSection
-            title={t("settings.noOptionsAvailable") || "No settings available"}
+            title={config?.emptyStateText || t("settings.noOptionsAvailable") || "No settings available"}
           >
             <View />
           </SettingsSection>

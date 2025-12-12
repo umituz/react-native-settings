@@ -11,11 +11,11 @@ import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { UserProfileHeader } from "../../components/UserProfileHeader";
 import { SettingsSection } from "../../components/SettingsSection";
-import { AppearanceSection } from "./AppearanceSection";
-import { LanguageSection } from "./LanguageSection";
-import { NotificationsSection } from "./NotificationsSection";
+import { NotificationsSection } from "@umituz/react-native-notifications";
 import { AboutSection } from "@umituz/react-native-about";
 import { LegalSection } from "@umituz/react-native-legal";
+import { AppearanceSection } from "@umituz/react-native-appearance";
+import { LanguageSection } from "@umituz/react-native-localization";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
 

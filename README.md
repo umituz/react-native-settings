@@ -20,7 +20,7 @@ npm install @umituz/react-native-settings
 ## Peer Dependencies
 
 ```bash
-npm install zustand lucide-react-native @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-design-system-theme @umituz/react-native-localization @umituz/react-native-notifications react-native-paper expo-linear-gradient
+npm install zustand lucide-react-native @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-design-system-atoms @umituz/react-native-design-system-organisms @umituz/react-native-design-system-theme @umituz/react-native-localization @umituz/react-native-appearance @react-navigation/native react-native-safe-area-context expo-linear-gradient
 ```
 
 ## Usage
@@ -179,8 +179,51 @@ import { SettingsFooter } from '@umituz/react-native-settings';
 ```tsx
 import { DisclaimerSetting } from '@umituz/react-native-settings';
 
-// In AboutScreen
+// Basic usage with translation keys
 <DisclaimerSetting />
+
+// Custom props
+<DisclaimerSetting
+  titleKey="custom.disclaimer.title"
+  messageKey="custom.disclaimer.message"
+  shortMessageKey="custom.disclaimer.shortMessage"
+  iconName="Info"
+  iconColor="#F59E0B"
+  modalTitle="Custom Disclaimer"
+  modalContent="This is a custom disclaimer message for your app."
+/>
+```
+
+### Cloud Sync Setting Component
+
+```tsx
+import { CloudSyncSetting } from '@umituz/react-native-settings';
+
+// Basic usage
+<CloudSyncSetting />
+
+// With custom props
+<CloudSyncSetting
+  title="Cloud Sync"
+  description="Sync your data across devices"
+  isSyncing={false}
+  lastSynced={new Date()}
+  onPress={() => handleSync()}
+  iconColor="#3B82F6"
+/>
+```
+
+### Settings Error Boundary
+
+```tsx
+import { SettingsErrorBoundary } from '@umituz/react-native-settings';
+
+<SettingsErrorBoundary
+  fallbackTitle="custom.error.title"
+  fallbackMessage="custom.error.message"
+>
+  <YourSettingsComponents />
+</SettingsErrorBoundary>
 ```
 
 ## API Reference
@@ -266,7 +309,48 @@ Footer component displaying app version.
 
 ### `DisclaimerSetting`
 
-Disclaimer component for health/wellness apps with modal display.
+Disclaimer component with modal display for legal notices.
+
+**Props:**
+- `titleKey?: string` - Translation key for title (default: "settings.disclaimer.title")
+- `messageKey?: string` - Translation key for message (default: "settings.disclaimer.message")
+- `shortMessageKey?: string` - Translation key for short message (default: "settings.disclaimer.shortMessage")
+- `iconName?: string` - Icon name (default: "AlertTriangle")
+- `iconColor?: string` - Custom icon color
+- `backgroundColor?: string` - Custom background color
+- `modalTitle?: string` - Custom modal title (overrides translation)
+- `modalContent?: string` - Custom modal content (overrides translation)
+
+### `CloudSyncSetting`
+
+Cloud sync setting component with status display.
+
+**Props:**
+- `title?: string` - Custom title (default: "cloud_sync" translation key)
+- `description?: string` - Custom description
+- `isSyncing?: boolean` - Whether currently syncing
+- `lastSynced?: Date | null` - Last sync time
+- `onPress?: () => void` - Press handler
+- `iconColor?: string` - Custom icon color
+- `titleColor?: string` - Custom title color
+
+### `DisclaimerCard`
+
+Card component for disclaimer display (used internally by DisclaimerSetting).
+
+### `DisclaimerModal`
+
+Modal component for full disclaimer display (used internally by DisclaimerSetting).
+
+### `SettingsErrorBoundary`
+
+Error boundary component for settings screens.
+
+**Props:**
+- `children: ReactNode` - Child components
+- `fallback?: ReactNode` - Custom fallback component
+- `fallbackTitle?: string` - Custom error title translation key
+- `fallbackMessage?: string` - Custom error message translation key
 
 ## Types
 
@@ -299,6 +383,48 @@ interface UserSettings {
 ⚠️ **Navigation**: Settings screens require navigation setup. Make sure to add them to your navigation stack.
 
 ⚠️ **Translations**: Settings screens require i18n translations. Make sure to provide translations for settings keys.
+
+⚠️ **Dynamic Text**: All text in this package uses translation keys to be app-agnostic. Provide translations like:
+  - `cloud_sync`, `syncing`, `sync_to_cloud`, `never_synced`, `just_now`, `Xm_ago`, `Xh_ago`, `Xd_ago`
+  - `error_boundary.title`, `error_boundary.message`, `error_boundary.dev_title`, `error_boundary.dev_message`
+  - `settings.disclaimer.title`, `settings.disclaimer.message`, `settings.disclaimer.shortMessage`
+
+⚠️ **Design System**: Uses @umituz/react-native-design-system packages for consistent styling across apps.
+
+⚠️ **Development Logs**: All console logs are wrapped in `__DEV__` checks for production safety.
+
+## Architecture
+
+This package follows **Domain-Driven Design (DDD)** principles:
+
+- **Domain Layer**: Repository interfaces and business entities
+- **Infrastructure Layer**: Storage implementation with Zustand
+- **Presentation Layer**: UI components and screens
+
+### Key Principles
+
+✅ **SOLID**: Single responsibility, open/closed, Liskov substitution, interface segregation, dependency inversion  
+✅ **DRY**: No code duplication, reusable components  
+✅ **KISS**: Simple, maintainable code  
+✅ **200-line limit**: All files under 200 lines for maintainability  
+✅ **TypeScript**: Full type safety  
+✅ **Memory Leak Prevention**: Proper cleanup and error handling  
+✅ **App-Agnostic**: No hardcoded app-specific text or logic  
+✅ **Test Coverage**: Comprehensive test suite  
+
+## Performance
+
+- ✅ **Optimized Rendering**: React.memo and useMemo where appropriate
+- ✅ **Memory Management**: Proper cleanup in useEffect hooks
+- ✅ **Error Boundaries**: Prevent crashes and provide graceful fallbacks
+- ✅ **Development Logs**: __DEV__ only logging for production safety
+
+## Version History
+
+- **v2.2.0**: Major refactor - removed hardcoded text, improved architecture, added comprehensive tests
+- **v2.1.0**: Enhanced component structure and TypeScript support
+- **v2.0.0**: Breaking changes - removed LanguageSelectionScreen, improved API
+- **v1.x.x**: Initial releases with basic settings functionality
 
 ## License
 

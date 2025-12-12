@@ -14,7 +14,8 @@ import { SettingsSection } from "../../components/SettingsSection";
 import { AppearanceSection } from "./AppearanceSection";
 import { LanguageSection } from "./LanguageSection";
 import { NotificationsSection } from "./NotificationsSection";
-import { AboutLegalSection } from "./AboutLegalSection";
+import { AboutSection } from "@umituz/react-native-about";
+import { LegalSection } from "@umituz/react-native-legal";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
 
@@ -60,7 +61,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
 
-  const hasAnyFeatures = useMemo(() => 
+  const hasAnyFeatures = useMemo(() =>
     features.appearance ||
     features.language ||
     features.notifications ||
@@ -113,13 +114,12 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <NotificationsSection config={normalizedConfig.notifications.config} />
       )}
 
-      {(features.about || features.legal) && (
-        <AboutLegalSection
-          showAbout={features.about}
-          showLegal={features.legal}
-          aboutConfig={normalizedConfig.about.config}
-          legalConfig={normalizedConfig.legal.config}
-        />
+      {features.about && (
+        <AboutSection config={normalizedConfig.about.config} />
+      )}
+
+      {features.legal && (
+        <LegalSection config={normalizedConfig.legal.config} />
       )}
 
       {customSections && customSections.length > 0 && (

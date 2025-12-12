@@ -29,31 +29,31 @@ jest.mock('@umituz/react-native-design-system-theme', () => ({
 describe('DisclaimerSetting', () => {
   it('renders disclaimer card correctly', () => {
     const { getByTestId } = render(<DisclaimerSetting />);
-    
+
     expect(getByTestId('disclaimer-setting')).toBeTruthy();
   });
 
   it('opens modal when card is pressed', () => {
     const { getByTestId } = render(<DisclaimerSetting />);
-    
+
     const card = getByTestId('disclaimer-setting');
     fireEvent.press(card);
-    
+
     // Modal should be visible now
     expect(getByTestId('close-disclaimer-modal')).toBeTruthy();
   });
 
   it('closes modal when close button is pressed', () => {
     const { getByTestId } = render(<DisclaimerSetting />);
-    
+
     // Open modal first
     const card = getByTestId('disclaimer-setting');
     fireEvent.press(card);
-    
+
     // Close modal
     const closeButton = getByTestId('close-disclaimer-modal');
     fireEvent.press(closeButton);
-    
+
     // Modal should be closed
     expect(() => getByTestId('close-disclaimer-modal')).toThrow();
   });
@@ -63,11 +63,11 @@ describe('DisclaimerSetting', () => {
       titleKey: 'custom.title',
       messageKey: 'custom.message',
       shortMessageKey: 'custom.shortMessage',
-      iconName: 'Info',
+      iconName: 'info',
     };
 
     const { getByText } = render(<DisclaimerSetting {...customProps} />);
-    
+
     expect(getByText('custom.title')).toBeTruthy();
     expect(getByText('custom.shortMessage')).toBeTruthy();
   });

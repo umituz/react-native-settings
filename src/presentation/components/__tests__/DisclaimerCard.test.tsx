@@ -100,14 +100,14 @@ describe('DisclaimerCard', () => {
       <DisclaimerCard
         title="Test Title"
         shortMessage="Test Message"
-        iconName="Info"
+        iconName="info"
         iconColor="#2196F3"
         backgroundColor="#E3F2FD"
         onPress={jest.fn()}
       />
     );
 
-    expect(getByTestId('atomic-icon-Info-warning')).toBeTruthy();
+    expect(getByTestId('atomic-icon-info-warning')).toBeTruthy();
   });
 
   it('handles long text content', () => {
@@ -148,7 +148,7 @@ describe('DisclaimerCard', () => {
 
   it('uses withAlpha utility correctly', () => {
     const { withAlpha } = require('@umituz/react-native-design-system-theme');
-    
+
     render(
       <DisclaimerCard
         title="Test Title"
@@ -178,7 +178,7 @@ describe('DisclaimerCard', () => {
 
     // Check that icon container has correct styles
     expect(getByTestId('atomic-icon-AlertTriangle-warning')).toBeTruthy();
-    
+
     // Check that title and arrow are present
     expect(getByTestId('atomic-icon-ArrowRight-secondary-sm')).toBeTruthy();
   });

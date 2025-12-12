@@ -3,8 +3,33 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { CloudSyncSetting } from '../CloudSyncSetting';
+
+// Mock lucide-react-native
+jest.mock('lucide-react-native', () => ({
+  Cloud: 'Cloud',
+}));
+
+// Mock SettingItem component
+jest.mock('../SettingItem', () => {
+  const React = require('react');
+  const { View, Text } = require('react-native');
+  
+  return {
+    SettingItem: ({ icon, title, value, onPress, testID, showSwitch, switchValue, onSwitchChange, disabled, isLast }: any) => (
+      React.createElement(View, { 
+        testID: testID || 'setting-item',
+        onTouchEnd: onPress,
+        style: { padding: 16 }
+      }, [
+        React.createElement(Text, { key: 'title' }, title || ''),
+        value && React.createElement(Text, { key: 'value' }, value),
+        showSwitch && React.createElement(Text, { key: 'switch' }, switchValue ? 'ON' : 'OFF'),
+      ])
+    ),
+  };
+});
 
 describe('CloudSyncSetting', () => {
   it('renders with default props', () => {
@@ -42,14 +67,12 @@ describe('CloudSyncSetting', () => {
 
   it('handles onPress callback', () => {
     const mockOnPress = jest.fn();
-    const { getByText } = render(
+    const { getByTestId } = render(
       <CloudSyncSetting onPress={mockOnPress} />
     );
     
-    const pressable = getByText('cloud_sync').parent;
-    if (pressable) {
-      pressable.props.onPress();
-      expect(mockOnPress).toHaveBeenCalled();
-    }
+    const pressable = getByTestId('setting-item');
+    fireEvent.press(pressable);
+    expect(mockOnPress).toHaveBeenCalled();
   });
 });

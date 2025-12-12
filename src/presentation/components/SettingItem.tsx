@@ -6,12 +6,12 @@
 
 import React from "react";
 import { View, Text, Pressable, StyleSheet, Switch } from "react-native";
-import { ChevronRight, type LucideIcon } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 
 export interface SettingItemProps {
-  /** Icon component from lucide-react-native */
-  icon: LucideIcon | React.ComponentType<{ size?: number; color?: string }>;
+  /** Icon component from @expo/vector-icons */
+  icon: React.ComponentType<{ size?: number; color?: string; name?: string }>;
   /** Main title text */
   title: string;
   /** Optional description/value text */
@@ -130,7 +130,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
               ios_backgroundColor={`${colors.textSecondary}30`}
             />
           ) : (
-            <ChevronRight size={20} color={colors.textSecondary} />
+            <Feather name="chevron-right" size={20} color={colors.textSecondary} />
           )}
         </View>
       </Pressable>

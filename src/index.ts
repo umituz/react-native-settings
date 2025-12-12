@@ -37,6 +37,16 @@ export type { SettingsScreenProps } from './presentation/screens/SettingsScreen'
 export { AppearanceScreen } from './presentation/screens/AppearanceScreen';
 
 // =============================================================================
+// PRESENTATION LAYER - Navigation
+// =============================================================================
+
+export { SettingsStackNavigator } from './presentation/navigation/SettingsStackNavigator';
+export type {
+  SettingsStackNavigatorProps,
+  SettingsStackParamList
+} from './presentation/navigation/SettingsStackNavigator';
+
+// =============================================================================
 // PRESENTATION LAYER - Types
 // =============================================================================
 

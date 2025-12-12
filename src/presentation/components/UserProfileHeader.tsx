@@ -6,7 +6,7 @@
 
 import React, { useState, useCallback } from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { ChevronRight } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 import { AtomicText } from "@umituz/react-native-design-system-atoms";
 import { useNavigation } from "@react-navigation/native";
@@ -54,7 +54,7 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
 
   const finalDisplayName = displayName || (isGuest ? guestDisplayName || defaultGuestDisplayName || "Guest" : defaultUserDisplayName || "User");
   const avatarName = isGuest ? guestDisplayName || defaultGuestDisplayName || defaultGuestDisplayName || "Guest" : finalDisplayName;
-  
+
   const defaultAvatarService = avatarServiceUrl || "https://ui-avatars.com/api";
   const finalAvatarUrl =
     (imageError ? null : avatarUrl) ||
@@ -115,7 +115,7 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
       </View>
       {shouldShowChevron && (
         <View style={[styles.chevronContainer, { marginLeft: spacing.sm }]}>
-          <ChevronRight size={22} color={colors.textSecondary} strokeWidth={2.5} />
+          <Feather name="chevron-right" size={22} color={colors.textSecondary} />
         </View>
       )}
     </>

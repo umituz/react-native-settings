@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Bell } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingItem } from "../../components/SettingItem";
@@ -75,7 +75,7 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
     <SettingsSection title={t("settings.sections.general")}>
       {showToggle ? (
         <SettingItem
-          icon={Bell}
+          icon={(props) => <Feather name={"bell" as any} {...props} />}
           title={title}
           showSwitch={true}
           switchValue={notificationsEnabled}
@@ -84,7 +84,7 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
         />
       ) : (
         <SettingItem
-          icon={Bell}
+          icon={(props) => <Feather name={"bell" as any} {...props} />}
           title={title}
           value={description}
           onPress={handlePress}

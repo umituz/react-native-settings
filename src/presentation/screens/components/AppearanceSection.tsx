@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Palette } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingItem } from "../../components/SettingItem";
@@ -28,7 +28,7 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
   return (
     <SettingsSection title={t("settings.sections.app.title")}>
       <SettingItem
-        icon={Palette}
+        icon={(props) => <Feather name={"droplet" as any} {...props} />}
         title={title}
         value={description}
         onPress={() => navigation.navigate(route as never)}

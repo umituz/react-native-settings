@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { Trash2 } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { SettingItem } from "./SettingItem";
 
 export interface StorageClearSettingProps {
@@ -37,7 +37,7 @@ export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
 
   return (
     <SettingItem
-      icon={Trash2}
+      icon={(props) => <Feather name={"trash-2" as any} {...props} />}
       title={defaultTitle}
       value={defaultDescription}
       onPress={onPress}

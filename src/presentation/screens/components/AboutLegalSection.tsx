@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Info, FileText } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
 import type { NavigationProp } from "@react-navigation/native";
@@ -54,7 +54,7 @@ export const AboutLegalSection: React.FC<AboutLegalSectionProps> = ({
     <SettingsSection title={t("settings.sections.about")}>
       {showAbout && (
         <SettingItem
-          icon={Info}
+          icon={(props) => <Feather name={"info" as any} {...props} />}
           title={aboutTitle}
           value={aboutDescription}
           onPress={() => navigation.navigate(aboutRoute as string)}
@@ -62,7 +62,7 @@ export const AboutLegalSection: React.FC<AboutLegalSectionProps> = ({
       )}
       {showLegal && (
         <SettingItem
-          icon={FileText}
+          icon={(props) => <Feather name={"file-text" as any} {...props} />}
           title={legalTitle}
           value={legalDescription}
           onPress={() => navigation.navigate(legalRoute as string)}

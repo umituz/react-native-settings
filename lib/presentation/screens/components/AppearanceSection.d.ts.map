@@ -1,1 +1,0 @@
-{"version":3,"file":"AppearanceSection.d.ts","sourceRoot":"","sources":["../../../../src/presentation/screens/components/AppearanceSection.tsx"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,MAAM,OAAO,CAAC;AAM1B,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,UAAU,CAAC;AAEjD,UAAU,sBAAsB;IAC9B,MAAM,CAAC,EAAE,gBAAgB,CAAC;CAC3B;AAED,eAAO,MAAM,iBAAiB,EAAE,KAAK,CAAC,EAAE,CAAC,sBAAsB,CAoB9D,CAAC"}

@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback } from "react";
-import { Cloud } from "lucide-react-native";
+import { Feather } from "@expo/vector-icons";
 import { SettingItem } from "./SettingItem";
 import type { SettingItemProps } from "./SettingItem";
 
@@ -46,7 +46,7 @@ export const CloudSyncSetting: React.FC<CloudSyncSettingProps> = ({
 
   return (
     <SettingItem
-      icon={Cloud}
+      icon={(props) => <Feather name={"cloud" as any} {...props} />}
       title={title || "cloud_sync"}
       value={displayDescription}
       onPress={onPress}

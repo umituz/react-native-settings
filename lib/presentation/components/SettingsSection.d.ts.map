@@ -1,1 +1,0 @@
-{"version":3,"file":"SettingsSection.d.ts","sourceRoot":"","sources":["../../../src/presentation/components/SettingsSection.tsx"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,MAAM,OAAO,CAAC;AAI1B,MAAM,WAAW,oBAAoB;IACnC,oBAAoB;IACpB,KAAK,EAAE,MAAM,CAAC;IACd,sBAAsB;IACtB,QAAQ,EAAE,KAAK,CAAC,SAAS,CAAC;CAC3B;AAED,eAAO,MAAM,eAAe,EAAE,KAAK,CAAC,EAAE,CAAC,oBAAoB,CAiB1D,CAAC"}

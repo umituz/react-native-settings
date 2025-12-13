@@ -52,7 +52,7 @@ export interface SettingsScreenProps {
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   config = {},
-  showUserProfile = false,
+  showUserProfile,
   userProfile,
   showFooter = true,
   footerText,
@@ -72,6 +72,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const normalizedConfig = normalizeSettingsConfig(config);
   const features = useFeatureDetection(normalizedConfig, navigation, featureOptions);
 
+  // Determine if user profile should be shown (explicit prop takes priority, then config)
+  const shouldShowUserProfile = showUserProfile ?? features.userProfile;
+
   return (
     <View style={[styles.container, { backgroundColor: colors.backgroundPrimary }]}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
@@ -82,7 +85,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         <SettingsContent
           normalizedConfig={normalizedConfig}
           features={features}
-          showUserProfile={showUserProfile}
+          showUserProfile={shouldShowUserProfile}
           userProfile={userProfile}
           showFooter={showFooter}
           footerText={footerText}

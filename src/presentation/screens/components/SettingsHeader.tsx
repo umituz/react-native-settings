@@ -55,7 +55,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
         ]}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
-        <AtomicIcon name="X" size="lg" color="primary" />
+        <AtomicIcon name="x" size="lg" color="primary" />
       </TouchableOpacity>
     </View>
   );

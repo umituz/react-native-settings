@@ -10,6 +10,8 @@ import type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
+  DisclaimerConfig,
+  UserProfileConfig,
 } from "./FeatureConfig";
 
 /**
@@ -73,6 +75,18 @@ export interface SettingsConfig {
    * @default 'auto'
    */
   legal?: FeatureVisibility | LegalConfig;
+
+  /**
+   * Disclaimer settings (Important notices)
+   * @default false
+   */
+  disclaimer?: FeatureVisibility | DisclaimerConfig;
+
+  /**
+   * User profile header settings
+   * @default false
+   */
+  userProfile?: boolean | UserProfileConfig;
 
   /**
    * Custom empty state text when no settings are available

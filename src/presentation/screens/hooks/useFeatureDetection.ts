@@ -61,7 +61,7 @@ export function useFeatureDetection(
   },
 ) {
   return useMemo(() => {
-    const { appearance, language, notifications, about, legal } =
+    const { appearance, language, notifications, about, legal, disclaimer, userProfile } =
       normalizedConfig;
 
     const notificationServiceAvailable = options?.notificationServiceAvailable ?? notificationService !== null;
@@ -102,6 +102,12 @@ export function useFeatureDetection(
         (legal.config?.enabled === true ||
           (legal.config?.enabled !== false &&
             hasNavigationScreen(navigation, legal.config?.route || "Legal"))),
+      disclaimer:
+        disclaimer.enabled &&
+        (disclaimer.config?.enabled === true ||
+          (disclaimer.config?.enabled !== false &&
+            hasNavigationScreen(navigation, disclaimer.config?.route || "Disclaimer"))),
+      userProfile: userProfile.enabled,
     };
   }, [normalizedConfig, navigation, options]);
 }

@@ -101,3 +101,30 @@ export interface LegalConfig {
   defaultRoute?: string;
 }
 
+/**
+ * Disclaimer Settings Configuration
+ */
+export interface DisclaimerConfig {
+  /** Show disclaimer section */
+  enabled?: FeatureVisibility;
+  /** Custom navigation route for disclaimer screen */
+  route?: string;
+  /** Custom disclaimer title */
+  title?: string;
+  /** Custom disclaimer description */
+  description?: string;
+}
+
+/**
+ * User Profile Settings Configuration
+ */
+export interface UserProfileConfig {
+  /** Show user profile header */
+  enabled?: boolean;
+  /** Custom display name for anonymous users */
+  anonymousDisplayName?: string;
+  /** Custom avatar service URL */
+  avatarServiceUrl?: string;
+  /** Navigation route for account settings (shows chevron if set) */
+  accountSettingsRoute?: string;
+}

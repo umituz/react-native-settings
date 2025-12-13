@@ -76,9 +76,9 @@ const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   return (
     <View style={[styles.container, { backgroundColor: tokens.colors.backgroundPrimary }]}>
       <View style={[styles.content, { backgroundColor: tokens.colors.surface }]}>
-        <AtomicIcon 
-          name="AlertTriangle" 
-          color="warning" 
+        <AtomicIcon
+          name="alert-triangle"
+          color="warning"
           size="lg"
           style={styles.icon}
         />

@@ -19,6 +19,18 @@ import { LanguageSection } from "@umituz/react-native-localization";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
 
+// Optional disclaimer component
+let DisclaimerSetting: React.ComponentType<any> | null = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const module = require("@umituz/react-native-disclaimer");
+  if (module?.DisclaimerSetting) {
+    DisclaimerSetting = module.DisclaimerSetting;
+  }
+} catch {
+  // Package not available
+}
+
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
   config?: any; // Original config for emptyStateText
@@ -28,6 +40,8 @@ interface SettingsContentProps {
     notifications: boolean;
     about: boolean;
     legal: boolean;
+    disclaimer: boolean;
+    userProfile: boolean;
   };
   showUserProfile?: boolean;
   userProfile?: {
@@ -69,6 +83,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.notifications ||
     features.about ||
     features.legal ||
+    features.disclaimer ||
     customSections.length > 0,
     [features, customSections.length]
   );
@@ -124,6 +139,10 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {features.legal && (
         <LegalSection config={normalizedConfig.legal.config} />
+      )}
+
+      {features.disclaimer && DisclaimerSetting && (
+        <DisclaimerSetting />
       )}
 
       {customSections && customSections.length > 0 && (

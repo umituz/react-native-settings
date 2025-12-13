@@ -10,6 +10,7 @@ import type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
+  DisclaimerConfig,
   AccountConfig,
   SupportConfig,
   DeveloperConfig,
@@ -36,6 +37,10 @@ export interface NormalizedConfig {
   legal: {
     enabled: boolean;
     config?: LegalConfig;
+  };
+  disclaimer: {
+    enabled: boolean;
+    config?: DisclaimerConfig;
   };
   account: {
     enabled: boolean;
@@ -88,6 +93,7 @@ export function normalizeSettingsConfig(
     notifications: normalizeConfigValue(config?.notifications, "auto"),
     about: normalizeConfigValue(config?.about, "auto"),
     legal: normalizeConfigValue(config?.legal, "auto"),
+    disclaimer: normalizeConfigValue(config?.disclaimer, false),
     account: normalizeConfigValue(config?.account, false),
     support: normalizeConfigValue(config?.support, false),
     developer: normalizeConfigValue(config?.developer, false),

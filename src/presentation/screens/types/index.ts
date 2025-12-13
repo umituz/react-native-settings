@@ -10,6 +10,7 @@ export type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
+  DisclaimerConfig,
 } from "./FeatureConfig";
 export type {
   AccountConfig,

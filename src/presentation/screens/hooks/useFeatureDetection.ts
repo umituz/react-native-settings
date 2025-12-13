@@ -61,7 +61,7 @@ export function useFeatureDetection(
   },
 ) {
   return useMemo(() => {
-    const { appearance, language, notifications, about, legal, account, support, developer } =
+    const { appearance, language, notifications, about, legal, disclaimer, account, support, developer } =
       normalizedConfig;
     
     const notificationServiceAvailable = options?.notificationServiceAvailable ?? notificationService !== null;
@@ -102,6 +102,11 @@ export function useFeatureDetection(
         (legal.config?.enabled === true ||
           (legal.config?.enabled !== false &&
             hasNavigationScreen(navigation, legal.config?.route || "Legal"))),
+      disclaimer:
+        disclaimer.enabled &&
+        (disclaimer.config?.enabled === true ||
+          (disclaimer.config?.enabled !== false &&
+            hasNavigationScreen(navigation, disclaimer.config?.route || "Disclaimer"))),
       account:
         account.enabled &&
         (account.config?.enabled === true ||

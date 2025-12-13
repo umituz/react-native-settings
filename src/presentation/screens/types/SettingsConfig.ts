@@ -10,6 +10,7 @@ import type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
+  DisclaimerConfig,
 } from "./FeatureConfig";
 import type {
   AccountConfig,
@@ -90,6 +91,12 @@ export interface SettingsConfig {
    * @default 'auto'
    */
   legal?: FeatureVisibility | LegalConfig;
+
+  /**
+   * Disclaimer settings (Important notices, warnings)
+   * @default false
+   */
+  disclaimer?: FeatureVisibility | DisclaimerConfig;
 
   /**
    * Account settings

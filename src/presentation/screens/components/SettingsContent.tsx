@@ -42,6 +42,7 @@ interface SettingsContentProps {
   };
   showFooter?: boolean;
   footerText?: string;
+  appVersion?: string;
   customSections?: CustomSettingsSection[];
   showCloseButton?: boolean;
 }
@@ -54,6 +55,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   userProfile,
   showFooter = true,
   footerText,
+  appVersion,
   customSections = [],
   showCloseButton = false,
 }) => {
@@ -145,7 +147,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         </View>
       )}
 
-      {showFooter && <SettingsFooter versionText={footerText} />}
+      {showFooter && <SettingsFooter versionText={footerText} appVersion={appVersion} />}
     </ScrollView>
   );
 };

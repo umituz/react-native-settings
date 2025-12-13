@@ -34,8 +34,10 @@ export interface SettingsScreenProps {
   };
   /** Show footer with version */
   showFooter?: boolean;
-  /** Custom footer text */
+  /** Custom footer text (overrides appVersion) */
   footerText?: string;
+  /** App version number from app config (e.g., "1.0.0") */
+  appVersion?: string;
   /** Custom sections to render */
   customSections?: CustomSettingsSection[];
   /** Show close button in header */
@@ -54,6 +56,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   userProfile,
   showFooter = true,
   footerText,
+  appVersion,
   customSections = [],
   showCloseButton = false,
   onClose,
@@ -72,9 +75,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   return (
     <View style={[styles.container, { backgroundColor: colors.backgroundPrimary }]}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
-      
+
       <SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />
-      
+
       <SettingsErrorBoundary>
         <SettingsContent
           normalizedConfig={normalizedConfig}
@@ -83,6 +86,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           userProfile={userProfile}
           showFooter={showFooter}
           footerText={footerText}
+          appVersion={appVersion}
           customSections={customSections}
           showCloseButton={showCloseButton}
         />

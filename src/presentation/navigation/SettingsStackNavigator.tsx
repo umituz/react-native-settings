@@ -26,6 +26,11 @@ export interface SettingsStackNavigatorProps {
     config?: SettingsConfig;
 
     /**
+     * App version number from app config (e.g., "1.0.0")
+     */
+    appVersion?: string;
+
+    /**
      * Additional screens to register
      * Apps can add their own screens here
      */
@@ -40,6 +45,7 @@ const Stack = createStackNavigator<SettingsStackParamList>();
 
 export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     config = {},
+    appVersion,
     additionalScreens = [],
 }) => {
     const tokens = useAppDesignTokens();
@@ -58,17 +64,23 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
         headerTintColor: tokens.colors.textPrimary,
     };
 
+    // Memoize SettingsScreen wrapper to prevent remounting on every render
+    const SettingsScreenWrapper = React.useMemo(() => {
+        const Wrapper = () => <SettingsScreen config={config} appVersion={appVersion} />;
+        Wrapper.displayName = "SettingsScreenWrapper";
+        return Wrapper;
+    }, [config, appVersion]);
+
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen
                 name="Settings"
+                component={SettingsScreenWrapper}
                 options={{
                     headerShown: false,
                     title: "Settings",
                 }}
-            >
-                {() => <SettingsScreen config={config} />}
-            </Stack.Screen>
+            />
 
             <Stack.Screen
                 name="Appearance"

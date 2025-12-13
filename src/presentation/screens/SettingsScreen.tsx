@@ -25,11 +25,11 @@ export interface SettingsScreenProps {
   userProfile?: {
     displayName?: string;
     userId?: string;
-    isGuest?: boolean;
+    isAnonymous?: boolean;
     avatarUrl?: string;
     accountSettingsRoute?: string;
     onPress?: () => void;
-    guestDisplayName?: string;
+    anonymousDisplayName?: string;
     avatarServiceUrl?: string;
   };
   /** Show footer with version */

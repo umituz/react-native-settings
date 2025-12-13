@@ -35,11 +35,11 @@ interface SettingsContentProps {
   userProfile?: {
     displayName?: string;
     userId?: string;
-    isGuest?: boolean;
+    isAnonymous?: boolean;
     avatarUrl?: string;
     accountSettingsRoute?: string;
     onPress?: () => void;
-    guestDisplayName?: string;
+    anonymousDisplayName?: string;
     avatarServiceUrl?: string;
   };
   showFooter?: boolean;
@@ -99,10 +99,12 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
           <UserProfileHeader
             displayName={userProfile?.displayName}
             userId={userProfile?.userId}
-            isGuest={userProfile?.isGuest}
+            isAnonymous={userProfile?.isAnonymous}
             avatarUrl={userProfile?.avatarUrl}
             accountSettingsRoute={userProfile?.accountSettingsRoute}
             onPress={userProfile?.onPress}
+            anonymousDisplayName={userProfile?.anonymousDisplayName}
+            avatarServiceUrl={userProfile?.avatarServiceUrl}
           />
         </View>
       )}

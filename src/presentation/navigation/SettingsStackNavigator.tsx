@@ -31,6 +31,25 @@ export interface SettingsStackNavigatorProps {
     appVersion?: string;
 
     /**
+     * Show user profile header
+     */
+    showUserProfile?: boolean;
+
+    /**
+     * User profile props for anonymous/authenticated users
+     */
+    userProfile?: {
+        displayName?: string;
+        userId?: string;
+        isAnonymous?: boolean;
+        avatarUrl?: string;
+        accountSettingsRoute?: string;
+        onPress?: () => void;
+        anonymousDisplayName?: string;
+        avatarServiceUrl?: string;
+    };
+
+    /**
      * Additional screens to register
      * Apps can add their own screens here
      */
@@ -46,6 +65,8 @@ const Stack = createStackNavigator<SettingsStackParamList>();
 export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     config = {},
     appVersion,
+    showUserProfile = false,
+    userProfile,
     additionalScreens = [],
 }) => {
     const tokens = useAppDesignTokens();
@@ -66,10 +87,17 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 
     // Memoize SettingsScreen wrapper to prevent remounting on every render
     const SettingsScreenWrapper = React.useMemo(() => {
-        const Wrapper = () => <SettingsScreen config={config} appVersion={appVersion} />;
+        const Wrapper = () => (
+            <SettingsScreen
+                config={config}
+                appVersion={appVersion}
+                showUserProfile={showUserProfile}
+                userProfile={userProfile}
+            />
+        );
         Wrapper.displayName = "SettingsScreenWrapper";
         return Wrapper;
-    }, [config, appVersion]);
+    }, [config, appVersion, showUserProfile, userProfile]);
 
     return (
         <Stack.Navigator screenOptions={screenOptions}>

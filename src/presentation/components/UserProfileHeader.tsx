@@ -16,35 +16,35 @@ export interface UserProfileHeaderProps {
   displayName?: string;
   /** User ID */
   userId?: string;
-  /** Whether user is guest */
-  isGuest?: boolean;
+  /** Whether user is anonymous (device-based ID) */
+  isAnonymous?: boolean;
   /** Avatar URL (optional) */
   avatarUrl?: string;
   /** Navigation route for account settings */
   accountSettingsRoute?: string;
   /** Custom onPress handler */
   onPress?: () => void;
-  /** Custom guest user display name */
-  guestDisplayName?: string;
+  /** Custom anonymous user display name */
+  anonymousDisplayName?: string;
   /** Custom avatar service URL */
   avatarServiceUrl?: string;
   /** Default user display name when no displayName provided */
   defaultUserDisplayName?: string;
-  /** Default guest display name */
-  defaultGuestDisplayName?: string;
+  /** Default anonymous display name */
+  defaultAnonymousDisplayName?: string;
 }
 
 export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   displayName,
   userId,
-  isGuest = false,
+  isAnonymous = false,
   avatarUrl,
   accountSettingsRoute,
   onPress,
-  guestDisplayName,
+  anonymousDisplayName,
   avatarServiceUrl,
   defaultUserDisplayName,
-  defaultGuestDisplayName,
+  defaultAnonymousDisplayName,
 }) => {
   const tokens = useAppDesignTokens();
   const navigation = useNavigation();
@@ -52,8 +52,8 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
   const spacing = tokens.spacing;
   const [imageError, setImageError] = useState(false);
 
-  const finalDisplayName = displayName || (isGuest ? guestDisplayName || defaultGuestDisplayName || "Guest" : defaultUserDisplayName || "User");
-  const avatarName = isGuest ? guestDisplayName || defaultGuestDisplayName || defaultGuestDisplayName || "Guest" : finalDisplayName;
+  const finalDisplayName = displayName || (isAnonymous ? anonymousDisplayName || defaultAnonymousDisplayName || "Anonymous" : defaultUserDisplayName || "User");
+  const avatarName = isAnonymous ? anonymousDisplayName || defaultAnonymousDisplayName || "Anonymous" : finalDisplayName;
 
   const defaultAvatarService = avatarServiceUrl || "https://ui-avatars.com/api";
   const finalAvatarUrl =

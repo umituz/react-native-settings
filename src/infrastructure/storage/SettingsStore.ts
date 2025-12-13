@@ -35,7 +35,7 @@ const getDefaultSettings = (userId: string): UserSettings => {
   if (DEFAULT_SETTINGS_CACHE.has(userId)) {
     return DEFAULT_SETTINGS_CACHE.get(userId)!;
   }
-  
+
   const settings = {
     userId,
     theme: 'auto' as const,
@@ -48,7 +48,7 @@ const getDefaultSettings = (userId: string): UserSettings => {
     privacyMode: false,
     updatedAt: new Date(),
   };
-  
+
   DEFAULT_SETTINGS_CACHE.set(userId, settings);
   return settings;
 };
@@ -62,12 +62,12 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     if (__DEV__) {
       console.log('SettingsStore: Loading settings for user:', userId);
     }
-    
+
     set({ loading: true, error: null });
 
     try {
       const defaultSettings = getDefaultSettings(userId);
-      const storageKey = createUserKey(StorageKey.SETTINGS, userId);
+      const storageKey = createUserKey(StorageKey.USER_PREFERENCES, userId);
 
       // ✅ DRY: Storage domain handles JSON parse, error handling
       const result = await storageRepository.getItem<UserSettings>(storageKey, defaultSettings);
@@ -127,7 +127,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         updatedAt: new Date(),
       };
 
-      const storageKey = createUserKey(StorageKey.SETTINGS, currentSettings.userId);
+      const storageKey = createUserKey(StorageKey.USER_PREFERENCES, currentSettings.userId);
 
       // ✅ DRY: Storage domain replaces JSON.stringify + AsyncStorage + try/catch
       const result = await storageRepository.setItem(storageKey, updatedSettings);
@@ -153,7 +153,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     set({ loading: true, error: null });
 
     const defaultSettings = getDefaultSettings(userId);
-    const storageKey = createUserKey(StorageKey.SETTINGS, userId);
+    const storageKey = createUserKey(StorageKey.USER_PREFERENCES, userId);
 
     // ✅ DRY: Storage domain replaces JSON.stringify + AsyncStorage + try/catch
     const result = await storageRepository.setItem(storageKey, defaultSettings);

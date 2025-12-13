@@ -68,15 +68,6 @@ export type { SettingsFooterProps } from './presentation/components/SettingsFoot
 export { UserProfileHeader } from './presentation/components/UserProfileHeader';
 export type { UserProfileHeaderProps } from './presentation/components/UserProfileHeader';
 
-export { DisclaimerSetting } from './presentation/components/DisclaimerSetting';
-export type { DisclaimerSettingProps } from './presentation/components/DisclaimerSetting';
-
-export { DisclaimerCard } from './presentation/components/DisclaimerCard';
-export type { DisclaimerCardProps } from './presentation/components/DisclaimerCard';
-
-export { DisclaimerModal } from './presentation/components/DisclaimerModal';
-export type { DisclaimerModalProps } from './presentation/components/DisclaimerModal';
-
 export { SettingsErrorBoundary } from './presentation/components/SettingsErrorBoundary';
 
 export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';

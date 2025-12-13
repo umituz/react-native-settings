@@ -10,10 +10,6 @@ import type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
-  DisclaimerConfig,
-  AccountConfig,
-  SupportConfig,
-  DeveloperConfig,
   SettingsConfig,
 } from "../types";
 
@@ -37,22 +33,6 @@ export interface NormalizedConfig {
   legal: {
     enabled: boolean;
     config?: LegalConfig;
-  };
-  disclaimer: {
-    enabled: boolean;
-    config?: DisclaimerConfig;
-  };
-  account: {
-    enabled: boolean;
-    config?: AccountConfig;
-  };
-  support: {
-    enabled: boolean;
-    config?: SupportConfig;
-  };
-  developer: {
-    enabled: boolean;
-    config?: DeveloperConfig;
   };
 }
 
@@ -93,10 +73,6 @@ export function normalizeSettingsConfig(
     notifications: normalizeConfigValue(config?.notifications, "auto"),
     about: normalizeConfigValue(config?.about, "auto"),
     legal: normalizeConfigValue(config?.legal, "auto"),
-    disclaimer: normalizeConfigValue(config?.disclaimer, false),
-    account: normalizeConfigValue(config?.account, false),
-    support: normalizeConfigValue(config?.support, false),
-    developer: normalizeConfigValue(config?.developer, false),
   };
 }
 

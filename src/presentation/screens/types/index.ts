@@ -10,12 +10,6 @@ export type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
-  DisclaimerConfig,
 } from "./FeatureConfig";
-export type {
-  AccountConfig,
-  SupportConfig,
-  DeveloperConfig,
-} from "./ExtendedConfig";
 export type { SettingsConfig } from "./SettingsConfig";
 export type { CustomSettingsSection } from "./CustomSection";

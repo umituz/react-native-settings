@@ -16,7 +16,6 @@ import { AboutSection } from "@umituz/react-native-about";
 import { LegalSection } from "@umituz/react-native-legal";
 import { AppearanceSection } from "@umituz/react-native-appearance";
 import { LanguageSection } from "@umituz/react-native-localization";
-import { DisclaimerSetting } from "@umituz/react-native-disclaimer";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
 
@@ -29,7 +28,6 @@ interface SettingsContentProps {
     notifications: boolean;
     about: boolean;
     legal: boolean;
-    disclaimer: boolean;
   };
   showUserProfile?: boolean;
   userProfile?: {
@@ -71,7 +69,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.notifications ||
     features.about ||
     features.legal ||
-    features.disclaimer ||
     customSections.length > 0,
     [features, customSections.length]
   );
@@ -127,10 +124,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {features.legal && (
         <LegalSection config={normalizedConfig.legal.config} />
-      )}
-
-      {features.disclaimer && (
-        <DisclaimerSetting />
       )}
 
       {customSections && customSections.length > 0 && (

@@ -101,20 +101,3 @@ export interface LegalConfig {
   defaultRoute?: string;
 }
 
-/**
- * Disclaimer Settings Configuration
- */
-export interface DisclaimerConfig {
-  /** Show disclaimer section */
-  enabled?: FeatureVisibility;
-  /** Custom navigation route for disclaimer screen */
-  route?: string;
-  /** Custom disclaimer title */
-  title?: string;
-  /** Custom disclaimer description */
-  description?: string;
-  /** Custom short message for card display */
-  shortMessage?: string;
-  /** Default route name when no custom route provided */
-  defaultRoute?: string;
-}

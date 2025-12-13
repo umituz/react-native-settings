@@ -10,22 +10,16 @@ import type {
   NotificationsConfig,
   AboutConfig,
   LegalConfig,
-  DisclaimerConfig,
 } from "./FeatureConfig";
-import type {
-  AccountConfig,
-  SupportConfig,
-  DeveloperConfig,
-} from "./ExtendedConfig";
 
 /**
  * Main Settings Configuration
- * 
+ *
  * Controls which settings features are visible in the SettingsScreen.
  * Each feature can be configured with:
  * - Simple: boolean | 'auto' (quick setup)
  * - Advanced: Detailed config object (full control)
- * 
+ *
  * @example
  * // Simple configuration
  * const config: SettingsConfig = {
@@ -33,31 +27,19 @@ import type {
  *   notifications: 'auto',
  *   about: false,
  * };
- * 
+ *
  * @example
  * // Advanced configuration
  * const config: SettingsConfig = {
  *   appearance: {
  *     enabled: true,
  *     route: 'CustomAppearance',
- *     showLanguage: true,
  *     showTheme: true,
  *   },
  *   notifications: {
  *     enabled: 'auto',
  *     showToggle: true,
  *     initialValue: false,
- *     onToggleChange: (value) => console.log(value),
- *   },
- *   support: {
- *     enabled: true,
- *     items: {
- *       liveSupport: {
- *         enabled: true,
- *         route: 'ChatSupport',
- *         title: 'Live Chat',
- *       },
- *     },
  *   },
  * };
  */
@@ -91,30 +73,6 @@ export interface SettingsConfig {
    * @default 'auto'
    */
   legal?: FeatureVisibility | LegalConfig;
-
-  /**
-   * Disclaimer settings (Important notices, warnings)
-   * @default false
-   */
-  disclaimer?: FeatureVisibility | DisclaimerConfig;
-
-  /**
-   * Account settings
-   * @default false
-   */
-  account?: FeatureVisibility | AccountConfig;
-
-  /**
-   * Support settings
-   * @default false
-   */
-  support?: FeatureVisibility | SupportConfig;
-
-  /**
-   * Developer settings (only shown in __DEV__ mode)
-   * @default false
-   */
-  developer?: boolean | DeveloperConfig;
 
   /**
    * Custom empty state text when no settings are available

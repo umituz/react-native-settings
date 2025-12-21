@@ -4,7 +4,6 @@
  */
 
 import React, { useCallback } from "react";
-import { Feather } from "@expo/vector-icons";
 import { SettingItem } from "./SettingItem";
 import type { SettingItemProps } from "./SettingItem";
 
@@ -46,7 +45,7 @@ export const CloudSyncSetting: React.FC<CloudSyncSettingProps> = ({
 
   return (
     <SettingItem
-      icon={(props) => <Feather name={"cloud" as any} {...props} />}
+      icon="cloud-outline"
       title={title || "cloud_sync"}
       value={displayDescription}
       onPress={onPress}

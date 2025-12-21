@@ -5,7 +5,6 @@
  */
 
 import React from "react";
-import { Feather } from "@expo/vector-icons";
 import { SettingItem } from "./SettingItem";
 
 export interface StorageClearSettingProps {
@@ -37,7 +36,7 @@ export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
 
   return (
     <SettingItem
-      icon={(props) => <Feather name={"trash-2" as any} {...props} />}
+      icon="trash-outline"
       title={defaultTitle}
       value={defaultDescription}
       onPress={onPress}

@@ -9,16 +9,10 @@
 
 import React from "react";
 import { Alert } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { storageRepository } from "@umituz/react-native-storage";
 import { SettingsSection } from "./SettingsSection";
 import { SettingItem } from "./SettingItem";
-
-// Icon wrapper for SettingItem compatibility
-const TrashIcon: React.FC<{ size?: number; color?: string }> = ({ size = 24, color }) => (
-  <Feather name="trash-2" size={size} color={color} />
-);
 
 // Default texts (English only - DEV feature)
 const DEFAULT_TEXTS = {
@@ -107,7 +101,7 @@ export const DevSettingsSection: React.FC<DevSettingsProps> = ({
     <SettingsSection title={t.sectionTitle}>
       {customDevComponents.map((component) => component)}
       <SettingItem
-        icon={TrashIcon}
+        icon="trash-outline"
         title={t.clearTitle}
         value={t.clearDescription}
         onPress={handleClearData}

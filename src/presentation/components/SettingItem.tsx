@@ -6,12 +6,11 @@
 
 import React from "react";
 import { View, Text, Pressable, StyleSheet, Switch } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { AtomicIcon, useAppDesignTokens } from "@umituz/react-native-design-system";
 
 export interface SettingItemProps {
-  /** Icon component from @expo/vector-icons */
-  icon: React.ComponentType<{ size?: number; color?: string; name?: string }>;
+  /** Icon name (Ionicons) */
+  icon: string;
   /** Main title text */
   title: string;
   /** Optional description/value text */
@@ -44,7 +43,7 @@ export interface SettingItemProps {
 }
 
 export const SettingItem: React.FC<SettingItemProps> = ({
-  icon: Icon,
+  icon,
   title,
   value,
   onPress,
@@ -61,7 +60,6 @@ export const SettingItem: React.FC<SettingItemProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
   const colors = tokens.colors;
-  const spacing = tokens.spacing;
 
   return (
     <>
@@ -89,7 +87,11 @@ export const SettingItem: React.FC<SettingItemProps> = ({
               },
             ]}
           >
-            <Icon size={24} color={iconColor || colors.primary} />
+            <AtomicIcon
+              name={icon}
+              customSize={24}
+              customColor={iconColor || colors.primary}
+            />
           </View>
           <View style={styles.textContainer}>
             <Text
@@ -130,7 +132,11 @@ export const SettingItem: React.FC<SettingItemProps> = ({
               ios_backgroundColor={`${colors.textSecondary}30`}
             />
           ) : (
-            <Feather name="chevron-right" size={20} color={colors.textSecondary} />
+            <AtomicIcon
+              name="chevron-forward-outline"
+              customSize={20}
+              customColor={colors.textSecondary}
+            />
           )}
         </View>
       </Pressable>

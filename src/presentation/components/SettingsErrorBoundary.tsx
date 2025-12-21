@@ -7,6 +7,7 @@ import React, { Component, ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { useLocalization } from '@umituz/react-native-localization';
 
 interface Props {
   children: ReactNode;
@@ -63,15 +64,19 @@ interface ErrorBoundaryFallbackProps {
 
 const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   error,
-  fallbackTitle = "error_boundary.title",
-  fallbackMessage = "error_boundary.message"
+  fallbackTitle,
+  fallbackMessage
 }) => {
   const tokens = useAppDesignTokens();
+  const { t } = useLocalization();
 
-  const title = __DEV__ && error?.message ? "error_boundary.dev_title" : fallbackTitle;
+  const title = __DEV__ && error?.message
+    ? t("error_boundary.dev_title")
+    : (fallbackTitle || t("error_boundary.title"));
+
   const message = __DEV__ && error?.message
-    ? `error_boundary.dev_message: ${error.message}`
-    : fallbackMessage;
+    ? `${t("error_boundary.dev_message")}: ${error.message}`
+    : (fallbackMessage || t("error_boundary.message"));
 
   return (
     <View style={[styles.container, { backgroundColor: tokens.colors.backgroundPrimary }]}>

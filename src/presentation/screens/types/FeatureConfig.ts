@@ -27,6 +27,10 @@ export interface AppearanceConfig {
   title?: string;
   /** Custom appearance description */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Default route name when no custom route provided */
   defaultRoute?: string;
 }
@@ -43,6 +47,10 @@ export interface LanguageConfig {
   title?: string;
   /** Custom language description */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Default language display when no language is detected */
   defaultLanguageDisplay?: string;
 }
@@ -65,6 +73,10 @@ export interface NotificationsConfig {
   title?: string;
   /** Custom notifications description */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Default route name when no custom route provided */
   defaultRoute?: string;
 }
@@ -81,6 +93,10 @@ export interface AboutConfig {
   title?: string;
   /** Custom about description */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Default route name when no custom route provided */
   defaultRoute?: string;
 }
@@ -97,6 +113,10 @@ export interface LegalConfig {
   title?: string;
   /** Custom legal description */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Default route name when no custom route provided */
   defaultRoute?: string;
 }
@@ -136,6 +156,14 @@ export interface UserProfileConfig {
 export interface SubscriptionConfig {
   /** Show subscription section */
   enabled?: FeatureVisibility;
+  /** Custom subscription title */
+  title?: string;
+  /** Custom subscription description */
+  description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Section configuration (app provides all data) */
   sectionConfig?: {
     statusType: "active" | "expired" | "none";
@@ -181,6 +209,10 @@ export interface FeedbackConfig {
   title?: string;
   /** Custom label for the feedback item */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Initial feedback type */
   initialType?: FeedbackType;
   /** Feedback submission handler */
@@ -194,6 +226,10 @@ export interface FAQConfig {
   title?: string;
   /** Custom label for the FAQ button */
   description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** FAQ items passed from app */
   items?: any[];
   /** Handler to open FAQ screen */

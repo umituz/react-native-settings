@@ -92,5 +92,8 @@ export { OnboardingResetSetting } from '@umituz/react-native-onboarding';
 // @ts-ignore - Re-exporting from peer dependency  
 export type { OnboardingResetSettingProps } from '@umituz/react-native-onboarding';
 
-
+// @ts-ignore - Re-exporting from peer dependency
+export { createSentryTestSetting } from '@umituz/react-native-sentry';
+// @ts-ignore - Re-exporting from peer dependency
+export type { SentryTestSettingProps } from '@umituz/react-native-sentry';
 

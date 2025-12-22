@@ -6,9 +6,11 @@
 
 import React, { useCallback } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
-import { AtomicText } from "@umituz/react-native-design-system";
+import {
+  AtomicIcon,
+  AtomicText,
+  useAppDesignTokens,
+} from "@umituz/react-native-design-system";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "@umituz/react-native-avatar";
 
@@ -105,11 +107,9 @@ export const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
           )}
         </View>
       </View>
-      {shouldShowChevron && (
-        <View style={[styles.chevronContainer, { marginLeft: spacing.sm }]}>
-          <Feather name="chevron-right" size={22} color={colors.textSecondary} />
-        </View>
-      )}
+      <View style={[styles.chevronContainer, { marginLeft: spacing.sm }]}>
+        <AtomicIcon name="chevron-forward" size="md" color="onSurface" />
+      </View>
     </>
   );
 

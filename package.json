@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "4.16.22",
+  "version": "4.17.2",
   "description": "Settings management for React Native apps - user preferences, theme, language, notifications",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -40,6 +40,7 @@
     "@umituz/react-native-notifications": "latest",
     "@umituz/react-native-onboarding": "latest",
     "@umituz/react-native-rating": "latest",
+    "@umituz/react-native-sentry": "latest",
     "@umituz/react-native-storage": "latest",
     "react": ">=19.0.0",
     "react-native": ">=0.81.0",

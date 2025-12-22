@@ -144,18 +144,20 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       ]}
       showsVerticalScrollIndicator={false}
     >
-      {showUserProfile && userProfile && (
+      {showUserProfile && (
         <View style={styles.profileContainer}>
           <ProfileSection
             profile={{
-              displayName: userProfile.displayName || (userProfile.isAnonymous ? t("settings.profile.anonymousName") : t("settings.profile.defaultUserName")),
-              userId: userProfile.userId,
-              isAnonymous: userProfile.isAnonymous || false,
-              avatarUrl: userProfile.avatarUrl,
-              accountSettingsRoute: userProfile.accountSettingsRoute,
+              displayName: userProfile?.displayName || t("settings.profile.guestName") || "Guest",
+              userId: userProfile?.userId,
+              isAnonymous: userProfile?.isAnonymous ?? true,
+              avatarUrl: userProfile?.avatarUrl,
+              accountSettingsRoute: userProfile?.accountSettingsRoute,
             }}
-            onPress={userProfile.onPress}
-            onSignIn={userProfile.onPress}
+            onPress={userProfile?.onPress}
+            onSignIn={userProfile?.onPress}
+            signInText={t("auth.signIn") || "Sign In"}
+            anonymousText={t("settings.profile.anonymousName") || "Guest"}
           />
         </View>
       )}

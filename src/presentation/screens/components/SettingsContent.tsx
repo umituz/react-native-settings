@@ -148,7 +148,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <View style={styles.profileContainer}>
           <ProfileSection
             profile={{
-              displayName: userProfile?.displayName || t("settings.profile.guestName") || "Guest",
+              displayName: userProfile?.displayName || t("settings.profile.anonymousName"),
               userId: userProfile?.userId,
               isAnonymous: userProfile?.isAnonymous ?? true,
               avatarUrl: userProfile?.avatarUrl,
@@ -156,8 +156,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
             }}
             onPress={userProfile?.onPress}
             onSignIn={userProfile?.onPress}
-            signInText={t("auth.signIn") || "Sign In"}
-            anonymousText={t("settings.profile.anonymousName") || "Guest"}
+            signInText={t("auth.signIn")}
+            anonymousText={t("settings.profile.anonymousName")}
           />
         </View>
       )}

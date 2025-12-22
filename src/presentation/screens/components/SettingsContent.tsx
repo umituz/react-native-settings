@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
-import { UserProfileHeader } from "../../components/UserProfileHeader";
+import { ProfileSection } from "@umituz/react-native-auth";
 import { SettingsSection } from "../../components/SettingsSection";
 import { DevSettingsSection, DevSettingsProps } from "../../components/DevSettingsSection";
 import { NotificationsSection } from "@umituz/react-native-notifications";
@@ -144,19 +144,18 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       ]}
       showsVerticalScrollIndicator={false}
     >
-      {showUserProfile && (
+      {showUserProfile && userProfile && (
         <View style={styles.profileContainer}>
-          <UserProfileHeader
-            displayName={userProfile?.displayName}
-            userId={userProfile?.userId}
-            isAnonymous={userProfile?.isAnonymous}
-            avatarUrl={userProfile?.avatarUrl}
-            accountSettingsRoute={userProfile?.accountSettingsRoute}
-            onPress={userProfile?.onPress}
-            anonymousDisplayName={userProfile?.anonymousDisplayName}
-            avatarServiceUrl={userProfile?.avatarServiceUrl}
-            defaultUserDisplayName={t("settings.profile.defaultUserName")}
-            defaultAnonymousDisplayName={t("settings.profile.anonymousName")}
+          <ProfileSection
+            profile={{
+              displayName: userProfile.displayName || (userProfile.isAnonymous ? t("settings.profile.anonymousName") : t("settings.profile.defaultUserName")),
+              userId: userProfile.userId,
+              isAnonymous: userProfile.isAnonymous || false,
+              avatarUrl: userProfile.avatarUrl,
+              accountSettingsRoute: userProfile.accountSettingsRoute,
+            }}
+            onPress={userProfile.onPress}
+            onSignIn={userProfile.onPress}
           />
         </View>
       )}

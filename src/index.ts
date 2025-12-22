@@ -69,9 +69,6 @@ export type { SettingsSectionProps } from './presentation/components/SettingsSec
 export { SettingsFooter } from './presentation/components/SettingsFooter';
 export type { SettingsFooterProps } from './presentation/components/SettingsFooter';
 
-export { UserProfileHeader } from './presentation/components/UserProfileHeader';
-export type { UserProfileHeaderProps } from './presentation/components/UserProfileHeader';
-
 export { SettingsErrorBoundary } from './presentation/components/SettingsErrorBoundary';
 
 export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';

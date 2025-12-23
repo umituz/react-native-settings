@@ -174,12 +174,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <AppearanceSection
           config={{
             ...normalizedConfig.appearance.config,
-            title:
-              normalizedConfig.appearance.config?.title ||
-              t("settings.appearance.title"),
-            description:
-              normalizedConfig.appearance.config?.description ||
-              t("settings.appearance.description"),
+            title: t("settings.appearance.title"),
+            description: t("settings.appearance.description"),
           }}
           sectionTitle={t("settings.appearance.title")}
         />
@@ -202,12 +198,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <NotificationsSection
           config={{
             ...normalizedConfig.notifications.config,
-            title:
-              normalizedConfig.notifications.config?.title ||
-              t("settings.notifications.title"),
-            description:
-              normalizedConfig.notifications.config?.description ||
-              t("settings.notifications.description"),
+            title: t("settings.notifications.title"),
+            description: t("settings.notifications.description"),
           }}
         />
       )}
@@ -216,12 +208,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <AboutSection
           config={{
             ...normalizedConfig.about.config,
-            title:
-              normalizedConfig.about.config?.title ||
-              t("settings.about.title"),
-            description:
-              normalizedConfig.about.config?.description ||
-              t("settings.about.description"),
+            title: t("settings.about.title"),
+            description: t("settings.about.description"),
           }}
           sectionTitle={t("settings.about.title")}
         />
@@ -231,12 +219,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <LegalSection
           config={{
             ...normalizedConfig.legal.config,
-            title:
-              normalizedConfig.legal.config?.title ||
-              t("settings.legal.title"),
-            description:
-              normalizedConfig.legal.config?.description ||
-              t("settings.legal.description"),
+            title: t("settings.legal.title"),
+            description: t("settings.legal.description"),
           }}
           sectionTitle={t("settings.legal.title")}
         />

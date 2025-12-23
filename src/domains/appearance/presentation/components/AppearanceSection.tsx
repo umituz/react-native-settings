@@ -73,7 +73,7 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
                             { backgroundColor: `${colors.primary}15` },
                         ]}
                     >
-                        <AtomicIcon name="droplet" size="lg" color="primary" />
+                        <AtomicIcon name="water-outline" size="lg" color="primary" />
                     </View>
                     <View style={styles.textContainer}>
                         <AtomicText
@@ -94,7 +94,7 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
                             </AtomicText>
                         )}
                     </View>
-                    <AtomicIcon name="chevron-right" size="md" color="secondary" />
+                    <AtomicIcon name="chevron-forward-outline" size="md" color="secondary" />
                 </View>
             </Pressable>
         </View>

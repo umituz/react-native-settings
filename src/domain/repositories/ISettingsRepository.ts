@@ -18,6 +18,7 @@ export interface UserSettings {
   soundEnabled: boolean;
   vibrationEnabled: boolean;
   privacyMode: boolean;
+  disclaimerAccepted: boolean;
   updatedAt: Date;
 }
 

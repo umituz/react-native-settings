@@ -46,6 +46,7 @@ const getDefaultSettings = (userId: string): UserSettings => {
     soundEnabled: true,
     vibrationEnabled: true,
     privacyMode: false,
+    disclaimerAccepted: false,
     updatedAt: new Date(),
   };
 

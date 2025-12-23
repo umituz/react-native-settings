@@ -90,6 +90,9 @@ export * from './domains/about';
 // Legal Domain - Terms, privacy, licenses
 export * from './domains/legal';
 
+// Disclaimer Domain - Disclaimer card, modal, settings
+export * from './domains/disclaimer';
+
 // Appearance Domain - Theme, dark mode
 export * from './domains/appearance';
 

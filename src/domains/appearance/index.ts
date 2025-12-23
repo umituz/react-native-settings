@@ -4,4 +4,6 @@
  */
 
 export * from './presentation/screens/AppearanceScreen';
-export * from './presentation/components/ThemeSwitcher';
+export * from './presentation/components';
+export * from './hooks';
+export * from './types';

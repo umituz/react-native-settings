@@ -14,6 +14,7 @@ import {
   ThemeModeSection,
   CustomColorsSection,
   AppearancePreview,
+  type ThemeOptionConfig,
 } from "../components";
 
 import type { AppearanceTexts } from "../../types";
@@ -101,7 +102,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
 
     // Construct themes from texts prop
     // This adheres to "Package Driven Design" where content is driven by the consumer (App)
-    const themes = [];
+    const themes: ThemeOptionConfig[] = [];
 
     // We only add the theme option if the corresponding text config is provided
     if (texts?.lightMode) {

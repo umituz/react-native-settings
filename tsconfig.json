@@ -10,6 +10,15 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@domains/about/*": ["src/domains/about/*"],
+      "@domains/legal/*": ["src/domains/legal/*"],
+      "@domains/appearance/*": ["src/domains/appearance/*"],
+      "@domains/feedback/*": ["src/domains/feedback/*"],
+      "@domains/faqs/*": ["src/domains/faqs/*"],
+      "@domains/rating/*": ["src/domains/rating/*"]
+    },
 
     /* Emit */
     "declaration": true,

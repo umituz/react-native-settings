@@ -197,7 +197,7 @@ export interface SubscriptionConfig {
   };
 }
 
-import type { FeedbackType } from "@umituz/react-native-feedback";
+import type { FeedbackType } from "@domains/feedback/domain/entities/FeedbackEntity";
 
 /**
  * Feedback Settings Configuration

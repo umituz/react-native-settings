@@ -3,5 +3,7 @@
  * Frequently asked questions
  */
 
-export * from './presentation/screens/FAQsScreen';
-export * from './presentation/components/FAQItem';
+export * from './presentation/screens/FAQScreen';
+export * from './presentation/components';
+export * from './presentation/hooks';
+export * from './domain/entities/FAQEntity';

@@ -1,10 +1,7 @@
 /**
  * Appearance Settings Screen
  * Advanced appearance settings with theme customization and custom colors
- * Uses @umituz/react-native-appearance package
+ * Now uses consolidated appearance domain
  */
 
-import React from "react";
-import { AppearanceScreen } from "@umituz/react-native-appearance";
-
-export { AppearanceScreen };
+export { AppearanceScreen } from "@domains/appearance/presentation/screens/AppearanceScreen";

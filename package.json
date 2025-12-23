@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "4.17.17",
+  "version": "4.17.18",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, about, legal, appearance, feedback, FAQs, and rating",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -53,6 +53,8 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.28.5",
     "@expo/vector-icons": "^15.0.0",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/stack": "^6.4.1",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.1.10",
     "@umituz/react-native-auth": "latest",
@@ -75,6 +77,6 @@
     "LICENSE"
   ],
   "dependencies": {
-    "@umituz/react-native-design-system": "^2.2.0"
+    "@umituz/react-native-design-system": "latest"
   }
 }

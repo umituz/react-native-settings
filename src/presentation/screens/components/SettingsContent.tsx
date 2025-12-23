@@ -13,11 +13,11 @@ import { ProfileSection } from "@umituz/react-native-auth";
 import { SettingsSection } from "../../components/SettingsSection";
 import { DevSettingsSection, DevSettingsProps } from "../../components/DevSettingsSection";
 import { NotificationsSection } from "@umituz/react-native-notifications";
-import { AboutSection } from "@umituz/react-native-about";
-import { LegalSection } from "@umituz/react-native-legal";
-import { AppearanceSection } from "@umituz/react-native-appearance";
+import { AboutSection } from "@domains/about/presentation/components/AboutSection";
+import { LegalSection } from "@domains/legal/presentation/components/LegalSection";
+import { AppearanceSection } from "@domains/appearance/presentation/components/AppearanceSection";
 import { LanguageSection } from "@umituz/react-native-localization";
-import { SupportSection } from "@umituz/react-native-feedback";
+import { SupportSection } from "@domains/feedback/presentation/components/SupportSection";
 import { SettingItem } from "../../components/SettingItem";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
@@ -190,7 +190,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
               normalizedConfig.language.config?.description ||
               t("settings.languageSelection.description"),
           }}
-          sectionTitle={t("settings.languageSelection.title")}
         />
       )}
 

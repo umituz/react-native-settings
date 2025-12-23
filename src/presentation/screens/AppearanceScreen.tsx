@@ -4,4 +4,4 @@
  * Now uses consolidated appearance domain
  */
 
-export { AppearanceScreen } from "@domains/appearance/presentation/screens/AppearanceScreen";
+export { AppearanceScreen } from "../../domains/appearance/presentation/screens/AppearanceScreen";

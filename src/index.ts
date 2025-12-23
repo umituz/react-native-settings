@@ -99,6 +99,9 @@ export * from './domains/feedback';
 // FAQs Domain - Frequently asked questions
 export * from './domains/faqs';
 
+// Rating Domain - Star ratings, reviews, statistics
+export * from './domains/rating';
+
 // =============================================================================
 // PRESENTATION LAYER - Re-exports from Dependencies
 // =============================================================================

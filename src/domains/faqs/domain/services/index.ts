@@ -1,0 +1,1 @@
+export { FAQSearchService } from "./FAQSearchService";

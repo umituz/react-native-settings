@@ -81,6 +81,25 @@ export { DevSettingsSection } from './presentation/components/DevSettingsSection
 export type { DevSettingsProps } from './presentation/components/DevSettingsSection';
 
 // =============================================================================
+// DOMAIN EXPORTS - Consolidated Features
+// =============================================================================
+
+// About Domain - User info, app details, version
+export * from './domains/about';
+
+// Legal Domain - Terms, privacy, licenses
+export * from './domains/legal';
+
+// Appearance Domain - Theme, dark mode
+export * from './domains/appearance';
+
+// Feedback Domain - User feedback, bug reports
+export * from './domains/feedback';
+
+// FAQs Domain - Frequently asked questions
+export * from './domains/faqs';
+
+// =============================================================================
 // PRESENTATION LAYER - Re-exports from Dependencies
 // =============================================================================
 

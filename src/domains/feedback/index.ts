@@ -8,3 +8,4 @@ export * from './presentation/components/FeedbackModal';
 export * from './presentation/components/SupportSection';
 export * from './presentation/hooks/useFeedbackForm';
 export * from './domain/entities/FeedbackEntity';
+export * from './domain/repositories/IFeedbackRepository';

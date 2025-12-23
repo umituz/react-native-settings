@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 
 export interface SettingsSectionProps {
   /** Section title */
@@ -18,7 +18,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   title,
   children,
 }) => {
-  const tokens = useAppDesignTokens();
+  const tokens = useResponsiveDesignTokens();
   const colors = tokens.colors;
 
   return (

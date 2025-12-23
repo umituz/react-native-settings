@@ -6,7 +6,7 @@
 
 import React from "react";
 import { View, Text, Pressable, StyleSheet, Switch } from "react-native";
-import { AtomicIcon, useAppDesignTokens } from "@umituz/react-native-design-system";
+import { AtomicIcon, useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 
 export interface SettingItemProps {
   /** Icon name (Ionicons) */
@@ -58,7 +58,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   switchThumbColor,
   switchTrackColors,
 }) => {
-  const tokens = useAppDesignTokens();
+  const tokens = useResponsiveDesignTokens();
   const colors = tokens.colors;
 
   return (

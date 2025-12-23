@@ -7,7 +7,7 @@
 
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import type { SettingsConfig } from "../screens/types";
@@ -76,7 +76,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     additionalScreens = [],
     devSettings,
 }) => {
-    const tokens = useAppDesignTokens();
+    const tokens = useResponsiveDesignTokens();
 
     const screenOptions = {
         headerStyle: {

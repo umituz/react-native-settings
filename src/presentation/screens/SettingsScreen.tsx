@@ -8,7 +8,7 @@ import { View, StatusBar, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   useDesignSystemTheme,
-  useAppDesignTokens,
+  useResponsiveDesignTokens,
 } from "@umituz/react-native-design-system";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";
@@ -68,7 +68,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 }) => {
   const navigation = useNavigation();
   const { themeMode } = useDesignSystemTheme();
-  const tokens = useAppDesignTokens();
+  const tokens = useResponsiveDesignTokens();
 
   const isDark = themeMode === "dark";
   const colors = tokens.colors;

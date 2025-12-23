@@ -6,7 +6,7 @@
 import React, { useMemo } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { ProfileSection } from "@umituz/react-native-auth";
@@ -107,7 +107,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   showCloseButton = false,
   devSettings,
 }) => {
-  const tokens = useAppDesignTokens();
+  const tokens = useResponsiveDesignTokens();
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
 

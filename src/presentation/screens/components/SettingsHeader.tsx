@@ -7,7 +7,7 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 import { AtomicIcon } from "@umituz/react-native-design-system";
 
 interface SettingsHeaderProps {
@@ -20,7 +20,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
   onClose,
 }) => {
   const navigation = useNavigation();
-  const tokens = useAppDesignTokens();
+  const tokens = useResponsiveDesignTokens();
   const insets = useSafeAreaInsets();
 
   const handleClose = () => {

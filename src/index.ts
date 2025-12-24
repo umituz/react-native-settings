@@ -119,3 +119,15 @@ export { createSentryTestSetting } from '@umituz/react-native-sentry';
 // @ts-ignore - Re-exporting from peer dependency
 export type { SentryTestSettingProps } from '@umituz/react-native-sentry';
 
+// =============================================================================
+// CLOUD SYNC - Default DISABLED
+// =============================================================================
+
+export {
+  CloudSyncService,
+  DEFAULT_CLOUD_SYNC_CONFIG,
+} from './domains/cloud-sync';
+
+export type {
+  CloudSyncConfig,
+} from './domains/cloud-sync';

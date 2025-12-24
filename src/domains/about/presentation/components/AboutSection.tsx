@@ -89,7 +89,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                             </AtomicText>
                         )}
                     </View>
-                    <AtomicIcon name="chevron-right" size="md" color="secondary" />
+                    <AtomicIcon name="chevron-forward" size="md" color="secondary" />
                 </View>
             </Pressable>
         </View>

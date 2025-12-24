@@ -67,20 +67,12 @@ jest.mock('@umituz/react-native-storage', () => ({
       success: true,
     })),
   },
-  unwrap: jest.fn((result, defaultValue) => 
+  unwrap: jest.fn((result, defaultValue) =>
     result.success ? result.data : defaultValue
   ),
 }));
 
-// Mock alert
-jest.mock('@umituz/react-native-alert', () => ({
-  useAlert: jest.fn(() => ({
-    show: jest.fn(),
-    showSuccess: jest.fn(),
-    showError: jest.fn(),
-    showWarning: jest.fn(),
-  })),
-}));
+
 
 // Mock localization
 jest.mock('@umituz/react-native-localization', () => ({

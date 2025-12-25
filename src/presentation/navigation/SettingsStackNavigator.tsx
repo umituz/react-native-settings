@@ -10,7 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
-import type { SettingsConfig } from "../screens/types";
+import type { SettingsConfig, CustomSettingsSection } from "../screens/types";
 import type { DevSettingsProps } from "../components/DevSettingsSection";
 
 // Default param list - can be extended by apps
@@ -64,6 +64,12 @@ export interface SettingsStackNavigatorProps {
      * Dev settings (only shown in __DEV__ mode)
      */
     devSettings?: DevSettingsProps;
+
+    /**
+     * Custom sections to render in settings list
+     * Use this to add app-specific items like subscription
+     */
+    customSections?: CustomSettingsSection[];
 }
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -75,6 +81,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     userProfile,
     additionalScreens = [],
     devSettings,
+    customSections = [],
 }) => {
     const tokens = useResponsiveDesignTokens();
 
@@ -101,11 +108,12 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
                 showUserProfile={showUserProfile}
                 userProfile={userProfile}
                 devSettings={devSettings}
+                customSections={customSections}
             />
         );
         Wrapper.displayName = "SettingsScreenWrapper";
         return Wrapper;
-    }, [config, appVersion, showUserProfile, userProfile, devSettings]);
+    }, [config, appVersion, showUserProfile, userProfile, devSettings, customSections]);
 
     return (
         <Stack.Navigator screenOptions={screenOptions}>

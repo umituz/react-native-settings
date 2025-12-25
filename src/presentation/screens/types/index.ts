@@ -12,7 +12,6 @@ export type {
   LegalConfig,
   DisclaimerConfig,
   UserProfileConfig,
-  SubscriptionConfig,
   FeedbackConfig,
   RatingConfig,
   FAQConfig,

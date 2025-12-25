@@ -63,7 +63,6 @@ export type {
 export type {
   SettingsConfig,
   CustomSettingsSection,
-  SubscriptionConfig,
 } from './presentation/screens/types';
 
 // =============================================================================

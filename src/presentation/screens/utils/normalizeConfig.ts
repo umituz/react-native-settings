@@ -12,7 +12,6 @@ import type {
   LegalConfig,
   DisclaimerConfig,
   UserProfileConfig,
-  SubscriptionConfig,
   FeedbackConfig,
   RatingConfig,
   FAQConfig,
@@ -47,10 +46,6 @@ export interface NormalizedConfig {
   userProfile: {
     enabled: boolean;
     config?: UserProfileConfig;
-  };
-  subscription: {
-    enabled: boolean;
-    config?: SubscriptionConfig;
   };
   feedback: {
     enabled: boolean;
@@ -105,10 +100,8 @@ export function normalizeSettingsConfig(
     legal: normalizeConfigValue(config?.legal, "auto"),
     disclaimer: normalizeConfigValue(config?.disclaimer, false),
     userProfile: normalizeConfigValue(config?.userProfile, false),
-    subscription: normalizeConfigValue(config?.subscription, false),
     feedback: normalizeConfigValue(config?.feedback, false),
     rating: normalizeConfigValue(config?.rating, false),
     faqs: normalizeConfigValue(config?.faqs, false),
   };
 }
-

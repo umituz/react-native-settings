@@ -12,7 +12,6 @@ import type {
   LegalConfig,
   DisclaimerConfig,
   UserProfileConfig,
-  SubscriptionConfig,
   FeedbackConfig,
   RatingConfig,
   FAQConfig,
@@ -92,13 +91,6 @@ export interface SettingsConfig {
    * @default false
    */
   userProfile?: boolean | UserProfileConfig;
-
-  /**
-   * Subscription/Premium settings
-   * App must provide all data via sectionConfig
-   * @default false
-   */
-  subscription?: FeatureVisibility | SubscriptionConfig;
 
   /**
    * Feedback settings

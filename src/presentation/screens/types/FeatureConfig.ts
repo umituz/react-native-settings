@@ -149,54 +149,6 @@ export interface UserProfileConfig {
   accountSettingsRoute?: string;
 }
 
-/**
- * Subscription Settings Configuration
- * App must provide all data via sectionConfig (no internal fetch)
- */
-export interface SubscriptionConfig {
-  /** Show subscription section */
-  enabled?: FeatureVisibility;
-  /** Custom subscription title */
-  title?: string;
-  /** Custom subscription description */
-  description?: string;
-  /** Custom icon name (Ionicons) */
-  icon?: string;
-  /** Custom section title for grouping */
-  sectionTitle?: string;
-  /** Section configuration (app provides all data) */
-  sectionConfig?: {
-    statusType: "active" | "expired" | "none";
-    isPremium: boolean;
-    expirationDate?: string | null;
-    purchaseDate?: string | null;
-    isLifetime?: boolean;
-    daysRemaining?: number | null;
-    credits?: Array<{
-      id: string;
-      label: string;
-      current: number;
-      total: number;
-    }>;
-    translations: {
-      title: string;
-      statusLabel: string;
-      expiresLabel: string;
-      purchasedLabel: string;
-      creditsTitle?: string;
-      remainingLabel?: string;
-      manageButton?: string;
-      upgradeButton?: string;
-      lifetimeLabel?: string;
-      statusActive?: string;
-      statusExpired?: string;
-      statusFree?: string;
-    };
-    onManageSubscription?: () => void;
-    onUpgrade?: () => void;
-  };
-}
-
 import type { FeedbackType } from "../../../domains/feedback/domain/entities/FeedbackEntity";
 
 /**

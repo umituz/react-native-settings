@@ -120,7 +120,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
   }
 
   return (
-    <ScreenLayout edges={['bottom']}>
+    <ScreenLayout edges={['bottom']} scrollable={false}>
       <View style={[styles.container, customStyles?.container]}>
         {renderContent()}
       </View>

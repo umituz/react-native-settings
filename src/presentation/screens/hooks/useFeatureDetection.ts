@@ -55,7 +55,6 @@ export function useFeatureDetection(
       legal,
       disclaimer,
       userProfile,
-      subscription,
       feedback,
       rating,
       faqs,
@@ -108,9 +107,6 @@ export function useFeatureDetection(
               disclaimer.config?.route || "Disclaimer",
             ))),
       userProfile: userProfile.enabled,
-      subscription:
-        subscription.enabled &&
-        subscription.config?.sectionConfig !== undefined,
       feedback: feedback.enabled,
       rating: rating.enabled,
       faqs: faqs.enabled,

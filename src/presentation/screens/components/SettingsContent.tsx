@@ -26,7 +26,6 @@ interface SettingsContentProps {
     legal: boolean;
     disclaimer: boolean;
     userProfile: boolean;
-    subscription: boolean;
     feedback: boolean;
     rating: boolean;
     faqs: boolean;
@@ -65,7 +64,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.about ||
     features.legal ||
     features.disclaimer ||
-    features.subscription ||
     features.feedback ||
     features.rating ||
     features.faqs ||
@@ -88,6 +86,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     >
       {showUserProfile && <ProfileSectionLoader userProfile={userProfile} />}
 
+      <CustomSettingsList customSections={customSections} />
+
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
       <IdentitySettingsSection normalizedConfig={normalizedConfig} features={features} />
@@ -95,8 +95,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       <SupportSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
       {features.disclaimer && <DisclaimerSetting />}
-
-      <CustomSettingsList customSections={customSections} />
 
       {!hasAnyFeatures && (
         <View style={styles.emptyContainer}>

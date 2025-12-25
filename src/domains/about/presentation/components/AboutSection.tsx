@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, Pressable, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useResponsiveDesignTokens, AtomicIcon, AtomicText } from '@umituz/react-native-design-system';
+import {
+    useResponsiveDesignTokens,
+    AtomicText,
+    ListItem
+} from '@umituz/react-native-design-system';
 import { AboutConfig } from '../../domain/entities/AppInfo';
 
 export interface AboutSectionProps {
@@ -23,7 +27,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
 }) => {
     const navigation = useNavigation();
     const tokens = useResponsiveDesignTokens();
-    const colors = tokens.colors;
 
     const route = config?.route || config?.defaultRoute || 'About';
     const title = propsTitle || config?.title;
@@ -41,57 +44,21 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     if (!title) return null;
 
     return (
-        <View style={[styles.sectionContainer, { backgroundColor: colors.surface }, containerStyle]}>
+        <View style={[styles.sectionContainer, { backgroundColor: tokens.colors.surface }, containerStyle]}>
             {!!sectionTitle && (
                 <View style={styles.headerContainer}>
-                    <AtomicText
-                        type="titleMedium"
-                        color="primary"
-                    >
+                    <AtomicText type="titleMedium" color="primary">
                         {sectionTitle}
                     </AtomicText>
                 </View>
             )}
-            <Pressable
-                style={({ pressed }) => [
-                    styles.itemContainer,
-                    {
-                        backgroundColor: pressed ? `${colors.primary}08` : 'transparent',
-                    },
-                ]}
+            <ListItem
+                title={title}
+                subtitle={description}
+                leftIcon="information-circle"
+                rightIcon="chevron-forward"
                 onPress={handlePress}
-            >
-                <View style={styles.content}>
-                    <View
-                        style={[
-                            styles.iconContainer,
-                            { backgroundColor: `${colors.primary}15` },
-                        ]}
-                    >
-                        <AtomicIcon name="information-circle" size="lg" color="primary" />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <AtomicText
-                            type="bodyLarge"
-                            color="primary"
-                            numberOfLines={1}
-                            style={{ marginBottom: 4 }}
-                        >
-                            {title}
-                        </AtomicText>
-                        {!!description && (
-                            <AtomicText
-                                type="bodyMedium"
-                                color="secondary"
-                                numberOfLines={2}
-                            >
-                                {description}
-                            </AtomicText>
-                        )}
-                    </View>
-                    <AtomicIcon name="chevron-forward" size="md" color="secondary" />
-                </View>
-            </Pressable>
+            />
         </View>
     );
 };
@@ -106,29 +73,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingTop: 16,
         paddingBottom: 8,
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 16,
-        minHeight: 72,
-    },
-    content: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    iconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: 12,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 16,
-    },
-    textContainer: {
-        flex: 1,
-        marginRight: 8,
     },
 });

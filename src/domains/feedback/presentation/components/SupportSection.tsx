@@ -122,14 +122,14 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                     <>
                         {showFeedback && feedbackConfig.config?.description && renderItem({
                             title: feedbackConfig.config.description,
-                            icon: "mail-outline",
+                            icon: "mail",
                             onPress: () => setModalVisible(true),
                             isLast: !showRating
                         })}
 
                         {showRating && ratingConfig.config?.description && renderItem({
                             title: ratingConfig.config.description,
-                            icon: "star-outline",
+                            icon: "star",
                             onPress: handleRateApp,
                             isLast: true
                         })}

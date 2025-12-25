@@ -1,6 +1,11 @@
 import React from "react";
-import { View, Pressable, StyleSheet, Switch } from "react-native";
-import { AtomicIcon, AtomicText, useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { View, StyleSheet, Switch } from "react-native";
+import {
+  AtomicIcon,
+  AtomicText,
+  useResponsiveDesignTokens,
+  ListItem
+} from "@umituz/react-native-design-system";
 
 export interface SettingItemProps {
   icon: string;
@@ -17,6 +22,10 @@ export interface SettingItemProps {
   disabled?: boolean;
 }
 
+/**
+ * SettingItem - Enhanced ListItem for Settings
+ * Uses design system's ListItem molecule with custom switch support
+ */
 export const SettingItem: React.FC<SettingItemProps> = ({
   icon,
   title,
@@ -32,78 +41,88 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   disabled = false,
 }) => {
   const tokens = useResponsiveDesignTokens();
-  const { colors, spacing } = tokens;
 
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.container,
-        {
-          backgroundColor: pressed && !disabled && !showSwitch ? tokens.colors.surfaceVariant : 'transparent',
-          borderBottomWidth: isLast ? 0 : 1,
-          borderBottomColor: `${colors.onSurface}10`,
-        },
-      ]}
-      onPress={onPress}
-      disabled={showSwitch || disabled}
-      testID={testID}
-    >
-      <View style={styles.content}>
-        <View style={[styles.iconWrapper, { backgroundColor: iconColor ? `${iconColor}15` : `${colors.primary}15` }]}>
-          <AtomicIcon
-            name={icon}
-            size="md"
-            customColor={iconColor || colors.primary}
-          />
-        </View>
-        <View style={styles.textContainer}>
-          <AtomicText
-            type="bodyLarge"
-            color={disabled ? "surfaceVariant" : "onSurface"}
-            style={[
-              titleColor ? { color: titleColor } : {},
-              { opacity: disabled ? 0.6 : 1 }
-            ]}
-            numberOfLines={1}
-          >
-            {title}
-          </AtomicText>
-          {value && !showSwitch && (
+  // For switch items, we need custom rendering
+  if (showSwitch) {
+    return (
+      <View
+        style={[
+          styles.switchContainer,
+          {
+            borderBottomWidth: isLast ? 0 : 1,
+            borderBottomColor: `${tokens.colors.onSurface}10`,
+          }
+        ]}
+      >
+        <View style={styles.switchContent}>
+          <View style={[
+            styles.iconWrapper,
+            { backgroundColor: iconColor ? `${iconColor}15` : `${tokens.colors.primary}15` }
+          ]}>
+            <AtomicIcon
+              name={icon}
+              size="md"
+              customColor={iconColor || tokens.colors.primary}
+            />
+          </View>
+          <View style={styles.textContainer}>
             <AtomicText
-              type="bodySmall"
-              color="secondary"
-              numberOfLines={2}
-              style={{ marginTop: 2 }}
+              type="bodyLarge"
+              color={disabled ? "surfaceVariant" : "onSurface"}
+              style={[
+                titleColor ? { color: titleColor } : {},
+                { opacity: disabled ? 0.6 : 1 }
+              ]}
+              numberOfLines={1}
             >
-              {value}
+              {title}
             </AtomicText>
-          )}
+            {value && (
+              <AtomicText
+                type="bodySmall"
+                color="secondary"
+                numberOfLines={2}
+                style={{ marginTop: 2 }}
+              >
+                {value}
+              </AtomicText>
+            )}
+          </View>
         </View>
+        <Switch
+          value={switchValue}
+          onValueChange={onSwitchChange}
+          trackColor={{
+            false: tokens.colors.surfaceVariant,
+            true: tokens.colors.primary
+          }}
+          thumbColor="#FFFFFF"
+          ios_backgroundColor={tokens.colors.surfaceVariant}
+          disabled={disabled}
+        />
       </View>
+    );
+  }
 
-      <View style={styles.rightContainer}>
-        {showSwitch ? (
-          <Switch
-            value={switchValue}
-            onValueChange={onSwitchChange}
-            trackColor={{ false: colors.surfaceVariant, true: colors.primary }}
-            thumbColor="#FFFFFF"
-            ios_backgroundColor={colors.surfaceVariant}
-          />
-        ) : (
-          <AtomicIcon
-            name="chevron-forward"
-            size="sm"
-            color="secondary"
-          />
-        )}
-      </View>
-    </Pressable>
+  // Use design system's ListItem for regular items
+  return (
+    <ListItem
+      title={title}
+      subtitle={value}
+      leftIcon={icon}
+      rightIcon="chevron-forward"
+      onPress={onPress}
+      disabled={disabled}
+      style={{
+        borderBottomWidth: isLast ? 0 : 1,
+        borderBottomColor: `${tokens.colors.onSurface}10`,
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  switchContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -111,7 +130,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     minHeight: 64,
   },
-  content: {
+  switchContent: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
@@ -128,10 +147,4 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 8,
   },
-  rightContainer: {
-    justifyContent: "center",
-    alignItems: "flex-end",
-  },
 });
-
-

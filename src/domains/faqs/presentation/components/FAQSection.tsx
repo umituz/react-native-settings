@@ -40,7 +40,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({
                 title: config.title || 'Help & Support',
                 children: renderItem({
                     title: config.description || 'FAQ',
-                    icon: 'help-circle-outline',
+                    icon: 'help-circle',
                     onPress: config.onPress || (() => console.warn('No FAQ handler')),
                     isLast: true,
                 }),

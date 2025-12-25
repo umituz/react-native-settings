@@ -6,18 +6,14 @@
  */
 
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { useResponsiveDesignTokens, type DesignTokens } from "@umituz/react-native-design-system";
-import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system";
-import type { IconName } from "@umituz/react-native-design-system";
-import { StyleCacheService } from "../../domain/services/StyleCacheService";
+import { ListItem } from "@umituz/react-native-design-system";
 
 export interface LegalItemProps {
   /**
-   * Icon name from Lucide library (e.g., "Shield", "FileText", "ScrollText")
+   * Icon name from theme library (Ionicons)
    * If not provided, will use emoji icon
    */
-  iconName?: IconName;
+  iconName?: string;
   /**
    * Icon emoji or text (fallback if iconName not provided)
    */
@@ -48,130 +44,18 @@ export const LegalItem: React.FC<LegalItemProps> = React.memo(({
   onPress,
   testID,
 }) => {
-  const tokens = useResponsiveDesignTokens();
-  
-  // Memoize styles to prevent recreation on every render
-  const styles = React.useMemo(() => {
-    const cacheKey = StyleCacheService.createTokenCacheKey(tokens);
-    return StyleCacheService.getCachedStyles(
-      'LegalItem',
-      cacheKey,
-      () => createLegalItemStyles(tokens)
-    );
-  }, [tokens]);
-
-  // Memoize icon rendering to prevent unnecessary re-renders
-  const renderIcon = React.useCallback(() => {
-    if (iconName) {
-      return (
-        <AtomicIcon
-          name={iconName}
-          size="md"
-          color="info"
-        />
-      );
-    }
-    if (icon) {
-      return (
-        <AtomicText type="bodyLarge" color="info">
-          {icon}
-        </AtomicText>
-      );
-    }
-    return null;
-  }, [iconName, icon]);
-
-  // Memoize icon container style to prevent object creation
-  const iconContainerStyle = React.useMemo(() => [
-    styles.iconContainer, 
-    { backgroundColor: tokens.colors.info + "20" }
-  ], [styles.iconContainer, tokens.colors.info]);
-
-  // Memoize content to prevent unnecessary re-renders
-  const content = React.useMemo(() => (
-    <View style={styles.itemContent}>
-      <View style={styles.itemLeft}>
-        <View style={iconContainerStyle}>
-          {renderIcon()}
-        </View>
-        <View style={styles.itemText}>
-          <AtomicText type="bodyLarge" color="textPrimary">
-            {title}
-          </AtomicText>
-          {description && (
-            <AtomicText
-              type="bodySmall"
-              color="textSecondary"
-              style={styles.itemDescription}
-            >
-              {description}
-            </AtomicText>
-          )}
-        </View>
-      </View>
-      {onPress && (
-        <AtomicText type="bodyMedium" color="textSecondary">›</AtomicText>
-      )}
-    </View>
-  ), [styles.itemContent, styles.itemLeft, styles.itemText, styles.itemDescription, iconContainerStyle, renderIcon, title, description, onPress]);
-
-  // Memoize press handler to prevent child re-renders
-  const handlePress = React.useCallback(() => {
-    onPress?.();
-  }, [onPress]);
-
-  if (onPress) {
-    return (
-      <TouchableOpacity
-        style={styles.itemContainer}
-        onPress={handlePress}
-        testID={testID}
-        activeOpacity={0.7}
-      >
-        {content}
-      </TouchableOpacity>
-    );
-  }
+  // Use iconName if provided, otherwise fallback to default
+  const finalIcon = iconName || icon || "shield-checkmark";
 
   return (
-    <View style={styles.itemContainer} testID={testID}>
-      {content}
-    </View>
+    <ListItem
+      title={title}
+      subtitle={description}
+      leftIcon={finalIcon}
+      rightIcon={onPress ? "chevron-forward" : undefined}
+      onPress={onPress}
+    />
   );
 });
 
-const createLegalItemStyles = (tokens: DesignTokens) => {
-  return StyleSheet.create({
-    itemContainer: {
-      marginBottom: tokens.spacing.xs,
-    },
-    itemContent: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: tokens.spacing.md,
-      paddingVertical: tokens.spacing.md,
-      minHeight: 64,
-    },
-    itemLeft: {
-      flexDirection: "row",
-      alignItems: "center",
-      flex: 1,
-    },
-    iconContainer: {
-      width: 44,
-      height: 44,
-      borderRadius: 22,
-      alignItems: "center",
-      justifyContent: "center",
-      marginRight: tokens.spacing.md,
-    },
-    itemText: {
-      flex: 1,
-    },
-    itemDescription: {
-      marginTop: tokens.spacing.xs,
-    },
-  });
-};
-
+LegalItem.displayName = "LegalItem";

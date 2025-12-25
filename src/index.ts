@@ -81,9 +81,6 @@ export type { SettingsFooterProps } from './presentation/components/SettingsFoot
 
 export { SettingsErrorBoundary } from './presentation/components/SettingsErrorBoundary';
 
-export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';
-export type { CloudSyncSettingProps } from './presentation/components/CloudSyncSetting';
-
 export { StorageClearSetting } from './presentation/components/StorageClearSetting';
 export type { StorageClearSettingProps } from './presentation/components/StorageClearSetting';
 
@@ -128,13 +125,3 @@ export type { OnboardingResetSettingProps } from '@umituz/react-native-onboardin
 export { createSentryTestSetting } from '@umituz/react-native-sentry';
 // @ts-ignore - Re-exporting from peer dependency
 export type { SentryTestSettingProps } from '@umituz/react-native-sentry';
-
-// =============================================================================
-// CLOUD SYNC - Default DISABLED
-// =============================================================================
-
-export * from "./domains/cloud-sync/domain/SyncResult";
-export * from "./domains/cloud-sync/domain/ISyncAdapter";
-export * from "./domains/cloud-sync/infrastructure/CloudSyncService";
-export * from "./domains/cloud-sync/infrastructure/FirestoreSyncAdapter";
-export * from "./domains/cloud-sync/presentation/useCloudSync";

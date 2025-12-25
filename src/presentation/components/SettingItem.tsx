@@ -32,58 +32,73 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   disabled = false,
 }) => {
   const tokens = useResponsiveDesignTokens();
-  const colors = tokens.colors;
+  const { colors, spacing } = tokens;
 
   return (
-    <>
-      <Pressable
-        style={({ pressed }) => [
-          styles.container,
-          { backgroundColor: pressed && !disabled && !showSwitch ? `${colors.primary}08` : 'transparent' },
-        ]}
-        onPress={onPress}
-        disabled={showSwitch || disabled}
-        testID={testID}
-      >
-        <View style={styles.content}>
-          <View style={[styles.iconContainer, { backgroundColor: iconColor ? `${iconColor}15` : `${colors.primary}15` }]}>
-            <AtomicIcon name={icon} customSize={24} customColor={iconColor || colors.primary} />
-          </View>
-          <View style={styles.textContainer}>
-            <AtomicText
-              type="bodyLarge"
-              style={{
-                color: disabled ? colors.textSecondary : titleColor || colors.textPrimary,
-                opacity: disabled ? 0.5 : 1,
-              }}
-              numberOfLines={1}
-            >
-              {title}
-            </AtomicText>
-            {value && !showSwitch && (
-              <AtomicText type="bodyMedium" style={{ color: colors.textSecondary }} numberOfLines={2}>
-                {value}
-              </AtomicText>
-            )}
-          </View>
+    <Pressable
+      style={({ pressed }) => [
+        styles.container,
+        {
+          backgroundColor: pressed && !disabled && !showSwitch ? tokens.colors.surfaceVariant : 'transparent',
+          borderBottomWidth: isLast ? 0 : 1,
+          borderBottomColor: `${colors.onSurface}10`,
+        },
+      ]}
+      onPress={onPress}
+      disabled={showSwitch || disabled}
+      testID={testID}
+    >
+      <View style={styles.content}>
+        <View style={[styles.iconWrapper, { backgroundColor: iconColor ? `${iconColor}15` : `${colors.primary}15` }]}>
+          <AtomicIcon
+            name={icon}
+            size="md"
+            customColor={iconColor || colors.primary}
+          />
         </View>
-
-        <View style={styles.rightContainer}>
-          {showSwitch ? (
-            <Switch
-              value={switchValue}
-              onValueChange={onSwitchChange}
-              trackColor={{ false: `${colors.textSecondary}30`, true: colors.primary }}
-              thumbColor="#FFFFFF"
-              ios_backgroundColor={`${colors.textSecondary}30`}
-            />
-          ) : (
-            <AtomicIcon name="chevron-forward-outline" customSize={20} customColor={colors.textSecondary} />
+        <View style={styles.textContainer}>
+          <AtomicText
+            type="bodyLarge"
+            color={disabled ? "surfaceVariant" : "onSurface"}
+            style={[
+              titleColor ? { color: titleColor } : {},
+              { opacity: disabled ? 0.6 : 1 }
+            ]}
+            numberOfLines={1}
+          >
+            {title}
+          </AtomicText>
+          {value && !showSwitch && (
+            <AtomicText
+              type="bodySmall"
+              color="secondary"
+              numberOfLines={2}
+              style={{ marginTop: 2 }}
+            >
+              {value}
+            </AtomicText>
           )}
         </View>
-      </Pressable>
-      {!isLast && <View style={[styles.divider, { backgroundColor: `${colors.textSecondary}20` }]} />}
-    </>
+      </View>
+
+      <View style={styles.rightContainer}>
+        {showSwitch ? (
+          <Switch
+            value={switchValue}
+            onValueChange={onSwitchChange}
+            trackColor={{ false: colors.surfaceVariant, true: colors.primary }}
+            thumbColor="#FFFFFF"
+            ios_backgroundColor={colors.surfaceVariant}
+          />
+        ) : (
+          <AtomicIcon
+            name="chevron-forward"
+            size="sm"
+            color="secondary"
+          />
+        )}
+      </View>
+    </Pressable>
   );
 };
 
@@ -93,34 +108,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    minHeight: 72,
+    paddingVertical: 12,
+    minHeight: 64,
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
   },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
+  iconWrapper: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: 12,
   },
   textContainer: {
     flex: 1,
-    minWidth: 0,
+    paddingRight: 8,
   },
   rightContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  divider: {
-    height: 1,
-    marginLeft: 80,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
 });
+
 

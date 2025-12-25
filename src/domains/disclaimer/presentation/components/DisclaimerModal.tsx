@@ -11,8 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
-import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal } from '@umituz/react-native-design-system';
 
 export interface DisclaimerModalProps {
   visible: boolean;
@@ -30,56 +29,54 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
   const tokens = useAppDesignTokens();
   const styles = getStyles(tokens);
 
-  if (!visible) return null;
-
   return (
-    <View
-      style={[
-        styles.modalContainer,
-        { backgroundColor: tokens.colors.backgroundPrimary },
-      ]}
-    >
-      {/* Modal Header */}
-      <View
-        style={[
-          styles.modalHeader,
-          { borderBottomColor: tokens.colors.borderLight },
-        ]}
-      >
-        <AtomicText type="headlineMedium" color="primary">
-          {title}
-        </AtomicText>
-        <TouchableOpacity
-          onPress={onClose}
-          testID="close-disclaimer-modal"
+    <BaseModal visible={visible} onClose={onClose}>
+      <View style={styles.modalContentWrapper}>
+        {/* Modal Header */}
+        <View
+          style={[
+            styles.modalHeader,
+            { borderBottomColor: tokens.colors.border },
+          ]}
         >
-          <AtomicIcon name="x" color="primary" size="md" />
-        </TouchableOpacity>
-      </View>
+          <AtomicText type="headlineMedium" color="primary">
+            {title}
+          </AtomicText>
+          <TouchableOpacity
+            onPress={onClose}
+            testID="close-disclaimer-modal"
+          >
+            <AtomicIcon name="close" color="primary" size="md" />
+          </TouchableOpacity>
+        </View>
 
-      {/* Scrollable Content */}
-      <ScrollView
-        style={styles.modalContent}
-        contentContainerStyle={styles.modalContentContainer}
-      >
-        <AtomicText
-          type="bodyMedium"
-          color="primary"
-          style={styles.modalText}
+        {/* Scrollable Content */}
+        <ScrollView
+          style={styles.modalContent}
+          contentContainerStyle={styles.modalContentContainer}
         >
-          {content}
-        </AtomicText>
-      </ScrollView>
-    </View>
+          <AtomicText
+            type="bodyMedium"
+            color="textPrimary"
+            style={styles.modalText}
+          >
+            {content}
+          </AtomicText>
+        </ScrollView>
+      </View>
+    </BaseModal>
   );
 };
+
 
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     modalContainer: {
       flex: 1,
     },
-
+    modalContentWrapper: {
+      flex: 1,
+    },
     modalHeader: {
       flexDirection: 'row',
       justifyContent: 'space-between',

@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import { Modal, View, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useResponsiveDesignTokens, AtomicText, AtomicIcon } from "@umituz/react-native-design-system";
+import { useResponsiveDesignTokens, AtomicText, AtomicIcon, BaseModal } from "@umituz/react-native-design-system";
 import { FeedbackForm } from "./FeedbackForm";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 
@@ -18,7 +18,7 @@ export interface FeedbackModalProps {
     isSubmitting?: boolean;
     title?: string;
     subtitle?: string;
-    texts: any; // Type should ideally be shared or imported
+    texts: any;
 }
 
 export const FeedbackModal: React.FC<FeedbackModalProps> = ({
@@ -34,33 +34,28 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     const tokens = useResponsiveDesignTokens();
 
     return (
-        <Modal
-            visible={visible}
-            animationType="slide"
-            presentationStyle="pageSheet"
-            onRequestClose={onClose}
-        >
-            <SafeAreaView style={[styles.safeArea, { backgroundColor: tokens.colors.backgroundPrimary }]}>
+        <BaseModal visible={visible} onClose={onClose}>
+            <SafeAreaView style={styles.safeArea}>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={styles.keyboardView}
                 >
                     <View style={[styles.header, { borderBottomColor: tokens.colors.border }]}>
                         <View style={styles.headerText}>
-                            <AtomicText type="headlineSmall" style={{ color: tokens.colors.textPrimary }}>
+                            <AtomicText type="headlineSmall" color="textPrimary">
                                 {title}
                             </AtomicText>
                             {subtitle && (
-                                <AtomicText type="bodySmall" style={{ color: tokens.colors.textSecondary, marginTop: 4 }}>
+                                <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 }}>
                                     {subtitle}
                                 </AtomicText>
                             )}
                         </View>
                         <TouchableOpacity
                             onPress={onClose}
-                            style={[styles.closeButton, { backgroundColor: tokens.colors.surface }]}
+                            style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
                         >
-                            <AtomicIcon name="close" customSize={20} customColor={tokens.colors.textPrimary} />
+                            <AtomicIcon name="close" size="sm" color="onSurface" />
                         </TouchableOpacity>
                     </View>
 
@@ -77,9 +72,10 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>
-        </Modal>
+        </BaseModal>
     );
 };
+
 
 const styles = StyleSheet.create({
     safeArea: {

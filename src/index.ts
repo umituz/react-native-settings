@@ -123,11 +123,8 @@ export type { SentryTestSettingProps } from '@umituz/react-native-sentry';
 // CLOUD SYNC - Default DISABLED
 // =============================================================================
 
-export {
-  CloudSyncService,
-  DEFAULT_CLOUD_SYNC_CONFIG,
-} from './domains/cloud-sync';
-
-export type {
-  CloudSyncConfig,
-} from './domains/cloud-sync';
+export * from "./domains/cloud-sync/domain/SyncResult";
+export * from "./domains/cloud-sync/domain/ISyncAdapter";
+export * from "./domains/cloud-sync/infrastructure/CloudSyncService";
+export * from "./domains/cloud-sync/infrastructure/FirestoreSyncAdapter";
+export * from "./domains/cloud-sync/presentation/useCloudSync";

@@ -16,6 +16,7 @@ import type {
   FeedbackConfig,
   RatingConfig,
   FAQConfig,
+  CloudSyncConfig,
 } from "./FeatureConfig";
 
 /**
@@ -114,6 +115,12 @@ export interface SettingsConfig {
    * FAQ settings configuration
    */
   faqs?: FeatureVisibility | FAQConfig;
+
+  /**
+   * Cloud sync settings configuration
+   * @default false
+   */
+  cloudSync?: FeatureVisibility | CloudSyncConfig;
 
   /**
    * Custom empty state text when no settings are available

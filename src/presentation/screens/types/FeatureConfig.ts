@@ -248,3 +248,21 @@ export interface RatingConfig {
   /** Custom handler for rating action (e.g. open store review) */
   onRate?: () => void;
 }
+
+/**
+ * Cloud Sync Settings Configuration
+ */
+export interface CloudSyncConfig {
+  /** Enable cloud sync feature */
+  enabled?: FeatureVisibility;
+  /** Custom title for the sync section */
+  title?: string;
+  /** Custom description for the sync toggle */
+  description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
+  /** Firestore collection name */
+  collectionName?: string;
+}

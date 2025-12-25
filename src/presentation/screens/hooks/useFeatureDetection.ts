@@ -6,20 +6,6 @@
 import { useMemo } from "react";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 
-// Optional notification service
-let notificationService: {
-  hasPermissions?: () => Promise<boolean>;
-  requestPermissions?: () => Promise<void>;
-} | null = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const module = require("@umituz/react-native-notifications");
-  if (module?.notificationService && typeof module.notificationService === 'object') {
-    notificationService = module.notificationService;
-  }
-} catch {
-  // Package not available
-}
 
 /**
  * Check if navigation screen exists
@@ -75,8 +61,7 @@ export function useFeatureDetection(
       faqs,
     } = normalizedConfig;
 
-    const notificationServiceAvailable =
-      options?.notificationServiceAvailable ?? notificationService !== null;
+    const notificationServiceAvailable = !!options?.notificationServiceAvailable;
 
     return {
       appearance:

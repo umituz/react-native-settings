@@ -3,4 +3,4 @@
  */
 
 export { useAppearance } from "./useAppearance";
-export { useAppearanceActions, type AppearanceActionsConfig } from "./useAppearanceActions";
+export { useAppearanceActions } from "./useAppearanceActions";

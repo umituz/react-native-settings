@@ -1,61 +1,21 @@
-/**
- * useAppearance Hook
- *
- * Hook for accessing appearance state and actions
- * Single Responsibility: Presentation layer data access
- */
-
-import { useCallback } from "react";
-import { useAppearanceStore } from "../infrastructure/stores/appearanceStore";
-import { appearanceService } from "../infrastructure/services/appearanceService";
-import type { ThemeMode, CustomThemeColors } from "../types";
+import { useAppearanceQuery } from "../presentation/hooks/queries/useAppearanceQuery";
+import { useAppearanceMutations } from "../presentation/hooks/mutations/useAppearanceMutations";
+import { ThemeMode, CustomThemeColors } from "@umituz/react-native-design-system";
 
 export const useAppearance = () => {
-  const store = useAppearanceStore();
+    const { data: settings, isLoading } = useAppearanceQuery();
+    const {
+        updateThemeMutation,
+        updateColorsMutation,
+        resetAppearanceMutation
+    } = useAppearanceMutations();
 
-  const setThemeMode = useCallback(
-    async (mode: ThemeMode) => {
-      await appearanceService.setThemeMode(mode);
-    },
-    []
-  );
-
-  const toggleTheme = useCallback(
-    async () => {
-      await appearanceService.toggleTheme();
-    },
-    []
-  );
-
-  const setCustomColors = useCallback(
-    async (colors: CustomThemeColors) => {
-      await appearanceService.setCustomColors(colors);
-    },
-    []
-  );
-
-  const resetCustomColors = useCallback(
-    async () => {
-      await appearanceService.resetCustomColors();
-    },
-    []
-  );
-
-  const reset = useCallback(
-    async () => {
-      await appearanceService.reset();
-    },
-    []
-  );
-
-  return {
-    themeMode: store.settings.themeMode,
-    customColors: store.settings.customColors,
-    isInitialized: store.isInitialized,
-    setThemeMode,
-    toggleTheme,
-    setCustomColors,
-    resetCustomColors,
-    reset,
-  };
+    return {
+        themeMode: settings?.themeMode || "dark",
+        customColors: settings?.customColors,
+        isLoading,
+        setThemeMode: (mode: ThemeMode) => updateThemeMutation.mutate(mode),
+        setCustomColors: (colors: CustomThemeColors) => updateColorsMutation.mutate(colors),
+        reset: () => resetAppearanceMutation.mutate(),
+    };
 };

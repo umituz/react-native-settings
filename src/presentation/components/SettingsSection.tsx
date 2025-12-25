@@ -1,16 +1,9 @@
-/**
- * Settings Section Component
- * Single Responsibility: Render a settings section with title and container
- */
-
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { View, StyleSheet } from "react-native";
+import { useResponsiveDesignTokens, AtomicText } from "@umituz/react-native-design-system";
 
 export interface SettingsSectionProps {
-  /** Section title */
   title: string;
-  /** Section content */
   children: React.ReactNode;
 }
 
@@ -23,12 +16,12 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      <Text style={[styles.title, { color: colors.textPrimary }]}>
-        {title}
-      </Text>
-      <View style={styles.content}>
-        {children}
+      <View style={styles.titleContainer}>
+        <AtomicText type="titleLarge" color="primary">
+          {title}
+        </AtomicText>
       </View>
+      {children}
     </View>
   );
 };
@@ -39,15 +32,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "600",
+  titleContainer: {
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 8,
   },
-  content: {
-    borderRadius: 0,
-  },
 });
+
 

@@ -17,16 +17,26 @@ export type {
   UserSettings,
   SettingsError,
   SettingsResult,
-} from './domain/repositories/ISettingsRepository';
+} from './application/ports/ISettingsRepository';
 
 // =============================================================================
-// INFRASTRUCTURE LAYER - Storage
+// INFRASTRUCTURE LAYER - Services
 // =============================================================================
 
+export { getSettingsService } from './infrastructure/services/SettingsService';
+export { SettingsRepository } from './infrastructure/repositories/SettingsRepository';
+
+// =============================================================================
+// PRESENTATION LAYER - Hooks
+// =============================================================================
+
+export { useSettings } from './presentation/hooks/useSettings';
+export { useSettingsQuery } from './presentation/hooks/queries/useSettingsQuery';
 export {
-  useSettingsStore,
-  useSettings,
-} from './infrastructure/storage/SettingsStore';
+  useUpdateSettingsMutation,
+  useResetSettingsMutation
+} from './presentation/hooks/mutations/useSettingsMutations';
+
 
 // =============================================================================
 // PRESENTATION LAYER - Screens

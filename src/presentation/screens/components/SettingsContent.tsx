@@ -1,66 +1,23 @@
-/**
- * Settings Content Component
- * Renders all settings sections and custom content
- */
-
 import React, { useMemo } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
-import { ProfileSection } from "@umituz/react-native-auth";
 import { SettingsSection } from "../../components/SettingsSection";
 import { DevSettingsSection, DevSettingsProps } from "../../components/DevSettingsSection";
-import { NotificationsSection } from "@umituz/react-native-notifications";
-import { AboutSection } from "../../../domains/about/presentation/components/AboutSection";
-import { LegalSection } from "../../../domains/legal/presentation/components/LegalSection";
-import { AppearanceSection } from "../../../domains/appearance/presentation/components/AppearanceSection";
-import { LanguageSection } from "@umituz/react-native-localization";
-import { SupportSection } from "../../../domains/feedback/presentation/components/SupportSection";
-import { SettingItem } from "../../components/SettingItem";
+import { DisclaimerSetting } from "../../../domains/disclaimer";
+import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
+import { FeatureSettingsSection } from "./sections/FeatureSettingsSection";
+import { IdentitySettingsSection } from "./sections/IdentitySettingsSection";
+import { SupportSettingsSection } from "./sections/SupportSettingsSection";
+import { CustomSettingsList } from "./sections/CustomSettingsList";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
 
-// Optional FAQ component
-let FAQSection: React.ComponentType<any> | null = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const module = require("@umituz/react-native-faqs");
-  if (module?.FAQSection) {
-    FAQSection = module.FAQSection;
-  }
-} catch {
-  // Package not available
-}
-
-// Optional disclaimer component
-let DisclaimerSetting: React.ComponentType<any> | null = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const module = require("@umituz/react-native-disclaimer");
-  if (module?.DisclaimerSetting) {
-    DisclaimerSetting = module.DisclaimerSetting;
-  }
-} catch {
-  // Package not available
-}
-
-// Optional subscription component
-let SubscriptionSection: React.ComponentType<any> | null = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const module = require("@umituz/react-native-subscription");
-  if (module?.SubscriptionSection) {
-    SubscriptionSection = module.SubscriptionSection;
-  }
-} catch {
-  // Package not available
-}
-
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
-  config?: any; // Original config for emptyStateText
+  config?: any;
   features: {
     appearance: boolean;
     language: boolean;
@@ -75,22 +32,12 @@ interface SettingsContentProps {
     faqs: boolean;
   };
   showUserProfile?: boolean;
-  userProfile?: {
-    displayName?: string;
-    userId?: string;
-    isAnonymous?: boolean;
-    avatarUrl?: string;
-    accountSettingsRoute?: string;
-    onPress?: () => void;
-    anonymousDisplayName?: string;
-    avatarServiceUrl?: string;
-  };
+  userProfile?: any;
   showFooter?: boolean;
   footerText?: string;
   appVersion?: string;
   customSections?: CustomSettingsSection[];
   showCloseButton?: boolean;
-  /** Dev settings (only shown in __DEV__ mode) */
   devSettings?: DevSettingsProps;
 }
 
@@ -126,11 +73,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     [features, customSections.length]
   );
 
-  const sortedSections = useMemo(() => {
-    return Array.from(customSections)
-      .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-  }, [customSections]);
-
   return (
     <ScrollView
       style={styles.scrollView}
@@ -139,191 +81,32 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         {
           paddingTop: showCloseButton ? tokens.spacing.md : insets.top + tokens.spacing.md,
           paddingBottom: tokens.spacing.xxxl + tokens.spacing.xl,
-          paddingHorizontal: 0,
+          paddingHorizontal: tokens.spacing.md,
         },
       ]}
       showsVerticalScrollIndicator={false}
     >
-      {showUserProfile && (
-        <View style={styles.profileContainer}>
-          <ProfileSection
-            profile={{
-              displayName: userProfile?.displayName || t("settings.profile.anonymousName"),
-              userId: userProfile?.userId,
-              isAnonymous: userProfile?.isAnonymous ?? true,
-              avatarUrl: userProfile?.avatarUrl,
-              accountSettingsRoute: userProfile?.accountSettingsRoute,
-            }}
-            onPress={userProfile?.onPress}
-            onSignIn={userProfile?.onPress}
-            signInText={t("auth.signIn")}
-            anonymousText={t("settings.profile.anonymousName")}
-          />
-        </View>
-      )}
+      {showUserProfile && <ProfileSectionLoader userProfile={userProfile} />}
 
-      {features.subscription &&
-        SubscriptionSection &&
-        normalizedConfig.subscription.config?.sectionConfig && (
-          <SubscriptionSection
-            config={normalizedConfig.subscription.config.sectionConfig}
-          />
-        )}
+      <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
-      {features.appearance && (
-        <AppearanceSection
-          config={{
-            ...normalizedConfig.appearance.config,
-            title: t("settings.appearance.title"),
-            description: t("settings.appearance.description"),
-          }}
-          sectionTitle={t("settings.appearance.title")}
-        />
-      )}
+      <IdentitySettingsSection normalizedConfig={normalizedConfig} features={features} />
 
-      {features.language && (
-        <LanguageSection
-          config={{
-            ...normalizedConfig.language.config,
-            title: t("settings.languageSelection.title"),
-            description:
-              normalizedConfig.language.config?.description ||
-              t("settings.languageSelection.description"),
-          }}
-        />
-      )}
+      <SupportSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
-      {features.notifications && (
-        <NotificationsSection
-          config={{
-            ...normalizedConfig.notifications.config,
-            title: t("settings.notifications.title"),
-            description: t("settings.notifications.description"),
-          }}
-        />
-      )}
+      {features.disclaimer && <DisclaimerSetting />}
 
-      {features.about && (
-        <AboutSection
-          config={{
-            ...normalizedConfig.about.config,
-            title: t("settings.about.title"),
-            description: t("settings.about.description"),
-          }}
-          sectionTitle={t("settings.about.title")}
-        />
-      )}
-
-      {features.legal && (
-        <LegalSection
-          config={{
-            ...normalizedConfig.legal.config,
-            title: t("settings.legal.title"),
-            description: t("settings.legal.description"),
-          }}
-          sectionTitle={t("settings.legal.title")}
-        />
-      )}
-
-      {(features.feedback || features.rating || features.faqs) && (
-        <SettingsSection title={t("settings.support.title")}>
-          {(features.feedback || features.rating) && (
-            <SupportSection
-              renderSection={(props: any) => <>{props.children}</>}
-              renderItem={(props: any) => <SettingItem {...props} />}
-              feedbackConfig={{
-                enabled: features.feedback,
-                config: {
-                  ...normalizedConfig.feedback.config,
-                  title: normalizedConfig.feedback.config?.title || t("settings.feedback.title"),
-                  description: normalizedConfig.feedback.config?.description || t("settings.feedback.description"),
-                }
-              }}
-              ratingConfig={{
-                enabled: features.rating,
-                config: {
-                  ...normalizedConfig.rating.config,
-                  title: normalizedConfig.rating.config?.title || t("settings.rating.title"),
-                  description: normalizedConfig.rating.config?.description || t("settings.rating.description"),
-                }
-              }}
-              feedbackModalTexts={{
-                title: t("settings.feedback.modal.title"),
-                ratingLabel: t("settings.feedback.modal.ratingLabel"),
-                descriptionPlaceholder: t("settings.feedback.modal.descriptionPlaceholder"),
-                submitButton: t("settings.feedback.modal.submitButton"),
-                submittingButton: t("settings.feedback.modal.submittingButton"),
-                feedbackTypes: [
-                  { type: 'general', label: t("settings.feedback.types.general") },
-                  { type: 'bug_report', label: t("settings.feedback.types.bugReport") },
-                  { type: 'feature_request', label: t("settings.feedback.types.featureRequest") },
-                  { type: 'improvement', label: t("settings.feedback.types.improvement") },
-                  { type: 'other', label: t("settings.feedback.types.other") },
-                ],
-                defaultTitle: (type) => {
-                  const titles = {
-                    general: t("settings.feedback.types.general"),
-                    bug_report: t("settings.feedback.types.bugReport"),
-                    feature_request: t("settings.feedback.types.featureRequest"),
-                    improvement: t("settings.feedback.types.improvement"),
-                    other: t("settings.feedback.types.other"),
-                  };
-                  return titles[type] || type;
-                },
-              }}
-            />
-          )}
-
-
-          {features.faqs && FAQSection && (
-            <FAQSection
-              renderSection={(props: any) => <>{props.children}</>}
-              renderItem={(props: any) => <SettingItem {...props} />}
-              config={{
-                enabled: features.faqs,
-                ...normalizedConfig.faqs.config,
-                title: normalizedConfig.faqs.config?.title || t("settings.faqs.title") || "FAQs",
-                description: normalizedConfig.faqs.config?.description || t("settings.faqs.description") || "FAQs",
-              }}
-            />
-          )}
-        </SettingsSection>
-      )}
-
-      {features.disclaimer && DisclaimerSetting && (
-        <DisclaimerSetting />
-      )}
-
-      {customSections && customSections.length > 0 && (
-        <>
-          {sortedSections.map((section, index) => (
-            <SettingsSection
-              key={section.id || `custom-${index}`}
-              title={section.title}
-            >
-              {section.content}
-            </SettingsSection>
-          ))}
-        </>
-      )}
+      <CustomSettingsList customSections={customSections} />
 
       {!hasAnyFeatures && (
         <View style={styles.emptyContainer}>
-          <SettingsSection
-            title={config?.emptyStateText || t("settings.noOptionsAvailable") || "No settings available"}
-          >
+          <SettingsSection title={config?.emptyStateText || t("settings.noOptionsAvailable")}>
             <View />
           </SettingsSection>
         </View>
       )}
 
-      {devSettings && (
-        <DevSettingsSection
-          enabled={devSettings.enabled}
-          onAfterClear={devSettings.onAfterClear}
-          texts={devSettings.texts}
-        />
-      )}
+      {devSettings && <DevSettingsSection {...devSettings} />}
 
       {showFooter && (
         <SettingsFooter
@@ -337,17 +120,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-  profileContainer: {
-    marginBottom: 32,
-    paddingHorizontal: 0,
-  },
-  emptyContainer: {
-    paddingVertical: 24,
-  },
+  scrollView: { flex: 1 },
+  scrollContent: { flexGrow: 1 },
+  emptyContainer: { paddingVertical: 24 },
 });

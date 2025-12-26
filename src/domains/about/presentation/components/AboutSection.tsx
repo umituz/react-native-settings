@@ -1,12 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {
-    useResponsiveDesignTokens,
-    AtomicText,
-    ListItem
-} from '@umituz/react-native-design-system';
 import { AboutConfig } from '../../domain/entities/AppInfo';
+import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 
 export interface AboutSectionProps {
     config?: AboutConfig;
@@ -26,12 +22,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     sectionTitle: propsSectionTitle,
 }) => {
     const navigation = useNavigation();
-    const tokens = useResponsiveDesignTokens();
 
     const route = config?.route || config?.defaultRoute || 'About';
     const title = propsTitle || config?.title;
     const description = propsDescription || config?.description;
-    const sectionTitle = propsSectionTitle || title;
+    const sectionTitle = propsSectionTitle;
 
     const handlePress = () => {
         if (onPress) {
@@ -44,34 +39,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     if (!title) return null;
 
     return (
-        <View style={[styles.sectionContainer, { backgroundColor: tokens.colors.surface }, containerStyle]}>
-            {!!sectionTitle && (
-                <View style={styles.headerContainer}>
-                    <AtomicText type="titleMedium" color="primary">
-                        {sectionTitle}
-                    </AtomicText>
-                </View>
-            )}
-            <ListItem
-                title={title}
-                subtitle={description}
-                leftIcon="information-circle"
-                rightIcon="chevron-forward"
-                onPress={handlePress}
-            />
-        </View>
+        <SettingsItemCard
+            title={title}
+            description={description}
+            icon="information-circle-outline"
+            onPress={handlePress}
+            containerStyle={containerStyle}
+            sectionTitle={sectionTitle}
+        />
     );
 };
-
-const styles = StyleSheet.create({
-    sectionContainer: {
-        marginBottom: 16,
-        borderRadius: 12,
-        overflow: 'hidden',
-    },
-    headerContainer: {
-        paddingHorizontal: 16,
-        paddingTop: 16,
-        paddingBottom: 8,
-    },
-});

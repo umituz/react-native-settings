@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Pressable, StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useResponsiveDesignTokens, AtomicIcon, AtomicText } from '@umituz/react-native-design-system';
 import { LegalConfig } from '../../domain/entities/LegalConfig';
+import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 
 export interface LegalSectionProps {
     config?: LegalConfig;
@@ -22,13 +22,11 @@ export const LegalSection: React.FC<LegalSectionProps> = ({
     sectionTitle: propsSectionTitle,
 }) => {
     const navigation = useNavigation();
-    const tokens = useResponsiveDesignTokens();
-    const colors = tokens.colors;
 
     const route = config?.route || config?.defaultRoute || 'Legal';
     const title = propsTitle || config?.title;
     const description = propsDescription || config?.description;
-    const sectionTitle = propsSectionTitle || title;
+    const sectionTitle = propsSectionTitle;
 
     const handlePress = () => {
         if (onPress) {
@@ -41,94 +39,13 @@ export const LegalSection: React.FC<LegalSectionProps> = ({
     if (!title) return null;
 
     return (
-        <View style={[styles.sectionContainer, { backgroundColor: colors.surface }, containerStyle]}>
-            {!!sectionTitle && (
-                <View style={styles.headerContainer}>
-                    <AtomicText
-                        type="titleMedium"
-                        color="primary"
-                    >
-                        {sectionTitle}
-                    </AtomicText>
-                </View>
-            )}
-            <Pressable
-                style={({ pressed }) => [
-                    styles.itemContainer,
-                    {
-                        backgroundColor: pressed ? `${colors.primary}08` : 'transparent',
-                    },
-                ]}
-                onPress={handlePress}
-            >
-                <View style={styles.content}>
-                    <View
-                        style={[
-                            styles.iconContainer,
-                            { backgroundColor: `${colors.primary}15` },
-                        ]}
-                    >
-                        <AtomicIcon name="document-text" size="lg" color="primary" />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <AtomicText
-                            type="bodyLarge"
-                            color="primary"
-                            numberOfLines={1}
-                            style={{ marginBottom: 4 }}
-                        >
-                            {title}
-                        </AtomicText>
-                        {!!description && (
-                            <AtomicText
-                                type="bodyMedium"
-                                color="secondary"
-                                numberOfLines={2}
-                            >
-                                {description}
-                            </AtomicText>
-                        )}
-                    </View>
-                    <AtomicIcon name="chevron-forward" size="md" color="secondary" />
-                </View>
-            </Pressable>
-        </View>
+        <SettingsItemCard
+            title={title}
+            description={description}
+            icon="document-text-outline"
+            onPress={handlePress}
+            containerStyle={containerStyle}
+            sectionTitle={sectionTitle}
+        />
     );
 };
-
-const styles = StyleSheet.create({
-    sectionContainer: {
-        marginBottom: 16,
-        borderRadius: 12,
-        overflow: 'hidden',
-    },
-    headerContainer: {
-        paddingHorizontal: 16,
-        paddingTop: 16,
-        paddingBottom: 8,
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 16,
-        minHeight: 72,
-    },
-    content: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    iconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: 12,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 16,
-    },
-    textContainer: {
-        flex: 1,
-        marginRight: 8,
-    },
-});

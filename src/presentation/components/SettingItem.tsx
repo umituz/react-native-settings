@@ -4,8 +4,8 @@ import {
   AtomicIcon,
   AtomicText,
   useResponsiveDesignTokens,
-  ListItem
 } from "@umituz/react-native-design-system";
+import { SettingsItemCard } from "./SettingsItemCard";
 
 export interface SettingItemProps {
   icon: string;
@@ -104,19 +104,14 @@ export const SettingItem: React.FC<SettingItemProps> = ({
     );
   }
 
-  // Use design system's ListItem for regular items
+  // Use SettingsItemCard for regular items
   return (
-    <ListItem
+    <SettingsItemCard
       title={title}
-      subtitle={value}
-      leftIcon={icon}
-      rightIcon="chevron-forward"
-      onPress={onPress}
-      disabled={disabled}
-      style={{
-        borderBottomWidth: isLast ? 0 : 1,
-        borderBottomColor: `${tokens.colors.onSurface}10`,
-      }}
+      description={value}
+      icon={icon as any}
+      onPress={onPress || (() => { })}
+      iconColor={iconColor}
     />
   );
 };

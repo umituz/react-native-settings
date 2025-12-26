@@ -1,8 +1,9 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { AppearanceSection } from "../../../../domains/appearance/presentation/components/AppearanceSection";
-import { LanguageSection } from "@umituz/react-native-localization";
 import { NotificationsSection } from "@umituz/react-native-notifications";
 import { useLocalization } from "@umituz/react-native-localization";
+import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 
 interface FeatureSettingsSectionProps {
@@ -18,7 +19,13 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   normalizedConfig,
   features,
 }) => {
-  const { t } = useLocalization();
+  const { t, currentLanguage } = useLocalization();
+  const navigation = useNavigation();
+
+  const handleLanguagePress = () => {
+    const route = normalizedConfig.language.config?.route || "LanguageSelection";
+    navigation.navigate(route as never);
+  };
 
   return (
     <>
@@ -34,14 +41,12 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
       )}
 
       {features.language && (
-        <LanguageSection
-          config={{
-            ...normalizedConfig.language.config,
-            title: t("settings.languageSelection.title"),
-            description:
-              normalizedConfig.language.config?.description ||
-              t("settings.languageSelection.description"),
-          }}
+        <SettingsItemCard
+          title={t("settings.languageSelection.title")}
+          description={currentLanguage || "English"}
+          icon="globe-outline"
+          onPress={handleLanguagePress}
+          sectionTitle={t("settings.languageSelection.title")}
         />
       )}
 

@@ -72,6 +72,9 @@ export type {
 export { SettingItem } from './presentation/components/SettingItem';
 export type { SettingItemProps } from './presentation/components/SettingItem';
 
+export { SettingsItemCard } from './presentation/components/SettingsItemCard';
+export type { SettingsItemCardProps } from './presentation/components/SettingsItemCard';
+
 export { SettingsSection } from './presentation/components/SettingsSection';
 export type { SettingsSectionProps } from './presentation/components/SettingsSection';
 

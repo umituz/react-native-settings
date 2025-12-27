@@ -9,7 +9,7 @@
 
 import React from "react";
 import { Alert } from "react-native";
-import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { storageRepository } from "@umituz/react-native-storage";
 import { SettingsSection } from "./SettingsSection";
 import { SettingItem } from "./SettingItem";
@@ -46,7 +46,7 @@ export const DevSettingsSection: React.FC<DevSettingsProps> = ({
   texts = {},
   customDevComponents = [],
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
 
   // Merge custom texts with defaults
   const t = { ...DEFAULT_TEXTS, ...texts };

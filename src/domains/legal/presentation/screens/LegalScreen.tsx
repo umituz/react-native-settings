@@ -9,7 +9,7 @@
 
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { useResponsiveDesignTokens, type DesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, type DesignTokens } from "@umituz/react-native-design-system";
 import { AtomicText } from "@umituz/react-native-design-system";
 import { ScreenLayout } from "@umituz/react-native-design-system";
 import { LegalItem } from "../components/LegalItem";
@@ -93,7 +93,7 @@ export const LegalScreen: React.FC<LegalScreenProps> = React.memo(({
   eulaUrl,
   testID = "legal-screen",
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
 
   // Memoize styles to prevent recreation on every render
   const styles = React.useMemo(() => {

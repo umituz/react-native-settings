@@ -11,7 +11,7 @@ import {
   where,
   limit,
 } from "firebase/firestore";
-import type { Firestore } from "firebase/firestore";
+import type { Firestore, QueryConstraint } from "firebase/firestore";
 import type {
   VideoTutorial,
   VideoTutorialCategory,
@@ -46,7 +46,7 @@ class VideoTutorialService {
   async getAllTutorials(
     filters?: VideoTutorialFilters,
   ): Promise<VideoTutorial[]> {
-    const constraints = [];
+    const constraints: QueryConstraint[] = [];
 
     if (filters?.category) {
       constraints.push(where("category", "==", filters.category));

@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import { useResponsiveDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import { FAQItem as FAQItemType } from '../../domain/entities/FAQEntity';
 
 export interface FAQItemStyles {
@@ -32,36 +32,49 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
     onToggle,
     styles: customStyles,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
 
     const styles = useMemo(
         () =>
             StyleSheet.create({
                 container: {
                     marginHorizontal: tokens.spacing.md,
-                    marginBottom: tokens.spacing.xs,
-                    borderRadius: 12,
+                    marginBottom: tokens.spacing.sm,
+                    borderRadius: 20,
                     backgroundColor: tokens.colors.surface,
                     borderWidth: 1,
-                    borderColor: tokens.colors.border,
+                    borderColor: isExpanded ? tokens.colors.primary : tokens.colors.border,
+                    overflow: 'hidden',
                 },
                 header: {
-                    flexDirection: 'row' as const,
-                    alignItems: 'center' as const,
-                    padding: tokens.spacing.md,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: tokens.spacing.lg,
                 },
                 content: {
                     flex: 1,
-                    marginRight: tokens.spacing.xs,
+                    marginRight: tokens.spacing.md,
+                },
+                questionText: {
+                    fontWeight: '700',
                 },
                 answerContainer: {
-                    paddingHorizontal: tokens.spacing.md,
-                    paddingBottom: tokens.spacing.md,
+                    paddingHorizontal: tokens.spacing.lg,
+                    paddingBottom: tokens.spacing.lg,
                     borderTopWidth: 1,
                     borderTopColor: tokens.colors.borderLight,
+                    backgroundColor: tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
+                },
+                iconContainer: {
+                    width: 36,
+                    height: 36,
+                    borderRadius: 18,
+                    backgroundColor: isExpanded ? tokens.colors.primary : tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 },
             }),
-        [tokens]
+        [tokens, isExpanded]
     );
 
     return (
@@ -69,22 +82,24 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
             <TouchableOpacity
                 onPress={onToggle}
                 style={[styles.header, customStyles?.header]}
-                activeOpacity={0.7}
+                activeOpacity={0.8}
             >
                 <View style={[styles.content, customStyles?.content]}>
                     <AtomicText
                         type="bodyLarge"
-                        color="textPrimary"
-                        style={customStyles?.questionStyle}
-                        numberOfLines={isExpanded ? undefined : 2}
+                        color={isExpanded ? "primary" : "textPrimary"}
+                        style={[styles.questionText, customStyles?.questionStyle]}
                     >
                         {item.question}
                     </AtomicText>
                 </View>
-                <AtomicIcon
-                    name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                    size={20}
-                />
+                <View style={styles.iconContainer}>
+                    <AtomicIcon
+                        name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                        size={20}
+                        color={isExpanded ? "onPrimary" : "textSecondary"}
+                    />
+                </View>
             </TouchableOpacity>
 
             {isExpanded && (
@@ -92,7 +107,7 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
                     <AtomicText
                         type="bodyMedium"
                         color="textSecondary"
-                        style={customStyles?.answerStyle}
+                        style={[{ lineHeight: 22 }, customStyles?.answerStyle]}
                     >
                         {item.answer}
                     </AtomicText>

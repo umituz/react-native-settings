@@ -3,7 +3,7 @@ import { View, StyleSheet, Switch } from "react-native";
 import {
   AtomicIcon,
   AtomicText,
-  useResponsiveDesignTokens,
+  useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "./SettingsItemCard";
 
@@ -40,7 +40,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
   testID,
   disabled = false,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
 
   // For switch items, we need custom rendering
   if (showSwitch) {

@@ -45,7 +45,7 @@ export interface AboutSettingItemProps {
   chevronColor?: string;
 }
 
-import { useResponsiveDesignTokens } from '@umituz/react-native-design-system';
+import { useAppDesignTokens } from '@umituz/react-native-design-system';
 
 export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
   icon,
@@ -63,7 +63,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
   testID,
   chevronColor,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const colors = tokens.colors;
 
   // Memoize container type to prevent unnecessary re-renders

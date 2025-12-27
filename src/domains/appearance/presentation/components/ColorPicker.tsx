@@ -10,7 +10,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import {
   AtomicIcon,
   AtomicText,
-  useResponsiveDesignTokens,
+  useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 
 interface ColorPickerProps {
@@ -26,7 +26,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   onValueChange,
   colors,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
 
   // Memoize styles to prevent unnecessary re-creation
   const styles = useMemo(() => getStyles(tokens), [tokens]);
@@ -84,7 +84,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   );
 };
 
-const getStyles = (tokens: ReturnType<typeof useResponsiveDesignTokens>) =>
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
       marginBottom: 16,

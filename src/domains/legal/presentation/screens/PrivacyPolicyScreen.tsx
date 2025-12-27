@@ -6,7 +6,7 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { AtomicText, AtomicButton } from "@umituz/react-native-design-system";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 import { ContentValidationService } from "../../domain/services/ContentValidationService";
@@ -54,7 +54,7 @@ export const PrivacyPolicyScreen: React.FC<PrivacyPolicyScreenProps> = React.mem
   onUrlPress,
   testID = "privacy-policy-screen",
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const insets = useSafeAreaInsets();
   
   // Validate required props

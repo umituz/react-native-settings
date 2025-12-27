@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { useResponsiveDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 import { FAQCategory as FAQCategoryType } from '../../domain/entities/FAQEntity';
 import { FAQItemComponent, FAQItemStyles } from './FAQItem';
 
@@ -29,18 +29,26 @@ export const FAQCategoryComponent: React.FC<FAQCategoryProps> = ({
     onToggleItem,
     styles: customStyles,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
 
     const styles = useMemo(
         () =>
             StyleSheet.create({
                 container: {
-                    marginBottom: tokens.spacing.lg,
+                    marginBottom: tokens.spacing.xl,
                 },
                 titleContainer: {
-                    marginBottom: tokens.spacing.md,
-                    paddingHorizontal: tokens.spacing.md,
+                    marginBottom: tokens.spacing.sm,
+                    paddingHorizontal: tokens.spacing.lg,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                 },
+                titleLine: {
+                    flex: 1,
+                    height: 1,
+                    backgroundColor: tokens.colors.border,
+                    marginLeft: tokens.spacing.md,
+                }
             }),
         [tokens]
     );
@@ -49,12 +57,13 @@ export const FAQCategoryComponent: React.FC<FAQCategoryProps> = ({
         <View style={[styles.container, customStyles?.container]}>
             <View style={styles.titleContainer}>
                 <AtomicText
-                    type="headlineSmall"
-                    color="textPrimary"
-                    style={customStyles?.titleStyle}
+                    type="labelLarge"
+                    color="textSecondary"
+                    style={[{ textTransform: 'uppercase', letterSpacing: 1, fontWeight: '700' }, customStyles?.titleStyle]}
                 >
                     {category.title}
                 </AtomicText>
+                <View style={styles.titleLine} />
             </View>
             {category.items.map((item, index) => (
                 <FAQItemComponent

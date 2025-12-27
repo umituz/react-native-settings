@@ -5,7 +5,7 @@
 
 import React, { Component, ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useResponsiveDesignTokens } from '@umituz/react-native-design-system';
+import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import { useLocalization } from '@umituz/react-native-localization';
 
@@ -67,7 +67,7 @@ const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   fallbackTitle,
   fallbackMessage
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const { t } = useLocalization();
 
   const title = __DEV__ && error?.message

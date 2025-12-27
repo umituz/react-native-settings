@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
-import { useResponsiveDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import { useFeedbackForm } from "../hooks/useFeedbackForm";
 
@@ -29,7 +29,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     initialType,
     isSubmitting = false,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
     const [selectedType, setSelectedType] = useState<FeedbackType>(initialType || texts.feedbackTypes[0].type);
     const [rating, setRating] = useState<FeedbackRating>(5);
     const [description, setDescription] = useState("");

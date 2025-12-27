@@ -6,7 +6,7 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useResponsiveDesignTokens, AtomicText, AtomicIcon, BaseModal } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal } from "@umituz/react-native-design-system";
 import { FeedbackForm } from "./FeedbackForm";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 
@@ -31,7 +31,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     subtitle,
     texts,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
 
     return (
         <BaseModal visible={visible} onClose={onClose}>

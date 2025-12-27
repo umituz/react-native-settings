@@ -8,7 +8,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system";
-import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import type { ThemeMode } from "../../types";
 
 interface ThemeOptionProps {
@@ -30,7 +30,7 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
   isSelected,
   onSelect,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const styles = getStyles(tokens);
   const iconName = mode === "dark" ? "moon-outline" : mode === "light" ? "sunny-outline" : "desktop-outline";
 
@@ -89,7 +89,7 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
   );
 };
 
-const getStyles = (tokens: ReturnType<typeof useResponsiveDesignTokens>) =>
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
       backgroundColor: tokens.colors.surface,

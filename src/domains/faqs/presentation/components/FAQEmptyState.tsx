@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { useResponsiveDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 
 export interface FAQEmptyStateStyles {
     container?: ViewStyle;
@@ -28,7 +28,7 @@ export const FAQEmptyState: React.FC<FAQEmptyStateProps> = ({
     icon = '❓',
     styles: customStyles,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
 
     const styles = useMemo(
         () =>

@@ -8,7 +8,7 @@ import { AboutSettingItem } from './AboutSettingItem';
 import { AppInfo } from '../../domain/entities/AppInfo';
 import { AboutConfig } from '../../domain/entities/AppInfo';
 
-import { useResponsiveDesignTokens } from '@umituz/react-native-design-system';
+import { useAppDesignTokens } from '@umituz/react-native-design-system';
 
 export interface AboutContentProps {
   /** App information to display */
@@ -18,7 +18,7 @@ export interface AboutContentProps {
 }
 
 const AboutSectionHeader: React.FC<{ title: string }> = ({ title }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const colors = tokens.colors;
 
   return (

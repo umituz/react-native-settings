@@ -26,7 +26,7 @@ export interface AboutHeaderProps {
   testID?: string;
 }
 
-import { useResponsiveDesignTokens } from '@umituz/react-native-design-system';
+import { useAppDesignTokens } from '@umituz/react-native-design-system';
 
 export const AboutHeader: React.FC<AboutHeaderProps> = ({
   appInfo,
@@ -37,7 +37,7 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
   versionPrefix = "Version",
   testID,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const colors = tokens.colors;
 
   return (

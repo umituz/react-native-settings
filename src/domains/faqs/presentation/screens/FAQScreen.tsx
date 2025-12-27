@@ -5,8 +5,8 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { useResponsiveDesignTokens, AtomicText, ScreenLayout } from '@umituz/react-native-design-system';
+import { View, ScrollView, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
+import { useAppDesignTokens, AtomicText, ScreenLayout, getContentMaxWidth } from '@umituz/react-native-design-system';
 import { FAQCategory } from '../../domain/entities/FAQEntity';
 import { useFAQSearch } from '../hooks/useFAQSearch';
 import { useFAQExpansion } from '../hooks/useFAQExpansion';
@@ -45,9 +45,10 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
   renderHeader,
   styles: customStyles,
 }) => {
-  const tokens = useResponsiveDesignTokens();
-  const { searchQuery, setSearchQuery, filteredCategories, hasResults } =
-    useFAQSearch(categories);
+  const tokens = useAppDesignTokens();
+  const { width: windowWidth } = useWindowDimensions();
+  const contentMaxWidth = useMemo(() => getContentMaxWidth(windowWidth), [windowWidth]);
+  const { searchQuery, setSearchQuery, filteredCategories, hasResults } = useFAQSearch(categories);
   const { isExpanded, toggleExpansion } = useFAQExpansion();
 
   const styles = useMemo(
@@ -55,12 +56,9 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
       StyleSheet.create({
         container: {
           flex: 1,
-          backgroundColor: tokens.colors.backgroundPrimary,
         },
         header: {
           padding: tokens.spacing.md,
-          borderBottomWidth: 1,
-          borderBottomColor: tokens.colors.border,
         },
         content: {
           flex: 1,
@@ -81,12 +79,13 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     }
 
     return (
-      <ScrollView
-        style={[styles.content, customStyles?.content]}
-        showsVerticalScrollIndicator={false}
-      >
+      <View style={{ flex: 1 }}>
         <View style={[styles.header, customStyles?.header]}>
-          <AtomicText type="headlineMedium" color="textPrimary" style={{ marginBottom: tokens.spacing.sm }}>
+          <AtomicText
+            type="headlineMedium"
+            color="textPrimary"
+            style={{ marginBottom: tokens.spacing.md, fontWeight: '700' }}
+          >
             {headerTitle}
           </AtomicText>
           <FAQSearchBar
@@ -97,30 +96,41 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
           />
         </View>
 
-        {filteredCategories.map((category) => (
-          <FAQCategoryComponent
-            key={category.id}
-            category={category}
-            isExpanded={isExpanded}
-            onToggleItem={toggleExpansion}
-            styles={customStyles?.category}
-          />
-        ))}
-      </ScrollView>
+        <ScrollView
+          style={[styles.content, customStyles?.content]}
+          contentContainerStyle={{ paddingVertical: tokens.spacing.md }}
+          showsVerticalScrollIndicator={false}
+        >
+          {filteredCategories.map((category) => (
+            <FAQCategoryComponent
+              key={category.id}
+              category={category}
+              isExpanded={isExpanded}
+              onToggleItem={toggleExpansion}
+              styles={customStyles?.category}
+            />
+          ))}
+          <View style={{ height: tokens.spacing.xl * 2 }} />
+        </ScrollView>
+      </View>
     );
   };
 
   if (renderHeader) {
     return (
-      <View style={[styles.container, customStyles?.container]}>
-        {renderHeader({ onBack: onBack || (() => { }) })}
-        {renderContent()}
+      <View style={{ flex: 1, backgroundColor: tokens.colors.backgroundPrimary }}>
+        <View style={[styles.container, customStyles?.container]}>
+          <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
+            {renderHeader({ onBack: onBack || (() => { }) })}
+          </View>
+          {renderContent()}
+        </View>
       </View>
     );
   }
 
   return (
-    <ScreenLayout edges={['bottom']} scrollable={false}>
+    <ScreenLayout edges={['bottom']} scrollable={false} maxWidth={contentMaxWidth}>
       <View style={[styles.container, customStyles?.container]}>
         {renderContent()}
       </View>

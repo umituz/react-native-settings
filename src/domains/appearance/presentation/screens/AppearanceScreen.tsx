@@ -7,7 +7,7 @@
 
 import React, { useMemo, useCallback } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useAppearance, useAppearanceActions } from "../../hooks";
 import {
   AppearanceHeader,
@@ -63,7 +63,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   containerStyle,
   contentContainerStyle,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const { themeMode } = useAppearance();
   const {
     localCustomColors,
@@ -211,7 +211,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   );
 };
 
-const getStyles = (tokens: ReturnType<typeof useResponsiveDesignTokens>) =>
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
       flex: 1,

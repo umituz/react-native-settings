@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { View, TextInput, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { useResponsiveDesignTokens, AtomicIcon } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicIcon } from '@umituz/react-native-design-system';
 
 export interface FAQSearchBarStyles {
     container?: ViewStyle;
@@ -26,26 +26,27 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
     placeholder,
     styles: customStyles,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
 
     const styles = useMemo(
         () =>
             StyleSheet.create({
                 container: {
-                    flexDirection: 'row' as const,
-                    alignItems: 'center' as const,
-                    backgroundColor: tokens.colors.surface,
-                    borderRadius: 12,
-                    paddingHorizontal: tokens.spacing.sm,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
+                    borderRadius: 16,
+                    paddingHorizontal: tokens.spacing.md,
                     borderWidth: 1,
-                    borderColor: tokens.colors.border,
+                    borderColor: tokens.colors.borderLight,
+                    height: 48,
                 },
                 iconContainer: {
-                    marginRight: tokens.spacing.xs,
+                    marginRight: tokens.spacing.sm,
                 },
                 input: {
                     flex: 1,
-                    paddingVertical: tokens.spacing.sm,
+                    height: '100%',
                     fontSize: 16,
                     color: tokens.colors.textPrimary,
                 },
@@ -56,7 +57,7 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
     return (
         <View style={[styles.container, customStyles?.container]}>
             <View style={styles.iconContainer}>
-                <AtomicIcon name="search" size={18} />
+                <AtomicIcon name="search" size={18} color="textSecondary" />
             </View>
             <TextInput
                 style={[styles.input, customStyles?.input]}

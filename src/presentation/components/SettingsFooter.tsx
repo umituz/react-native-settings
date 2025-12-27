@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { useResponsiveDesignTokens, AtomicText } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText } from "@umituz/react-native-design-system";
 
 export interface SettingsFooterProps {
   versionText?: string;
@@ -13,7 +13,7 @@ export const SettingsFooter: React.FC<SettingsFooterProps> = ({
   appVersion,
   versionLabel,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const colors = tokens.colors;
 
   const displayText = versionText || (appVersion && versionLabel

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Pressable, StyleSheet, ViewStyle } from "react-native";
 import {
-    useResponsiveDesignTokens,
+    useAppDesignTokens,
     AtomicIcon,
     AtomicText,
     type IconName,
@@ -45,7 +45,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     iconBgColor,
     iconColor,
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
     const colors = tokens.colors;
 
     const defaultIconBg = iconBgColor || `${colors.primary}15`;

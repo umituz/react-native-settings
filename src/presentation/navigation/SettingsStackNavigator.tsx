@@ -7,7 +7,7 @@
 
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useResponsiveDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import type { SettingsConfig, CustomSettingsSection } from "../screens/types";
@@ -83,7 +83,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     devSettings,
     customSections = [],
 }) => {
-    const tokens = useResponsiveDesignTokens();
+    const tokens = useAppDesignTokens();
 
     const screenOptions = {
         headerStyle: {

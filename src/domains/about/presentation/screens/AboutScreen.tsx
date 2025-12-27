@@ -38,7 +38,7 @@ export interface AboutScreenProps {
 }
 
 import { useAboutInfo } from '../hooks/useAboutInfo';
-import { useResponsiveDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 
 export const AboutScreen: React.FC<AboutScreenProps> = ({
   config,
@@ -51,7 +51,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
   footerComponent,
   testID,
 }) => {
-  const tokens = useResponsiveDesignTokens();
+  const tokens = useAppDesignTokens();
   const colors = tokens.colors;
 
   const { appInfo, loading, error } = useAboutInfo({

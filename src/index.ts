@@ -86,6 +86,9 @@ export { SettingsErrorBoundary } from './presentation/components/SettingsErrorBo
 export { StorageClearSetting } from './presentation/components/StorageClearSetting';
 export type { StorageClearSettingProps } from './presentation/components/StorageClearSetting';
 
+export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';
+export type { CloudSyncSettingProps } from './presentation/components/CloudSyncSetting';
+
 export { DevSettingsSection } from './presentation/components/DevSettingsSection';
 export type { DevSettingsProps } from './presentation/components/DevSettingsSection';
 

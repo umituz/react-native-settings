@@ -115,7 +115,10 @@ export * from './domains/feedback';
 export * from './domains/faqs';
 
 // Rating Domain - Star ratings, reviews, statistics
-export * from './domains/rating';
+export * from "./domains/rating";
+
+// Video Tutorials Domain - Learning resources, tutorials
+export * from "./domains/video-tutorials";
 
 // =============================================================================
 // PRESENTATION LAYER - Re-exports from Dependencies

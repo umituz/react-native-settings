@@ -175,26 +175,26 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   title: {
     fontSize: tokens.typography.headlineLarge.responsiveFontSize,
     fontWeight: "600",
-    marginBottom: 24 * tokens.spacingMultiplier,
+    marginBottom: 24,
   },
   section: {
-    marginBottom: 24 * tokens.spacingMultiplier,
+    marginBottom: 24,
   },
   sectionTitle: {
     fontSize: tokens.typography.titleLarge.responsiveFontSize,
     fontWeight: "500",
-    marginBottom: 12 * tokens.spacingMultiplier,
+    marginBottom: 12,
   },
   horizontalList: {
-    paddingRight: 16 * tokens.spacingMultiplier,
+    paddingRight: 16,
   },
   verticalList: {
-    paddingBottom: 16 * tokens.spacingMultiplier,
+    paddingBottom: 16,
   },
   errorContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20 * tokens.spacingMultiplier,
+    padding: 20,
   },
 });

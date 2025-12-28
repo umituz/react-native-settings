@@ -31,7 +31,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
     const emptyColor = inactiveColor || tokens.colors.border || "#E0E0E0";
     
     // Scale the size
-    const responsiveSize = size * tokens.spacingMultiplier;
+    const responsiveSize = size;
 
     const handlePress = (index: number) => {
         if (disabled) return;
@@ -66,9 +66,9 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     container: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 4 * tokens.spacingMultiplier,
+        gap: 4,
     },
     starContainer: {
-        padding: 4 * tokens.spacingMultiplier,
+        padding: 4,
     },
 });

@@ -59,9 +59,9 @@ export const AppearanceHeader: React.FC<AppearanceHeaderProps> = ({
 const getStyles = (tokens: DesignTokens) =>
   StyleSheet.create({
     header: {
-      marginBottom: tokens.spacing.lg * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.lg,
     },
     headerSubtitle: {
-      marginTop: tokens.spacing.sm * tokens.spacingMultiplier,
+      marginTop: tokens.spacing.sm,
     },
   });

@@ -106,35 +106,35 @@ export const AppearancePreview: React.FC<AppearancePreviewProps> = ({
 const getStyles = (tokens: DesignTokens) =>
   StyleSheet.create({
     previewSection: {
-      marginBottom: tokens.spacing.lg * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.lg,
     },
     sectionTitle: {
-      marginBottom: tokens.spacing.xs * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.xs,
     },
     sectionDescription: {
-      marginBottom: tokens.spacing.md * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.md,
     },
     previewContainer: {
       backgroundColor: tokens.colors.surface,
-      borderRadius: 12 * tokens.spacingMultiplier,
-      padding: tokens.spacing.md * tokens.spacingMultiplier,
+      borderRadius: 12,
+      padding: tokens.spacing.md,
       borderLeftWidth: 4,
       borderLeftColor: tokens.colors.primary,
     },
     previewColorRow: {
       flexDirection: "row",
       flexWrap: "wrap",
-      gap: tokens.spacing.md * tokens.spacingMultiplier,
-      marginTop: tokens.spacing.sm * tokens.spacingMultiplier,
+      gap: tokens.spacing.md,
+      marginTop: tokens.spacing.sm,
     },
     previewColorItem: {
       alignItems: "center",
     },
     previewColorCircle: {
-      width: 32 * tokens.spacingMultiplier,
-      height: 32 * tokens.spacingMultiplier,
-      borderRadius: 16 * tokens.spacingMultiplier,
-      marginBottom: tokens.spacing.xs * tokens.spacingMultiplier,
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      marginBottom: tokens.spacing.xs,
       borderWidth: 1,
       borderColor: tokens.colors.border,
     },

@@ -91,17 +91,17 @@ export const AboutContent: React.FC<AboutContentProps> = ({
 
 const getStyles = (tokens: any) => StyleSheet.create({
   content: {
-    paddingVertical: 8 * tokens.spacingMultiplier,
+    paddingVertical: 8,
   },
   section: {
-    marginBottom: 24 * tokens.spacingMultiplier,
+    marginBottom: 24,
   },
   sectionHeader: {
     fontSize: tokens.typography.labelSmall.responsiveFontSize,
     fontWeight: '600',
-    marginBottom: 8 * tokens.spacingMultiplier,
-    paddingHorizontal: 16 * tokens.spacingMultiplier,
+    marginBottom: 8,
+    paddingHorizontal: 16,
     textTransform: 'uppercase',
-    letterSpacing: 0.5 * tokens.spacingMultiplier,
+    letterSpacing: 0.5,
   },
 });

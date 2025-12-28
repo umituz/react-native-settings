@@ -35,14 +35,14 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
-                    borderRadius: 16 * tokens.spacingMultiplier,
-                    paddingHorizontal: tokens.spacing.md * tokens.spacingMultiplier,
+                    borderRadius: 16,
+                    paddingHorizontal: tokens.spacing.md,
                     borderWidth: 1,
                     borderColor: tokens.colors.borderLight,
-                    height: 48 * tokens.spacingMultiplier,
+                    height: 48,
                 },
                 iconContainer: {
-                    marginRight: tokens.spacing.sm * tokens.spacingMultiplier,
+                    marginRight: tokens.spacing.sm,
                 },
                 input: {
                     flex: 1,

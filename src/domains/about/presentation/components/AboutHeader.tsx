@@ -59,22 +59,22 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
 const getStyles = (tokens: any) => StyleSheet.create({
   header: {
     alignItems: 'center',
-    paddingVertical: 24 * tokens.spacingMultiplier,
-    paddingHorizontal: 16 * tokens.spacingMultiplier,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
   },
   appName: {
     fontSize: tokens.typography.headlineMedium.responsiveFontSize,
     fontWeight: 'bold',
-    marginBottom: 4 * tokens.spacingMultiplier,
+    marginBottom: 4,
   },
   version: {
     fontSize: tokens.typography.bodyLarge.responsiveFontSize,
-    marginBottom: 8 * tokens.spacingMultiplier,
+    marginBottom: 8,
   },
   description: {
     fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     textAlign: 'center',
-    lineHeight: 20 * tokens.spacingMultiplier,
+    lineHeight: 20,
   },
 });

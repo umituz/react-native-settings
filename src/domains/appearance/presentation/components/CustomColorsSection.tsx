@@ -166,21 +166,21 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
 const getStyles = (tokens: DesignTokens) =>
   StyleSheet.create({
     section: {
-      marginBottom: tokens.spacing.xl * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.xl,
     },
     sectionHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "flex-start",
-      marginBottom: tokens.spacing.md * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.md,
     },
     titleContainer: {
       flex: 1,
     },
     sectionTitle: {
-      marginBottom: tokens.spacing.xs * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.xs,
     },
     sectionDescription: {
-      marginBottom: tokens.spacing.md * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.md,
     },
   });

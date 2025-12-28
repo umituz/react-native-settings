@@ -220,18 +220,18 @@ export const LegalScreen: React.FC<LegalScreenProps> = React.memo(({
 const createLegalScreenStyles = (tokens: DesignTokens) => {
   return StyleSheet.create({
     header: {
-      paddingBottom: tokens.spacing.lg * tokens.spacingMultiplier,
-      paddingTop: tokens.spacing.md * tokens.spacingMultiplier,
+      paddingBottom: tokens.spacing.lg,
+      paddingTop: tokens.spacing.md,
     },
     headerSubtitle: {
-      marginTop: tokens.spacing.xs * tokens.spacingMultiplier,
+      marginTop: tokens.spacing.xs,
     },
     section: {
-      marginTop: tokens.spacing.md * tokens.spacingMultiplier,
+      marginTop: tokens.spacing.md,
     },
     sectionHeader: {
-      marginBottom: tokens.spacing.sm * tokens.spacingMultiplier,
-      paddingHorizontal: tokens.spacing.md * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.sm,
+      paddingHorizontal: tokens.spacing.md,
     },
   });
 };

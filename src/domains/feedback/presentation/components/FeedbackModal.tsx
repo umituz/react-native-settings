@@ -47,7 +47,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                                 {title}
                             </AtomicText>
                             {subtitle && (
-                                <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 * tokens.spacingMultiplier }}>
+                                <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 }}>
                                     {subtitle}
                                 </AtomicText>
                             )}
@@ -90,20 +90,20 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 16 * tokens.spacingMultiplier,
+        padding: 16,
         borderBottomWidth: 1,
     },
     headerText: {
         flex: 1,
     },
     closeButton: {
-        width: 36 * tokens.spacingMultiplier,
-        height: 36 * tokens.spacingMultiplier,
-        borderRadius: 18 * tokens.spacingMultiplier,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         justifyContent: "center",
         alignItems: "center",
     },
     content: {
-        padding: 20 * tokens.spacingMultiplier,
+        padding: 20,
     },
 });

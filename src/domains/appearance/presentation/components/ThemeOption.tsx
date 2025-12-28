@@ -41,7 +41,7 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
     >
       <View style={styles.header}>
         <View style={styles.iconContainer}>
-          <AtomicIcon name={iconName} customSize={24 * tokens.spacingMultiplier} customColor={tokens.colors.primary} />
+          <AtomicIcon name={iconName} customSize={24} customColor={tokens.colors.primary} />
         </View>
         <View style={styles.textContainer}>
           <AtomicText type="titleLarge" color="primary">
@@ -53,7 +53,7 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
         </View>
         <AtomicIcon
           name={isSelected ? "checkmark-circle-outline" : "ellipse-outline"}
-          customSize={24 * tokens.spacingMultiplier}
+          customSize={24}
           customColor={isSelected ? tokens.colors.primary : tokens.colors.secondary}
         />
       </View>
@@ -93,9 +93,9 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
       backgroundColor: tokens.colors.surface,
-      borderRadius: 12 * tokens.spacingMultiplier,
-      padding: 16 * tokens.spacingMultiplier,
-      marginBottom: 16 * tokens.spacingMultiplier,
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 16,
       borderWidth: 2,
       borderColor: tokens.colors.border,
     },
@@ -105,34 +105,34 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     header: {
       flexDirection: "row",
       alignItems: "center",
-      marginBottom: 12 * tokens.spacingMultiplier,
+      marginBottom: 12,
     },
     iconContainer: {
-      width: 48 * tokens.spacingMultiplier,
-      height: 48 * tokens.spacingMultiplier,
-      borderRadius: 24 * tokens.spacingMultiplier,
+      width: 48,
+      height: 48,
+      borderRadius: 24,
       backgroundColor: `${tokens.colors.primary}15`,
       justifyContent: "center",
       alignItems: "center",
-      marginRight: 12 * tokens.spacingMultiplier,
+      marginRight: 12,
     },
     textContainer: {
       flex: 1,
     },
     description: {
-      marginBottom: 12 * tokens.spacingMultiplier,
-      lineHeight: 20 * tokens.spacingMultiplier,
+      marginBottom: 12,
+      lineHeight: 20,
     },
     featuresContainer: {
       backgroundColor: `${tokens.colors.primary}08`,
-      borderRadius: 8 * tokens.spacingMultiplier,
-      padding: 12 * tokens.spacingMultiplier,
+      borderRadius: 8,
+      padding: 12,
     },
     featuresTitle: {
-      marginBottom: 8 * tokens.spacingMultiplier,
+      marginBottom: 8,
     },
     feature: {
-      marginBottom: 4 * tokens.spacingMultiplier,
-      lineHeight: 18 * tokens.spacingMultiplier,
+      marginBottom: 4,
+      lineHeight: 18,
     },
   });

@@ -178,29 +178,29 @@ const createPrivacyPolicyStyles = (tokens: any) => {
     },
     scrollContent: {
       flexGrow: 1,
-      padding: 20 * tokens.spacingMultiplier,
+      padding: 20,
     },
     content: {
       flex: 1,
     },
     title: {
-      marginBottom: 24 * tokens.spacingMultiplier,
+      marginBottom: 24,
     },
     text: {
-      lineHeight: 24 * tokens.spacingMultiplier,
+      lineHeight: 24,
       fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     },
     urlContainer: {
-      marginTop: 32 * tokens.spacingMultiplier,
+      marginTop: 32,
       alignItems: "center",
     },
     urlText: {
-      marginBottom: 16 * tokens.spacingMultiplier,
+      marginBottom: 16,
       textAlign: "center",
       fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     },
     urlButton: {
-      marginTop: 8 * tokens.spacingMultiplier,
+      marginTop: 8,
     },
   });
 };

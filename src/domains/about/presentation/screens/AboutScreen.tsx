@@ -165,7 +165,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
     <ScrollView
       style={containerStyles}
       testID={testID}
-      contentContainerStyle={{ paddingBottom: 32 * tokens.spacingMultiplier }}
+      contentContainerStyle={{ paddingBottom: 32 }}
     >
       {renderHeader()}
       {renderContent()}
@@ -179,18 +179,18 @@ const getStyles = (tokens: any) => StyleSheet.create({
     flex: 1,
   },
   footer: {
-    paddingVertical: 16 * tokens.spacingMultiplier,
-    paddingHorizontal: 16 * tokens.spacingMultiplier,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     borderTopWidth: 1,
   },
   loadingText: {
     textAlign: 'center',
     fontSize: tokens.typography.bodyMedium.responsiveFontSize,
-    marginTop: 20 * tokens.spacingMultiplier,
+    marginTop: 20,
   },
   errorText: {
     textAlign: 'center',
     fontSize: tokens.typography.bodyMedium.responsiveFontSize,
-    marginTop: 20 * tokens.spacingMultiplier,
+    marginTop: 20,
   },
 });

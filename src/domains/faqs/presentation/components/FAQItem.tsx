@@ -38,9 +38,9 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
         () =>
             StyleSheet.create({
                 container: {
-                    marginHorizontal: tokens.spacing.md * tokens.spacingMultiplier,
-                    marginBottom: tokens.spacing.sm * tokens.spacingMultiplier,
-                    borderRadius: 20 * tokens.spacingMultiplier,
+                    marginHorizontal: tokens.spacing.md,
+                    marginBottom: tokens.spacing.sm,
+                    borderRadius: 20,
                     backgroundColor: tokens.colors.surface,
                     borderWidth: 1,
                     borderColor: isExpanded ? tokens.colors.primary : tokens.colors.border,
@@ -49,26 +49,26 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
                 header: {
                     flexDirection: 'row',
                     alignItems: 'center',
-                    padding: tokens.spacing.lg * tokens.spacingMultiplier,
+                    padding: tokens.spacing.lg,
                 },
                 content: {
                     flex: 1,
-                    marginRight: tokens.spacing.md * tokens.spacingMultiplier,
+                    marginRight: tokens.spacing.md,
                 },
                 questionText: {
                     fontWeight: '700',
                 },
                 answerContainer: {
-                    paddingHorizontal: tokens.spacing.lg * tokens.spacingMultiplier,
-                    paddingBottom: tokens.spacing.lg * tokens.spacingMultiplier,
+                    paddingHorizontal: tokens.spacing.lg,
+                    paddingBottom: tokens.spacing.lg,
                     borderTopWidth: 1,
                     borderTopColor: tokens.colors.borderLight,
                     backgroundColor: tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
                 },
                 iconContainer: {
-                    width: 36 * tokens.spacingMultiplier,
-                    height: 36 * tokens.spacingMultiplier,
-                    borderRadius: 18 * tokens.spacingMultiplier,
+                    width: 36,
+                    height: 36,
+                    borderRadius: 18,
                     backgroundColor: isExpanded ? tokens.colors.primary : tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -107,7 +107,7 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
                     <AtomicText
                         type="bodyMedium"
                         color="textSecondary"
-                        style={[{ lineHeight: 22 * tokens.spacingMultiplier }, customStyles?.answerStyle]}
+                        style={[{ lineHeight: 22 }, customStyles?.answerStyle]}
                     >
                         {item.answer}
                     </AtomicText>

@@ -95,27 +95,27 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       flex: 1,
     },
     scrollContent: {
-      padding: tokens.spacing.lg * tokens.spacingMultiplier,
-      paddingTop: tokens.spacing.xl * tokens.spacingMultiplier,
+      padding: tokens.spacing.lg,
+      paddingTop: tokens.spacing.xl,
     },
     iconHeader: {
       alignItems: 'center',
-      marginBottom: tokens.spacing.lg * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.lg,
     },
     iconContainer: {
-      width: 72 * tokens.spacingMultiplier,
-      height: 72 * tokens.spacingMultiplier,
-      borderRadius: 36 * tokens.spacingMultiplier,
+      width: 72,
+      height: 72,
+      borderRadius: 36,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 2,
     },
     title: {
       textAlign: 'center',
-      marginBottom: tokens.spacing.lg * tokens.spacingMultiplier,
+      marginBottom: tokens.spacing.lg,
     },
     content: {
-      lineHeight: 24 * tokens.spacingMultiplier,
+      lineHeight: 24,
       textAlign: 'left',
     },
   });

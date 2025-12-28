@@ -111,14 +111,14 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
   container: {
-    borderRadius: 12 * tokens.spacingMultiplier,
+    borderRadius: 12,
     borderWidth: 1,
-    marginBottom: 12 * tokens.spacingMultiplier,
+    marginBottom: 12,
     overflow: "hidden",
   },
   horizontalContainer: {
-    width: 280 * tokens.spacingMultiplier,
-    marginRight: 12 * tokens.spacingMultiplier,
+    width: 280,
+    marginRight: 12,
     marginBottom: 0,
   },
   imageContainer: {
@@ -126,56 +126,56 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   },
   thumbnail: {
     width: "100%",
-    height: 180 * tokens.spacingMultiplier,
+    height: 180,
   },
   horizontalThumbnail: {
-    height: 140 * tokens.spacingMultiplier,
+    height: 140,
   },
   durationBadge: {
     position: "absolute",
-    bottom: 8 * tokens.spacingMultiplier,
-    right: 8 * tokens.spacingMultiplier,
-    paddingHorizontal: 6 * tokens.spacingMultiplier,
-    paddingVertical: 2 * tokens.spacingMultiplier,
-    borderRadius: 4 * tokens.spacingMultiplier,
+    bottom: 8,
+    right: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
   },
   durationText: {
     color: "white",
-    fontSize: 12 * tokens.spacingMultiplier,
+    fontSize: 12,
     fontWeight: "500",
   },
   featuredBadge: {
     position: "absolute",
-    top: 8 * tokens.spacingMultiplier,
-    left: 8 * tokens.spacingMultiplier,
-    paddingHorizontal: 8 * tokens.spacingMultiplier,
-    paddingVertical: 4 * tokens.spacingMultiplier,
-    borderRadius: 4 * tokens.spacingMultiplier,
+    top: 8,
+    left: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
   },
   featuredText: {
-    fontSize: 11 * tokens.spacingMultiplier,
+    fontSize: 11,
     fontWeight: "600",
   },
   content: {
-    padding: 12 * tokens.spacingMultiplier,
+    padding: 12,
   },
   title: {
     fontSize: tokens.typography.titleMedium.responsiveFontSize,
     fontWeight: "600",
-    marginBottom: 6 * tokens.spacingMultiplier,
+    marginBottom: 6,
   },
   horizontalTitle: {
     fontSize: tokens.typography.bodyLarge.responsiveFontSize,
   },
   description: {
     fontSize: tokens.typography.bodyMedium.responsiveFontSize,
-    lineHeight: 20 * tokens.spacingMultiplier,
-    marginBottom: 8 * tokens.spacingMultiplier,
+    lineHeight: 20,
+    marginBottom: 8,
   },
   horizontalDescription: {
     fontSize: tokens.typography.bodySmall.responsiveFontSize,
-    lineHeight: 16 * tokens.spacingMultiplier,
-    marginBottom: 6 * tokens.spacingMultiplier,
+    lineHeight: 16,
+    marginBottom: 6,
   },
   metadata: {
     flexDirection: "row",
@@ -183,12 +183,12 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     alignItems: "center",
   },
   category: {
-    fontSize: 12 * tokens.spacingMultiplier,
+    fontSize: 12,
     textTransform: "capitalize",
     fontWeight: "500",
   },
   difficulty: {
-    fontSize: 12 * tokens.spacingMultiplier,
+    fontSize: 12,
     textTransform: "capitalize",
     fontWeight: "500",
   },

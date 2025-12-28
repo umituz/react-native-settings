@@ -173,14 +173,14 @@ const getStyles = (tokens: any) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12 * tokens.spacingMultiplier,
-    paddingHorizontal: 16 * tokens.spacingMultiplier,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
   disabled: {
     opacity: 0.5,
   },
   iconContainer: {
-    marginRight: 12 * tokens.spacingMultiplier,
+    marginRight: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -193,17 +193,17 @@ const getStyles = (tokens: any) => StyleSheet.create({
   },
   description: {
     fontSize: tokens.typography.bodySmall.responsiveFontSize,
-    marginTop: 2 * tokens.spacingMultiplier,
+    marginTop: 2,
   },
   value: {
     fontSize: tokens.typography.bodyLarge.responsiveFontSize,
-    marginRight: 8 * tokens.spacingMultiplier,
+    marginRight: 8,
     flexShrink: 1,
     textAlign: 'right',
     maxWidth: '60%',
   },
   chevron: {
-    fontSize: 20 * tokens.spacingMultiplier,
+    fontSize: 20,
     fontWeight: '300',
   },
 });

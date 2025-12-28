@@ -160,20 +160,20 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     padding: 12,
   },
   title: {
-    fontSize: tokens.typography.titleMedium.responsiveFontSize,
+    fontSize: tokens.typography.titleMedium.fontSize,
     fontWeight: "600",
     marginBottom: 6,
   },
   horizontalTitle: {
-    fontSize: tokens.typography.bodyLarge.responsiveFontSize,
+    fontSize: tokens.typography.bodyLarge.fontSize,
   },
   description: {
-    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
+    fontSize: tokens.typography.bodyMedium.fontSize,
     lineHeight: 20,
     marginBottom: 8,
   },
   horizontalDescription: {
-    fontSize: tokens.typography.bodySmall.responsiveFontSize,
+    fontSize: tokens.typography.bodySmall.fontSize,
     lineHeight: 16,
     marginBottom: 6,
   },

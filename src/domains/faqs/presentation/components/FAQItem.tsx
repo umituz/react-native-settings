@@ -97,7 +97,7 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
                     <AtomicIcon
                         name={isExpanded ? 'chevron-up' : 'chevron-down'}
                         size={20}
-                        color={isExpanded ? "onPrimary" : "textSecondary"}
+                        color={isExpanded ? "onPrimary" : "secondary"}
                     />
                 </View>
             </TouchableOpacity>

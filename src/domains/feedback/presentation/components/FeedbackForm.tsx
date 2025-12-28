@@ -183,7 +183,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
         borderWidth: 1,
         borderRadius: 8,
         padding: 12,
-        fontSize: tokens.typography.bodyMedium.responsiveFontSize,
+        fontSize: tokens.typography.bodyMedium.fontSize,
     },
     submitButton: {
         width: "100%",

@@ -173,7 +173,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
   title: {
-    fontSize: tokens.typography.headlineLarge.responsiveFontSize,
+    fontSize: tokens.typography.headlineLarge.fontSize,
     fontWeight: "600",
     marginBottom: 24,
   },
@@ -181,7 +181,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: tokens.typography.titleLarge.responsiveFontSize,
+    fontSize: tokens.typography.titleLarge.fontSize,
     fontWeight: "500",
     marginBottom: 12,
   },

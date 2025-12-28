@@ -47,7 +47,7 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
                 input: {
                     flex: 1,
                     height: '100%',
-                    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
+                    fontSize: tokens.typography.bodyMedium.fontSize,
                     color: tokens.colors.textPrimary,
                 },
             }),
@@ -57,7 +57,7 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
     return (
         <View style={[styles.container, customStyles?.container]}>
             <View style={styles.iconContainer}>
-                <AtomicIcon name="search" size="md" color="textSecondary" />
+                <AtomicIcon name="search" size="md" color="secondary" />
             </View>
             <TextInput
                 style={[styles.input, customStyles?.input]}

@@ -104,7 +104,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     title: {
       flex: 1,
       fontWeight: tokens.typography.labelLarge.fontWeight as any,
-      fontSize: tokens.typography.labelLarge.responsiveFontSize,
+      fontSize: tokens.typography.labelLarge.fontSize,
     },
 
     shortMessage: {

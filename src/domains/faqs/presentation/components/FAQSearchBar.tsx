@@ -35,19 +35,19 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: tokens.colors.surfaceSecondary || tokens.colors.backgroundSecondary,
-                    borderRadius: 16,
-                    paddingHorizontal: tokens.spacing.md,
+                    borderRadius: 16 * tokens.spacingMultiplier,
+                    paddingHorizontal: tokens.spacing.md * tokens.spacingMultiplier,
                     borderWidth: 1,
                     borderColor: tokens.colors.borderLight,
-                    height: 48,
+                    height: 48 * tokens.spacingMultiplier,
                 },
                 iconContainer: {
-                    marginRight: tokens.spacing.sm,
+                    marginRight: tokens.spacing.sm * tokens.spacingMultiplier,
                 },
                 input: {
                     flex: 1,
                     height: '100%',
-                    fontSize: 16,
+                    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
                     color: tokens.colors.textPrimary,
                 },
             }),
@@ -57,7 +57,7 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
     return (
         <View style={[styles.container, customStyles?.container]}>
             <View style={styles.iconContainer}>
-                <AtomicIcon name="search" size={18} color="textSecondary" />
+                <AtomicIcon name="search" size="md" color="textSecondary" />
             </View>
             <TextInput
                 style={[styles.input, customStyles?.input]}

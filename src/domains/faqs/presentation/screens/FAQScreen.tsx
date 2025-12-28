@@ -58,7 +58,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
           flex: 1,
         },
         header: {
-          padding: tokens.spacing.md,
+          padding: tokens.spacing.md * tokens.spacingMultiplier,
         },
         content: {
           flex: 1,
@@ -84,7 +84,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
           <AtomicText
             type="headlineMedium"
             color="textPrimary"
-            style={{ marginBottom: tokens.spacing.md, fontWeight: '700' }}
+            style={{ marginBottom: tokens.spacing.md * tokens.spacingMultiplier, fontWeight: '700' }}
           >
             {headerTitle}
           </AtomicText>
@@ -98,7 +98,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
 
         <ScrollView
           style={[styles.content, customStyles?.content]}
-          contentContainerStyle={{ paddingVertical: tokens.spacing.md }}
+          contentContainerStyle={{ paddingVertical: tokens.spacing.md * tokens.spacingMultiplier }}
           showsVerticalScrollIndicator={false}
         >
           {filteredCategories.map((category) => (
@@ -110,7 +110,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
               styles={customStyles?.category}
             />
           ))}
-          <View style={{ height: tokens.spacing.xl * 2 }} />
+          <View style={{ height: tokens.spacing.xl * 2 * tokens.spacingMultiplier }} />
         </ScrollView>
       </View>
     );

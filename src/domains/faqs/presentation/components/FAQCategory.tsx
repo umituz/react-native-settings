@@ -35,11 +35,11 @@ export const FAQCategoryComponent: React.FC<FAQCategoryProps> = ({
         () =>
             StyleSheet.create({
                 container: {
-                    marginBottom: tokens.spacing.xl,
+                    marginBottom: tokens.spacing.xl * tokens.spacingMultiplier,
                 },
                 titleContainer: {
-                    marginBottom: tokens.spacing.sm,
-                    paddingHorizontal: tokens.spacing.lg,
+                    marginBottom: tokens.spacing.sm * tokens.spacingMultiplier,
+                    paddingHorizontal: tokens.spacing.lg * tokens.spacingMultiplier,
                     flexDirection: 'row',
                     alignItems: 'center',
                 },
@@ -47,7 +47,7 @@ export const FAQCategoryComponent: React.FC<FAQCategoryProps> = ({
                     flex: 1,
                     height: 1,
                     backgroundColor: tokens.colors.border,
-                    marginLeft: tokens.spacing.md,
+                    marginLeft: tokens.spacing.md * tokens.spacingMultiplier,
                 }
             }),
         [tokens]

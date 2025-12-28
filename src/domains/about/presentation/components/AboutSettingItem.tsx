@@ -64,6 +64,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
   chevronColor,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = getStyles(tokens);
   const colors = tokens.colors;
 
   // Memoize container type to prevent unnecessary re-renders
@@ -79,7 +80,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
       disabled && styles.disabled,
       containerStyle
     ];
-  }, [disabled, containerStyle, colors.surface]);
+  }, [disabled, containerStyle, colors.surface, styles]);
 
   // Memoize icon container styles
   const iconContainerStyles = useMemo(() => {
@@ -87,7 +88,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
       styles.iconContainer,
       iconContainerStyle
     ];
-  }, [iconContainerStyle]);
+  }, [iconContainerStyle, styles]);
 
   // Memoize chevron styles
   const chevronStyles = useMemo(() => {
@@ -95,7 +96,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
       styles.chevron,
       { color: chevronColor || colors.textSecondary }
     ];
-  }, [chevronColor, colors.textSecondary]);
+  }, [chevronColor, colors.textSecondary, styles]);
 
   // Memoize press handler to prevent unnecessary re-renders
   const handlePress = useCallback(() => {
@@ -129,7 +130,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
         )}
       </View>
     );
-  }, [title, description, titleStyle, descriptionStyle, colors.textPrimary, colors.textSecondary]);
+  }, [title, description, titleStyle, descriptionStyle, colors.textPrimary, colors.textSecondary, styles]);
 
   // Memoize value rendering
   const renderValue = useMemo(() => {
@@ -140,7 +141,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
     return (
       <Text style={[styles.value, { color: colors.textSecondary }, valueStyle]}>{value}</Text>
     );
-  }, [value, valueStyle, colors.textSecondary]);
+  }, [value, valueStyle, colors.textSecondary, styles]);
 
   // Memoize chevron rendering
   const renderChevron = useMemo(() => {
@@ -168,18 +169,18 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: any) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 12 * tokens.spacingMultiplier,
+    paddingHorizontal: 16 * tokens.spacingMultiplier,
   },
   disabled: {
     opacity: 0.5,
   },
   iconContainer: {
-    marginRight: 12,
+    marginRight: 12 * tokens.spacingMultiplier,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -187,22 +188,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 16,
+    fontSize: tokens.typography.bodyLarge.responsiveFontSize,
     fontWeight: '500',
   },
   description: {
-    fontSize: 14,
-    marginTop: 2,
+    fontSize: tokens.typography.bodySmall.responsiveFontSize,
+    marginTop: 2 * tokens.spacingMultiplier,
   },
   value: {
-    fontSize: 16,
-    marginRight: 8,
+    fontSize: tokens.typography.bodyLarge.responsiveFontSize,
+    marginRight: 8 * tokens.spacingMultiplier,
     flexShrink: 1,
     textAlign: 'right',
     maxWidth: '60%',
   },
   chevron: {
-    fontSize: 20,
+    fontSize: 20 * tokens.spacingMultiplier,
     fontWeight: '300',
   },
 });

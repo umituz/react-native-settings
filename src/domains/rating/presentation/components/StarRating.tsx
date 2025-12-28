@@ -24,10 +24,14 @@ export const StarRating: React.FC<StarRatingProps> = ({
     style,
 }) => {
     const tokens = useAppDesignTokens();
+    const styles = getStyles(tokens);
     const [internalRating, setInternalRating] = useState(rating);
 
     const filledColor = activeColor || tokens.colors.warning || "#FFD700";
     const emptyColor = inactiveColor || tokens.colors.border || "#E0E0E0";
+    
+    // Scale the size
+    const responsiveSize = size * tokens.spacingMultiplier;
 
     const handlePress = (index: number) => {
         if (disabled) return;
@@ -48,7 +52,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
                 >
                     <AtomicIcon
                         name={index < (onRatingChange ? internalRating : rating) ? "star" : "star-outline"}
-                        customSize={size}
+                        customSize={responsiveSize}
                         customColor={index < (onRatingChange ? internalRating : rating) ? filledColor : emptyColor}
                     />
                 </TouchableOpacity>
@@ -57,13 +61,14 @@ export const StarRating: React.FC<StarRatingProps> = ({
     );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+  StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 4,
+        gap: 4 * tokens.spacingMultiplier,
     },
     starContainer: {
-        padding: 4,
+        padding: 4 * tokens.spacingMultiplier,
     },
 });

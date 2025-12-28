@@ -30,6 +30,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     isSubmitting = false,
 }) => {
     const tokens = useAppDesignTokens();
+    const styles = getStyles(tokens);
     const [selectedType, setSelectedType] = useState<FeedbackType>(initialType || texts.feedbackTypes[0].type);
     const [rating, setRating] = useState<FeedbackRating>(5);
     const [description, setDescription] = useState("");
@@ -48,7 +49,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
 
     const renderRating = () => (
         <View style={styles.ratingContainer}>
-            <AtomicText type="bodyMedium" style={{ marginBottom: 8, color: tokens.colors.textSecondary }}>
+            <AtomicText type="bodyMedium" style={{ marginBottom: 8 * tokens.spacingMultiplier, color: tokens.colors.textSecondary }}>
                 {texts.ratingLabel}
             </AtomicText>
             <View style={styles.stars}>
@@ -60,7 +61,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
                     >
                         <AtomicIcon
                             name={star <= rating ? "star" : "star-outline"}
-                            customSize={32}
+                            customSize={32 * tokens.spacingMultiplier}
                             customColor={star <= rating ? tokens.colors.warning : tokens.colors.border}
                         />
                     </TouchableOpacity>
@@ -142,46 +143,47 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+  StyleSheet.create({
     container: {
         width: "100%",
     },
     typeContainer: {
-        marginBottom: 24,
+        marginBottom: 24 * tokens.spacingMultiplier,
     },
     typeScroll: {
-        gap: 8,
+        gap: 8 * tokens.spacingMultiplier,
     },
     typeButton: {
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        borderRadius: 20,
+        paddingHorizontal: 16 * tokens.spacingMultiplier,
+        paddingVertical: 8 * tokens.spacingMultiplier,
+        borderRadius: 20 * tokens.spacingMultiplier,
         borderWidth: 1,
-        gap: 6,
+        gap: 6 * tokens.spacingMultiplier,
     },
     ratingContainer: {
         alignItems: "center",
-        marginBottom: 24,
+        marginBottom: 24 * tokens.spacingMultiplier,
     },
     stars: {
         flexDirection: "row",
-        gap: 8,
+        gap: 8 * tokens.spacingMultiplier,
     },
     starButton: {
-        padding: 4,
+        padding: 4 * tokens.spacingMultiplier,
     },
     inputContainer: {
-        marginBottom: 24,
+        marginBottom: 24 * tokens.spacingMultiplier,
     },
     textArea: {
         textAlignVertical: "top",
-        minHeight: 120,
+        minHeight: 120 * tokens.spacingMultiplier,
         borderWidth: 1,
-        borderRadius: 8,
-        padding: 12,
-        fontSize: 16,
+        borderRadius: 8 * tokens.spacingMultiplier,
+        padding: 12 * tokens.spacingMultiplier,
+        fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     },
     submitButton: {
         width: "100%",

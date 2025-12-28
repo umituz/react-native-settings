@@ -78,38 +78,38 @@ export const DisclaimerCard: React.FC<DisclaimerCardProps> = ({
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: tokens.spacing.md,
-      paddingVertical: tokens.spacing.md,
-      marginHorizontal: tokens.spacing.md,
-      marginTop: 8,
-      marginBottom: 8,
-      borderRadius: 12,
+      paddingHorizontal: tokens.spacing.md * tokens.spacingMultiplier,
+      paddingVertical: tokens.spacing.md * tokens.spacingMultiplier,
+      marginHorizontal: tokens.spacing.md * tokens.spacingMultiplier,
+      marginTop: 8 * tokens.spacingMultiplier,
+      marginBottom: 8 * tokens.spacingMultiplier,
+      borderRadius: 12 * tokens.spacingMultiplier,
     },
 
     headerRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 12,
+      marginBottom: 12 * tokens.spacingMultiplier,
     },
 
     iconContainer: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
+      width: 40 * tokens.spacingMultiplier,
+      height: 40 * tokens.spacingMultiplier,
+      borderRadius: 20 * tokens.spacingMultiplier,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: 12,
+      marginRight: 12 * tokens.spacingMultiplier,
     },
 
     title: {
       flex: 1,
       fontWeight: tokens.typography.labelLarge.fontWeight as any,
-      fontSize: tokens.typography.labelLarge.fontSize,
+      fontSize: tokens.typography.labelLarge.responsiveFontSize,
     },
 
     shortMessage: {
-      lineHeight: 18,
-      paddingLeft: 52, // Align with title (40px icon + 12px margin)
-      fontSize: 13,
+      lineHeight: 18 * tokens.spacingMultiplier,
+      paddingLeft: 52 * tokens.spacingMultiplier, // Align with title (40px icon + 12px margin)
+      fontSize: 13 * tokens.spacingMultiplier, // Or tokens.typography.bodySmall.responsiveFontSize
     },
   });

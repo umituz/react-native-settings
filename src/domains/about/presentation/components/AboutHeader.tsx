@@ -38,6 +38,7 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
   testID,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = getStyles(tokens);
   const colors = tokens.colors;
 
   return (
@@ -55,25 +56,25 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: any) => StyleSheet.create({
   header: {
     alignItems: 'center',
-    paddingVertical: 24,
-    paddingHorizontal: 16,
+    paddingVertical: 24 * tokens.spacingMultiplier,
+    paddingHorizontal: 16 * tokens.spacingMultiplier,
     borderBottomWidth: 1,
   },
   appName: {
-    fontSize: 24,
+    fontSize: tokens.typography.headlineMedium.responsiveFontSize,
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 4 * tokens.spacingMultiplier,
   },
   version: {
-    fontSize: 16,
-    marginBottom: 8,
+    fontSize: tokens.typography.bodyLarge.responsiveFontSize,
+    marginBottom: 8 * tokens.spacingMultiplier,
   },
   description: {
-    fontSize: 14,
+    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 20 * tokens.spacingMultiplier,
   },
 });

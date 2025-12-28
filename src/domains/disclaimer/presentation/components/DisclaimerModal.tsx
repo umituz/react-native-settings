@@ -81,8 +81,8 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingVertical: 16,
+      paddingHorizontal: 20 * tokens.spacingMultiplier,
+      paddingVertical: 16 * tokens.spacingMultiplier,
       borderBottomWidth: 1,
     },
 
@@ -91,11 +91,11 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     },
 
     modalContentContainer: {
-      padding: 20,
+      padding: 20 * tokens.spacingMultiplier,
     },
 
     modalText: {
-      lineHeight: 24,
-      fontSize: 15,
+      lineHeight: 24 * tokens.spacingMultiplier,
+      fontSize: 15 * tokens.spacingMultiplier, // or tokens.typography.bodyMedium.responsiveFontSize
     },
   });

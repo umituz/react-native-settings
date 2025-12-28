@@ -32,6 +32,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     texts,
 }) => {
     const tokens = useAppDesignTokens();
+    const styles = getStyles(tokens);
 
     return (
         <BaseModal visible={visible} onClose={onClose}>
@@ -46,7 +47,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                                 {title}
                             </AtomicText>
                             {subtitle && (
-                                <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 }}>
+                                <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 * tokens.spacingMultiplier }}>
                                     {subtitle}
                                 </AtomicText>
                             )}
@@ -77,7 +78,8 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
 };
 
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+  StyleSheet.create({
     safeArea: {
         flex: 1,
     },
@@ -88,20 +90,20 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 16,
+        padding: 16 * tokens.spacingMultiplier,
         borderBottomWidth: 1,
     },
     headerText: {
         flex: 1,
     },
     closeButton: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: 36 * tokens.spacingMultiplier,
+        height: 36 * tokens.spacingMultiplier,
+        borderRadius: 18 * tokens.spacingMultiplier,
         justifyContent: "center",
         alignItems: "center",
     },
     content: {
-        padding: 20,
+        padding: 20 * tokens.spacingMultiplier,
     },
 });

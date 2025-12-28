@@ -19,6 +19,7 @@ export interface AboutContentProps {
 
 const AboutSectionHeader: React.FC<{ title: string }> = ({ title }) => {
   const tokens = useAppDesignTokens();
+  const styles = getStyles(tokens);
   const colors = tokens.colors;
 
   return (
@@ -30,6 +31,8 @@ export const AboutContent: React.FC<AboutContentProps> = ({
   appInfo,
   config,
 }) => {
+  const tokens = useAppDesignTokens();
+  const styles = getStyles(tokens);
   const hasContactInfo = appInfo.developer || appInfo.contactEmail || appInfo.websiteUrl;
   const hasMoreInfo = appInfo.moreAppsUrl;
 
@@ -86,19 +89,19 @@ export const AboutContent: React.FC<AboutContentProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: any) => StyleSheet.create({
   content: {
-    paddingVertical: 8,
+    paddingVertical: 8 * tokens.spacingMultiplier,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 24 * tokens.spacingMultiplier,
   },
   sectionHeader: {
-    fontSize: 13,
+    fontSize: tokens.typography.labelSmall.responsiveFontSize,
     fontWeight: '600',
-    marginBottom: 8,
-    paddingHorizontal: 16,
+    marginBottom: 8 * tokens.spacingMultiplier,
+    paddingHorizontal: 16 * tokens.spacingMultiplier,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.5 * tokens.spacingMultiplier,
   },
 });

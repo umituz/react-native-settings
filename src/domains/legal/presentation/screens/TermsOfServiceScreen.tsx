@@ -71,12 +71,13 @@ export const TermsOfServiceScreen: React.FC<TermsOfServiceScreenProps> = React.m
   
   // Use cached styles
   const styles = React.useMemo(() => {
+    const cacheKey = StyleCacheService.createTokenCacheKey(tokens);
     return StyleCacheService.getCachedStyles(
       'TermsOfServiceScreen',
-      'terms-of-service-styles',
-      createTermsOfServiceStyles
+      cacheKey,
+      () => createTermsOfServiceStyles(tokens)
     );
-  }, []);
+  }, [tokens]);
 
   // Memoize URL press handler to prevent child re-renders
   const handleUrlPress = React.useCallback(async () => {
@@ -170,34 +171,36 @@ export const TermsOfServiceScreen: React.FC<TermsOfServiceScreenProps> = React.m
   );
 });
 
-const createTermsOfServiceStyles = () => {
+const createTermsOfServiceStyles = (tokens: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
     },
     scrollContent: {
       flexGrow: 1,
-      padding: 20,
+      padding: 20 * tokens.spacingMultiplier,
     },
     content: {
       flex: 1,
     },
     title: {
-      marginBottom: 24,
+      marginBottom: 24 * tokens.spacingMultiplier,
     },
     text: {
-      lineHeight: 24,
+      lineHeight: 24 * tokens.spacingMultiplier,
+      fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     },
     urlContainer: {
-      marginTop: 32,
+      marginTop: 32 * tokens.spacingMultiplier,
       alignItems: "center",
     },
     urlText: {
-      marginBottom: 16,
+      marginBottom: 16 * tokens.spacingMultiplier,
       textAlign: "center",
+      fontSize: tokens.typography.bodyMedium.responsiveFontSize,
     },
     urlButton: {
-      marginTop: 8,
+      marginTop: 8 * tokens.spacingMultiplier,
     },
   });
 };

@@ -221,7 +221,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       flex: 1,
     },
     scrollContent: {
-      padding: tokens.spacing.md,
-      paddingBottom: tokens.spacing.xl,
+      padding: tokens.spacing.md * tokens.spacingMultiplier,
+      paddingBottom: tokens.spacing.xl * tokens.spacingMultiplier,
     },
   });

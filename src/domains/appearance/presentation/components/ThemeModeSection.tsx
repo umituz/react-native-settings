@@ -99,12 +99,12 @@ export const ThemeModeSection: React.FC<ThemeModeSectionProps> = ({
 const getStyles = (tokens: DesignTokens) =>
   StyleSheet.create({
     section: {
-      marginBottom: tokens.spacing.xl,
+      marginBottom: tokens.spacing.xl * tokens.spacingMultiplier,
     },
     sectionTitle: {
-      marginBottom: tokens.spacing.xs,
+      marginBottom: tokens.spacing.xs * tokens.spacingMultiplier,
     },
     sectionDescription: {
-      marginBottom: tokens.spacing.md,
+      marginBottom: tokens.spacing.md * tokens.spacingMultiplier,
     },
   });

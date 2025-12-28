@@ -52,6 +52,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
   testID,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = getStyles(tokens);
   const colors = tokens.colors;
 
   const { appInfo, loading, error } = useAboutInfo({
@@ -91,7 +92,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
         {footerComponent}
       </View>
     );
-  }, [footerComponent, colors.border]);
+  }, [footerComponent, colors.border, styles]);
 
   // Memoize content rendering
   const renderContent = useCallback(() => {
@@ -114,7 +115,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
       { backgroundColor: colors.backgroundPrimary },
       containerStyle
     ];
-  }, [containerStyle, colors.backgroundPrimary]);
+  }, [containerStyle, colors.backgroundPrimary, styles]);
 
   const texts = config.texts || {};
 
@@ -164,7 +165,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
     <ScrollView
       style={containerStyles}
       testID={testID}
-      contentContainerStyle={{ paddingBottom: 32 }}
+      contentContainerStyle={{ paddingBottom: 32 * tokens.spacingMultiplier }}
     >
       {renderHeader()}
       {renderContent()}
@@ -173,23 +174,23 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: any) => StyleSheet.create({
   container: {
     flex: 1,
   },
   footer: {
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+    paddingVertical: 16 * tokens.spacingMultiplier,
+    paddingHorizontal: 16 * tokens.spacingMultiplier,
     borderTopWidth: 1,
   },
   loadingText: {
     textAlign: 'center',
-    fontSize: 16,
-    marginTop: 20,
+    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
+    marginTop: 20 * tokens.spacingMultiplier,
   },
   errorText: {
     textAlign: 'center',
-    fontSize: 16,
-    marginTop: 20,
+    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
+    marginTop: 20 * tokens.spacingMultiplier,
   },
 });

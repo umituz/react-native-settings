@@ -68,6 +68,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
       customFeaturedTutorials,
     }) => {
       const tokens = useAppDesignTokens();
+      const styles = getStyles(tokens);
 
       const featuredQuery = useFeaturedTutorials(maxFeaturedCount);
       const allQuery = useVideoTutorials();
@@ -169,30 +170,31 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
     },
   );
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+  StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: tokens.typography.headlineLarge.responsiveFontSize,
     fontWeight: "600",
-    marginBottom: 24,
+    marginBottom: 24 * tokens.spacingMultiplier,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 24 * tokens.spacingMultiplier,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: tokens.typography.titleLarge.responsiveFontSize,
     fontWeight: "500",
-    marginBottom: 12,
+    marginBottom: 12 * tokens.spacingMultiplier,
   },
   horizontalList: {
-    paddingRight: 16,
+    paddingRight: 16 * tokens.spacingMultiplier,
   },
   verticalList: {
-    paddingBottom: 16,
+    paddingBottom: 16 * tokens.spacingMultiplier,
   },
   errorContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: 20 * tokens.spacingMultiplier,
   },
 });

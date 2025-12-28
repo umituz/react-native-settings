@@ -20,6 +20,7 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
   horizontal = false,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = getStyles(tokens);
 
   const formatDuration = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -107,16 +108,17 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+  StyleSheet.create({
   container: {
-    borderRadius: 12,
+    borderRadius: 12 * tokens.spacingMultiplier,
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 12 * tokens.spacingMultiplier,
     overflow: "hidden",
   },
   horizontalContainer: {
-    width: 280,
-    marginRight: 12,
+    width: 280 * tokens.spacingMultiplier,
+    marginRight: 12 * tokens.spacingMultiplier,
     marginBottom: 0,
   },
   imageContainer: {
@@ -124,56 +126,56 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     width: "100%",
-    height: 180,
+    height: 180 * tokens.spacingMultiplier,
   },
   horizontalThumbnail: {
-    height: 140,
+    height: 140 * tokens.spacingMultiplier,
   },
   durationBadge: {
     position: "absolute",
-    bottom: 8,
-    right: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
+    bottom: 8 * tokens.spacingMultiplier,
+    right: 8 * tokens.spacingMultiplier,
+    paddingHorizontal: 6 * tokens.spacingMultiplier,
+    paddingVertical: 2 * tokens.spacingMultiplier,
+    borderRadius: 4 * tokens.spacingMultiplier,
   },
   durationText: {
     color: "white",
-    fontSize: 12,
+    fontSize: 12 * tokens.spacingMultiplier,
     fontWeight: "500",
   },
   featuredBadge: {
     position: "absolute",
-    top: 8,
-    left: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
+    top: 8 * tokens.spacingMultiplier,
+    left: 8 * tokens.spacingMultiplier,
+    paddingHorizontal: 8 * tokens.spacingMultiplier,
+    paddingVertical: 4 * tokens.spacingMultiplier,
+    borderRadius: 4 * tokens.spacingMultiplier,
   },
   featuredText: {
-    fontSize: 11,
+    fontSize: 11 * tokens.spacingMultiplier,
     fontWeight: "600",
   },
   content: {
-    padding: 12,
+    padding: 12 * tokens.spacingMultiplier,
   },
   title: {
-    fontSize: 16,
+    fontSize: tokens.typography.titleMedium.responsiveFontSize,
     fontWeight: "600",
-    marginBottom: 6,
+    marginBottom: 6 * tokens.spacingMultiplier,
   },
   horizontalTitle: {
-    fontSize: 14,
+    fontSize: tokens.typography.bodyLarge.responsiveFontSize,
   },
   description: {
-    fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 8,
+    fontSize: tokens.typography.bodyMedium.responsiveFontSize,
+    lineHeight: 20 * tokens.spacingMultiplier,
+    marginBottom: 8 * tokens.spacingMultiplier,
   },
   horizontalDescription: {
-    fontSize: 12,
-    lineHeight: 16,
-    marginBottom: 6,
+    fontSize: tokens.typography.bodySmall.responsiveFontSize,
+    lineHeight: 16 * tokens.spacingMultiplier,
+    marginBottom: 6 * tokens.spacingMultiplier,
   },
   metadata: {
     flexDirection: "row",
@@ -181,11 +183,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   category: {
-    fontSize: 12,
+    fontSize: 12 * tokens.spacingMultiplier,
     textTransform: "capitalize",
+    fontWeight: "500",
   },
   difficulty: {
-    fontSize: 12,
+    fontSize: 12 * tokens.spacingMultiplier,
     textTransform: "capitalize",
+    fontWeight: "500",
   },
 });

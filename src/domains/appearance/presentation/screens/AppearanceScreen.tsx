@@ -1,12 +1,12 @@
 /**
  * Appearance Screen
  *
- * Screen for managing appearance settings including theme mode and custom colors
- * Single Responsibility: Presentation orchestration only
+ * Screen for managing appearance settings including theme mode and custom colors.
+ * Uses ScreenLayout from design system for consistent UI.
  */
 
 import React, { useMemo, useCallback } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScreenLayout } from "@umituz/react-native-design-system";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useAppearance, useAppearanceActions } from "../../hooks";
 import {
@@ -16,42 +16,14 @@ import {
   AppearancePreview,
   type ThemeOptionConfig,
 } from "../components";
-
 import type { AppearanceTexts } from "../../types";
 
 export interface AppearanceScreenProps {
-  /** Texts for localization */
   texts?: AppearanceTexts;
-
-  /**
-   * Custom header component to override default header
-   */
   headerComponent?: React.ReactNode;
-
-  /**
-   * Show/hide theme mode section
-   */
   showThemeSection?: boolean;
-
-  /**
-   * Show/hide custom colors section
-   */
   showColorsSection?: boolean;
-
-  /**
-   * Show/hide preview section
-   */
   showPreviewSection?: boolean;
-
-  /**
-   * Custom container style
-   */
-  containerStyle?: any;
-
-  /**
-   * Custom content container style
-   */
-  contentContainerStyle?: any;
 }
 
 export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
@@ -60,8 +32,6 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   showThemeSection = true,
   showColorsSection = true,
   showPreviewSection = true,
-  containerStyle,
-  contentContainerStyle,
 }) => {
   const tokens = useAppDesignTokens();
   const { themeMode } = useAppearance();
@@ -72,10 +42,6 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     handleResetColors,
   } = useAppearanceActions();
 
-  // Memoize styles to prevent unnecessary re-creation
-  const styles = useMemo(() => getStyles(tokens), [tokens]);
-
-  // Memoize header to prevent unnecessary re-renders
   const headerComponentMemo = useMemo(() => {
     return (
       headerComponent || (
@@ -88,7 +54,6 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     );
   }, [headerComponent, tokens, texts?.title, texts?.subtitle]);
 
-  // Stable callback for color change to prevent infinite re-renders
   const stableHandleColorChange = useCallback(
     (key: keyof typeof localCustomColors, color: string) => {
       handleColorChange(key, color);
@@ -96,15 +61,11 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     [handleColorChange]
   );
 
-  // Memoize sections to prevent unnecessary re-renders
   const themeSectionMemo = useMemo(() => {
     if (!showThemeSection) return null;
 
-    // Construct themes from texts prop
-    // This adheres to "Package Driven Design" where content is driven by the consumer (App)
     const themes: ThemeOptionConfig[] = [];
 
-    // We only add the theme option if the corresponding text config is provided
     if (texts?.lightMode) {
       themes.push({
         mode: 'light' as const,
@@ -124,9 +85,6 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
         features: texts.darkMode.features
       });
     }
-
-    // If no texts provided, themes array is empty, section will return null.
-    // This forces the consuming app to provide the texts.
 
     return (
       <ThemeModeSection
@@ -194,34 +152,11 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   ]);
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
-        showsVerticalScrollIndicator={false}
-        removeClippedSubviews={true} // Performance optimization for long lists
-        scrollEventThrottle={16} // 60fps throttling
-      >
-        {headerComponentMemo}
-        {themeSectionMemo}
-        {colorsSectionMemo}
-        {previewSectionMemo}
-      </ScrollView>
-    </View>
+    <ScreenLayout hideScrollIndicator>
+      {headerComponentMemo}
+      {themeSectionMemo}
+      {colorsSectionMemo}
+      {previewSectionMemo}
+    </ScreenLayout>
   );
 };
-
-const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: tokens.colors.backgroundPrimary,
-    },
-    scrollView: {
-      flex: 1,
-    },
-    scrollContent: {
-      padding: tokens.spacing.md,
-      paddingBottom: tokens.spacing.xl,
-    },
-  });

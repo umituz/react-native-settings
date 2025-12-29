@@ -16,6 +16,7 @@ import type {
   RatingConfig,
   FAQConfig,
   CloudSyncConfig,
+  SubscriptionConfig,
 } from "./FeatureConfig";
 
 /**
@@ -113,6 +114,12 @@ export interface SettingsConfig {
    * @default false
    */
   cloudSync?: FeatureVisibility | CloudSyncConfig;
+  
+  /**
+   * Subscription settings configuration
+   * @default false
+   */
+  subscription?: FeatureVisibility | SubscriptionConfig;
 
   /**
    * Custom empty state text when no settings are available

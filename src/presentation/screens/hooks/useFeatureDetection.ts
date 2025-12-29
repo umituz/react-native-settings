@@ -58,6 +58,7 @@ export function useFeatureDetection(
       feedback,
       rating,
       faqs,
+      subscription,
     } = normalizedConfig;
 
     const notificationServiceAvailable = !!options?.notificationServiceAvailable;
@@ -110,6 +111,7 @@ export function useFeatureDetection(
       feedback: feedback.enabled,
       rating: rating.enabled,
       faqs: faqs.enabled,
+      subscription: subscription.enabled,
     };
   }, [normalizedConfig, navigation, options]);
 }

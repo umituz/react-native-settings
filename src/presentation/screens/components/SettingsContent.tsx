@@ -11,6 +11,7 @@ import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
 import { FeatureSettingsSection } from "./sections/FeatureSettingsSection";
 import { IdentitySettingsSection } from "./sections/IdentitySettingsSection";
 import { SupportSettingsSection } from "./sections/SupportSettingsSection";
+import { SubscriptionSettingsSection } from "./sections/SubscriptionSettingsSection";
 import { CustomSettingsList } from "./sections/CustomSettingsList";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
@@ -29,6 +30,7 @@ interface SettingsContentProps {
     feedback: boolean;
     rating: boolean;
     faqs: boolean;
+    subscription: boolean;
   };
   showUserProfile?: boolean;
   userProfile?: any;
@@ -67,6 +69,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.feedback ||
     features.rating ||
     features.faqs ||
+    features.subscription ||
     customSections.length > 0,
     [features, customSections.length]
   );
@@ -87,6 +90,10 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       {showUserProfile && <ProfileSectionLoader userProfile={userProfile} />}
 
       <CustomSettingsList customSections={customSections} />
+
+      {features.subscription && (
+        <SubscriptionSettingsSection config={normalizedConfig.subscription.config} />
+      )}
 
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
 

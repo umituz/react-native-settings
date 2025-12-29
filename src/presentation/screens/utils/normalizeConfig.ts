@@ -15,6 +15,7 @@ import type {
   FeedbackConfig,
   RatingConfig,
   FAQConfig,
+  SubscriptionConfig,
   SettingsConfig,
 } from "../types";
 
@@ -58,6 +59,10 @@ export interface NormalizedConfig {
   faqs: {
     enabled: boolean;
     config?: FAQConfig;
+  };
+  subscription: {
+    enabled: boolean;
+    config?: SubscriptionConfig;
   };
 }
 
@@ -103,5 +108,6 @@ export function normalizeSettingsConfig(
     feedback: normalizeConfigValue(config?.feedback, false),
     rating: normalizeConfigValue(config?.rating, false),
     faqs: normalizeConfigValue(config?.faqs, false),
+    subscription: normalizeConfigValue(config?.subscription, false),
   };
 }

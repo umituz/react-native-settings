@@ -218,3 +218,22 @@ export interface CloudSyncConfig {
   /** Firestore collection name */
   collectionName?: string;
 }
+/**
+ * Subscription Settings Configuration
+ */
+export interface SubscriptionConfig {
+  /** Show subscription section */
+  enabled?: FeatureVisibility;
+  /** Custom title for the subscription section */
+  title?: string;
+  /** Custom label for the subscription item */
+  description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
+  /** Handler to open subscription screen */
+  onPress?: () => void;
+  /** Whether user is premium (to show active status) */
+  isPremium?: boolean;
+}

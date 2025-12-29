@@ -39,12 +39,9 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
     try {
       // Prevent unnecessary updates if color hasn't changed
       if (value === color) return;
-
       onValueChange(color);
-    } catch (error) {
-      if (__DEV__) {
-        console.error("[ColorPicker] Failed to change color:", error);
-      }
+    } catch {
+      // Silent error handling
     }
   }, [value, onValueChange]);
 
@@ -65,7 +62,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           activeOpacity={0.8} // Performance optimization
         >
           {isSelected && (
-            <AtomicIcon name="checkmark" size="sm" customColor="#FFFFFF" />
+            <AtomicIcon name="checkmark" size="sm" customColor={tokens.colors.textInverse} />
           )}
         </TouchableOpacity>
       );

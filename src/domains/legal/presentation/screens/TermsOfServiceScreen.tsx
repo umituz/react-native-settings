@@ -81,19 +81,13 @@ export const TermsOfServiceScreen: React.FC<TermsOfServiceScreenProps> = React.m
 
   // Memoize URL press handler to prevent child re-renders
   const handleUrlPress = React.useCallback(async () => {
-    if (__DEV__) {
-      console.log('TermsOfServiceScreen: URL pressed', { url });
-    }
-    
     if (onUrlPress) {
       onUrlPress();
     } else if (url) {
       try {
         await UrlHandlerService.openUrl(url);
-      } catch (error) {
-        if (__DEV__) {
-          console.error('TermsOfServiceScreen: Error opening URL', error);
-        }
+      } catch {
+        // Silent error handling
       }
     }
   }, [onUrlPress, url]);

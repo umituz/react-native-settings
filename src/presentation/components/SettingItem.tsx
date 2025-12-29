@@ -96,7 +96,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
             false: tokens.colors.surfaceVariant,
             true: tokens.colors.primary
           }}
-          thumbColor="#FFFFFF"
+          thumbColor={tokens.colors.surface}
           ios_backgroundColor={tokens.colors.surfaceVariant}
           disabled={disabled}
         />

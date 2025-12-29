@@ -1,9 +1,7 @@
 import React from "react";
-import { View } from "react-native";
 import {
   ListItem,
   AtomicBadge,
-  useAppDesignTokens,
 } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsSection } from "../../../components/SettingsSection";
@@ -17,7 +15,6 @@ export const SubscriptionSettingsSection: React.FC<SubscriptionSettingsSectionPr
   config,
 }) => {
   const { t } = useLocalization();
-  const tokens = useAppDesignTokens();
 
   if (!config) return null;
 
@@ -25,24 +22,9 @@ export const SubscriptionSettingsSection: React.FC<SubscriptionSettingsSectionPr
     <SettingsSection title={config.sectionTitle || t("settings.sections.subscription")}>
       <ListItem
         title={config.title || t("settings.subscription.title")}
-        description={config.description || t("settings.subscription.description")}
+        subtitle={config.description || t("settings.subscription.description")}
         leftIcon={config.icon || "star"}
         onPress={config.onPress}
-        rightElement={
-          config.isPremium ? (
-            <AtomicBadge
-              label={t("common.premium")}
-              variant="success"
-              size="small"
-            />
-          ) : (
-            <AtomicBadge
-              label={t("common.free")}
-              variant="warning"
-              size="small"
-            />
-          )
-        }
       />
     </SettingsSection>
   );

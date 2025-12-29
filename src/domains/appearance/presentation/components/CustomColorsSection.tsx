@@ -94,10 +94,8 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
   const handleColorChange = useCallback((key: keyof CustomThemeColors, color: string) => {
     try {
       onColorChange(key, color);
-    } catch (error) {
-      if (__DEV__) {
-        console.error("[CustomColorsSection] Failed to change color:", error);
-      }
+    } catch {
+      // Silent error handling
     }
   }, [onColorChange]);
 
@@ -105,10 +103,8 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
   const handleResetColors = useCallback(() => {
     try {
       onResetColors();
-    } catch (error) {
-      if (__DEV__) {
-        console.error("[CustomColorsSection] Failed to reset colors:", error);
-      }
+    } catch {
+      // Silent error handling
     }
   }, [onResetColors]);
 

@@ -29,10 +29,7 @@ export const getSystemTheme = (): ThemeMode | null => {
     // On native platforms, use Appearance API
     const colorScheme = Appearance.getColorScheme();
     return colorScheme === 'dark' ? 'dark' : 'light';
-  } catch (error) {
-    if (__DEV__) {
-      console.warn('[getSystemTheme] Failed to detect system theme:', error);
-    }
+  } catch {
     return null;
   }
 };
@@ -70,10 +67,7 @@ export const addSystemThemeListener = (
     return () => {
       subscription?.remove();
     };
-  } catch (error) {
-    if (__DEV__) {
-      console.warn('[addSystemThemeListener] Failed to add listener:', error);
-    }
+  } catch {
     return () => { }; // Return empty cleanup function
   }
 };

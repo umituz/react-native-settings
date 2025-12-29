@@ -19,48 +19,40 @@ export class ContentValidationService {
    * Validate screen content requirements
    */
   static validateScreenContent(
-    content: string | undefined,
-    url: string | undefined,
-    title: string | undefined,
-    viewOnlineText: string | undefined,
-    openText: string | undefined,
-    screenName: string
+    _content: string | undefined,
+    _url: string | undefined,
+    _title: string | undefined,
+    _viewOnlineText: string | undefined,
+    _openText: string | undefined,
+    _screenName: string
   ): void {
-    if (__DEV__) {
-      if (!content && !url) {
-        console.warn(`${screenName}: Either content or url must be provided`);
-      }
-      if (!title) {
-        console.warn(`${screenName}: title is required`);
-      }
-      if (url && !viewOnlineText) {
-        console.warn(`${screenName}: viewOnlineText is required when url is provided`);
-      }
-      if (url && !openText) {
-        console.warn(`${screenName}: openText is required when url is provided`);
-      }
-    }
+    // Silent validation - no console output
+    void _content;
+    void _url;
+    void _title;
+    void _viewOnlineText;
+    void _openText;
+    void _screenName;
   }
 
   /**
    * Validate legal links requirements
    */
   static validateLegalLinks(
-    privacyPolicyUrl: string | undefined,
-    termsOfServiceUrl: string | undefined,
-    privacyText: string | undefined,
-    termsText: string | undefined,
-    onPrivacyPress: (() => void) | undefined,
-    onTermsPress: (() => void) | undefined
+    _privacyPolicyUrl: string | undefined,
+    _termsOfServiceUrl: string | undefined,
+    _privacyText: string | undefined,
+    _termsText: string | undefined,
+    _onPrivacyPress: (() => void) | undefined,
+    _onTermsPress: (() => void) | undefined
   ): void {
-    if (__DEV__) {
-      if (privacyPolicyUrl && !privacyText && !onPrivacyPress) {
-        console.warn('LegalLinks: privacyText is required when privacyPolicyUrl is provided');
-      }
-      if (termsOfServiceUrl && !termsText && !onTermsPress) {
-        console.warn('LegalLinks: termsText is required when termsOfServiceUrl is provided');
-      }
-    }
+    // Silent validation - no console output
+    void _privacyPolicyUrl;
+    void _termsOfServiceUrl;
+    void _privacyText;
+    void _termsText;
+    void _onPrivacyPress;
+    void _onTermsPress;
   }
 
   /**

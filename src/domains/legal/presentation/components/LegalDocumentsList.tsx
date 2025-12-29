@@ -40,19 +40,13 @@ export const LegalDocumentsList: React.FC<LegalDocumentsListProps> = React.memo(
   const tokens = useAppDesignTokens();
 
   const handleEulaPress = React.useCallback(async () => {
-    if (__DEV__) {
-      console.log('LegalDocumentsList: EULA pressed', { eulaUrl });
-    }
-
     if (onEulaPress) {
       onEulaPress();
     } else if (eulaUrl) {
       try {
         await UrlHandlerService.openUrl(eulaUrl);
-      } catch (error) {
-        if (__DEV__) {
-          console.error('LegalDocumentsList: Error opening EULA URL', error);
-        }
+      } catch {
+        // Silent error handling
       }
     }
   }, [onEulaPress, eulaUrl]);

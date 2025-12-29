@@ -61,7 +61,7 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
               { backgroundColor: tokens.colors.primary },
             ]}
           >
-            <Text style={[styles.featuredText, { color: "#FFFFFF" }]}>
+            <Text style={[styles.featuredText, { color: tokens.colors.onPrimary }]}>
               Featured
             </Text>
           </View>
@@ -140,7 +140,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     borderRadius: 4,
   },
   durationText: {
-    color: "white",
+    color: tokens.colors.textInverse,
     fontSize: 12,
     fontWeight: "500",
   },

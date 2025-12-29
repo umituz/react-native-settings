@@ -85,14 +85,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
 
       const handleTutorialPress = React.useCallback(
         (tutorialId: string) => {
-          if (onTutorialPress) {
-            onTutorialPress(tutorialId);
-          } else if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log("VideoTutorialsScreen: No onTutorialPress handler", {
-              tutorialId,
-            });
-          }
+          onTutorialPress?.(tutorialId);
         },
         [onTutorialPress],
       );

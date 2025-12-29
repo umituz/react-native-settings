@@ -65,17 +65,12 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
             try {
                 await feedbackConfig.config.onSubmit(data);
                 setModalVisible(false);
-            } catch (error) {
-                if (__DEV__) {
-                    console.error("Feedback submission error:", error);
-                }
+            } catch {
+                // Silent error handling
             } finally {
                 setIsSubmitting(false);
             }
         } else {
-            if (__DEV__) {
-                console.warn("No onSubmit handler provided for Feedback");
-            }
             setModalVisible(false);
         }
     };
@@ -91,14 +86,6 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
             const supported = await Linking.canOpenURL(config.storeUrl);
             if (supported) {
                 await Linking.openURL(config.storeUrl);
-            } else {
-                if (__DEV__) {
-                    console.warn("Cannot open store URL:", config.storeUrl);
-                }
-            }
-        } else {
-            if (__DEV__) {
-                console.warn("No storeUrl or onRate provided for Rating");
             }
         }
     }, [ratingConfig.config]);

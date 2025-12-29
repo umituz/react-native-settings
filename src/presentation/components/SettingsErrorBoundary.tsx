@@ -31,10 +31,10 @@ export class SettingsErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    if (__DEV__) {
-      console.error('Settings Error Boundary caught an error:', error, errorInfo);
-    }
+  override componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo) {
+    // Silent error handling - error already captured in state
+    void _error;
+    void _errorInfo;
   }
 
   override render() {

@@ -15,6 +15,8 @@ export type {
   FeedbackConfig,
   RatingConfig,
   FAQConfig,
+  SubscriptionConfig,
+  CloudSyncConfig,
 } from "./FeatureConfig";
 export type { SettingsConfig } from "./SettingsConfig";
 export type { CustomSettingsSection } from "./CustomSection";

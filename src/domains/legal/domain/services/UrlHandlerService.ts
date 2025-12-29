@@ -51,14 +51,7 @@ export class UrlHandlerService {
    * Open URL in external browser with performance optimizations
    */
   static async openUrl(url: string): Promise<void> {
-    if (__DEV__) {
-      console.log('UrlHandlerService: Opening URL', { url });
-    }
-
     if (!this.isValidUrl(url)) {
-      if (__DEV__) {
-        console.warn('UrlHandlerService: Invalid URL provided', { url });
-      }
       return;
     }
 
@@ -77,16 +70,9 @@ export class UrlHandlerService {
 
       if (canOpen) {
         await Linking.openURL(url);
-      } else {
-        if (__DEV__) {
-          console.warn('UrlHandlerService: Cannot open URL', { url });
-        }
       }
-    } catch (error) {
-      if (__DEV__) {
-        console.error('UrlHandlerService: Error opening URL', { url, error });
-      }
-      // Don't throw error to prevent app crashes, just log it
+    } catch {
+      // Silent error handling to prevent app crashes
     }
   }
 

@@ -70,10 +70,8 @@ export const LegalLinks: React.FC<LegalLinksProps> = React.memo(
       } else if (privacyPolicyUrl) {
         try {
           await UrlHandlerService.openUrl(privacyPolicyUrl);
-        } catch (error) {
-          if (__DEV__) {
-            console.error('LegalLinks: Error opening privacy policy URL', error);
-          }
+        } catch {
+          // Silent error handling
         }
       }
     }, [onPrivacyPress, privacyPolicyUrl]);
@@ -84,10 +82,8 @@ export const LegalLinks: React.FC<LegalLinksProps> = React.memo(
       } else if (termsOfServiceUrl) {
         try {
           await UrlHandlerService.openUrl(termsOfServiceUrl);
-        } catch (error) {
-          if (__DEV__) {
-            console.error('LegalLinks: Error opening terms of service URL', error);
-          }
+        } catch {
+          // Silent error handling
         }
       }
     }, [onTermsPress, termsOfServiceUrl]);

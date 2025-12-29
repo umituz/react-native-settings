@@ -32,16 +32,16 @@ export const FAQSection: React.FC<FAQSectionProps> = ({
     renderSection,
     renderItem,
 }) => {
-    if (!config.enabled) return null;
+    if (!config.enabled || !config.title || !config.description) return null;
 
     return (
         <>
             {renderSection({
-                title: config.title || 'Help & Support',
+                title: config.title,
                 children: renderItem({
-                    title: config.description || 'FAQ',
+                    title: config.description,
                     icon: 'help-circle',
-                    onPress: config.onPress || (() => console.warn('No FAQ handler')),
+                    onPress: config.onPress || (() => {}),
                     isLast: true,
                 }),
             })}

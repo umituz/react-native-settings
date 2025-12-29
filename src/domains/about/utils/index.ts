@@ -125,10 +125,7 @@ export const openUrl = async (url: string): Promise<boolean> => {
     }
 
     return false;
-  } catch (error) {
-    if (__DEV__) {
-      console.error('Failed to open URL:', error);
-    }
+  } catch {
     return false;
   }
 };
@@ -151,10 +148,7 @@ export const sendEmail = async (email: string, subject?: string): Promise<boolea
     }
 
     return false;
-  } catch (error) {
-    if (__DEV__) {
-      console.error('Failed to send email:', error);
-    }
+  } catch {
     return false;
   }
 };

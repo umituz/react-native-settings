@@ -14,9 +14,10 @@ import type { ThemeMode } from "../../types";
 interface ThemeOptionProps {
   mode: ThemeMode;
   title: string;
-  subtitle: string;
-  description: string;
-  features: string[];
+  subtitle?: string;
+  description?: string;
+  features?: string[];
+  featuresTitle?: string;
   isSelected: boolean;
   onSelect: () => void;
 }
@@ -27,6 +28,7 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
   subtitle,
   description,
   features,
+  featuresTitle,
   isSelected,
   onSelect,
 }) => {
@@ -47,9 +49,11 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
           <AtomicText type="titleLarge" color="primary">
             {title}
           </AtomicText>
-          <AtomicText type="bodyMedium" color="secondary">
-            {subtitle}
-          </AtomicText>
+          {subtitle ? (
+            <AtomicText type="bodyMedium" color="secondary">
+              {subtitle}
+            </AtomicText>
+          ) : null}
         </View>
         <AtomicIcon
           name={isSelected ? "checkmark-circle-outline" : "ellipse-outline"}
@@ -58,33 +62,39 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
         />
       </View>
 
-      <AtomicText
-        type="bodyMedium"
-        color="secondary"
-        style={styles.description}
-      >
-        {description}
-      </AtomicText>
-
-      <View style={styles.featuresContainer}>
+      {description ? (
         <AtomicText
-          type="labelLarge"
-          color="primary"
-          style={styles.featuresTitle}
+          type="bodyMedium"
+          color="secondary"
+          style={styles.description}
         >
-          Features
+          {description}
         </AtomicText>
-        {features.map((feature, index) => (
-          <AtomicText
-            key={index}
-            type="bodySmall"
-            color="secondary"
-            style={styles.feature}
-          >
-            • {feature}
-          </AtomicText>
-        ))}
-      </View>
+      ) : null}
+
+      {features && features.length > 0 ? (
+        <View style={styles.featuresContainer}>
+          {featuresTitle ? (
+            <AtomicText
+              type="labelLarge"
+              color="primary"
+              style={styles.featuresTitle}
+            >
+              {featuresTitle}
+            </AtomicText>
+          ) : null}
+          {features.map((feature, index) => (
+            <AtomicText
+              key={index}
+              type="bodySmall"
+              color="secondary"
+              style={styles.feature}
+            >
+              • {feature}
+            </AtomicText>
+          ))}
+        </View>
+      ) : null}
     </TouchableOpacity>
   );
 };

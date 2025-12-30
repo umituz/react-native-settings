@@ -15,7 +15,8 @@ export interface ThemeOptionConfig {
   title: string;
   subtitle?: string;
   description?: string;
-  features: string[];
+  features?: string[];
+  featuresTitle?: string;
 }
 
 export interface ThemeModeSectionProps {
@@ -58,9 +59,10 @@ export const ThemeModeSection: React.FC<ThemeModeSectionProps> = ({
         key={theme.mode}
         mode={theme.mode}
         title={theme.title}
-        subtitle={theme.subtitle || ""}
-        description={theme.description || ""}
+        subtitle={theme.subtitle}
+        description={theme.description}
         features={theme.features}
+        featuresTitle={theme.featuresTitle}
         isSelected={themeMode === theme.mode}
         onSelect={() => handleThemeSelect(theme.mode)}
       />

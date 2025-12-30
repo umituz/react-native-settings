@@ -5,13 +5,14 @@
  * Can be extended by apps to add custom screens
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
-import type { SettingsConfig, CustomSettingsSection } from "../screens/types";
+import type { SettingsConfig, CustomSettingsSection, AppearanceConfig } from "../screens/types";
 import type { DevSettingsProps } from "../components/DevSettingsSection";
+import type { AppearanceTexts } from "../../domains/appearance/types";
 
 // Default param list - can be extended by apps
 export type SettingsStackParamList = {

@@ -64,27 +64,24 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   const themeSectionMemo = useMemo(() => {
     if (!showThemeSection) return null;
 
-    const themes: ThemeOptionConfig[] = [];
-
-    if (texts?.lightMode) {
-      themes.push({
-        mode: 'light' as const,
-        title: texts.lightMode.title,
-        subtitle: texts.lightMode.subtitle,
-        description: texts.lightMode.description,
-        features: texts.lightMode.features
-      });
-    }
-
-    if (texts?.darkMode) {
-      themes.push({
-        mode: 'dark' as const,
-        title: texts.darkMode.title,
-        subtitle: texts.darkMode.subtitle,
-        description: texts.darkMode.description,
-        features: texts.darkMode.features
-      });
-    }
+    const themes: ThemeOptionConfig[] = [
+      {
+        mode: "light",
+        title: texts?.lightMode?.title ?? "settings.themeMode.light.title",
+        subtitle: texts?.lightMode?.subtitle,
+        description: texts?.lightMode?.description,
+        features: texts?.lightMode?.features,
+        featuresTitle: texts?.featuresSectionTitle,
+      },
+      {
+        mode: "dark",
+        title: texts?.darkMode?.title ?? "settings.themeMode.dark.title",
+        subtitle: texts?.darkMode?.subtitle,
+        description: texts?.darkMode?.description,
+        features: texts?.darkMode?.features,
+        featuresTitle: texts?.featuresSectionTitle,
+      },
+    ];
 
     return (
       <ThemeModeSection
@@ -93,7 +90,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
         onThemeSelect={handleThemeSelect}
         title={texts?.themeSectionTitle}
         description={texts?.themeSectionDescription}
-        themes={themes.length > 0 ? themes : undefined}
+        themes={themes}
       />
     );
   }, [
@@ -105,6 +102,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     texts?.themeSectionDescription,
     texts?.lightMode,
     texts?.darkMode,
+    texts?.featuresSectionTitle,
   ]);
 
   const colorsSectionMemo = useMemo(() => {

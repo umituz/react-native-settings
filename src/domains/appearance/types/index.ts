@@ -44,6 +44,7 @@ export interface AppearanceTexts {
   subtitle?: string;
   themeSectionTitle?: string;
   themeSectionDescription?: string;
+  featuresSectionTitle?: string;
   colorsSectionTitle?: string;
   colorsSectionDescription?: string;
   previewSectionTitle?: string;

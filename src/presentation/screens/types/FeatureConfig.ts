@@ -3,7 +3,7 @@
  * Core types for feature visibility and configuration
  */
 
-import type { ComponentType, ReactNode } from "react";
+import type { AppearanceTexts } from "../../../domains/appearance/types";
 
 /**
  * Feature visibility configuration
@@ -33,6 +33,8 @@ export interface AppearanceConfig {
   sectionTitle?: string;
   /** Default route name when no custom route provided */
   defaultRoute?: string;
+  /** Appearance screen texts (theme mode labels, descriptions, etc.) */
+  texts?: AppearanceTexts;
 }
 
 /**
@@ -169,6 +171,8 @@ export interface FeedbackConfig {
   initialType?: FeedbackType;
   /** Feedback submission handler */
   onSubmit?: (data: { type: any; rating: number; description: string; title: string }) => Promise<void>;
+  /** Custom handler to open feedback screen (overrides default modal) */
+  onPress?: () => void;
 }
 
 export interface FAQConfig {

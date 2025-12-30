@@ -15,6 +15,7 @@ export interface FeedbackConfig {
     description?: string;
     initialType?: FeedbackType;
     onSubmit?: (data: { type: any; rating: number; description: string; title: string }) => Promise<void>;
+    onPress?: () => void;
 }
 
 export interface RatingConfig {
@@ -83,9 +84,20 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
         }
 
         if (config?.storeUrl) {
-            const supported = await Linking.canOpenURL(config.storeUrl);
-            if (supported) {
-                await Linking.openURL(config.storeUrl);
+            try {
+                // Safely handle URL for App Store - itunes.apple.com is more reliable for deep links
+                let url = config.storeUrl;
+                if (url.includes('apps.apple.com')) {
+                    url = url.replace('apps.apple.com', 'itunes.apple.com');
+                }
+                
+                // Try opening the modified URL
+                await Linking.openURL(url);
+            } catch (error) {
+                // Final fallback to original URL
+                if (config.storeUrl) {
+                    Linking.openURL(config.storeUrl).catch(() => {});
+                }
             }
         }
     }, [ratingConfig.config]);
@@ -110,7 +122,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                         {showFeedback && feedbackConfig.config?.description && renderItem({
                             title: feedbackConfig.config.description,
                             icon: "mail",
-                            onPress: () => setModalVisible(true),
+                            onPress: feedbackConfig.config.onPress || (() => setModalVisible(true)),
                             isLast: !showRating
                         })}
 

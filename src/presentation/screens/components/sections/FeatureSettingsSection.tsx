@@ -30,7 +30,7 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   const currentLanguageData = getLanguageByCode(currentLanguage);
   const languageDisplayName = currentLanguageData 
     ? `${currentLanguageData.flag} ${currentLanguageData.nativeName}`
-    : currentLanguage || "English";
+    : currentLanguage;
 
   return (
     <>

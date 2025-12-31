@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, StyleSheet } from "react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
@@ -56,7 +55,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   devSettings,
 }) => {
   const tokens = useAppDesignTokens();
-  const insets = useSafeAreaInsets();
   const { t } = useLocalization();
 
   const hasAnyFeatures = useMemo(() =>
@@ -75,18 +73,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   );
 
   return (
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={[
-        styles.scrollContent,
-        {
-          paddingTop: showCloseButton ? tokens.spacing.md : insets.top + tokens.spacing.md,
-          paddingBottom: tokens.spacing.xxxl + tokens.spacing.xl,
-          paddingHorizontal: tokens.spacing.md,
-        },
-      ]}
-      showsVerticalScrollIndicator={false}
-    >
+    <View style={styles.container}>
       {showUserProfile && <ProfileSectionLoader userProfile={userProfile} />}
 
       <CustomSettingsList customSections={customSections} />
@@ -120,12 +107,14 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
           versionLabel={t("settings.footer.version")}
         />
       )}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: { flex: 1 },
-  scrollContent: { flexGrow: 1 },
+  container: {
+    flex: 1,
+    paddingVertical: 16,
+  },
   emptyContainer: { paddingVertical: 24 },
 });

@@ -4,11 +4,10 @@
  */
 
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
-import { AtomicIcon } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicIcon, AtomicText } from "@umituz/react-native-design-system";
+import { useLocalization } from "@umituz/react-native-localization";
 
 interface SettingsHeaderProps {
   showCloseButton?: boolean;
@@ -21,7 +20,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
 }) => {
   const navigation = useNavigation();
   const tokens = useAppDesignTokens();
-  const insets = useSafeAreaInsets();
+  const { t } = useLocalization();
 
   const handleClose = () => {
     if (onClose) {
@@ -31,48 +30,40 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
     }
   };
 
-  if (!showCloseButton) {
-    return null;
-  }
-
   return (
-    <View
-      style={[
-        styles.closeButtonContainer,
-        {
-          paddingTop: insets.top + tokens.spacing.xs,
-          paddingRight: tokens.spacing.md,
-        },
-      ]}
-    >
-      <TouchableOpacity
-        onPress={handleClose}
-        style={[
-          styles.closeButton,
-          {
-            backgroundColor: tokens.colors.surface,
-          },
-        ]}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <AtomicIcon name="x" size="lg" color="primary" />
-      </TouchableOpacity>
+    <View style={[styles.container, { padding: tokens.spacing.lg }]}>
+      <AtomicText style={tokens.typography.headingLarge}>
+        {t('settings.title')}
+      </AtomicText>
+      
+      {showCloseButton && (
+        <Pressable
+          onPress={handleClose}
+          style={({ pressed }) => [
+            styles.closeButton,
+            {
+              backgroundColor: pressed ? tokens.colors.surfaceVariant : tokens.colors.surface,
+              borderRadius: tokens.borderRadius.full,
+            },
+          ]}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <AtomicIcon name="close-outline" size="lg" color="textPrimary" />
+        </Pressable>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  closeButtonContainer: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    zIndex: 10,
-    alignItems: "flex-end",
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   closeButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
     justifyContent: "center",
     alignItems: "center",
   },

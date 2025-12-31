@@ -7,8 +7,8 @@ import React from "react";
 import { View, StatusBar, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
-  useDesignSystemTheme,
   useAppDesignTokens,
+  ScreenLayout,
 } from "@umituz/react-native-design-system";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";
@@ -67,11 +67,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   devSettings,
 }) => {
   const navigation = useNavigation();
-  const { themeMode } = useDesignSystemTheme();
   const tokens = useAppDesignTokens();
-
-  const isDark = themeMode === "dark";
-  const colors = tokens.colors;
 
   const normalizedConfig = normalizeSettingsConfig(config);
   const features = useFeatureDetection(normalizedConfig, navigation, featureOptions);
@@ -80,11 +76,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const shouldShowUserProfile = showUserProfile ?? features.userProfile;
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.backgroundPrimary }]}>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
-
-      <SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />
-
+    <ScreenLayout
+      header={<SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />}
+    >
       <SettingsErrorBoundary>
         <SettingsContent
           normalizedConfig={normalizedConfig}
@@ -99,7 +93,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           devSettings={devSettings}
         />
       </SettingsErrorBoundary>
-    </View>
+    </ScreenLayout>
   );
 };
 

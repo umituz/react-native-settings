@@ -58,7 +58,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
 
     const renderContent = () => (
         <View style={styles.content}>
-            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg }]}>
+            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg, borderRadius: tokens.borderRadius.md }]}>
                 <AtomicIcon name={icon} size="lg" customColor={defaultIconColor} />
             </View>
             <View style={styles.textContainer}>
@@ -66,7 +66,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                     type="bodyLarge"
                     color="onSurface"
                     numberOfLines={1}
-                    style={{ marginBottom: 4 }}
+                    style={{ marginBottom: tokens.spacing.xs }}
                 >
                     {title}
                 </AtomicText>
@@ -86,13 +86,16 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
         <View
             style={[
                 styles.sectionContainer,
-                { backgroundColor: colors.surface },
+                { 
+                    backgroundColor: colors.surface,
+                    borderRadius: tokens.borderRadius.lg,
+                },
                 containerStyle,
             ]}
         >
             {!!sectionTitle && (
                 <View style={styles.headerContainer}>
-                    <AtomicText type="titleMedium" color="primary">
+                    <AtomicText type="labelMedium" color="textSecondary" style={{ textTransform: 'uppercase' }}>
                         {sectionTitle}
                     </AtomicText>
                 </View>
@@ -121,7 +124,6 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
 const styles = StyleSheet.create({
     sectionContainer: {
         marginBottom: 16,
-        borderRadius: 12,
         overflow: "hidden",
     },
     headerContainer: {
@@ -144,7 +146,6 @@ const styles = StyleSheet.create({
     iconContainer: {
         width: 48,
         height: 48,
-        borderRadius: 12,
         justifyContent: "center",
         alignItems: "center",
         marginRight: 16,

@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { SettingsSection } from "../../../components/SettingsSection";
+import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { CustomSettingsSection } from "../../types";
 
 interface CustomSettingsListProps {
@@ -24,6 +25,18 @@ export const CustomSettingsList: React.FC<CustomSettingsListProps> = ({
                     title={section.title}
                 >
                     {section.content}
+                    {!section.content && section.items?.map((item) => (
+                        <SettingsItemCard
+                            key={item.id}
+                            title={item.title}
+                            description={item.subtitle}
+                            icon={item.icon}
+                            onPress={item.onPress}
+                            rightIcon={item.rightIcon}
+                            iconBgColor={item.iconBgColor}
+                            iconColor={item.iconColor}
+                        />
+                    ))}
                 </SettingsSection>
             ))}
         </>

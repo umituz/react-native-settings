@@ -1,10 +1,7 @@
 import React from "react";
-import {
-  ListItem,
-  AtomicBadge,
-} from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
-import { SettingsSection } from "../../../components/SettingsSection";
+import type { IconName } from "@umituz/react-native-design-system";
+import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { SubscriptionConfig } from "../../types";
 
 interface SubscriptionSettingsSectionProps {
@@ -16,16 +13,16 @@ export const SubscriptionSettingsSection: React.FC<SubscriptionSettingsSectionPr
 }) => {
   const { t } = useLocalization();
 
-  if (!config) return null;
+  // onPress is required for subscription section to be functional
+  if (!config || !config.onPress) return null;
 
   return (
-    <SettingsSection title={config.sectionTitle || t("settings.sections.subscription")}>
-      <ListItem
-        title={config.title || t("settings.subscription.title")}
-        subtitle={config.description || t("settings.subscription.description")}
-        leftIcon={config.icon || "star"}
-        onPress={config.onPress}
-      />
-    </SettingsSection>
+    <SettingsItemCard
+      title={config.title || t("settings.subscription.title")}
+      description={config.description || t("settings.subscription.description")}
+      icon={(config.icon || "star") as IconName}
+      onPress={config.onPress}
+      sectionTitle={config.sectionTitle || t("settings.sections.subscription")}
+    />
   );
 };

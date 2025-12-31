@@ -32,7 +32,10 @@ export const FAQSection: React.FC<FAQSectionProps> = ({
     renderSection,
     renderItem,
 }) => {
-    if (!config.enabled || !config.title || !config.description) return null;
+    // onPress is required for FAQ section to be functional
+    if (!config.enabled || !config.title || !config.description || !config.onPress) {
+        return null;
+    }
 
     return (
         <>
@@ -41,7 +44,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({
                 children: renderItem({
                     title: config.description,
                     icon: 'help-circle',
-                    onPress: config.onPress || (() => {}),
+                    onPress: config.onPress,
                     isLast: true,
                 }),
             })}

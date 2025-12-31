@@ -14,18 +14,20 @@ export interface SettingsItemCardProps {
     description?: string;
     /** Icon name from AtomicIcon */
     icon: IconName;
-    /** On press handler */
-    onPress: () => void;
+    /** On press handler - if undefined, item is not clickable */
+    onPress?: () => void;
     /** Optional container style */
     containerStyle?: ViewStyle;
     /** Optional section title (shows above the card) */
     sectionTitle?: string;
-    /** Optional right icon (defaults to chevron-forward) */
+    /** Optional right icon (defaults to chevron-forward, hidden if not clickable) */
     rightIcon?: IconName;
     /** Optional icon background color (defaults to primary with opacity) */
     iconBgColor?: string;
     /** Optional icon color */
     iconColor?: string;
+    /** Show chevron even if not clickable */
+    showChevron?: boolean;
 }
 
 /**
@@ -44,12 +46,41 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     rightIcon = "chevron-forward",
     iconBgColor,
     iconColor,
+    showChevron,
 }) => {
     const tokens = useAppDesignTokens();
     const colors = tokens.colors;
 
     const defaultIconBg = iconBgColor || `${colors.primary}15`;
     const defaultIconColor = iconColor || colors.primary;
+    const isClickable = !!onPress;
+    const shouldShowChevron = showChevron ?? isClickable;
+
+    const renderContent = () => (
+        <View style={styles.content}>
+            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg }]}>
+                <AtomicIcon name={icon} size="lg" customColor={defaultIconColor} />
+            </View>
+            <View style={styles.textContainer}>
+                <AtomicText
+                    type="bodyLarge"
+                    color="onSurface"
+                    numberOfLines={1}
+                    style={{ marginBottom: 4 }}
+                >
+                    {title}
+                </AtomicText>
+                {!!description && (
+                    <AtomicText type="bodyMedium" color="secondary" numberOfLines={2}>
+                        {description}
+                    </AtomicText>
+                )}
+            </View>
+            {shouldShowChevron && (
+                <AtomicIcon name={rightIcon} size="sm" color="secondary" />
+            )}
+        </View>
+    );
 
     return (
         <View
@@ -66,37 +97,23 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                     </AtomicText>
                 </View>
             )}
-            <Pressable
-                style={({ pressed }) => [
-                    styles.itemContainer,
-                    {
-                        backgroundColor: pressed ? `${colors.primary}08` : "transparent",
-                    },
-                ]}
-                onPress={onPress}
-            >
-                <View style={styles.content}>
-                    <View style={[styles.iconContainer, { backgroundColor: defaultIconBg }]}>
-                        <AtomicIcon name={icon} size="lg" customColor={defaultIconColor} />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <AtomicText
-                            type="bodyLarge"
-                            color="onSurface"
-                            numberOfLines={1}
-                            style={{ marginBottom: 4 }}
-                        >
-                            {title}
-                        </AtomicText>
-                        {!!description && (
-                            <AtomicText type="bodyMedium" color="secondary" numberOfLines={2}>
-                                {description}
-                            </AtomicText>
-                        )}
-                    </View>
-                    <AtomicIcon name={rightIcon} size="sm" color="secondary" />
+            {isClickable ? (
+                <Pressable
+                    style={({ pressed }) => [
+                        styles.itemContainer,
+                        {
+                            backgroundColor: pressed ? `${colors.primary}08` : "transparent",
+                        },
+                    ]}
+                    onPress={onPress}
+                >
+                    {renderContent()}
+                </Pressable>
+            ) : (
+                <View style={styles.itemContainer}>
+                    {renderContent()}
                 </View>
-            </Pressable>
+            )}
         </View>
     );
 };

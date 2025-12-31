@@ -116,12 +116,12 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     );
   };
 
-  if (renderHeader) {
+  if (renderHeader && onBack) {
     return (
       <View style={{ flex: 1, backgroundColor: tokens.colors.backgroundPrimary }}>
         <View style={[styles.container, customStyles?.container]}>
           <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
-            {renderHeader({ onBack: onBack || (() => { }) })}
+            {renderHeader({ onBack })}
           </View>
           {renderContent()}
         </View>

@@ -110,7 +110,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
       title={title}
       description={value}
       icon={icon as any}
-      onPress={onPress || (() => { })}
+      onPress={onPress}
       iconColor={iconColor}
     />
   );

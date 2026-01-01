@@ -6,8 +6,8 @@
  */
 
 import React, { useMemo, useCallback } from "react";
-import { ScreenLayout } from "@umituz/react-native-design-system";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { ScreenLayout, useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useLocalization } from "@umituz/react-native-localization";
 import { useAppearance, useAppearanceActions } from "../../hooks";
 import {
   AppearanceHeader,
@@ -34,6 +34,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   showPreviewSection = true,
 }) => {
   const tokens = useAppDesignTokens();
+  const { t } = useLocalization();
   const { themeMode } = useAppearance();
   const {
     localCustomColors,
@@ -67,17 +68,17 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     const themes: ThemeOptionConfig[] = [
       {
         mode: "light",
-        title: texts?.lightMode?.title ?? "settings.themeMode.light.title",
-        subtitle: texts?.lightMode?.subtitle,
-        description: texts?.lightMode?.description,
+        title: texts?.lightMode?.title ?? t("settings.appearance.lightMode.title"),
+        subtitle: texts?.lightMode?.subtitle ?? t("settings.appearance.lightMode.subtitle"),
+        description: texts?.lightMode?.description ?? t("settings.appearance.lightMode.description"),
         features: texts?.lightMode?.features,
         featuresTitle: texts?.featuresSectionTitle,
       },
       {
         mode: "dark",
-        title: texts?.darkMode?.title ?? "settings.themeMode.dark.title",
-        subtitle: texts?.darkMode?.subtitle,
-        description: texts?.darkMode?.description,
+        title: texts?.darkMode?.title ?? t("settings.appearance.darkMode.title"),
+        subtitle: texts?.darkMode?.subtitle ?? t("settings.appearance.darkMode.subtitle"),
+        description: texts?.darkMode?.description ?? t("settings.appearance.darkMode.description"),
         features: texts?.darkMode?.features,
         featuresTitle: texts?.featuresSectionTitle,
       },
@@ -88,8 +89,8 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
         tokens={tokens}
         themeMode={themeMode}
         onThemeSelect={handleThemeSelect}
-        title={texts?.themeSectionTitle}
-        description={texts?.themeSectionDescription}
+        title={texts?.themeSectionTitle ?? t("settings.appearance.themeSectionTitle")}
+        description={texts?.themeSectionDescription ?? t("settings.appearance.themeSectionDescription")}
         themes={themes}
       />
     );
@@ -103,6 +104,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     texts?.lightMode,
     texts?.darkMode,
     texts?.featuresSectionTitle,
+    t,
   ]);
 
   const colorsSectionMemo = useMemo(() => {

@@ -11,20 +11,20 @@ jest.mock('lucide-react-native', () => ({
   Cloud: 'Cloud',
 }));
 
-// Mock SettingItem component
-jest.mock('../SettingItem', () => {
+// Mock SettingsItemCard component
+jest.mock('../../../../../presentation/components/SettingsItemCard', () => {
   const React = require('react');
   const { View, Text } = require('react-native');
   
   return {
-    SettingItem: ({ icon, title, value, onPress, testID, showSwitch, switchValue, onSwitchChange, disabled, isLast }: any) => (
+    SettingsItemCard: ({ icon, title, description, onPress, testID, showSwitch, switchValue, onSwitchChange, disabled }: any) => (
       React.createElement(View, { 
         testID: testID || 'setting-item',
         onTouchEnd: onPress,
         style: { padding: 16 }
       }, [
         React.createElement(Text, { key: 'title' }, title || ''),
-        value && React.createElement(Text, { key: 'value' }, value),
+        description && React.createElement(Text, { key: 'description' }, description),
         showSwitch && React.createElement(Text, { key: 'switch' }, switchValue ? 'ON' : 'OFF'),
       ])
     ),

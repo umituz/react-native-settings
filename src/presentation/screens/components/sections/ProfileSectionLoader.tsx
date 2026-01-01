@@ -12,6 +12,7 @@ export interface ProfileSectionLoaderProps {
         avatarUrl?: string;
         accountSettingsRoute?: string;
         onPress?: () => void;
+        benefits?: string[];
     };
 }
 
@@ -39,6 +40,7 @@ export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = ({ user
                     isAnonymous: userProfile.isAnonymous ?? true,
                     avatarUrl: userProfile.avatarUrl,
                     accountSettingsRoute: userProfile.accountSettingsRoute,
+                    benefits: userProfile.benefits,
                 }}
                 onPress={handlePress}
                 onSignIn={userProfile.onPress}

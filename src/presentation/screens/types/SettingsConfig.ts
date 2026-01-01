@@ -17,6 +17,7 @@ import type {
   FAQConfig,
   CloudSyncConfig,
   SubscriptionConfig,
+  WalletConfig,
 } from "./FeatureConfig";
 
 /**
@@ -120,6 +121,12 @@ export interface SettingsConfig {
    * @default false
    */
   subscription?: FeatureVisibility | SubscriptionConfig;
+
+  /**
+   * Wallet settings configuration
+   * @default false
+   */
+  wallet?: FeatureVisibility | WalletConfig;
 
   /**
    * Custom empty state text when no settings are available

@@ -17,6 +17,7 @@ export type {
   FAQConfig,
   SubscriptionConfig,
   CloudSyncConfig,
+  WalletConfig,
 } from "./FeatureConfig";
 export type { SettingsConfig } from "./SettingsConfig";
 export type { CustomSettingsSection } from "./CustomSection";

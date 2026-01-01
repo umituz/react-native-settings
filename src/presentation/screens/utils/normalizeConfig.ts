@@ -16,6 +16,7 @@ import type {
   RatingConfig,
   FAQConfig,
   SubscriptionConfig,
+  WalletConfig,
   SettingsConfig,
 } from "../types";
 
@@ -64,6 +65,10 @@ export interface NormalizedConfig {
     enabled: boolean;
     config?: SubscriptionConfig;
   };
+  wallet: {
+    enabled: boolean;
+    config?: WalletConfig;
+  };
 }
 
 /**
@@ -109,5 +114,6 @@ export function normalizeSettingsConfig(
     rating: normalizeConfigValue(config?.rating, false),
     faqs: normalizeConfigValue(config?.faqs, false),
     subscription: normalizeConfigValue(config?.subscription, false),
+    wallet: normalizeConfigValue(config?.wallet, false),
   };
 }

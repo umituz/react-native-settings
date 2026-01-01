@@ -241,3 +241,23 @@ export interface SubscriptionConfig {
   /** Whether user is premium (to show active status) */
   isPremium?: boolean;
 }
+
+/**
+ * Wallet Settings Configuration
+ */
+export interface WalletConfig {
+  /** Show wallet section */
+  enabled?: FeatureVisibility;
+  /** Custom title for the wallet section */
+  title?: string;
+  /** Custom label for the wallet item */
+  description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
+  /** Navigation route for wallet screen */
+  route?: string;
+  /** Current balance to display */
+  balance?: number;
+}

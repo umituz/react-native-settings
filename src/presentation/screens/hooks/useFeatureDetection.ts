@@ -59,6 +59,7 @@ export function useFeatureDetection(
       rating,
       faqs,
       subscription,
+      wallet,
     } = normalizedConfig;
 
     const notificationServiceAvailable = !!options?.notificationServiceAvailable;
@@ -112,6 +113,7 @@ export function useFeatureDetection(
       rating: rating.enabled,
       faqs: faqs.enabled,
       subscription: subscription.enabled,
+      wallet: wallet.enabled,
     };
   }, [normalizedConfig, navigation, options]);
 }

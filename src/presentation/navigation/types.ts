@@ -61,8 +61,9 @@ export interface UserProfileConfig {
  */
 export interface AdditionalScreen {
   name: string;
-  component: React.ComponentType<any>;
-  options?: Record<string, any>;
+  component?: React.ComponentType<unknown>;
+  children?: () => React.ReactElement;
+  options?: Record<string, unknown>;
 }
 
 /**

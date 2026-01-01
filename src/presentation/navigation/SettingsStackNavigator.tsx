@@ -153,14 +153,24 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
         </Stack.Screen>
       )}
 
-      {additionalScreens.map((screen) => (
-        <Stack.Screen
-          key={screen.name}
-          name={screen.name as keyof SettingsStackParamList}
-          component={screen.component}
-          options={screen.options}
-        />
-      ))}
+      {additionalScreens.map((screen) =>
+        screen.children ? (
+          <Stack.Screen
+            key={screen.name}
+            name={screen.name as keyof SettingsStackParamList}
+            options={screen.options}
+          >
+            {screen.children}
+          </Stack.Screen>
+        ) : screen.component ? (
+          <Stack.Screen
+            key={screen.name}
+            name={screen.name as keyof SettingsStackParamList}
+            component={screen.component}
+            options={screen.options}
+          />
+        ) : null
+      )}
     </Stack.Navigator>
   );
 };

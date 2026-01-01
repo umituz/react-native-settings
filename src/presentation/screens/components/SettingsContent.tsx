@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
@@ -13,7 +14,25 @@ import { SettingsItemCard } from "../../components/SettingsItemCard";
 import type { IconName } from "@umituz/react-native-design-system";
 import { CustomSettingsList } from "./sections/CustomSettingsList";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
-import type { CustomSettingsSection } from "../types";
+import type { CustomSettingsSection, WalletConfig } from "../types";
+
+const WalletSettingsItem: React.FC<{ config: WalletConfig; t: (key: string) => string }> = ({ config, t }) => {
+  const navigation = useNavigation();
+  const handlePress = () => {
+    if (config.route) {
+      navigation.navigate(config.route as never);
+    }
+  };
+  return (
+    <SettingsItemCard
+      title={config.title || t("wallet.title")}
+      description={config.description || t("wallet.description")}
+      icon={(config.icon || "wallet") as IconName}
+      onPress={handlePress}
+      sectionTitle={config.sectionTitle}
+    />
+  );
+};
 
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
@@ -30,6 +49,7 @@ interface SettingsContentProps {
     rating: boolean;
     faqs: boolean;
     subscription: boolean;
+    wallet: boolean;
   };
   showUserProfile?: boolean;
   userProfile?: any;
@@ -67,6 +87,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.rating ||
     features.faqs ||
     features.subscription ||
+    features.wallet ||
     customSections.length > 0,
     [features, customSections.length]
   );
@@ -84,6 +105,13 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
           icon={(normalizedConfig.subscription.config.icon || "star") as IconName}
           onPress={normalizedConfig.subscription.config.onPress}
           sectionTitle={normalizedConfig.subscription.config.sectionTitle}
+        />
+      )}
+
+      {features.wallet && normalizedConfig.wallet.config?.route && (
+        <WalletSettingsItem
+          config={normalizedConfig.wallet.config}
+          t={t}
         />
       )}
 

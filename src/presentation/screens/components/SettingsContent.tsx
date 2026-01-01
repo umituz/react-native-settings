@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
@@ -10,7 +9,8 @@ import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
 import { FeatureSettingsSection } from "./sections/FeatureSettingsSection";
 import { IdentitySettingsSection } from "./sections/IdentitySettingsSection";
 import { SupportSettingsSection } from "./sections/SupportSettingsSection";
-import { SubscriptionSettingsSection } from "./sections/SubscriptionSettingsSection";
+import { SettingsItemCard } from "../../components/SettingsItemCard";
+import type { IconName } from "@umituz/react-native-design-system";
 import { CustomSettingsList } from "./sections/CustomSettingsList";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
 import type { CustomSettingsSection } from "../types";
@@ -54,7 +54,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   showCloseButton = false,
   devSettings,
 }) => {
-  const tokens = useAppDesignTokens();
   const { t } = useLocalization();
 
   const hasAnyFeatures = useMemo(() =>
@@ -78,8 +77,14 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       <CustomSettingsList customSections={customSections} />
 
-      {features.subscription && (
-        <SubscriptionSettingsSection config={normalizedConfig.subscription.config} />
+      {features.subscription && normalizedConfig.subscription.config?.onPress && (
+        <SettingsItemCard
+          title={normalizedConfig.subscription.config.title || t("settings.subscription.title")}
+          description={normalizedConfig.subscription.config.description || t("settings.subscription.description")}
+          icon={(normalizedConfig.subscription.config.icon || "star") as IconName}
+          onPress={normalizedConfig.subscription.config.onPress}
+          sectionTitle={normalizedConfig.subscription.config.sectionTitle}
+        />
       )}
 
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />

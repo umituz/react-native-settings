@@ -53,8 +53,13 @@ export { AppearanceScreen } from './presentation/screens/AppearanceScreen';
 export { SettingsStackNavigator } from './presentation/navigation/SettingsStackNavigator';
 export type {
   SettingsStackNavigatorProps,
-  SettingsStackParamList
-} from './presentation/navigation/SettingsStackNavigator';
+  SettingsStackParamList,
+  AppInfo,
+  LegalUrls,
+  UserProfileConfig,
+  AdditionalScreen,
+  FAQData,
+} from './presentation/navigation/types';
 
 // =============================================================================
 // PRESENTATION LAYER - Types

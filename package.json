@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "4.20.25",
+  "version": "4.20.27",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, about, legal, appearance, feedback, FAQs, and rating",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -36,8 +36,6 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
-    "@react-native-firebase/app": "^23.7.0",
-    "@react-native-firebase/firestore": "^23.7.0",
     "@umituz/react-native-auth": "latest",
     "@umituz/react-native-design-system": "latest",
     "@umituz/react-native-localization": "latest",

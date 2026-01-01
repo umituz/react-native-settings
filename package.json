@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "4.20.36",
+  "version": "4.20.37",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, about, legal, appearance, feedback, FAQs, and rating",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -16,7 +16,7 @@ import { SettingsErrorBoundary } from "../components/SettingsErrorBoundary";
 import { normalizeSettingsConfig } from "./utils/normalizeConfig";
 import { useFeatureDetection } from "./hooks/useFeatureDetection";
 import type { SettingsConfig, CustomSettingsSection } from "./types";
-import type { DevSettingsProps } from "../components/DevSettingsSection";
+import type { DevSettingsProps } from "../../domains/dev";
 
 export interface SettingsScreenProps {
   config?: SettingsConfig;

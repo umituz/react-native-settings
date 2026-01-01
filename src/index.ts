@@ -5,7 +5,7 @@
  * User preferences, theme, language, notifications
  *
  * Usage:
- *   import { useSettings, useSettingsStore, SettingsScreen, AppearanceScreen, LanguageSelectionScreen, SettingItem, DisclaimerSetting } from '@umituz/react-native-settings';
+ *   import { useSettings, SettingsScreen, AppearanceScreen, SettingsItemCard, DisclaimerSetting } from '@umituz/react-native-settings';
  */
 
 // =============================================================================
@@ -74,9 +74,6 @@ export type {
 // PRESENTATION LAYER - Components
 // =============================================================================
 
-export { SettingItem } from './presentation/components/SettingItem';
-export type { SettingItemProps } from './presentation/components/SettingItem';
-
 export { SettingsItemCard } from './presentation/components/SettingsItemCard';
 export type { SettingsItemCardProps } from './presentation/components/SettingsItemCard';
 
@@ -88,14 +85,6 @@ export type { SettingsFooterProps } from './presentation/components/SettingsFoot
 
 export { SettingsErrorBoundary } from './presentation/components/SettingsErrorBoundary';
 
-export { StorageClearSetting } from './presentation/components/StorageClearSetting';
-export type { StorageClearSettingProps } from './presentation/components/StorageClearSetting';
-
-export { CloudSyncSetting } from './presentation/components/CloudSyncSetting';
-export type { CloudSyncSettingProps } from './presentation/components/CloudSyncSetting';
-
-export { DevSettingsSection } from './presentation/components/DevSettingsSection';
-export type { DevSettingsProps } from './presentation/components/DevSettingsSection';
 
 // =============================================================================
 // DOMAIN EXPORTS - Consolidated Features
@@ -124,6 +113,12 @@ export * from "./domains/rating";
 
 // Video Tutorials Domain - Learning resources, tutorials
 export * from "./domains/video-tutorials";
+
+// Cloud Sync Domain - Cloud synchronization settings
+export * from "./domains/cloud-sync";
+
+// Dev Domain - Development-only settings (DEV mode)
+export * from "./domains/dev";
 
 // =============================================================================
 // PRESENTATION LAYER - Re-exports from Dependencies

@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
-import { DevSettingsSection, DevSettingsProps } from "../../components/DevSettingsSection";
+import { DevSettingsSection, DevSettingsProps } from "../../../domains/dev";
 import { DisclaimerSetting } from "../../../domains/disclaimer";
 import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
 import { FeatureSettingsSection } from "./sections/FeatureSettingsSection";

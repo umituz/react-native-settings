@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Pressable, StyleSheet, ViewStyle } from "react-native";
+import { View, Pressable, StyleSheet, ViewStyle, Switch } from "react-native";
 import {
     useAppDesignTokens,
     AtomicIcon,
@@ -28,6 +28,14 @@ export interface SettingsItemCardProps {
     iconColor?: string;
     /** Show chevron even if not clickable */
     showChevron?: boolean;
+    /** Show switch instead of chevron */
+    showSwitch?: boolean;
+    /** Switch value (when showSwitch is true) */
+    switchValue?: boolean;
+    /** Switch change handler */
+    onSwitchChange?: (value: boolean) => void;
+    /** Disable the item */
+    disabled?: boolean;
 }
 
 /**
@@ -47,14 +55,40 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     iconBgColor,
     iconColor,
     showChevron,
+    showSwitch = false,
+    switchValue,
+    onSwitchChange,
+    disabled = false,
 }) => {
     const tokens = useAppDesignTokens();
     const colors = tokens.colors;
 
     const defaultIconBg = iconBgColor || `${colors.primary}15`;
     const defaultIconColor = iconColor || colors.primary;
-    const isClickable = !!onPress;
-    const shouldShowChevron = showChevron ?? isClickable;
+    const isClickable = !!onPress && !showSwitch;
+    const shouldShowChevron = !showSwitch && (showChevron ?? isClickable);
+
+    const renderRightElement = () => {
+        if (showSwitch) {
+            return (
+                <Switch
+                    value={switchValue}
+                    onValueChange={onSwitchChange}
+                    trackColor={{
+                        false: colors.surfaceVariant,
+                        true: colors.primary,
+                    }}
+                    thumbColor={colors.surface}
+                    ios_backgroundColor={colors.surfaceVariant}
+                    disabled={disabled}
+                />
+            );
+        }
+        if (shouldShowChevron) {
+            return <AtomicIcon name={rightIcon} size="sm" color="secondary" />;
+        }
+        return null;
+    };
 
     const renderContent = () => (
         <View style={styles.content}>
@@ -64,9 +98,9 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
             <View style={styles.textContainer}>
                 <AtomicText
                     type="bodyLarge"
-                    color="onSurface"
+                    color={disabled ? "surfaceVariant" : "onSurface"}
                     numberOfLines={1}
-                    style={{ marginBottom: tokens.spacing.xs }}
+                    style={{ marginBottom: description ? tokens.spacing.xs : 0, opacity: disabled ? 0.6 : 1 }}
                 >
                     {title}
                 </AtomicText>
@@ -76,9 +110,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                     </AtomicText>
                 )}
             </View>
-            {shouldShowChevron && (
-                <AtomicIcon name={rightIcon} size="sm" color="secondary" />
-            )}
+            {renderRightElement()}
         </View>
     );
 

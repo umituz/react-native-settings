@@ -1,6 +1,14 @@
 /**
  * Video Tutorials Screen
  * Single Responsibility: Display video tutorials list
+ *
+ * Usage:
+ *   <VideoTutorialsScreen
+ *     tutorials={[...]}
+ *     featuredTutorials={[...]}
+ *     title="Video Tutorials"
+ *     onTutorialPress={(id) => openVideo(id)}
+ *   />
  */
 
 import React from "react";
@@ -13,9 +21,16 @@ import {
 } from "@umituz/react-native-design-system";
 import type { VideoTutorial } from "../../types";
 import { VideoTutorialCard } from "../components/VideoTutorialCard";
-import { useVideoTutorials, useFeaturedTutorials } from "../hooks";
 
 export interface VideoTutorialsScreenProps {
+  /**
+   * All tutorials to display (required)
+   */
+  tutorials: VideoTutorial[];
+  /**
+   * Featured tutorials to display in horizontal scroll (optional)
+   */
+  featuredTutorials?: VideoTutorial[];
   /**
    * Title of the screen
    */
@@ -29,63 +44,37 @@ export interface VideoTutorialsScreenProps {
    */
   allTutorialsTitle?: string;
   /**
-   * Error message to show when tutorials fail to load
+   * Empty state message when no tutorials
    */
-  errorLoadingMessage?: string;
+  emptyMessage?: string;
   /**
-   * Maximum number of featured tutorials to show
+   * Loading state (optional - defaults to false)
    */
-  maxFeaturedCount?: number;
+  isLoading?: boolean;
   /**
    * Callback when a tutorial is pressed
    */
-  onTutorialPress?: (tutorialId: string) => void;
-  /**
-   * Optional manual override for loading state
-   */
-  customIsLoading?: boolean;
-  /**
-   * Optional manual override for all tutorials data
-   */
-  customAllTutorials?: VideoTutorial[];
-  /**
-   * Optional manual override for featured tutorials data
-   */
-  customFeaturedTutorials?: VideoTutorial[];
+  onTutorialPress?: (tutorial: VideoTutorial) => void;
 }
 
 export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
   React.memo(
     ({
+      tutorials,
+      featuredTutorials,
       title = "Video Tutorials",
       featuredTitle = "Featured",
       allTutorialsTitle = "All Tutorials",
-      errorLoadingMessage = "Failed to load tutorials.",
-      maxFeaturedCount = 3,
+      emptyMessage = "No tutorials available.",
+      isLoading = false,
       onTutorialPress,
-      customIsLoading,
-      customAllTutorials,
-      customFeaturedTutorials,
     }) => {
       const tokens = useAppDesignTokens();
       const styles = getStyles(tokens);
 
-      const featuredQuery = useFeaturedTutorials(maxFeaturedCount);
-      const allQuery = useVideoTutorials();
-
-      const isLoading =
-        customIsLoading !== undefined
-          ? customIsLoading
-          : featuredQuery.isLoading || allQuery.isLoading;
-      const error = featuredQuery.error || allQuery.error;
-
-      const featuredTutorials =
-        customFeaturedTutorials || featuredQuery.data || [];
-      const allTutorials = customAllTutorials || allQuery.data || [];
-
       const handleTutorialPress = React.useCallback(
-        (tutorialId: string) => {
-          onTutorialPress?.(tutorialId);
+        (tutorial: VideoTutorial) => {
+          onTutorialPress?.(tutorial);
         },
         [onTutorialPress],
       );
@@ -94,7 +83,18 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
         ({ item }: { item: VideoTutorial }) => (
           <VideoTutorialCard
             tutorial={item}
-            onPress={() => handleTutorialPress(item.id)}
+            onPress={() => handleTutorialPress(item)}
+          />
+        ),
+        [handleTutorialPress],
+      );
+
+      const renderFeaturedItem = React.useCallback(
+        ({ item }: { item: VideoTutorial }) => (
+          <VideoTutorialCard
+            tutorial={item}
+            onPress={() => handleTutorialPress(item)}
+            horizontal
           />
         ),
         [handleTutorialPress],
@@ -104,11 +104,14 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
         return <AtomicSpinner size="lg" fullContainer />;
       }
 
-      if (error) {
+      const hasFeatured = featuredTutorials && featuredTutorials.length > 0;
+      const hasTutorials = tutorials && tutorials.length > 0;
+
+      if (!hasTutorials && !hasFeatured) {
         return (
-          <View style={styles.errorContainer}>
-            <AtomicText color="error" type="bodyLarge">
-              {errorLoadingMessage}
+          <View style={styles.emptyContainer}>
+            <AtomicText color="secondary" type="bodyLarge">
+              {emptyMessage}
             </AtomicText>
           </View>
         );
@@ -120,7 +123,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
             {title}
           </Text>
 
-          {featuredTutorials && featuredTutorials.length > 0 && (
+          {hasFeatured && (
             <View style={styles.section}>
               <Text
                 style={[
@@ -132,7 +135,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
               </Text>
               <FlatList
                 data={featuredTutorials}
-                renderItem={renderTutorialItem}
+                renderItem={renderFeaturedItem}
                 keyExtractor={(item: VideoTutorial) => item.id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -141,23 +144,25 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
             </View>
           )}
 
-          <View style={styles.section}>
-            <Text
-              style={[
-                styles.sectionTitle,
-                { color: tokens.colors.textSecondary },
-              ]}
-            >
-              {allTutorialsTitle}
-            </Text>
-            <FlatList
-              data={allTutorials}
-              renderItem={renderTutorialItem}
-              keyExtractor={(item: VideoTutorial) => item.id}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.verticalList}
-            />
-          </View>
+          {hasTutorials && (
+            <View style={styles.section}>
+              <Text
+                style={[
+                  styles.sectionTitle,
+                  { color: tokens.colors.textSecondary },
+                ]}
+              >
+                {allTutorialsTitle}
+              </Text>
+              <FlatList
+                data={tutorials}
+                renderItem={renderTutorialItem}
+                keyExtractor={(item: VideoTutorial) => item.id}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.verticalList}
+              />
+            </View>
+          )}
         </ScreenLayout>
       );
     },
@@ -165,29 +170,29 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> =
 
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
-  title: {
-    fontSize: tokens.typography.headlineLarge.fontSize,
-    fontWeight: "600",
-    marginBottom: 24,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: tokens.typography.titleLarge.fontSize,
-    fontWeight: "500",
-    marginBottom: 12,
-  },
-  horizontalList: {
-    paddingRight: 16,
-  },
-  verticalList: {
-    paddingBottom: 16,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-});
+    title: {
+      fontSize: tokens.typography.headlineLarge.fontSize,
+      fontWeight: "600",
+      marginBottom: 24,
+    },
+    section: {
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontSize: tokens.typography.titleLarge.fontSize,
+      fontWeight: "500",
+      marginBottom: 12,
+    },
+    horizontalList: {
+      paddingRight: 16,
+    },
+    verticalList: {
+      paddingBottom: 16,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    },
+  });

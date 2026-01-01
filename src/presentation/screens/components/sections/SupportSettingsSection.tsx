@@ -3,7 +3,7 @@ import { useLocalization } from "@umituz/react-native-localization";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { FAQSection } from "../../../../domains/faqs/presentation/components/FAQSection";
 import { SettingsSection } from "../../../components/SettingsSection";
-import { SettingItem } from "../../../components/SettingItem";
+import { SettingsItemCard } from "../../../components/SettingsItemCard";
 
 interface SupportSettingsSectionProps {
     features: any;
@@ -23,7 +23,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
             {(features.feedback || features.rating) && (
                 <SupportSection
                     renderSection={(props: any) => <>{props.children}</>}
-                    renderItem={(props: any) => <SettingItem {...props} />}
+                    renderItem={(props: any) => <SettingsItemCard title={props.title} icon={props.icon} onPress={props.onPress} />}
                     feedbackConfig={{
                         enabled: features.feedback,
                         config: {
@@ -70,7 +70,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
             {features.faqs && (
                 <FAQSection
                     renderSection={(props: any) => <>{props.children}</>}
-                    renderItem={(props: any) => <SettingItem {...props} />}
+                    renderItem={(props: any) => <SettingsItemCard title={props.title} icon={props.icon} onPress={props.onPress} />}
                     config={{
                         enabled: features.faqs,
                         ...normalizedConfig.faqs.config,

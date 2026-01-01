@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from "react";
-import { SettingItem } from "./SettingItem";
+import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 
 export interface CloudSyncSettingProps {
   title?: string;
@@ -13,7 +13,6 @@ export interface CloudSyncSettingProps {
   lastSynced?: Date | null;
   onPress?: () => void;
   disabled?: boolean;
-  isLast?: boolean;
 }
 
 const formatLastSynced = (date: Date): string => {
@@ -42,7 +41,6 @@ export const CloudSyncSetting: React.FC<CloudSyncSettingProps> = ({
   lastSynced,
   onPress,
   disabled = false,
-  isLast = false,
 }) => {
   const displayValue = useMemo(() => {
     if (isSyncing) {
@@ -58,13 +56,12 @@ export const CloudSyncSetting: React.FC<CloudSyncSettingProps> = ({
   }, [isSyncing, description, lastSynced]);
 
   return (
-    <SettingItem
+    <SettingsItemCard
       icon="cloud"
       title={title}
-      value={displayValue}
+      description={displayValue}
       onPress={onPress}
       disabled={disabled || isSyncing}
-      isLast={isLast}
     />
   );
 };

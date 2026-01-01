@@ -5,15 +5,13 @@
  */
 
 import React from "react";
-import { SettingItem } from "./SettingItem";
+import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 
 export interface StorageClearSettingProps {
   title?: string;
   description?: string;
   onPress?: () => void;
   iconColor?: string;
-  titleColor?: string;
-  isLast?: boolean;
 }
 
 export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
@@ -21,28 +19,23 @@ export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
   description,
   onPress,
   iconColor,
-  titleColor,
-  isLast = false,
 }) => {
-  // Default values for DEV mode
-  const defaultTitle = title || "Clear All Storage";
-  const defaultDescription = description || "Clear all local storage data (DEV only)";
-  const defaultIconColor = iconColor || "#EF4444";
-  const defaultTitleColor = titleColor || "#EF4444";
   // Only render in DEV mode
   if (!__DEV__) {
     return null;
   }
 
+  const defaultTitle = title || "Clear All Storage";
+  const defaultDescription = description || "Clear all local storage data (DEV only)";
+  const defaultIconColor = iconColor || "#EF4444";
+
   return (
-    <SettingItem
+    <SettingsItemCard
       icon="trash-outline"
       title={defaultTitle}
-      value={defaultDescription}
+      description={defaultDescription}
       onPress={onPress}
       iconColor={defaultIconColor}
-      titleColor={defaultTitleColor}
-      isLast={isLast}
     />
   );
 };

@@ -11,8 +11,8 @@ import React from "react";
 import { Alert } from "react-native";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { storageRepository } from "@umituz/react-native-storage";
-import { SettingsSection } from "./SettingsSection";
-import { SettingItem } from "./SettingItem";
+import { SettingsSection } from "../../../../presentation/components/SettingsSection";
+import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 
 // Default texts (English only - DEV feature)
 const DEFAULT_TEXTS = {
@@ -100,14 +100,12 @@ export const DevSettingsSection: React.FC<DevSettingsProps> = ({
   return (
     <SettingsSection title={t.sectionTitle}>
       {customDevComponents.map((component) => component)}
-      <SettingItem
+      <SettingsItemCard
         icon="trash-outline"
         title={t.clearTitle}
-        value={t.clearDescription}
+        description={t.clearDescription}
         onPress={handleClearData}
         iconColor={tokens.colors.error}
-        titleColor={tokens.colors.error}
-        isLast={true}
       />
     </SettingsSection>
   );

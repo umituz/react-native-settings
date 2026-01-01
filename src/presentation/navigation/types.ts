@@ -3,7 +3,7 @@
  */
 
 import type { SettingsConfig, CustomSettingsSection } from "../screens/types";
-import type { DevSettingsProps } from "../components/DevSettingsSection";
+import type { DevSettingsProps } from "../../domains/dev";
 import type { FAQCategory } from "../../domains/faqs";
 
 /**

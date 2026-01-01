@@ -9,6 +9,7 @@ import React, { useMemo } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
+import { NotificationSettingsScreen } from "@umituz/react-native-notifications";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { LegalScreen } from "../../domains/legal";
@@ -128,6 +129,16 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
         options={{
           headerShown: true,
           headerTitle: t("settings.legal.title"),
+          headerTitleAlign: "center",
+        }}
+      />
+
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationSettingsScreen}
+        options={{
+          headerShown: true,
+          headerTitle: t("settings.notifications.title"),
           headerTitleAlign: "center",
         }}
       />

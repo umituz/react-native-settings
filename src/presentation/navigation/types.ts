@@ -39,6 +39,7 @@ export type SettingsStackParamList = {
   Appearance: undefined;
   About: undefined;
   Legal: undefined;
+  Notifications: undefined;
   FAQ: undefined;
 };
 

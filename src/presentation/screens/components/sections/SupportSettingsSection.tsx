@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
-import { FAQSection } from "../../../../domains/faqs/presentation/components/FAQSection";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 
@@ -15,6 +15,11 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
     normalizedConfig,
 }) => {
     const { t } = useLocalization();
+    const navigation = useNavigation();
+
+    const handleFAQPress = useCallback(() => {
+        navigation.navigate("FAQ" as never);
+    }, [navigation]);
 
     if (!(features.feedback || features.rating || features.faqs)) return null;
 
@@ -68,15 +73,11 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
             )}
 
             {features.faqs && (
-                <FAQSection
-                    renderSection={(props: any) => <>{props.children}</>}
-                    renderItem={(props: any) => <SettingsItemCard title={props.title} icon={props.icon} onPress={props.onPress} />}
-                    config={{
-                        enabled: features.faqs,
-                        ...normalizedConfig.faqs.config,
-                        title: normalizedConfig.faqs.config?.title || t("settings.faqs.title"),
-                        description: normalizedConfig.faqs.config?.description || t("settings.faqs.description"),
-                    }}
+                <SettingsItemCard
+                    title={normalizedConfig.faqs.config?.title || t("settings.faqs.title")}
+                    description={normalizedConfig.faqs.config?.description || t("settings.faqs.description")}
+                    icon="help-circle-outline"
+                    onPress={handleFAQPress}
                 />
             )}
         </SettingsSection>

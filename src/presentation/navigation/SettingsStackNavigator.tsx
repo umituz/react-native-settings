@@ -68,6 +68,35 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     return Wrapper;
   }, [config, appInfo.version, showUserProfile, userProfile, devSettings, customSections]);
 
+  const NotificationSettingsWrapper = useMemo(() => {
+    const Wrapper = () => (
+      <NotificationSettingsScreen
+        translations={{
+          screenTitle: t("settings.notifications.title"),
+          masterToggleTitle: t("settings.notifications.masterToggleTitle"),
+          masterToggleDescription: t("settings.notifications.masterToggleDescription"),
+          soundTitle: t("settings.notifications.soundTitle"),
+          soundDescription: t("settings.notifications.soundDescription"),
+          vibrationTitle: t("settings.notifications.vibrationTitle"),
+          vibrationDescription: t("settings.notifications.vibrationDescription"),
+          remindersTitle: t("settings.notifications.remindersTitle"),
+          remindersDescription: t("settings.notifications.remindersDescription"),
+          quietHoursTitle: t("settings.notifications.quietHoursTitle"),
+          quietHoursDescription: t("settings.notifications.quietHoursDescription"),
+        }}
+        quietHoursTranslations={{
+          title: t("settings.notifications.quietHours.title"),
+          description: t("settings.notifications.quietHours.description"),
+          startTimeLabel: t("settings.notifications.quietHours.startTimeLabel"),
+          endTimeLabel: t("settings.notifications.quietHours.endTimeLabel"),
+          enabledLabel: t("settings.notifications.quietHours.enabledLabel"),
+        }}
+      />
+    );
+    Wrapper.displayName = "NotificationSettingsWrapper";
+    return Wrapper;
+  }, [t]);
+
   const LegalScreenWrapper = useMemo(() => {
     const Wrapper = () => (
       <LegalScreen
@@ -135,7 +164,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 
       <Stack.Screen
         name="Notifications"
-        component={NotificationSettingsScreen}
+        component={NotificationSettingsWrapper}
         options={{
           headerShown: true,
           headerTitle: t("settings.notifications.title"),

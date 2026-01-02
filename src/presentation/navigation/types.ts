@@ -35,7 +35,7 @@ export interface LegalUrls {
  * Navigation param list
  */
 export type SettingsStackParamList = {
-  Settings: undefined;
+  SettingsMain: undefined;
   Appearance: undefined;
   About: undefined;
   Legal: undefined;

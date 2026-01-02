@@ -127,7 +127,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
-        name="Settings"
+        name="SettingsMain"
         component={SettingsScreenWrapper}
         options={{ headerShown: false }}
       />

@@ -2,9 +2,6 @@
  * @umituz/react-native-faqs - Components
  */
 
-export { FAQSection } from './FAQSection';
-export type { FAQSectionProps, FAQConfig } from './FAQSection';
-
 export { FAQItemComponent } from './FAQItem';
 export type { FAQItemProps } from './FAQItem';
 

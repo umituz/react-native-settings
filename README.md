@@ -20,7 +20,7 @@ npm install @umituz/react-native-settings
 ## Peer Dependencies
 
 ```bash
-npm install zustand lucide-react-native @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-design-system-atoms @umituz/react-native-design-system-organisms @umituz/react-native-design-system-theme @umituz/react-native-localization @umituz/react-native-appearance @react-navigation/native react-native-safe-area-context expo-linear-gradient
+npm install zustand @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-localization @react-navigation/native @react-navigation/stack react-native-safe-area-context expo-linear-gradient
 ```
 
 ## Usage
@@ -43,8 +43,8 @@ const MyComponent = () => {
 
   return (
     <View>
-      <Text>Current Theme: {settings?.theme}</Text>
-      <Button onPress={handleThemeChange}>Toggle Theme</Button>
+      <AtomicText>Current Theme: {settings?.theme}</AtomicText>
+      <AtomicButton onPress={handleThemeChange}>Toggle Theme</AtomicButton>
     </View>
   );
 };
@@ -55,98 +55,51 @@ const MyComponent = () => {
 ```tsx
 import { SettingsScreen } from '@umituz/react-native-settings';
 
-// Basic usage
+// Basic usage in navigation
 <Stack.Screen name="Settings" component={SettingsScreen} />
-
-// With user profile header
-<SettingsScreen
-  showUserProfile={true}
-  userProfile={{
-    displayName: "John Doe",
-    userId: "user123",
-    isGuest: false,
-    accountSettingsRoute: "AccountSettings",
-  }}
-  config={{
-    appearance: true,
-    notifications: true,
-    about: true,
-    legal: true,
-  }}
-/>
 ```
 
-### Appearance Screen
+### Settings Item Card
 
 ```tsx
-import { AppearanceScreen } from '@umituz/react-native-settings';
-
-// In your navigation stack
-<Stack.Screen name="Appearance" component={AppearanceScreen} />
-```
-
-### Language Selection Screen
-
-```tsx
-import { LanguageSelectionScreen } from '@umituz/react-native-settings';
-
-// In your navigation stack
-<Stack.Screen name="LanguageSelection" component={LanguageSelectionScreen} />
-```
-
-### Setting Item Component
-
-```tsx
-import { SettingItem } from '@umituz/react-native-settings';
-import { Palette, Bell } from 'lucide-react-native';
+import { SettingsItemCard } from '@umituz/react-native-settings';
 
 // Basic setting item
-<SettingItem
-  icon={Palette}
+<SettingsItemCard
+  icon="brush-outline"
   title="Appearance"
-  value="Theme and language settings"
+  description="Theme and language settings"
   onPress={() => navigation.navigate('Appearance')}
 />
 
 // With switch
-<SettingItem
-  icon={Bell}
+<SettingsItemCard
+  icon="notifications-outline"
   title="Notifications"
   showSwitch={true}
   switchValue={enabled}
   onSwitchChange={setEnabled}
 />
-
-// Custom colors
-<SettingItem
-  icon={Palette}
-  title="Appearance"
-  iconColor="#F59E0B"
-  titleColor="#F59E0B"
-  onPress={() => {}}
-/>
 ```
 
-### Settings Section Component
+### Settings Section
 
 ```tsx
-import { SettingsSection, SettingItem } from '@umituz/react-native-settings';
-import { Palette, Bell } from 'lucide-react-native';
+import { SettingsSection, SettingsItemCard } from '@umituz/react-native-settings';
 
 <SettingsSection title="APP SETTINGS">
-  <SettingItem
-    icon={Palette}
+  <SettingsItemCard
+    icon="brush-outline"
     title="Appearance"
-    value="Theme and language settings"
+    description="Theme and language settings"
     onPress={() => navigation.navigate('Appearance')}
   />
-  <SettingItem
-    icon={Bell}
+  <SettingsItemCard
+    icon="notifications-outline"
     title="Notifications"
     showSwitch={true}
     switchValue={enabled}
     onSwitchChange={setEnabled}
-    isLast={true}
   />
 </SettingsSection>
 ```
@@ -264,21 +217,22 @@ Appearance settings screen with language and theme controls.
 
 Language selection screen with search functionality.
 
-### `SettingItem`
+### `SettingsItemCard`
 
-Modern setting item component with Lucide icons and switch support.
+Modern settings item component with Ionicons support and switch support.
 
 **Props:**
-- `icon: React.ComponentType` - Icon component from lucide-react-native
+- `icon: IconName` - Icon name from Ionicons
 - `title: string` - Main title text
-- `value?: string` - Optional description/value text (shown below title)
+- `description?: string` - Optional description/value text (shown below title)
 - `onPress?: () => void` - Callback when pressed
 - `showSwitch?: boolean` - Show switch instead of chevron
 - `switchValue?: boolean` - Switch value
 - `onSwitchChange?: (value: boolean) => void` - Switch change handler
-- `isLast?: boolean` - Is last item (no divider)
 - `iconColor?: string` - Custom icon color
-- `titleColor?: string` - Custom title color
+- `iconBgColor?: string` - Custom icon background color
+- `rightIcon?: IconName` - Custom right icon (defaults to chevron-forward)
+- `disabled?: boolean` - Disable the item
 
 ### `SettingsSection`
 

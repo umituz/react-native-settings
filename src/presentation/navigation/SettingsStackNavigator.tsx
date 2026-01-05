@@ -8,7 +8,7 @@
 import React, { useMemo } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
 import { NotificationSettingsScreen } from "@umituz/react-native-notifications";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
@@ -216,6 +216,20 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
           />
         ) : null
       )}
+      <Stack.Screen
+        name="LanguageSelection"
+        options={{
+          headerShown: true,
+          headerTitle: t("settings.language.title"),
+          headerTitleAlign: "center",
+        }}
+      >
+        {() => (
+          <LanguageSelectionScreen
+            searchPlaceholder={t("settings.languageSelection.searchPlaceholder")}
+          />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

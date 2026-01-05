@@ -92,7 +92,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
 
     const renderContent = () => (
         <View style={styles.content}>
-            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg, borderRadius: tokens.borderRadius.md }]}>
+            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg, borderRadius: tokens.radius.md }]}>
                 <AtomicIcon name={icon} size="lg" customColor={defaultIconColor} />
             </View>
             <View style={styles.textContainer}>
@@ -120,7 +120,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                 styles.sectionContainer,
                 { 
                     backgroundColor: colors.surface,
-                    borderRadius: tokens.borderRadius.lg,
+                    borderRadius: tokens.radius.lg,
                 },
                 containerStyle,
             ]}

@@ -4,35 +4,17 @@
  * Optimized for performance and memory safety
  */
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { AppInfo, AboutConfig } from '../../domain/entities/AppInfo';
+import type { AppInfo, AboutConfig } from '../../domain/entities/AppInfo';
 import { AboutRepository } from '../../infrastructure/repositories/AboutRepository';
-import { createDefaultAppInfo } from '../../utils/AppInfoFactory';
-
-export interface UseAboutInfoOptions {
-  /** Initial configuration */
-  initialConfig?: AboutConfig;
-  /** Auto-initialize on mount */
-  autoInit?: boolean;
-}
-
-export interface UseAboutInfoReturn {
-  /** Current app info */
-  appInfo: AppInfo | null;
-  /** Loading state */
-  loading: boolean;
-  /** Error state */
-  error: string | null;
-  /** Initialize with config */
-  initialize: (config: AboutConfig) => Promise<void>;
-  /** Update with new config */
-  update: (config: AboutConfig) => Promise<void>;
-  /** Update app info */
-  updateAppInfo: (updates: Partial<AppInfo>) => Promise<void>;
-  /** Refresh current app info */
-  refresh: () => Promise<void>;
-  /** Reset to initial state */
-  reset: () => void;
-}
+import type { UseAboutInfoOptions, UseAboutInfoReturn } from './useAboutInfo.types';
+import {
+  setErrorIfMounted,
+  setLoadingIfMounted,
+  initializeAppInfo,
+  updateAppInfoConfig,
+  updateAppInfoPartial,
+  refreshAppInfo,
+} from './useAboutInfo.utils';
 
 export const useAboutInfo = (
   options: UseAboutInfoOptions = {}
@@ -46,111 +28,59 @@ export const useAboutInfo = (
   const isInitializedRef = useRef(false);
   const isMountedRef = useRef(true);
 
-  const setErrorIfMounted = useCallback((err: string | null) => {
-    if (isMountedRef.current) {
-      setError(err);
-    }
-  }, []);
+  const initialize = useCallback(
+    (config: AboutConfig) => initializeAppInfo(
+      config,
+      repository,
+      isMountedRef,
+      isInitializedRef,
+      setAppInfo,
+      setError,
+      setLoading
+    ),
+    [repository]
+  );
 
-  const setLoadingIfMounted = useCallback((value: boolean) => {
-    if (isMountedRef.current) {
-      setLoading(value);
-    }
-  }, []);
+  const update = useCallback(
+    (config: AboutConfig) => updateAppInfoConfig(
+      config,
+      repository,
+      isMountedRef,
+      setAppInfo,
+      setError,
+      setLoading
+    ),
+    [repository]
+  );
 
-  const initialize = useCallback(async (config: AboutConfig, force = false) => {
-    if (isInitializedRef.current && !force) {
-      return;
-    }
-
-    if (!isMountedRef.current) {
-      return;
-    }
-
-    setLoadingIfMounted(true);
-    setErrorIfMounted(null);
-
-    try {
-      const defaultAppInfo = createDefaultAppInfo(config);
-      await repository.saveAppInfo(defaultAppInfo);
-
-      if (isMountedRef.current) {
-        setAppInfo(defaultAppInfo);
-        isInitializedRef.current = true;
+  const updateAppInfoCallback = useCallback(
+    (updates: Partial<AppInfo>) => {
+      if (!appInfo) {
+        setErrorIfMounted(isMountedRef, setError, 'App info not initialized');
+        return Promise.resolve();
       }
-    } catch (err) {
-      setErrorIfMounted(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoadingIfMounted(false);
-    }
-  }, [repository, setErrorIfMounted, setLoadingIfMounted]);
+      return updateAppInfoPartial(
+        updates,
+        repository,
+        isMountedRef,
+        setAppInfo,
+        setError,
+        setLoading
+      );
+    },
+    [repository, appInfo]
+  );
 
-  const update = useCallback(async (config: AboutConfig) => {
-    if (!isMountedRef.current) {
-      return;
-    }
-
-    setLoadingIfMounted(true);
-    setErrorIfMounted(null);
-
-    try {
-      const updatedAppInfo = createDefaultAppInfo(config);
-      await repository.saveAppInfo(updatedAppInfo);
-
-      if (isMountedRef.current) {
-        setAppInfo(updatedAppInfo);
-      }
-    } catch (err) {
-      setErrorIfMounted(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoadingIfMounted(false);
-    }
-  }, [repository, setErrorIfMounted, setLoadingIfMounted]);
-
-  const updateAppInfo = useCallback(async (updates: Partial<AppInfo>) => {
-    if (!appInfo || !isMountedRef.current) {
-      if (isMountedRef.current) {
-        setErrorIfMounted('App info not initialized');
-      }
-      return;
-    }
-
-    setLoadingIfMounted(true);
-    setErrorIfMounted(null);
-
-    try {
-      const updatedInfo = await repository.updateAppInfo(updates);
-
-      if (isMountedRef.current) {
-        setAppInfo(updatedInfo);
-      }
-    } catch (err) {
-      setErrorIfMounted(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoadingIfMounted(false);
-    }
-  }, [repository, appInfo, setErrorIfMounted, setLoadingIfMounted]);
-
-  const refresh = useCallback(async () => {
-    if (!isMountedRef.current || !appInfo) {
-      return;
-    }
-
-    setLoadingIfMounted(true);
-    setErrorIfMounted(null);
-
-    try {
-      const refreshedInfo = await repository.getAppInfo();
-
-      if (isMountedRef.current) {
-        setAppInfo(refreshedInfo);
-      }
-    } catch (err) {
-      setErrorIfMounted(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoadingIfMounted(false);
-    }
-  }, [repository, appInfo, setErrorIfMounted, setLoadingIfMounted]);
+  const refresh = useCallback(
+    () => refreshAppInfo(
+      repository,
+      isMountedRef,
+      setAppInfo,
+      setError,
+      setLoading
+    ),
+    [repository]
+  );
 
   const reset = useCallback(() => {
     if (!isMountedRef.current) {
@@ -163,6 +93,7 @@ export const useAboutInfo = (
     isInitializedRef.current = false;
   }, []);
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       isMountedRef.current = false;
@@ -173,17 +104,25 @@ export const useAboutInfo = (
     };
   }, [repository]);
 
+  // Initialize with default config if provided
   useEffect(() => {
-    if (initialConfig && autoInit !== false && isMountedRef.current && !isInitializedRef.current) {
+    if (
+      initialConfig &&
+      autoInit !== false &&
+      isMountedRef.current &&
+      !isInitializedRef.current
+    ) {
+      const { createDefaultAppInfo } = require('../../utils/AppInfoFactory');
       const defaultAppInfo = createDefaultAppInfo(initialConfig);
       setAppInfo(defaultAppInfo);
       isInitializedRef.current = true;
     }
   }, [initialConfig, autoInit]);
 
+  // Auto-initialize if autoInit is true
   useEffect(() => {
     if (autoInit === true && initialConfig && isMountedRef.current) {
-      initialize(initialConfig, true);
+      initialize(initialConfig);
     }
   }, [autoInit, initialConfig, initialize]);
 
@@ -193,8 +132,11 @@ export const useAboutInfo = (
     error,
     initialize,
     update,
-    updateAppInfo,
+    updateAppInfo: updateAppInfoCallback,
     refresh,
     reset,
   };
 };
+
+// Re-export types for convenience
+export type { UseAboutInfoOptions, UseAboutInfoReturn } from './useAboutInfo.types';

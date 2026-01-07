@@ -4,7 +4,7 @@
  * Fully configurable and generic
  * Optimized for performance and memory safety
  */
-import React, { useMemo, useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -13,6 +13,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { useAppDesignTokens } from '@umituz/react-native-design-system';
 
 export interface AboutSettingItemProps {
   /** Icon component (any React component) */
@@ -45,9 +46,7 @@ export interface AboutSettingItemProps {
   chevronColor?: string;
 }
 
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
-
-export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
+export const AboutSettingItem: React.FC<AboutSettingItemProps> = memo(({
   icon,
   title,
   description,
@@ -67,92 +66,30 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
   const styles = getStyles(tokens);
   const colors = tokens.colors;
 
-  // Memoize container type to prevent unnecessary re-renders
-  const Container = useMemo(() => {
-    return onPress ? TouchableOpacity : View;
-  }, [onPress]) as React.ComponentType<React.ComponentProps<typeof TouchableOpacity | typeof View>>;
+  const Container = onPress ? TouchableOpacity : View;
 
-  // Memoize container styles
-  const containerStyles = useMemo(() => {
-    return [
-      styles.container,
-      { backgroundColor: colors.surface },
-      disabled && styles.disabled,
-      containerStyle
-    ];
-  }, [disabled, containerStyle, colors.surface, styles]);
-
-  // Memoize icon container styles
-  const iconContainerStyles = useMemo(() => {
-    return [
-      styles.iconContainer,
-      iconContainerStyle
-    ];
-  }, [iconContainerStyle, styles]);
-
-  // Memoize chevron styles
-  const chevronStyles = useMemo(() => {
-    return [
-      styles.chevron,
-      { color: chevronColor || colors.textSecondary }
-    ];
-  }, [chevronColor, colors.textSecondary, styles]);
-
-  // Memoize press handler to prevent unnecessary re-renders
   const handlePress = useCallback(() => {
     if (onPress && !disabled) {
       onPress();
     }
   }, [onPress, disabled]);
 
-  // Memoize icon rendering
-  const renderIcon = useMemo(() => {
-    if (!icon) {
-      return null;
-    }
+  const containerStyles = [
+    styles.container,
+    { backgroundColor: colors.surface },
+    disabled && styles.disabled,
+    containerStyle,
+  ];
 
-    return (
-      <View style={iconContainerStyles}>
-        {icon}
-      </View>
-    );
-  }, [icon, iconContainerStyles]);
+  const iconContainerStyles = [
+    styles.iconContainer,
+    iconContainerStyle,
+  ];
 
-  // Memoize content rendering
-  const renderContent = useMemo(() => {
-    return (
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: colors.textPrimary }, titleStyle]}>{title}</Text>
-        {description && (
-          <Text style={[styles.description, { color: colors.textSecondary }, descriptionStyle]}>
-            {description}
-          </Text>
-        )}
-      </View>
-    );
-  }, [title, description, titleStyle, descriptionStyle, colors.textPrimary, colors.textSecondary, styles]);
-
-  // Memoize value rendering
-  const renderValue = useMemo(() => {
-    if (!value) {
-      return null;
-    }
-
-    return (
-      <Text style={[styles.value, { color: colors.textSecondary }, valueStyle]}>{value}</Text>
-    );
-  }, [value, valueStyle, colors.textSecondary, styles]);
-
-  // Memoize chevron rendering
-  const renderChevron = useMemo(() => {
-    if (!showChevron) {
-      return null;
-    }
-
-    return (
-      <Text style={chevronStyles}>›</Text>
-    );
-  }, [showChevron, chevronStyles]);
+  const chevronStyles = [
+    styles.chevron,
+    { color: chevronColor || colors.textSecondary },
+  ];
 
   return (
     <Container
@@ -161,13 +98,29 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = ({
       disabled={disabled}
       testID={testID}
     >
-      {renderIcon}
-      {renderContent}
-      {renderValue}
-      {renderChevron}
+      {icon && <View style={iconContainerStyles}>{icon}</View>}
+
+      <View style={styles.content}>
+        <Text style={[styles.title, { color: colors.textPrimary }, titleStyle]}>
+          {title}
+        </Text>
+        {description && (
+          <Text style={[styles.description, { color: colors.textSecondary }, descriptionStyle]}>
+            {description}
+          </Text>
+        )}
+      </View>
+
+      {value && (
+        <Text style={[styles.value, { color: colors.textSecondary }, valueStyle]}>
+          {value}
+        </Text>
+      )}
+
+      {showChevron && <Text style={chevronStyles}>›</Text>}
     </Container>
   );
-};
+});
 
 const getStyles = (tokens: any) => StyleSheet.create({
   container: {

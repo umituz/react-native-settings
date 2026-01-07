@@ -3,7 +3,7 @@
  * Combines all feature configurations
  */
 
-import type { FeatureVisibility } from "./FeatureConfig";
+import type { FeatureVisibility } from "./BaseTypes";
 import type {
   AppearanceConfig,
   LanguageConfig,
@@ -11,6 +11,8 @@ import type {
   AboutConfig,
   LegalConfig,
   DisclaimerConfig,
+} from "./ContentConfig";
+import type {
   UserProfileConfig,
   FeedbackConfig,
   RatingConfig,
@@ -18,7 +20,7 @@ import type {
   CloudSyncConfig,
   SubscriptionConfig,
   WalletConfig,
-} from "./FeatureConfig";
+} from "./UserFeatureConfig";
 
 /**
  * Main Settings Configuration
@@ -115,7 +117,7 @@ export interface SettingsConfig {
    * @default false
    */
   cloudSync?: FeatureVisibility | CloudSyncConfig;
-  
+
   /**
    * Subscription settings configuration
    * @default false

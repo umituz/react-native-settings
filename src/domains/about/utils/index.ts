@@ -3,6 +3,8 @@
  * General purpose utilities for all applications
  */
 
+export { createDefaultAppInfo } from './AppInfoFactory';
+
 /**
  * Create default configuration with overrides
  */

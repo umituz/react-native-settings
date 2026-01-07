@@ -5,17 +5,31 @@
  * Receives appInfo and legalUrls from app.
  */
 
-import React, { useMemo } from "react";
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
 import { NotificationSettingsScreen } from "@umituz/react-native-notifications";
-import { SettingsScreen } from "../screens/SettingsScreen";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
-import { LegalScreen } from "../../domains/legal";
-import { AboutScreen } from "../../domains/about";
 import { FAQScreen } from "../../domains/faqs";
 import { useNavigationHandlers } from "./hooks";
+import {
+  SettingsScreenWrapper,
+  LegalScreenWrapper,
+  AboutScreenWrapper,
+} from "./components/wrappers";
+import {
+  createNotificationTranslations,
+  createQuietHoursTranslations,
+  createLegalScreenProps,
+  createScreenOptions,
+  createAppearanceScreenOptions,
+  createAboutScreenOptions,
+  createLegalScreenOptions,
+  createNotificationsScreenOptions,
+  createFAQScreenOptions,
+  createLanguageSelectionScreenOptions,
+} from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
 
 const Stack = createStackNavigator<SettingsStackParamList>();
@@ -36,138 +50,55 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   const { handlePrivacyPress, handleTermsPress, handleEulaPress, aboutConfig } =
     useNavigationHandlers(appInfo, legalUrls);
 
-  const screenOptions = useMemo(
-    () => ({
-      headerStyle: {
-        backgroundColor: tokens.colors.surface,
-        borderBottomColor: tokens.colors.borderLight,
-        borderBottomWidth: 1,
-      },
-      headerTitleStyle: {
-        fontSize: 18,
-        fontWeight: "600" as const,
-        color: tokens.colors.textPrimary,
-      },
-      headerTintColor: tokens.colors.textPrimary,
-    }),
-    [tokens]
+  const screenOptions = React.useMemo(() => createScreenOptions(tokens), [tokens]);
+  const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);
+  const quietHoursTranslations = React.useMemo(() => createQuietHoursTranslations(t), [t]);
+  const legalScreenProps = React.useMemo(
+    () => createLegalScreenProps(t, handlePrivacyPress, handleTermsPress, handleEulaPress),
+    [t, handlePrivacyPress, handleTermsPress, handleEulaPress]
   );
-
-  const SettingsScreenWrapper = useMemo(() => {
-    const Wrapper = () => (
-      <SettingsScreen
-        config={config}
-        appVersion={appInfo.version}
-        showUserProfile={showUserProfile}
-        userProfile={userProfile}
-        devSettings={devSettings}
-        customSections={customSections}
-      />
-    );
-    Wrapper.displayName = "SettingsScreenWrapper";
-    return Wrapper;
-  }, [config, appInfo.version, showUserProfile, userProfile, devSettings, customSections]);
-
-  const notificationTranslations = useMemo(
-    () => ({
-      screenTitle: t("settings.notifications.title"),
-      masterToggleTitle: t("settings.notifications.masterToggleTitle"),
-      masterToggleDescription: t("settings.notifications.masterToggleDescription"),
-      soundTitle: t("settings.notifications.soundTitle"),
-      soundDescription: t("settings.notifications.soundDescription"),
-      vibrationTitle: t("settings.notifications.vibrationTitle"),
-      vibrationDescription: t("settings.notifications.vibrationDescription"),
-      remindersTitle: t("settings.notifications.remindersTitle"),
-      remindersDescription: t("settings.notifications.remindersDescription"),
-      quietHoursTitle: t("settings.notifications.quietHoursTitle"),
-      quietHoursDescription: t("settings.notifications.quietHoursDescription"),
-    }),
-    [t]
-  );
-
-  const quietHoursTranslations = useMemo(
-    () => ({
-      title: t("settings.notifications.quietHours.title"),
-      description: t("settings.notifications.quietHours.description"),
-      startTimeLabel: t("settings.notifications.quietHours.startTimeLabel"),
-      endTimeLabel: t("settings.notifications.quietHours.endTimeLabel"),
-      enabledLabel: t("settings.notifications.quietHours.enabledLabel"),
-    }),
-    [t]
-  );
-
-  const LegalScreenWrapper = useMemo(() => {
-    const Wrapper = () => (
-      <LegalScreen
-        title={t("settings.legal.title")}
-        description={t("settings.legal.description")}
-        documentsHeader={t("settings.legal.documentsHeader")}
-        privacyTitle={t("settings.legal.privacyTitle")}
-        privacyDescription={t("settings.legal.privacyDescription")}
-        termsTitle={t("settings.legal.termsTitle")}
-        termsDescription={t("settings.legal.termsDescription")}
-        eulaTitle={t("settings.legal.eulaTitle")}
-        eulaDescription={t("settings.legal.eulaDescription")}
-        onPrivacyPress={handlePrivacyPress}
-        onTermsPress={handleTermsPress}
-        onEulaPress={handleEulaPress}
-      />
-    );
-    Wrapper.displayName = "LegalScreenWrapper";
-    return Wrapper;
-  }, [t, handlePrivacyPress, handleTermsPress, handleEulaPress]);
-
-  const AboutScreenWrapper = useMemo(() => {
-    const Wrapper = () => <AboutScreen config={aboutConfig} />;
-    Wrapper.displayName = "AboutScreenWrapper";
-    return Wrapper;
-  }, [aboutConfig]);
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="SettingsMain"
-        component={SettingsScreenWrapper}
         options={{ headerShown: false }}
-      />
+      >
+        {() => (
+          <SettingsScreenWrapper
+            config={config}
+            appVersion={appInfo.version}
+            showUserProfile={showUserProfile}
+            userProfile={userProfile}
+            devSettings={devSettings}
+            customSections={customSections}
+          />
+        )}
+      </Stack.Screen>
 
       <Stack.Screen
         name="Appearance"
         component={AppearanceScreen}
-        options={{
-          headerShown: true,
-          headerTitle: t("settings.appearance.title"),
-          headerTitleAlign: "center",
-        }}
+        options={createAppearanceScreenOptions(t)}
       />
 
       <Stack.Screen
         name="About"
-        component={AboutScreenWrapper}
-        options={{
-          headerShown: true,
-          headerTitle: t("settings.about.title"),
-          headerTitleAlign: "center",
-        }}
-      />
+        options={createAboutScreenOptions(t)}
+      >
+        {() => <AboutScreenWrapper config={aboutConfig} />}
+      </Stack.Screen>
 
       <Stack.Screen
         name="Legal"
-        component={LegalScreenWrapper}
-        options={{
-          headerShown: true,
-          headerTitle: t("settings.legal.title"),
-          headerTitleAlign: "center",
-        }}
-      />
+        options={createLegalScreenOptions(t)}
+      >
+        {() => <LegalScreenWrapper {...legalScreenProps} />}
+      </Stack.Screen>
 
       <Stack.Screen
         name="Notifications"
-        options={{
-          headerShown: true,
-          headerTitle: t("settings.notifications.title"),
-          headerTitleAlign: "center",
-        }}
+        options={createNotificationsScreenOptions(t)}
       >
         {() => (
           <NotificationSettingsScreen
@@ -178,14 +109,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       </Stack.Screen>
 
       {faqData && faqData.categories.length > 0 && (
-        <Stack.Screen
-          name="FAQ"
-          options={{
-            headerShown: true,
-            headerTitle: t("settings.faqs.title"),
-            headerTitleAlign: "center",
-          }}
-        >
+        <Stack.Screen name="FAQ" options={createFAQScreenOptions(t)}>
           {() => (
             <FAQScreen
               categories={faqData.categories}
@@ -216,13 +140,10 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
           />
         ) : null
       )}
+
       <Stack.Screen
         name="LanguageSelection"
-        options={{
-          headerShown: true,
-          headerTitle: t("settings.language.title"),
-          headerTitleAlign: "center",
-        }}
+        options={createLanguageSelectionScreenOptions(t)}
       >
         {() => (
           <LanguageSelectionScreen

@@ -3,21 +3,23 @@
  * Exports all settings-related types
  */
 
-export type { FeatureVisibility } from "./FeatureConfig";
+export type { FeatureVisibility } from "./BaseTypes";
 export type {
-  AppearanceConfig,
-  LanguageConfig,
-  NotificationsConfig,
   AboutConfig,
   LegalConfig,
   DisclaimerConfig,
+  AppearanceConfig,
+  LanguageConfig,
+  NotificationsConfig,
+} from "./ContentConfig";
+export type {
   UserProfileConfig,
   FeedbackConfig,
-  RatingConfig,
   FAQConfig,
-  SubscriptionConfig,
+  RatingConfig,
   CloudSyncConfig,
+  SubscriptionConfig,
   WalletConfig,
-} from "./FeatureConfig";
+} from "./UserFeatureConfig";
 export type { SettingsConfig } from "./SettingsConfig";
 export type { CustomSettingsSection } from "./CustomSection";

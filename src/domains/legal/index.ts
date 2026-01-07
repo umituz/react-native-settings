@@ -6,3 +6,4 @@
 export * from './presentation/screens/LegalScreen';
 export * from './presentation/screens/PrivacyPolicyScreen';
 export * from './presentation/screens/TermsOfServiceScreen';
+export { LegalContentScreen } from './presentation/screens/LegalContentScreen';

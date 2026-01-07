@@ -43,7 +43,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
             styles.closeButton,
             {
               backgroundColor: pressed ? tokens.colors.surfaceVariant : tokens.colors.surface,
-              borderRadius: tokens.radius.full,
+              borderRadius: tokens.borderRadius.full,
             },
           ]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

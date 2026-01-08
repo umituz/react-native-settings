@@ -1,15 +1,28 @@
 # @umituz/react-native-settings
 
-Settings management for React Native apps - user preferences, theme, language, notifications.
+Comprehensive settings management for React Native apps with modular domain-based architecture.
 
-## Features
+## 🌟 Features
 
+### Core Features
 - ✅ **User Settings Management** - Theme, language, notifications, privacy settings
 - ✅ **Zustand State Management** - Global settings state with Zustand
 - ✅ **Persistent Storage** - Uses @umituz/react-native-storage for persistence
-- ✅ **Settings Screens** - Pre-built settings screens (Settings, Appearance, Language Selection)
+- ✅ **Settings Screens** - Pre-built settings screens with modular architecture
 - ✅ **Setting Components** - Reusable setting item components
 - ✅ **Type-Safe** - Full TypeScript support
+
+### Domain Features
+- 🎨 **Appearance** - Theme customization (light/dark mode), custom color schemes
+- ℹ️ **About** - App information, version details, developer contact
+- ⚖️ **Legal** - Privacy policy, terms of service, legal documents
+- ⚠️ **Disclaimer** - Legal notices, warnings, important information
+- 💬 **Feedback** - User feedback forms, support resources
+- ❓ **FAQs** - Searchable frequently asked questions
+- ⭐ **Rating** - Star rating system with statistics
+- 🎥 **Video Tutorials** - Tutorial browser with featured content
+- ☁️ **Cloud Sync** - Sync status and management
+- 🛠️ **Dev Tools** - Development utilities (DEV mode only)
 
 ## Installation
 
@@ -373,12 +386,137 @@ This package follows **Domain-Driven Design (DDD)** principles:
 - ✅ **Error Boundaries**: Prevent crashes and provide graceful fallbacks
 - ✅ **Development Logs**: __DEV__ only logging for production safety
 
+## Domain Documentation
+
+Each domain has comprehensive documentation with usage examples, API references, and best practices:
+
+- **[About Domain Documentation](./src/domains/about/README.md)** - App information, version details, contact information
+- **[Appearance Domain Documentation](./src/domains/appearance/README.md)** - Theme management, dark mode, custom colors
+- **[Legal Domain Documentation](./src/domains/legal/README.md)** - Privacy policy, terms of service, legal documents
+- **[Disclaimer Domain Documentation](./src/domains/disclaimer/README.md)** - Legal notices, warnings, important information
+- **[Feedback Domain Documentation](./src/domains/feedback/README.md)** - Feedback forms, support resources
+- **[FAQs Domain Documentation](./src/domains/faqs/README.md)** - Searchable FAQ system
+- **[Rating Domain Documentation](./src/domains/rating/README.md)** - Star rating component
+- **[Video Tutorials Domain Documentation](./src/domains/video-tutorials/README.md)** - Video tutorial browser
+- **[Cloud Sync Domain Documentation](./src/domains/cloud-sync/README.md)** - Cloud sync status and management
+- **[Dev Domain Documentation](./src/domains/dev/README.md)** - Development utilities (DEV mode only)
+
+## Quick Start Examples
+
+### Complete Settings App
+
+```tsx
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import {
+  SettingsScreen,
+  AppearanceScreen,
+  AboutScreen,
+  LegalScreen,
+  FAQScreen,
+} from '@umituz/react-native-settings';
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Appearance" component={AppearanceScreen} />
+        <Stack.Screen name="About" component={AboutScreen} />
+        <Stack.Screen name="Legal" component={LegalScreen} />
+        <Stack.Screen name="FAQ" component={FAQScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+```
+
+### Custom Settings Screen
+
+```tsx
+import { SettingsSection, SettingsItemCard } from '@umituz/react-native-settings';
+
+function CustomSettingsScreen() {
+  return (
+    <ScreenLayout>
+      <SettingsSection title="PREFERENCES">
+        <SettingsItemCard
+          icon="moon-outline"
+          title="Dark Mode"
+          showSwitch={true}
+          switchValue={isDarkMode}
+          onSwitchChange={setDarkMode}
+        />
+        <SettingsItemCard
+          icon="globe-outline"
+          title="Language"
+          description="English"
+          onPress={() => {}}
+        />
+      </SettingsSection>
+
+      <SettingsSection title="SUPPORT">
+        <SettingsItemCard
+          icon="help-circle-outline"
+          title="Help & FAQs"
+          onPress={() => navigation.navigate('FAQ')}
+        />
+        <SettingsItemCard
+          icon="chatbubble-outline"
+          title="Send Feedback"
+          onPress={() => navigation.navigate('Feedback')}
+        />
+      </SettingsSection>
+    </ScreenLayout>
+  );
+}
+```
+
+## Project Structure
+
+```
+src/
+├── domains/                    # Feature domains (DDD architecture)
+│   ├── about/                  # App information & about
+│   ├── appearance/             # Theme & appearance settings
+│   ├── legal/                  # Privacy policy & terms
+│   ├── disclaimer/             # Legal disclaimers
+│   ├── feedback/               # User feedback system
+│   ├── faqs/                   # FAQ management
+│   ├── rating/                 # Rating system
+│   ├── video-tutorials/        # Video tutorials
+│   ├── cloud-sync/             # Cloud synchronization
+│   └── dev/                    # Development tools
+├── presentation/               # Shared UI components
+│   ├── screens/               # Settings screens
+│   ├── components/            # Reusable components
+│   └── hooks/                 # Shared hooks
+├── application/               # Application logic
+├── infrastructure/            # External dependencies
+└── index.ts                   # Main exports
+```
+
 ## Version History
 
+- **v4.20.56**: Added comprehensive domain documentation with README files for each feature
+- **v4.20.55**: Enhanced domain structure with individual README documentation
+- **v4.20.54**: Refactored package structure - split files under 200 lines
 - **v2.2.0**: Major refactor - removed hardcoded text, improved architecture, added comprehensive tests
 - **v2.1.0**: Enhanced component structure and TypeScript support
 - **v2.0.0**: Breaking changes - removed LanguageSelectionScreen, improved API
 - **v1.x.x**: Initial releases with basic settings functionality
+
+## Contributing
+
+When contributing to this package:
+1. Follow the domain-driven design structure
+2. Keep files under 200 lines
+3. Add tests for new features
+4. Update relevant domain README
+5. Follow TypeScript best practices
 
 ## License
 
@@ -387,4 +525,8 @@ MIT
 ## Author
 
 Ümit UZ <umit@umituz.com>
+
+---
+
+**Made with ❤️ for the React Native community**
 

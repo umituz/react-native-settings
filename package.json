@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "4.20.56",
+  "version": "4.20.57",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, about, legal, appearance, feedback, FAQs, and rating",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -93,7 +93,6 @@
     "expo-file-system": "^19.0.21",
     "expo-haptics": "^15.0.8",
     "expo-image": "^3.0.11",
-
     "expo-localization": "^17.0.8",
     "expo-notifications": "^0.32.15",
     "expo-sharing": "^14.0.8",

@@ -5,7 +5,7 @@
 
 import React from "react";
 import { SettingsItemCard } from "../../../presentation/components/SettingsItemCard";
-import type { GamificationMenuConfig } from "../types";
+import type { GamificationMenuConfig } from "../types/settings";
 
 export interface GamificationSettingsItemProps {
   config: GamificationMenuConfig;

@@ -5,7 +5,7 @@
  * src/domains/settings/config/gamification.config.ts
  */
 
-import type { GamificationSettingsConfig } from "../types";
+import type { GamificationSettingsConfig } from "../types/settings";
 
 /**
  * Creates gamification configuration for settings

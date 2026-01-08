@@ -1,13 +1,13 @@
 /**
  * Gamification Screen Component
- * Wrapper for @umituz/react-native-gamification screen
+ * Wrapper for gamification screen
  */
 
 import React, { useMemo } from "react";
-import { GamificationScreen as BaseGamificationScreen } from "@umituz/react-native-gamification";
-import { useGamification } from "@umituz/react-native-gamification";
+import { GamificationScreen as BaseGamificationScreen } from "./GamificationScreen";
+import { useGamification } from "../hooks/useGamification";
 import { useLocalization } from "@umituz/react-native-localization";
-import type { GamificationSettingsConfig } from "../types";
+import type { GamificationSettingsConfig } from "../types/settings";
 
 export interface GamificationScreenWrapperProps {
   config: GamificationSettingsConfig;

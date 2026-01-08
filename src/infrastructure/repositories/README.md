@@ -1,458 +1,132 @@
 # Settings Repository
 
-Repository implementation for settings data persistence using `@umituz/react-native-storage`.
+Repository implementation for settings data persistence using storage abstraction.
 
-## Features
+## Purpose
 
-- **Data Persistence**: Stores and retrieves user settings
-- **Automatic Defaults**: Creates default settings for new users
-- **Type Safety**: Full TypeScript support
-- **Error Handling**: Comprehensive error catching
-- **Storage Integration**: Uses storage repository
-- **Performance**: Optimized for frequent reads
+Provides concrete implementation of the settings repository interface, handling all data persistence operations including CRUD operations, defaults creation, and storage management.
 
-## Installation
+## File Paths
 
-This repository is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Usage
-
-```typescript
-import { SettingsRepository } from '@umituz/react-native-settings';
-
-const repository = new SettingsRepository();
-
-// Get settings
-const settings = await repository.get('user123');
-
-// Update settings
-const updated = await repository.update('user123', {
-  theme: 'dark',
-  language: 'tr-TR',
-});
-
-// Reset settings
-const defaults = await repository.reset('user123');
+```
+src/infrastructure/repositories/
+└── SettingsRepository.ts    # Settings repository implementation
 ```
 
-### With Custom Storage
+## Strategy
 
-```typescript
-import { StorageRepository } from '@umituz/react-native-storage';
+1. **Interface Implementation**: Implement ISettingsRepository from application layer
+2. **Automatic Defaults**: Create defaults for new users automatically
+3. **Error Transformation**: Convert storage errors to domain errors
+4. **Performance**: Optimize for frequent reads with optional caching
+5. **Migration Support**: Handle schema versioning and migrations
 
-const storage = new StorageRepository();
-const repository = new SettingsRepository(storage);
+## Restrictions
 
-const settings = await repository.get('user123');
-```
+### DO NOT
 
-## Methods
+- ❌ DO NOT include business logic that belongs in services
+- ❌ DO NOT expose storage-specific implementation details
+- ❌ DO NOT make assumptions about storage backend
+- ❌ DO NOT use synchronous operations
+- ❌ DO NOT expose raw storage errors to upper layers
 
-### get(userId: string): Promise<UserSettings>
+### NEVER
 
-Retrieves settings for a user. Creates defaults if not found.
+- ❌ NEVER return data without applying defaults
+- ❌ NEVER assume storage always succeeds
+- ❌ EVER bypass storage abstraction
+- ❌ EVER cache without invalidation strategy
 
-```typescript
-const settings = await repository.get('user123');
+### AVOID
 
-console.log(settings.theme);        // 'light' | 'dark' | 'auto'
-console.log(settings.language);     // 'en-US'
-console.log(settings.notificationsEnabled); // true
-```
+- ❌ AVOID hardcoding storage keys or formats
+- ❌ AVOID tight coupling to specific storage implementation
+- ❌ AVOID blocking operations on main thread
+- ❌ AVOID ignoring storage capacity limits
 
-**Returns**: Complete UserSettings object.
+## Rules
 
-**Example**:
+### ALWAYS
 
-```typescript
-async function loadSettings(userId: string) {
-  try {
-    const settings = await repository.get(userId);
-    return settings;
-  } catch (error) {
-    console.error('Failed to load settings:', error);
-    throw error;
-  }
-}
-```
+- ✅ ALWAYS implement the full repository interface
+- ✅ ALWAYS provide default values for new users
+- ✅ ALWAYS handle storage errors gracefully
+- ✅ ALWAYS use async/await for I/O operations
+- ✅ ALWAYS return typed results
 
-### update(userId: string, updates: Partial<UserSettings>): Promise<UserSettings>
+### MUST
 
-Updates settings for a user.
+- ✅ MUST validate data before storage
+- ✅ MUST transform storage errors to domain errors
+- ✅ MUST use dependency injection for storage
+- ✅ MUST handle concurrent operations safely
 
-```typescript
-const updated = await repository.update('user123', {
-  theme: 'dark',
-  notificationsEnabled: false,
-});
+### SHOULD
 
-console.log(updated.theme); // 'dark'
-```
+- ✅ SHOULD cache frequently accessed data
+- ✅ SHOULD provide migration path for schema changes
+- ✅ SHOULD handle storage unavailability
+- ✅ SHOULD log storage operations for debugging
 
-**Returns**: Updated complete UserSettings object.
+## AI Agent Guidelines
 
-**Example**:
+1. **When implementing repositories**: Always inject storage dependencies
+2. **When handling errors**: Transform technical errors to domain errors
+3. **When adding caching**: Implement proper invalidation strategy
+4. **When creating defaults**: Match application's expected behavior
+5. **When handling migrations**: Ensure backward compatibility
 
-```typescript
-async function updateTheme(userId: string, theme: 'light' | 'dark') {
-  try {
-    const updated = await repository.update(userId, { theme });
-    return updated;
-  } catch (error) {
-    console.error('Failed to update theme:', error);
-    throw error;
-  }
-}
-```
+## Repository Reference
 
-### reset(userId: string): Promise<UserSettings>
+### SettingsRepository
 
-Resets settings to default values.
+Concrete implementation of ISettingsRepository using storage abstraction.
 
-```typescript
-const defaults = await repository.reset('user123');
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/infrastructure/repositories/SettingsRepository.ts`
 
-console.log(defaults.theme);        // 'light' (default)
-console.log(defaults.language);     // 'en-US' (default)
-```
-
-**Returns**: Default UserSettings object.
-
-**Example**:
-
-```typescript
-async function clearUserData(userId: string) {
-  try {
-    const defaults = await repository.reset(userId);
-    return defaults;
-  } catch (error) {
-    console.error('Failed to reset settings:', error);
-    throw error;
-  }
-}
-```
-
-## Data Structure
-
-### UserSettings
-
-```typescript
-interface UserSettings {
-  userId: string;                      // Unique user identifier
-  theme: 'light' | 'dark' | 'auto';    // Theme preference
-  language: string;                    // Language code (e.g., 'en-US')
-  notificationsEnabled: boolean;       // Master notification switch
-  emailNotifications: boolean;          // Email notification preference
-  pushNotifications: boolean;           // Push notification preference
-  soundEnabled: boolean;               // Sound effects toggle
-  vibrationEnabled: boolean;           // Haptic feedback toggle
-  quietHoursEnabled: boolean;          // Quiet hours feature
-  quietHoursStart: string;             // Start time (HH:MM format)
-  quietHoursEnd: string;               // End time (HH:MM format)
-}
-```
-
-### Storage Format
-
-Settings are stored in the following format:
-
-```typescript
-{
-  "settings:user123": {
-    "userId": "user123",
-    "theme": "dark",
-    "language": "tr-TR",
-    "notificationsEnabled": true,
-    "emailNotifications": true,
-    "pushNotifications": true,
-    "soundEnabled": true,
-    "vibrationEnabled": true,
-    "quietHoursEnabled": false,
-    "quietHoursStart": "22:00",
-    "quietHoursEnd": "08:00"
-  }
-}
-```
-
-## Default Values
-
-### Default Settings
-
-```typescript
-const defaultSettings: UserSettings = {
-  userId: '',
-  theme: 'auto',
-  language: 'en-US',
-  notificationsEnabled: true,
-  emailNotifications: true,
-  pushNotifications: true,
-  soundEnabled: true,
-  vibrationEnabled: true,
-  quietHoursEnabled: false,
-  quietHoursStart: '22:00',
-  quietHoursEnd: '08:00',
-};
-```
-
-### Applying Defaults
-
-```typescript
-function applyDefaults(
-  userId: string,
-  existing?: Partial<UserSettings>
-): UserSettings {
-  return {
-    ...defaultSettings,
-    userId,
-    ...existing,
-  };
-}
-```
+**Methods**:
+- `get(userId: string): Promise<UserSettings>` - Get with auto-defaults
+- `update(userId: string, updates: Partial<UserSettings>): Promise<UserSettings>` - Update settings
+- `reset(userId: string): Promise<UserSettings>` - Reset to defaults
 
 ## Storage Keys
 
-### Key Format
+**Pattern**: `settings:{userId}`
+**Example**: `settings:user123`, `settings:admin`
 
-```typescript
-function getStorageKey(userId: string): string {
-  return `settings:${userId}`;
-}
-```
+## Data Structure
 
-**Examples**:
+Settings are stored as JSON containing all user preferences:
+- User identification (userId)
+- Theme preferences (theme, customColors)
+- Localization (language)
+- Notifications (enabled, email, push, quietHours)
+- Audio (sound, vibration)
+- Privacy (privacyMode)
+- Legal (disclaimerAccepted)
+- Metadata (updatedAt)
 
-```typescript
-getStorageKey('user123'); // 'settings:user123'
-getStorageKey('admin');   // 'settings:admin'
-```
+## Default Values
+
+**Applied automatically** for new users or when data is missing:
+- theme: 'auto'
+- language: 'en-US'
+- notificationsEnabled: true
+- emailNotifications: true
+- pushNotifications: true
+- soundEnabled: true
+- vibrationEnabled: true
+- privacyMode: false
+- disclaimerAccepted: false
 
 ## Error Handling
 
-### Storage Errors
-
-```typescript
-try {
-  const settings = await repository.get('user123');
-} catch (error) {
-  if (error.code === 'STORAGE_ERROR') {
-    console.error('Storage operation failed:', error.message);
-  } else if (error.code === 'NETWORK_ERROR') {
-    console.error('Network error:', error.message);
-  } else {
-    console.error('Unknown error:', error.message);
-  }
-}
-```
-
-### Error Types
-
-```typescript
-enum SettingsErrorCode {
-  NOT_FOUND = 'NOT_FOUND',
-  STORAGE_ERROR = 'STORAGE_ERROR',
-  NETWORK_ERROR = 'NETWORK_ERROR',
-  VALIDATION_ERROR = 'VALIDATION_ERROR',
-}
-
-class SettingsRepositoryError extends Error {
-  constructor(
-    message: string,
-    public code: SettingsErrorCode,
-    public originalError?: Error
-  ) {
-    super(message);
-    this.name = 'SettingsRepositoryError';
-  }
-}
-```
-
-## Performance
-
-### Optimized Reads
-
-```typescript
-class SettingsRepository {
-  private cache = new Map<string, UserSettings>();
-
-  async get(userId: string): Promise<UserSettings> {
-    // Check cache first
-    if (this.cache.has(userId)) {
-      return this.cache.get(userId)!;
-    }
-
-    // Load from storage
-    const settings = await this.loadFromStorage(userId);
-
-    // Cache result
-    this.cache.set(userId, settings);
-
-    return settings;
-  }
-
-  async update(
-    userId: string,
-    updates: Partial<UserSettings>
-  ): Promise<UserSettings> {
-    const settings = await this.get(userId);
-
-    const updated = {
-      ...settings,
-      ...updates,
-    };
-
-    // Save to storage
-    await this.saveToStorage(userId, updated);
-
-    // Update cache
-    this.cache.set(userId, updated);
-
-    return updated;
-  }
-
-  invalidateCache(userId?: string): void {
-    if (userId) {
-      this.cache.delete(userId);
-    } else {
-      this.cache.clear();
-    }
-  }
-}
-```
-
-## Migrations
-
-### Schema Versioning
-
-```typescript
-interface SettingsSchema {
-  version: number;
-  settings: UserSettings;
-}
-
-async function migrateSettings(
-  oldVersion: number,
-  newVersion: number,
-  settings: any
-): Promise<UserSettings> {
-  if (oldVersion === 1 && newVersion === 2) {
-    // Migration from v1 to v2
-    return {
-      ...settings,
-      newField: defaultSettings.newField,
-    };
-  }
-
-  return settings;
-}
-```
-
-### Running Migrations
-
-```typescript
-class SettingsRepository {
-  private readonly CURRENT_VERSION = 2;
-
-  async get(userId: string): Promise<UserSettings> {
-    const stored = await storage.get(`settings:${userId}`);
-
-    if (!stored) {
-      return this.createDefaults(userId);
-    }
-
-    // Check version
-    if (stored.version < this.CURRENT_VERSION) {
-      return this.migrate(stored);
-    }
-
-    return stored.settings;
-  }
-
-  private async migrate(stored: any): Promise<UserSettings> {
-    const settings = await migrateSettings(
-      stored.version,
-      this.CURRENT_VERSION,
-      stored.settings
-    );
-
-    // Save migrated settings
-    await this.saveToStorage(stored.userId, settings);
-
-    return settings;
-  }
-}
-```
-
-## Testing
-
-### Mock Repository
-
-```typescript
-class MockSettingsRepository implements ISettingsRepository {
-  private storage = new Map<string, UserSettings>();
-
-  async get(userId: string): Promise<UserSettings> {
-    if (!this.storage.has(userId)) {
-      const defaults = applyDefaults(userId);
-      this.storage.set(userId, defaults);
-    }
-    return this.storage.get(userId)!;
-  }
-
-  async update(
-    userId: string,
-    updates: Partial<UserSettings>
-  ): Promise<UserSettings> {
-    const current = await this.get(userId);
-    const updated = { ...current, ...updates };
-    this.storage.set(userId, updated);
-    return updated;
-  }
-
-  async reset(userId: string): Promise<UserSettings> {
-    const defaults = applyDefaults(userId);
-    this.storage.set(userId, defaults);
-    return defaults;
-  }
-
-  clear(): void {
-    this.storage.clear();
-  }
-}
-```
-
-### Usage in Tests
-
-```typescript
-describe('SettingsService', () => {
-  let repository: MockSettingsRepository;
-  let service: SettingsService;
-
-  beforeEach(() => {
-    repository = new MockSettingsRepository();
-    service = new SettingsService(repository);
-  });
-
-  afterEach(() => {
-    repository.clear();
-  });
-
-  it('should return default settings for new user', async () => {
-    const settings = await repository.get('new-user');
-
-    expect(settings.theme).toBe('auto');
-    expect(settings.language).toBe('en-US');
-  });
-
-  it('should update settings', async () => {
-    await repository.update('user123', { theme: 'dark' });
-
-    const settings = await repository.get('user123');
-    expect(settings.theme).toBe('dark');
-  });
-});
-```
+**Transformed Errors**:
+- `NOT_FOUND` - Settings don't exist (returns defaults)
+- `STORAGE_ERROR` - Storage operation failed
+- `NETWORK_ERROR` - Network communication failed
+- `VALIDATION_ERROR` - Data validation failed
 
 ## Best Practices
 
@@ -463,12 +137,6 @@ describe('SettingsService', () => {
 5. **Type Safety**: Use TypeScript for type checking
 6. **Immutability**: Don't mutate stored objects
 7. **Migrations**: Handle schema changes gracefully
-
-## Related
-
-- **Settings Service**: Business logic layer
-- **Application Layer**: Interface definitions
-- **Storage Package**: Data persistence
 
 ## License
 

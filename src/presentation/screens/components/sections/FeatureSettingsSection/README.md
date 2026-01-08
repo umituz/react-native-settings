@@ -2,214 +2,125 @@
 
 Section component that displays appearance, language, and notification settings in the main settings screen.
 
-## Features
+## Purpose
 
-- **Appearance Settings**: Theme and color customization
-- **Language Selection**: Language picker with current display
-- **Notification Settings**: Push notification preferences
-- **Conditional Rendering**: Shows only enabled features
-- **Internationalization**: Full i18n support
+Provides a unified section component that aggregates multiple feature-related settings (appearance, language, notifications) into a single, configurable display area with conditional rendering based on feature flags.
 
-## Installation
+## File Paths
 
-This component is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Usage
-
-```tsx
-import { FeatureSettingsSection } from '@umituz/react-native-settings';
-
-function MySettingsScreen() {
-  const normalizedConfig = {
-    appearance: { config: {} },
-    language: { config: { route: 'LanguageSelection' } },
-    notifications: { config: {} },
-  };
-
-  const features = {
-    appearance: true,
-    language: true,
-    notifications: true,
-  };
-
-  return (
-    <FeatureSettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
+```
+src/presentation/screens/components/sections/FeatureSettingsSection/
+├── index.ts                    # Main section component
+└── README.md                   # This file
 ```
 
-## Props
+## Strategy
 
-### FeatureSettingsSectionProps
+1. **Conditional Rendering**: Show only enabled features based on feature flags
+2. **Composition**: Compose multiple domain-specific sections into one
+3. **Configuration Driven**: Use normalized config to determine section behavior
+4. **Feature Detection**: Automatically detect available features
+5. **Internationalization**: Full i18n support for all text
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `normalizedConfig` | `NormalizedConfig` | **Required** | Normalized settings configuration |
-| `features` | `FeatureFlags` | **Required** | Feature visibility flags |
+## Restrictions
+
+### DO NOT
+
+- ❌ DO NOT hardcode feature visibility; use feature flags
+- ❌ DO NOT mix concerns; delegate to domain sections
+- ❌ DO NOT assume all features are enabled
+- ❌ DO NOT include business logic in this component
+- ❌ DO NOT duplicate section implementations
+
+### NEVER
+
+- ❌ NEVER bypass feature detection
+- ❌ EVER hardcode navigation routes
+- ❌ EVER assume config is always valid
+- ❌ EVER render sections that are disabled
+
+### AVOID
+
+- ❌ AVOID complex state management; lift to parent
+- ❌ AVOID deep component nesting
+- ❌ AVOID duplicating translation keys
+- ❌ AVOID tight coupling to specific domains
+
+## Rules
+
+### ALWAYS
+
+- ✅ ALWAYS normalize config before passing to sections
+- ✅ ALWAYS use feature detection for conditional rendering
+- ✅ ALWAYS provide translation keys for all text
+- ✅ ALWAYS respect feature flags
+- ✅ ALWAYS delegate to domain-specific components
+
+### MUST
+
+- ✅ MUST validate config before rendering
+- ✅ MUST handle missing features gracefully
+- ✅ MUST provide navigation for interactive items
+- ✅ MUST maintain consistent styling
+
+### SHOULD
+
+- ✅ SHOULD use lazy loading for sections
+- ✅ SHOULD provide loading states
+- ✅ SHOULD handle errors gracefully
+- ✅ SHOULD maintain consistent spacing
+
+## AI Agent Guidelines
+
+1. **When adding new features**: Add feature detection and conditional rendering
+2. **When modifying layout**: Maintain consistent spacing and alignment
+3. **When updating translations**: Add all required translation keys
+4. **When debugging**: Check feature flags and normalized config
+5. **When adding sections**: Follow existing section composition pattern
+
+## Component Reference
+
+### FeatureSettingsSection
+
+Main section component that displays multiple feature settings.
+
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/FeatureSettingsSection/index.tsx`
+
+**Props**:
+- `normalizedConfig: NormalizedConfig` - Normalized settings configuration
+- `features: FeatureFlags` - Feature visibility flags
+
+**Sub-Components**:
+- AppearanceSection (if features.appearance)
+- Language Selection (if features.language)
+- NotificationsSection (if features.notifications)
+
+## Feature Detection
+
+Features are detected using `useFeatureDetection` hook:
+- Returns: `{ appearance: boolean, language: boolean, notifications: boolean }`
+- Checks config availability and route definitions
+
+## Configuration Structure
+
+### NormalizedConfig
+
+```typescript
+interface NormalizedConfig {
+  appearance?: { config: AppearanceConfig };
+  language?: { config: LanguageConfig };
+  notifications?: { config: NotificationsConfig };
+}
+```
 
 ### FeatureFlags
 
 ```typescript
 interface FeatureFlags {
-  appearance: boolean;  // Show appearance section
-  language: boolean;    // Show language selection
-  notifications: boolean; // Show notification settings
+  appearance: boolean;
+  language: boolean;
+  notifications: boolean;
 }
-```
-
-## Component Structure
-
-```
-FeatureSettingsSection
-├── AppearanceSection     (if features.appearance)
-│   ├── Theme Mode
-│   └── Custom Colors
-├── Language Selection    (if features.language)
-│   └── Current Language Display
-└── NotificationsSection (if features.notifications)
-    ├── Push Notifications
-    ├── Quiet Hours
-    └── Notification Categories
-```
-
-## Examples
-
-### All Features Enabled
-
-```tsx
-function FullSettingsScreen() {
-  const config = {
-    appearance: { config: { showThemeSection: true } },
-    language: { config: { route: 'LanguageSelection' } },
-    notifications: { config: { showQuietHours: true } },
-  };
-
-  const features = {
-    appearance: true,
-    language: true,
-    notifications: true,
-  };
-
-  return <FeatureSettingsSection normalizedConfig={config} features={features} />;
-}
-```
-
-### Appearance Only
-
-```tsx
-function AppearanceOnlyScreen() {
-  const config = {
-    appearance: { config: { showColorsSection: false } },
-  };
-
-  const features = {
-    appearance: true,
-    language: false,
-    notifications: false,
-  };
-
-  return <FeatureSettingsSection normalizedConfig={config} features={features} />;
-}
-```
-
-### With Custom Language Route
-
-```tsx
-function CustomLanguageScreen() {
-  const config = {
-    language: {
-      config: {
-        route: 'CustomLanguagePicker',
-        showFlags: true,
-      },
-    },
-  };
-
-  const features = {
-    appearance: false,
-    language: true,
-    notifications: false,
-  };
-
-  return <FeatureSettingsSection normalizedConfig={config} features={features} />;
-}
-```
-
-## Sub-Components
-
-### AppearanceSection
-
-Theme and appearance settings from Appearance domain.
-
-```tsx
-<AppearanceSection
-  config={{
-    title: "Appearance",
-    description: "Customize your experience",
-    showThemeSection: true,
-    showColorsSection: true,
-  }}
-  sectionTitle="APPEARANCE"
-/>
-```
-
-### Language Selection
-
-Language picker item with current language display.
-
-```tsx
-<SettingsItemCard
-  title="Language"
-  description="🇺🇸 English"
-  icon="globe-outline"
-  onPress={() => navigation.navigate('LanguageSelection')}
-  sectionTitle="LANGUAGE"
-/>
-```
-
-### NotificationsSection
-
-Notification settings from notifications domain.
-
-```tsx
-<NotificationsSection
-  config={{
-    title: "Notifications",
-    description: "Manage your preferences",
-    showQuietHours: true,
-  }}
-/>
-```
-
-## Feature Detection
-
-Features are detected using `useFeatureDetection` hook:
-
-```tsx
-const features = useFeatureDetection(normalizedConfig, navigation);
-// Returns: { appearance: boolean, language: boolean, notifications: boolean }
-```
-
-## Internationalization
-
-All text uses translation keys:
-
-```typescript
-// Appearance
-t("settings.appearance.title")
-t("settings.appearance.description")
-
-// Language
-t("settings.languageSelection.title")
-
-// Notifications
-t("settings.notifications.title")
-t("settings.notifications.description")
 ```
 
 ## Best Practices
@@ -220,12 +131,6 @@ t("settings.notifications.description")
 4. **Navigation Routes**: Define custom routes for language selection
 5. **Feature Flags**: Use feature flags to control visibility
 6. **Lazy Loading**: Load sections only when needed
-
-## Related
-
-- **Appearance Domain**: Theme customization
-- **Localization**: Language management
-- **Notifications**: Notification preferences
 
 ## License
 

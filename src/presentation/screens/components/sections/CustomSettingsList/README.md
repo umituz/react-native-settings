@@ -2,387 +2,75 @@
 
 Component for rendering custom, user-defined settings sections with automatic ordering and sorting.
 
-## Features
+## Purpose
 
-- **Custom Sections**: Add app-specific settings sections
-- **Automatic Sorting**: Sorts sections by order property
-- **Flexible Content**: Support for items or custom content
-- **Full Customization**: Complete control over styling and behavior
+Enables developers to add app-specific settings sections that integrate seamlessly with the standard settings. Provides flexible rendering options for both standard items and custom content, with automatic sorting based on order property.
 
-## Installation
+## File Paths
 
-This component is part of `@umituz/react-native-settings`.
+- **Component**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/CustomSettingsList/CustomSettingsList.tsx`
+- **Settings Section**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/SettingsSection.tsx`
+- **Settings Item Card**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/SettingsItemCard.tsx`
 
-## Usage
+## Strategy
 
-### Basic Usage
+1. **Automatic Sorting**: Sort sections by order property (lower numbers appear first, default is 999)
+2. **Flexible Content**: Support both standard items array and custom React nodes for maximum flexibility
+3. **Type Safety**: Provide TypeScript interfaces for custom sections and items to ensure type safety
+4. **Conditional Rendering**: Return null when no sections are provided to avoid unnecessary rendering
+5. **Integration**: Use standard SettingsSection and SettingsItemCard components for consistency
 
-```tsx
-import { CustomSettingsList } from '@umituz/react-native-settings';
+## Restrictions
 
-function MySettingsScreen() {
-  const customSections = [
-    {
-      id: 'integrations',
-      title: 'INTEGRATIONS',
-      order: 1,
-      items: [
-        {
-          id: 'google',
-          title: 'Google',
-          subtitle: 'Connected',
-          icon: 'logo-google',
-          onPress: () => console.log('Google settings'),
-        },
-      ],
-    },
-  ];
+- ❌ DO NOT use this component for standard built-in features (About, Legal, Feedback, etc.)
+- ❌ DO NOT add business logic within custom sections; keep logic in parent components
+- ❌ NEVER assume order property exists; always provide default sorting behavior
+- ❌ AVOID mixing custom sections with standard sections in the same configuration
+- ❌ DO NOT duplicate standard feature functionality in custom sections
+- ❌ NEVER bypass the SettingsSection wrapper for standard items
+- ❌ AVOID creating deeply nested custom content structures
 
-  return <CustomSettingsList customSections={customSections} />;
-}
-```
+## Rules
 
-## Props
+- ✅ MUST accept an array of custom sections as prop
+- ✅ MUST sort sections by order property ascending
+- ✅ MUST render each section using SettingsSection component
+- ✅ MUST render items using SettingsItemCard component
+- ✅ MUST support custom React nodes for content property
+- ✅ MUST return null when customSections array is empty
+- ✅ SHOULD provide unique IDs for sections and items when possible
+- ✅ MUST preserve rendering order for sections with equal order values
 
-### CustomSettingsListProps
+## AI Agent Guidelines
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `customSections` | `CustomSettingsSection[]` | `[]` | Array of custom sections |
+When working with CustomSettingsList:
 
-### CustomSettingsSection
+1. **Feature Categorization**: Use this component ONLY for app-specific features that don't fit into standard categories. DO NOT use it for About, Legal, Account, Notifications, etc.
 
-```typescript
-interface CustomSettingsSection {
-  id?: string;                    // Unique identifier
-  title: string;                  // Section title
-  order?: number;                 // Display order (lower = first)
-  content?: ReactNode;            // Custom content (instead of items)
-  items?: CustomSettingsItem[];   // Array of items
-}
-```
+2. **Section Design**: Create logical groupings of related items. Each section should represent a coherent feature category (e.g., "Integrations", "Preferences", "Advanced").
 
-### CustomSettingsItem
+3. **Order Management**: Always set the order property for predictable rendering. Use gaps in order numbers (10, 20, 30) to allow for future insertions.
 
-```typescript
-interface CustomSettingsItem {
-  id?: string;              // Unique identifier
-  title: string;            // Item title
-  subtitle?: string;        // Item description
-  icon: IconName;           // Icon name
-  onPress?: () => void;     // Press handler
-  rightIcon?: IconName;     // Custom right icon
-  iconBgColor?: string;     // Icon background color
-  iconColor?: string;       // Icon color
-}
-```
+4. **Item Configuration**: Use appropriate icons from the icon library. Provide clear titles and helpful subtitles for better user experience.
 
-## Examples
+5. **Custom Content**: Use the content property only when items array is insufficient. Custom content should be well-contained and not break the settings visual pattern.
 
-### Simple Section
+6. **Dynamic Sections**: When generating sections dynamically, ensure stable IDs to prevent unnecessary re-renders.
 
-```tsx
-const sections = [
-  {
-    title: 'PREFERENCES',
-    items: [
-      {
-        id: 'theme',
-        title: 'Theme',
-        subtitle: 'Dark',
-        icon: 'moon-outline',
-        onPress: () => navigation.navigate('Theme'),
-      },
-    ],
-  },
-];
+7. **Conditional Rendering**: Handle conditional rendering at the data level (filter sections array) rather than within individual sections.
 
-return <CustomSettingsList customSections={sections} />;
-```
+8. **Navigation Handlers**: Always provide onPress handlers for interactive items. Use proper navigation patterns for your app.
 
-### Multiple Sections
+9. **Consistency**: Maintain visual consistency with standard settings sections. Use standard icons and spacing.
 
-```tsx
-const sections = [
-  {
-    id: 'account',
-    title: 'ACCOUNT',
-    order: 1,
-    items: [
-      {
-        id: 'profile',
-        title: 'Profile',
-        icon: 'person-outline',
-        onPress: () => navigation.navigate('Profile'),
-      },
-      {
-        id: 'security',
-        title: 'Security',
-        icon: 'shield-checkmark-outline',
-        onPress: () => navigation.navigate('Security'),
-      },
-    ],
-  },
-  {
-    id: 'integrations',
-    title: 'INTEGRATIONS',
-    order: 2,
-    items: [
-      {
-        id: 'slack',
-        title: 'Slack',
-        subtitle: 'Connected',
-        icon: 'logo-slack',
-        onPress: () => manageSlack(),
-      },
-      {
-        id: 'google',
-        title: 'Google',
-        subtitle: 'Not connected',
-        icon: 'logo-google',
-        onPress: () => connectGoogle(),
-      },
-    ],
-  },
-];
+10. **Performance**: Avoid expensive operations in render functions. Pre-process data before passing to CustomSettingsList.
 
-return <CustomSettingsList customSections={sections} />;
-```
+11. **Type Safety**: Define proper TypeScript types for custom section data specific to your app.
 
-### With Custom Content
+12. **Testing**: Test with empty sections, single sections, multiple sections, and sections with custom content.
 
-```tsx
-const sections = [
-  {
-    id: 'custom',
-    title: 'CUSTOM SECTION',
-    content: (
-      <View style={{ padding: 16 }}>
-        <Text>Custom content here</Text>
-        <Button title="Action" onPress={handleAction} />
-      </View>
-    ),
-  },
-];
+## Related Components
 
-return <CustomSettingsList customSections={sections} />;
-```
-
-### With Ordering
-
-```tsx
-const sections = [
-  { title: 'SECOND', order: 2, items: [...] },
-  { title: 'FIRST', order: 1, items: [...] },
-  { title: 'THIRD', order: 3, items: [...] },
-];
-
-// Will render in order: FIRST, SECOND, THIRD
-return <CustomSettingsList customSections={sections} />;
-```
-
-### Mixed Items and Content
-
-```tsx
-const sections = [
-  {
-    id: 'mixed',
-    title: 'MIXED SECTION',
-    order: 1,
-    items: [
-      {
-        id: 'item1',
-        title: 'Regular Item',
-        icon: 'settings-outline',
-        onPress: () => {},
-      },
-    ],
-  },
-  {
-    id: 'custom-content',
-    title: 'CUSTOM CONTENT',
-    order: 2,
-    content: (
-      <View style={{ padding: 16 }}>
-        <Text>This is custom content</Text>
-      </View>
-    ),
-  },
-];
-
-return <CustomSettingsList customSections={sections} />;
-```
-
-## Advanced Examples
-
-### With Toggle Switches
-
-```tsx
-const [integrations, setIntegrations] = useState({
-  slack: false,
-  google: true,
-  dropbox: false,
-});
-
-const sections = [
-  {
-    title: 'INTEGRATIONS',
-    items: [
-      {
-        id: 'slack',
-        title: 'Slack Integration',
-        subtitle: integrations.slack ? 'Enabled' : 'Disabled',
-        icon: 'logo-slack',
-        showSwitch: true,
-        switchValue: integrations.slack,
-        onSwitchChange: (value) => setIntegrations({ ...integrations, slack: value }),
-      },
-    ],
-  },
-];
-
-return <CustomSettingsList customSections={sections} />;
-```
-
-### With Custom Styling
-
-```tsx
-const sections = [
-  {
-    title: 'PRO FEATURES',
-    items: [
-      {
-        id: 'upgrade',
-        title: 'Upgrade to Pro',
-        subtitle: 'Unlock all features',
-        icon: 'star',
-        iconColor: '#FFD700',
-        iconBgColor: 'rgba(255, 215, 0, 0.1)',
-        onPress: () => navigation.navigate('Upgrade'),
-      },
-      {
-        id: 'restore',
-        title: 'Restore Purchase',
-        subtitle: 'Already purchased?',
-        icon: 'refresh',
-        onPress: () => restorePurchase(),
-      },
-    ],
-  },
-];
-
-return <CustomSettingsList customSections={sections} />;
-```
-
-### Dynamic Sections
-
-```tsx
-function DynamicSettingsList() {
-  const [userIntegrations, setUserIntegrations] = useState([]);
-
-  useEffect(() => {
-    loadUserIntegrations();
-  }, []);
-
-  const sections = userIntegrations.map(integration => ({
-    id: integration.id,
-    title: integration.name.toUpperCase(),
-    items: [
-      {
-        id: integration.id,
-        title: integration.displayName,
-        subtitle: integration.status,
-        icon: integration.icon,
-        onPress: () => manageIntegration(integration),
-      },
-    ],
-  }));
-
-  return <CustomSettingsList customSections={sections} />;
-}
-```
-
-### Conditional Rendering
-
-```tsx
-function ConditionalCustomList() {
-  const { user } = useAuth();
-
-  const sections = [];
-
-  if (user.isAdmin) {
-    sections.push({
-      title: 'ADMIN',
-      items: [
-        {
-          id: 'users',
-          title: 'Manage Users',
-          icon: 'people-outline',
-          onPress: () => navigation.navigate('AdminUsers'),
-        },
-      ],
-    });
-  }
-
-  if (user.isPremium) {
-    sections.push({
-      title: 'PREMIUM',
-      items: [
-        {
-          id: 'premium-support',
-          title: 'Premium Support',
-          icon: 'headset-outline',
-          onPress: () => contactSupport(),
-        },
-      ],
-    });
-  }
-
-  return <CustomSettingsList customSections={sections} />;
-}
-```
-
-## Sorting Algorithm
-
-Sections are sorted by the `order` property:
-
-```typescript
-const sortedSections = useMemo(() => {
-  return Array.from(customSections)
-    .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-}, [customSections]);
-```
-
-- Default order is `999` (appears last)
-- Lower numbers appear first
-- Equal order maintains array order
-
-## Empty State
-
-Returns `null` if no sections provided:
-
-```tsx
-// Renders nothing
-<CustomSettingsList customSections={[]} />
-```
-
-## Best Practices
-
-1. **Order Property**: Always set order for predictable rendering
-2. **Unique IDs**: Provide unique IDs for all sections and items
-3. **Consistent Icons**: Use appropriate icons for each item
-4. **Clear Titles**: Use clear, concise titles
-5. **Subtitles**: Provide helpful subtitles for additional context
-6. **Navigation**: Always provide navigation handlers
-7. **Conditional Items**: Use conditional rendering for feature-gated content
-8. **Custom Content**: Use custom content for complex UI
-
-## Related
-
-- **SettingsSection**: Section wrapper component
-- **SettingsItemCard**: Individual item component
-- **SettingsContent**: Main content composer
-
-## License
-
-MIT
+- **Settings Section**: Section wrapper component
+- **Settings Item Card**: Individual item component
+- **Settings Content**: Main content composer

@@ -1,413 +1,119 @@
 # Presentation Hooks
 
-Custom React hooks for managing settings state, queries, and mutations in the presentation layer.
+## Purpose
 
-## Hooks
+Custom React hooks for managing settings state, queries, and mutations in the presentation layer with TanStack Query integration.
+
+## File Paths
+
+- **Main Hook**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/useSettings.ts`
+- **Queries**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/queries/useSettingsQuery.ts`
+- **Mutations**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/mutations/useSettingsMutations.ts`
+
+## Strategy
+
+1. **TanStack Query Integration**: Leverages TanStack Query for caching, background updates, and error handling
+2. **Simplified API**: Provides simple, high-level API for common settings operations
+3. **Automatic Refetching**: Automatically refetches settings when data changes
+4. **Optimistic Updates**: Supports optimistic updates for better UX
+5. **Error Handling**: Built-in error management and loading states
+
+## Restrictions (Forbidden)
+
+### DO NOT
+- ❌ DO NOT use these hooks without proper TanStack Query provider setup
+- ❌ DO NOT call updateSettings with partial objects (must merge properly)
+- ❌ DO NOT use mutations outside of component context
+
+### NEVER
+- ❌ NEVER use hooks outside React components or custom hooks
+- ❌ NEVER mutate settings state directly (use updateSettings)
+- ❌ NEVER ignore error states from hooks
+
+### AVOID
+- ❌ AVOID calling updateSettings in rapid succession (debounce if needed)
+- ❌ AVOID resetting settings without user confirmation
+- ❌ AVOID using raw query hooks (use useSettings instead)
+
+## Rules (Mandatory)
+
+### ALWAYS
+- ✅ ALWAYS handle loading and error states
+- ✅ ALWAYS wrap settings provider at app root
+- ✅ MUST use updateSettings for changes (not direct mutation)
+- ✅ MUST confirm before resetting settings
+
+### MUST
+- ✅ MUST provide user ID to useSettings hook
+- ✅ MUST handle network errors gracefully
+- ✅ MUST show loading states during initial fetch
+
+### SHOULD
+- ✅ SHOULD use optimistic updates for immediate UI feedback
+- ✅ SHOULD show success/error messages after updates
+- ✅ SHOULD debounce rapid settings changes
+
+## AI Agent Guidelines
+
+1. **File Reference**: When modifying hooks, refer to `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/`
+2. **Provider Setup**: Always wrap app with SettingsProvider at root level
+3. **Query Client**: Ensure TanStack QueryClient is properly configured
+4. **Error Handling**: Always handle error states in UI
+5. **Performance**: Hooks are already optimized with useMemo and useCallback
+
+## Hook Reference
 
 ### useSettings
 
-Primary hook for accessing and managing user settings with TanStack Query integration.
+**Purpose**: Main hook for accessing and managing user settings
 
-```tsx
-import { useSettings } from '@umituz/react-native-settings';
+**Parameters**:
+- `userId`: User identifier string
 
-function SettingsComponent() {
-  const { settings, loading, error, updateSettings, resetSettings } = useSettings('user123');
+**Returns**:
+- `settings`: Current user settings object
+- `loading`: Boolean loading state
+- `error`: Error message or null
+- `updateSettings`: Function to update settings
+- `resetSettings`: Function to reset to defaults
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage message={error} />;
-
-  return (
-    <View>
-      <Text>Theme: {settings?.theme}</Text>
-      <Button
-        title="Toggle Dark Mode"
-        onPress={() => updateSettings({ theme: 'dark' })}
-      />
-    </View>
-  );
-}
-```
-
-#### Return Value
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `settings` | `UserSettings \| null` | Current user settings |
-| `loading` | `boolean` | Loading state |
-| `error` | `string \| null` | Error message |
-| `updateSettings` | `(updates) => Promise<void>` | Update settings function |
-| `resetSettings` | `() => Promise<void>` | Reset to defaults function |
-
-#### Example
-
-```tsx
-function ThemeToggle() {
-  const { settings, updateSettings } = useSettings(userId);
-
-  const toggleTheme = () => {
-    const newTheme = settings?.theme === 'light' ? 'dark' : 'light';
-    updateSettings({ theme: newTheme });
-  };
-
-  return (
-    <Switch
-      value={settings?.theme === 'dark'}
-      onValueChange={toggleTheme}
-    />
-  );
-}
-```
+**Usage**: Primary hook for most settings operations
 
 ### useSettingsQuery
 
-Hook for querying user settings with TanStack Query.
+**Purpose**: TanStack Query integration for fetching settings
 
-```tsx
-import { useSettingsQuery } from '@umituz/react-native-settings';
+**Parameters**:
+- `userId`: User identifier string
 
-function SettingsData() {
-  const { data, isLoading, error } = useSettingsQuery('user123');
+**Returns**: TanStack Query result object
 
-  if (isLoading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error loading settings</Text>;
-
-  return <Text>Language: {data.language}</Text>;
-}
-```
+**Usage**: Use when you need direct query access
 
 ### useUpdateSettingsMutation
 
-Hook for updating settings with TanStack Query mutation.
+**Purpose**: Mutation hook for updating settings
 
-```tsx
-import { useUpdateSettingsMutation } from '@umituz/react-native-settings';
+**Parameters**:
+- `userId`: User identifier string
 
-function UpdateSettings() {
-  const mutation = useUpdateSettingsMutation('user123');
+**Returns**: TanStack Query mutation object
 
-  const handleUpdate = async () => {
-    await mutation.mutateAsync({ theme: 'dark' });
-  };
-
-  return <Button onPress={handleUpdate} title="Update Settings" />;
-}
-```
+**Usage**: Use for update operations with mutation callbacks
 
 ### useResetSettingsMutation
 
-Hook for resetting settings to defaults.
+**Purpose**: Mutation hook for resetting settings
 
-```tsx
-import { useResetSettingsMutation } from '@umituz/react-native-settings';
+**Parameters**:
+- `userId`: User identifier string
 
-function ResetButton() {
-  const mutation = useResetSettingsMutation('user123');
+**Returns**: TanStack Query mutation object
 
-  return (
-    <Button
-      onPress={() => mutation.mutateAsync()}
-      title="Reset to Defaults"
-    />
-  );
-}
-```
+**Usage**: Use for reset operations with confirmation
 
-## Usage Examples
-
-### Complete Settings Management
-
-```tsx
-import { useSettings } from '@umituz/react-native-settings';
-
-function SettingsManager() {
-  const { settings, loading, error, updateSettings, resetSettings } = useSettings(userId);
-
-  const handleThemeChange = (theme: 'light' | 'dark') => {
-    updateSettings({ theme });
-  };
-
-  const handleLanguageChange = (language: string) => {
-    updateSettings({ language });
-  };
-
-  const handleNotificationsToggle = () => {
-    updateSettings({
-      notificationsEnabled: !settings?.notificationsEnabled,
-    });
-  };
-
-  const handleReset = async () => {
-    Alert.alert(
-      'Reset Settings',
-      'Are you sure you want to reset all settings?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: async () => {
-            await resetSettings();
-            Alert.alert('Success', 'Settings have been reset');
-          },
-        },
-      ]
-    );
-  };
-
-  if (loading) return <LoadingScreen />;
-  if (error) return <ErrorScreen message={error} />;
-
-  return (
-    <ScreenLayout>
-      <SettingsSection title="APPEARANCE">
-        <SettingsItemCard
-          icon="moon-outline"
-          title="Dark Mode"
-          showSwitch={true}
-          switchValue={settings?.theme === 'dark'}
-          onSwitchChange={() => handleThemeChange('dark')}
-        />
-        <SettingsItemCard
-          icon="globe-outline"
-          title="Language"
-          description={settings?.language}
-          onPress={() => setShowLanguageSelector(true)}
-        />
-      </SettingsSection>
-
-      <SettingsSection title="NOTIFICATIONS">
-        <SettingsItemCard
-          icon="notifications-outline"
-          title="Enable Notifications"
-          showSwitch={true}
-          switchValue={settings?.notificationsEnabled}
-          onSwitchChange={handleNotificationsToggle}
-        />
-      </SettingsSection>
-
-      <SettingsSection title="DANGER ZONE">
-        <SettingsItemCard
-          icon="refresh-outline"
-          title="Reset Settings"
-          description="Reset all settings to defaults"
-          onPress={handleReset}
-          iconColor="#DC2626"
-        />
-      </SettingsSection>
-    </ScreenLayout>
-  );
-}
-```
-
-### Multiple Settings Updates
-
-```tsx
-function BulkUpdate() {
-  const { updateSettings, settings } = useSettings(userId);
-
-  const enableAllFeatures = async () => {
-    await updateSettings({
-      notificationsEnabled: true,
-      soundEnabled: true,
-      vibrationEnabled: true,
-      emailNotifications: true,
-      pushNotifications: true,
-    });
-  };
-
-  const disableAllFeatures = async () => {
-    await updateSettings({
-      notificationsEnabled: false,
-      soundEnabled: false,
-      vibrationEnabled: false,
-      emailNotifications: false,
-      pushNotifications: false,
-    });
-  };
-
-  return (
-    <View>
-      <Button title="Enable All" onPress={enableAllFeatures} />
-      <Button title="Disable All" onPress={disableAllFeatures} />
-    </View>
-  );
-}
-```
-
-### Optimistic Updates
-
-```tsx
-function OptimisticThemeToggle() {
-  const { settings, updateSettings } = useSettings(userId);
-  const [localTheme, setLocalTheme] = useState(settings?.theme);
-
-  const handleToggle = async () => {
-    const newTheme = localTheme === 'light' ? 'dark' : 'light';
-
-    // Optimistic update
-    setLocalTheme(newTheme);
-
-    try {
-      await updateSettings({ theme: newTheme });
-    } catch (error) {
-      // Revert on error
-      setLocalTheme(settings?.theme);
-      Alert.alert('Error', 'Failed to update theme');
-    }
-  };
-
-  return (
-    <Switch
-      value={localTheme === 'dark'}
-      onValueChange={handleToggle}
-    />
-  );
-}
-```
-
-### Error Handling
-
-```tsx
-function SettingsWithErrorHandling() {
-  const { settings, updateSettings, error } = useSettings(userId);
-
-  const handleUpdate = async () => {
-    try {
-      await updateSettings({ theme: 'dark' });
-      Alert.alert('Success', 'Settings updated');
-    } catch (err) {
-      Alert.alert('Error', 'Failed to update settings');
-    }
-  };
-
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Settings Error', error);
-    }
-  }, [error]);
-
-  return (
-    <Button
-      title="Update Theme"
-      onPress={handleUpdate}
-      disabled={!settings}
-    />
-  );
-}
-```
-
-### Loading States
-
-```tsx
-function SettingsWithLoadingStates() {
-  const { settings, loading, updateSettings } = useSettings(userId);
-  const [isUpdating, setIsUpdating] = useState(false);
-
-  const handleUpdate = async () => {
-    setIsUpdating(true);
-    try {
-      await updateSettings({ theme: 'dark' });
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-        <Text style={{ marginTop: 16 }}>Loading settings...</Text>
-      </View>
-    );
-  }
-
-  return (
-    <Button
-      title={isUpdating ? 'Updating...' : 'Update Theme'}
-      onPress={handleUpdate}
-      disabled={loading || isUpdating}
-    />
-  );
-}
-```
-
-## Hook Dependencies
-
-```
-presentation/hooks/
-├── useSettings.ts              # Main settings hook
-├── queries/
-│   └── useSettingsQuery.ts     # TanStack Query integration
-└── mutations/
-    └── useSettingsMutations.ts # Mutation hooks
-```
-
-## Integration with TanStack Query
-
-These hooks use TanStack Query for:
-
-- **Caching**: Automatic caching of settings data
-- **Background Updates**: Automatic refetching
-- **Optimistic Updates**: UI updates before server confirmation
-- **Error Handling**: Built-in error management
-- **Loading States**: Automatic loading state management
-
-## Best Practices
-
-1. **Use useSettings**: Prefer the main hook for most use cases
-2. **Handle Loading**: Always handle loading state
-3. **Error Handling**: Implement proper error handling
-4. **Optimistic Updates**: Use optimistic updates for better UX
-5. **Partial Updates**: Use partial updates to only change needed fields
-6. **Reset Confirmation**: Always confirm before resetting settings
-
-## Testing
-
-```tsx
-import { renderHook, act, waitFor } from '@testing-library/react-native';
-import { useSettings } from '@umituz/react-native-settings';
-
-describe('useSettings', () => {
-  it('loads settings for user', async () => {
-    const { result } = renderHook(() => useSettings('user123'));
-
-    expect(result.current.loading).toBe(true);
-
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-      expect(result.current.settings).toBeDefined();
-    });
-  });
-
-  it('updates settings', async () => {
-    const { result } = renderHook(() => useSettings('user123'));
-
-    await act(async () => {
-      await result.current.updateSettings({ theme: 'dark' });
-    });
-
-    expect(result.current.settings?.theme).toBe('dark');
-  });
-
-  it('resets settings', async () => {
-    const { result } = renderHook(() => useSettings('user123'));
-
-    await act(async () => {
-      await result.current.resetSettings();
-    });
-
-    expect(result.current.settings?.theme).toBe('auto');
-  });
-});
-```
-
-## Related
+## Related Components
 
 - **Application Layer**: Repository interfaces and types
 - **Infrastructure**: Storage implementation
-- **Presentation Components**: UI components
-
-## License
-
-MIT
+- **Presentation Components**: UI components that use these hooks

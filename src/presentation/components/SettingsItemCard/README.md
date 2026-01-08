@@ -1,110 +1,110 @@
 # SettingsItemCard
 
-A premium, consistent card component for settings items with icons, text, optional controls, and smooth interactions.
+## Purpose
 
-## Features
+Premium, consistent card component for settings items with icons, text, optional controls, and smooth interactions. Provides a unified interface for all settings items throughout the application.
 
-- **Versatile**: Supports buttons, switches, links, and navigation
-- **Customizable**: Icon, title, subtitle, colors, and styles
-- **Interactive**: Press feedback, switch controls, right icons
-- **Accessible**: Full accessibility support with proper labels
-- **Modern**: Sleek design, smooth animations
-- **Design System**: Uses tokens for consistent styling
+## File Paths
 
-## Installation
-
-This component is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Clickable Item
-
-```tsx
-import { SettingsItemCard } from '@umituz/react-native-settings';
-
-function SettingsScreen() {
-  return (
-    <SettingsItemCard
-      icon="settings-outline"
-      title="Settings"
-      description="Configure your preferences"
-      onPress={() => navigation.navigate('Settings')}
-    />
-  );
-}
+```
+src/presentation/components/SettingsItemCard/
+├── SettingsItemCard.tsx           # Main component
+├── STRATEGY.md                    # Detailed strategy guide
+└── README.md                      # This file
 ```
 
-### With Switch
+**Component Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/components/SettingsItemCard/SettingsItemCard.tsx`
 
-```tsx
-function NotificationsSettings() {
-  const [enabled, setEnabled] = useState(true);
+## Strategy
 
-  return (
-    <SettingsItemCard
-      icon="notifications-outline"
-      title="Notifications"
-      description="Enable push notifications"
-      showSwitch={true}
-      switchValue={enabled}
-      onSwitchChange={setEnabled}
-    />
-  );
-}
-```
+1. **Unified Interface**: All settings items use this component for consistency
+2. **Flexibility**: Supports buttons, switches, links, and navigation items
+3. **Design System Integration**: Uses tokens for consistent styling across the app
+4. **Performance Optimized**: Memoized component with optimized re-rendering
+5. **Accessibility First**: Full accessibility support with proper labels and hints
 
-### With Right Icon
+## Restrictions
 
-```tsx
-function LanguageItem() {
-  return (
-    <SettingsItemCard
-      icon="globe-outline"
-      title="Language"
-      subtitle="English"
-      rightIcon="chevron-forward"
-      onPress={() => navigation.navigate('Language')}
-    />
-  );
-}
-```
+### DO NOT
 
-### With Custom Colors
+- ❌ DO NOT create custom settings item components; use SettingsItemCard
+- ❌ DO NOT bypass design system tokens for styling
+- ❌ DO NOT use without proper icon and title props
+- ❌ DO NOT mix interaction patterns (e.g., switch + press)
+- ❌ DO NOT ignore disabled state styling
 
-```tsx
-function CustomColoredItem() {
-  return (
-    <SettingsItemCard
-      icon="heart-outline"
-      title="Favorites"
-      iconBgColor="#FF5722"
-      iconColor="#FFFFFF"
-      onPress={() => navigation.navigate('Favorites')}
-    />
-  );
-}
-```
+### NEVER
 
-## Props
+- ❌ NEVER use icons that don't match the item's purpose
+- ❌ NEVER omit accessibility labels for interactive items
+- ❌ NEVER use without proper error boundaries
+- ❌ EVER hardcode colors or spacing values
 
-### SettingsItemCardProps
+### AVOID
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `icon` | `IconName` | **Required** | Icon name from Ionicons |
-| `title` | `string` | **Required** | Main title text |
-| `subtitle` | `string` | `undefined` | Subtitle/description text |
-| `description` | `string` | `undefined` | Description text (alias for subtitle) |
-| `onPress` | `() => void` | `undefined` | Press handler |
-| `showSwitch` | `boolean` | `false` | Show switch control |
-| `switchValue` | `boolean` | `false` | Switch value |
-| `onSwitchChange` | `(value: boolean) => void` | `undefined` | Switch change handler |
-| `rightIcon` | `IconName` | `undefined` | Right arrow/icon |
-| `iconBgColor` | `string` | `undefined` | Icon background color |
-| `iconColor` | `string` | `undefined` | Icon foreground color |
-| `disabled` | `boolean` | `false` | Disabled state |
-| `style` | `ViewStyle` | `undefined` | Custom container style |
-| `testID` | `string` | `undefined` | Test identifier |
+- ❌ AVOID creating multiple items with the same title
+- ❌ AOVERWHELM users with overly long titles or descriptions
+- ❌ AVOID using inconsistent icon styles
+- ❌ AVOID unstable handler functions (use useCallback)
+
+## Rules
+
+### ALWAYS
+
+- ✅ ALWAYS provide a valid icon from Ionicons
+- ✅ ALWAYS provide a clear, concise title
+- ✅ ALWAYS use design system tokens for custom styling
+- ✅ ALWAYS provide proper accessibility labels
+- ✅ ALWAYS use testID props for E2E testing
+
+### MUST
+
+- ✅ MUST provide onPress handler for interactive items
+- ✅ MUST use switch controls for boolean settings
+- ✅ MUST provide visual feedback for disabled items
+- ✅ MUST respect design system spacing tokens
+
+### SHOULD
+
+- ✅ SHOULD use subtitles for additional context
+- ✅ SHOULD show right icon for navigation items
+- ✅ SHOULD use custom icon colors for emphasis
+- ✅ SHOULD provide meaningful descriptions
+
+## AI Agent Guidelines
+
+1. **When creating settings items**: Always use SettingsItemCard component
+2. **When selecting icons**: Choose icons that clearly represent the setting
+3. **When adding interactions**: Use onPress for navigation, switch for toggles
+4. **When customizing**: Use design system tokens, not hardcoded values
+5. **When testing**: Always include testID props for E2E testing
+
+## Props Reference
+
+### Required Props
+
+- `icon: IconName` - Icon name from Ionicons (required)
+- `title: string` - Main title text (required)
+
+### Optional Props
+
+**Interaction:**
+- `onPress?: () => void` - Press handler for navigation/actions
+- `showSwitch?: boolean` - Show switch control (default: false)
+- `switchValue?: boolean` - Switch value
+- `onSwitchChange?: (value: boolean) => void` - Switch change handler
+
+**Display:**
+- `subtitle?: string` - Subtitle text
+- `description?: string` - Description text (alias for subtitle)
+- `rightIcon?: IconName` - Right arrow/icon
+- `iconBgColor?: string` - Custom icon background color
+- `iconColor?: string` - Custom icon color
+
+**State:**
+- `disabled?: boolean` - Disabled state (default: false)
+- `style?: ViewStyle` - Custom container style
+- `testID?: string` - Test identifier
 
 ## Component Structure
 
@@ -112,345 +112,106 @@ function CustomColoredItem() {
 SettingsItemCard
 ├── Icon Container
 │   ├── Icon Background
-│   └── Icon
+│   └── Icon (from Ionicons)
 ├── Content
-│   ├── Title
-│   └── Subtitle/Description
+│   ├── Title (required)
+│   └── Subtitle/Description (optional)
 └── Right Element
     ├── Switch (if showSwitch)
     ├── Right Icon (if rightIcon)
     └── Chevron (default if onPress)
 ```
 
-## Examples
+## Usage Patterns
 
 ### Navigation Item
-
-```tsx
-<SettingsItemCard
-  icon="person-outline"
-  title="Account"
-  subtitle="Manage your account"
-  rightIcon="chevron-forward"
-  onPress={() => navigation.navigate('Account')}
-/>
-```
+- Use with `onPress` prop
+- Show `rightIcon` for navigation indication
+- Include `subtitle` for additional context
 
 ### Toggle Setting
-
-```tsx
-const [darkMode, setDarkMode] = useState(false);
-
-<SettingsItemCard
-  icon="moon-outline"
-  title="Dark Mode"
-  description="Enable dark theme"
-  showSwitch={true}
-  switchValue={darkMode}
-  onSwitchChange={setDarkMode}
-/>
-```
+- Use with `showSwitch={true}`
+- Provide `switchValue` state
+- Provide `onSwitchChange` handler
+- Use `description` for explanation
 
 ### Link Item
-
-```tsx
-<SettingsItemCard
-  icon="help-circle-outline"
-  title="Help & Support"
-  rightIcon="open-outline"
-  onPress={() => Linking.openURL('https://support.example.com')}
-/>
-```
-
-### With Custom Icon Colors
-
-```tsx
-<SettingsItemCard
-  icon="shield-checkmark-outline"
-  title="Privacy"
-  iconBgColor="#4CAF50"
-  iconColor="white"
-  rightIcon="chevron-forward"
-  onPress={() => navigation.navigate('Privacy')}
-/>
-```
+- Use with `onPress` that opens URL
+- Show external link icon (`open-outline`)
+- Handle URL errors gracefully
 
 ### Disabled Item
-
-```tsx
-<SettingsItemCard
-  icon="cloud-upload-outline"
-  title="Cloud Sync"
-  description="Not available"
-  disabled={true}
-/>
-```
-
-### Multiple Items in Section
-
-```tsx
-function SettingsSection() {
-  return (
-    <SettingsSection title="GENERAL">
-      <SettingsItemCard
-        icon="person-outline"
-        title="Profile"
-        rightIcon="chevron-forward"
-        onPress={() => {}}
-      />
-
-      <SettingsItemCard
-        icon="notifications-outline"
-        title="Notifications"
-        showSwitch={true}
-        switchValue={notifications}
-        onSwitchChange={setNotifications}
-      />
-
-      <SettingsItemCard
-        icon="moon-outline"
-        title="Dark Mode"
-        showSwitch={true}
-        switchValue={darkMode}
-        onSwitchChange={setDarkMode}
-      />
-    </SettingsSection>
-  );
-}
-```
+- Set `disabled={true}`
+- Provide explanation in `description`
+- Use appropriate icon colors
 
 ## Styling
 
-### Default Styles
+### Design System Tokens
 
+All styling uses design system tokens:
+- **Colors**: `tokens.colors.surface`, `tokens.colors.textPrimary`
+- **Spacing**: `tokens.spacing.md`, `tokens.spacing.lg`
+- **Typography**: `tokens.typography.fontSize.base`
+- **Shadows**: `tokens.shadows.sm`
+- **Border Radius**: `tokens.borderRadius.lg`
+
+### Custom Styling
+
+Use the `style` prop for custom container styling, but prefer design system tokens:
 ```typescript
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: tokens.colors.surface,
-    paddingVertical: tokens.spacing.md,
-    paddingHorizontal: tokens.spacing.lg,
-    marginHorizontal: tokens.spacing.lg,
-    marginTop: tokens.spacing.sm,
-    borderRadius: tokens.borderRadius.lg,
-    ...tokens.shadows.sm,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: tokens.borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: tokens.spacing.md,
-  },
-  icon: {
-    size: 'lg' as const,
-  },
-  content: {
-    flex: 1,
-  },
-  title: {
-    fontSize: tokens.typography.fontSize.base,
-    fontWeight: '600',
-    color: tokens.colors.textPrimary,
-  },
-  subtitle: {
-    fontSize: tokens.typography.fontSize.sm,
-    color: tokens.colors.textSecondary,
-    marginTop: 2,
-  },
-});
-```
+// Prefer this:
+style={{ backgroundColor: tokens.colors.surfaceVariant }}
 
-### Custom Styles
-
-```tsx
-<SettingsItemCard
-  icon="settings"
-  title="Settings"
-  style={{
-    backgroundColor: '#f0f0f0',
-    borderWidth: 1,
-    borderColor: '#ddd',
-  }}
-/>
-```
-
-### Pressable Styles
-
-The component uses Pressable with pressed state feedback:
-
-```typescript
-<Pressable
-  style={({ pressed }) => [
-    styles.container,
-    {
-      backgroundColor: pressed
-        ? tokens.colors.surfaceVariant
-        : tokens.colors.surface,
-      opacity: pressed ? 0.8 : 1,
-    },
-  ]}
->
-```
-
-## Icon Colors
-
-### Default Icon Colors
-
-Icon backgrounds use predefined colors based on icon type:
-
-```typescript
-const defaultIconColors = {
-  'settings-outline': '#2196F3',
-  'notifications-outline': '#FF9800',
-  'person-outline': '#9C27B0',
-  'moon-outline': '#673AB7',
-  'globe-outline': '#00BCD4',
-  'shield-checkmark-outline': '#4CAF50',
-  'help-circle-outline': '#FF5722',
-};
-```
-
-### Custom Icon Colors
-
-```tsx
-// Custom background color
-<SettingsItemCard
-  icon="heart"
-  iconBgColor="#E91E63"
-  iconColor="white"
-  title="Favorites"
-/>
-
-// Custom color
-<SettingsItemCard
-  icon="star"
-  iconBgColor="#FFD700"
-  iconColor="#333"
-  title="Premium"
-/>
+// Over this:
+style={{ backgroundColor: '#f0f0f0' }}
 ```
 
 ## Accessibility
 
-### Accessibility Labels
+### Required Accessibility
 
-```tsx
-<SettingsItemCard
-  icon="notifications-outline"
-  title="Notifications"
-  showSwitch={true}
-  switchValue={enabled}
-  onSwitchChange={setEnabled}
-  accessible={true}
-  accessibilityLabel="Notifications setting"
-  accessibilityHint="Toggle push notifications on or off"
-/>
-```
+- All interactive items need `accessibilityLabel`
+- Switch items need `accessibilityHint`
+- Disabled items need `accessibilityState`
 
-### Accessibility State
+### Test IDs
 
-```tsx
-<SettingsItemCard
-  icon="cloud-upload-outline"
-  title="Cloud Sync"
-  disabled={true}
-  accessibilityState={{ disabled: true }}
-/>
-```
-
-## Variants
-
-### Minimal Variant
-
-```tsx
-<SettingsItemCard
-  icon="arrow-back"
-  title="Back"
-  onPress={() => navigation.goBack()}
-/>
-```
-
-### Detailed Variant
-
-```tsx
-<SettingsItemCard
-  icon="information-circle-outline"
-  title="About"
-  subtitle="Version 1.0.0"
-  description="Build 100"
-  rightIcon="chevron-forward"
-  onPress={() => navigation.navigate('About')}
-/>
-```
-
-### Control Variant
-
-```tsx
-<SettingsItemCard
-  icon="volume-high-outline"
-  title="Sound Effects"
-  description="Play sounds for actions"
-  showSwitch={true}
-  switchValue={soundEnabled}
-  onSwitchChange={setSoundEnabled}
-/>
-```
+Provide `testID` props for E2E testing:
+- Pattern: `{feature}-setting-item`
+- Example: `notifications-setting-item`
 
 ## Performance
 
-### Memoization
+### Component Memoization
 
-The component is memoized for performance:
-
-```tsx
-export const SettingsItemCard = memo<Props>((props) => {
-  // Component implementation
-}, (prevProps, nextProps) => {
-  return (
-    prevProps.title === nextProps.title &&
-    prevProps.subtitle === nextProps.subtitle &&
-    prevProps.switchValue === nextProps.switchValue &&
-    prevProps.disabled === nextProps.disabled
-  );
-});
-```
+SettingsItemCard is memoized for performance. To ensure proper memoization:
+1. Use stable handler functions (useCallback)
+2. Avoid inline function definitions
+3. Keep props stable across renders
 
 ### Optimization Tips
 
-1. **Stable Handlers**: Use useCallback for press handlers
-2. **Memo Values**: Memoize subtitle and description values
-3. **Avoid Inline Functions**: Don't define functions in render
-
-```tsx
-const handlePress = useCallback(() => {
-  navigation.navigate('Settings');
-}, [navigation]);
-
-<SettingsItemCard
-  icon="settings"
-  title="Settings"
-  onPress={handlePress}
-/>
-```
+1. Use `useCallback` for `onPress` handlers
+2. Memoize subtitle and description values
+3. Avoid passing anonymous functions
+4. Keep `switchValue` stable
 
 ## Best Practices
 
-1. **Icons**: Use descriptive, recognizable icons
-2. **Titles**: Keep titles short and clear
-3. **Descriptions**: Use descriptions for context
-4. **Consistency**: Maintain consistent styling
-5. **Feedback**: Provide press feedback
-6. **Accessibility**: Add proper labels
-7. **Performance**: Use stable handlers
+1. **Icon Selection**: Choose descriptive, recognizable icons
+2. **Title Length**: Keep titles short and clear (under 30 chars)
+3. **Descriptions**: Use for additional context when needed
+4. **Consistency**: Maintain consistent styling across items
+5. **Feedback**: All interactive items show press feedback
+6. **Accessibility**: Always include proper labels
+7. **Performance**: Use stable handlers and memoization
 
-## Related
+## Related Components
 
-- **SettingsSection**: Section container component
-- **SettingsContent**: Content composer
-- **SettingsScreen**: Main screen component
+- **SettingsSection**: Container for grouping items
+- **SettingsContent**: Content composer that uses items
+- **SettingsScreen**: Main screen that displays items
 
 ## License
 

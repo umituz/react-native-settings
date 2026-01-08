@@ -1,442 +1,162 @@
 # Navigation Utilities
 
+## Purpose
+
 Utility functions and helpers for managing navigation in the settings system, including screen options, params handling, and navigation helpers.
 
-## Utilities
+## File Paths
+
+- **Navigation Utils**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/navigation/utils/navigationHelpers.ts`
+- **Screen Options**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/navigation/utils/screenOptions.ts`
+
+## Strategy
+
+1. **Screen Detection**: Checks if screens exist in navigation state
+2. **Route Mapping**: Maps features to default route names
+3. **Safe Navigation**: Provides safe navigation with error handling
+4. **Param Validation**: Validates and sanitizes navigation params
+5. **State Helpers**: Utilities for navigation state inspection
+
+## Restrictions (Forbidden)
+
+### DO NOT
+- ❌ DO NOT use hardcoded route names (use getDefaultRoute)
+- ❌ DO NOT bypass screen availability checks
+- ❌ DO NOT navigate without validating params
+
+### NEVER
+- ❌ NEVER use navigation.navigate() without checking screen availability
+- ❌ NEVER pass invalid or unsafe params to navigation
+- ❌ NEVER assume navigation state is valid
+
+### AVOID
+- ❌ AVOID complex navigation state parsing (use provided helpers)
+- ❌ AVOID navigation without error handling
+- ❌ AVOID manual route name construction
+
+## Rules (Mandatory)
+
+### ALWAYS
+- ✅ ALWAYS use safeNavigate for error-prone navigation
+- ✅ ALWAYS check screen availability before navigation
+- ✅ MUST validate params before navigation
+- ✅ MUST handle navigation errors gracefully
+
+### MUST
+- ✅ MUST use getDefaultRoute for default route names
+- ✅ MUST use hasNavigationScreen for availability checks
+- ✅ MUST provide fallback routes for custom navigation
+
+### SHOULD
+- ✅ SHOULD use navigateWithFallback for custom routes
+- ✅ SHOULD track navigation events for analytics
+- ✅ SHOULD validate all navigation params
+
+## AI Agent Guidelines
+
+1. **File Reference**: When modifying navigation utilities, refer to `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/navigation/utils/`
+2. **Screen Detection**: Always use hasNavigationScreen before navigating to dynamic screens
+3. **Route Mapping**: Use getDefaultRoute for default route names, don't hardcode
+4. **Safe Navigation**: Use safeNavigate for all navigation with error handling
+5. **Param Validation**: Always validate params before navigation
+
+## Utility Reference
 
 ### getDefaultRoute
 
-Gets the default route name for a given feature.
+**Purpose**: Gets default route name for a feature
 
-```typescript
-import { getDefaultRoute } from '@umituz/react-native-settings';
+**Parameters**:
+- `feature`: Feature name (keyof DefaultRoutes)
 
-const route = getDefaultRoute('appearance');
-// Returns: 'Appearance'
+**Returns**: Default route name string
 
-const route = getDefaultRoute('language');
-// Returns: 'LanguageSelection'
-```
+**Example**: `getDefaultRoute('appearance')` returns `'Appearance'`
 
-#### Signature
-
-```typescript
-function getDefaultRoute(feature: keyof DefaultRoutes): string;
-```
-
-#### Default Routes
-
-| Feature | Route |
-|---------|-------|
-| `appearance` | `'Appearance'` |
-| `language` | `'LanguageSelection'` |
-| `notifications` | `'Notifications'` |
-| `about` | `'About'` |
-| `legal` | `'Legal'` |
-| `disclaimer` | `'Disclaimer'` |
+**Usage**: Use when you need default route for a feature
 
 ### hasNavigationScreen
 
-Checks if a screen exists in the current navigation state.
+**Purpose**: Checks if screen exists in navigation state
 
-```typescript
-import { hasNavigationScreen } from '@umituz/react-native-settings';
+**Parameters**:
+- `navigation`: React Navigation object
+- `screenName`: Screen name to check
 
-const navigation = useNavigation();
-const hasAppearance = hasNavigationScreen(navigation, 'Appearance');
-// Returns: true if 'Appearance' screen exists in navigation
-```
+**Returns**: Boolean indicating screen availability
 
-#### Signature
+**Example**: `hasNavigationScreen(navigation, 'Appearance')`
 
-```typescript
-function hasNavigationScreen(navigation: any, screenName: string): boolean;
-```
-
-#### Example
-
-```tsx
-function SettingsButton() {
-  const navigation = useNavigation();
-
-  const handlePress = useCallback(() => {
-    if (hasNavigationScreen(navigation, 'Appearance')) {
-      navigation.navigate('Appearance');
-    } else {
-      console.warn('Appearance screen not found');
-    }
-  }, [navigation]);
-
-  return <Button onPress={handlePress} title="Appearance" />;
-}
-```
-
-### createSettingsScreenOptions
-
-Creates screen options configuration for settings screens.
-
-```typescript
-import { createSettingsScreenOptions } from '@umituz/react-native-settings';
-
-const options = createSettingsScreenOptions({
-  title: 'Appearance',
-  showHeader: true,
-  headerStyle: { backgroundColor: '#fff' },
-});
-```
-
-#### Signature
-
-```typescript
-function createSettingsScreenOptions(config: {
-  title?: string;
-  showHeader?: boolean;
-  headerStyle?: any;
-  headerTintColor?: string;
-  headerTitleStyle?: any;
-}): any;
-```
-
-### getLegalDocumentType
-
-Extracts document type from route params or returns default.
-
-```typescript
-import { getLegalDocumentType } from '@umituz/react-native-settings';
-
-const documentType = getLegalDocumentType(route.params);
-// Returns: 'privacy-policy' | 'terms-of-service' | 'eula'
-```
-
-#### Signature
-
-```typescript
-function getLegalDocumentType(params: any): LegalDocumentType;
-```
-
-## Screen Options Helpers
-
-### Default Screen Options
-
-```typescript
-const defaultScreenOptions = {
-  headerStyle: {
-    backgroundColor: tokens.colors.surface,
-  },
-  headerTintColor: tokens.colors.textPrimary,
-  headerTitleStyle: {
-    fontWeight: '600',
-    fontSize: 17,
-  },
-  cardStyle: {
-    backgroundColor: tokens.colors.background,
-  },
-};
-```
-
-### Modal Screen Options
-
-```typescript
-const modalScreenOptions = {
-  presentation: 'modal',
-  headerShown: false,
-  cardStyle: {
-    backgroundColor: 'transparent',
-  },
-  cardOverlayEnabled: true,
-  cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-};
-```
-
-### Settings Screen Options
-
-```typescript
-const settingsScreenOptions = {
-  headerShown: false,
-  gestureEnabled: true,
-  cardStyle: {
-    backgroundColor: tokens.colors.background,
-  },
-};
-```
-
-## Navigation Param Helpers
-
-### validateParams
-
-Validates navigation params for a given screen.
-
-```typescript
-import { validateParams } from '@umituz/react-native-settings';
-
-const isValid = validateParams('Appearance', {
-  showThemeSection: true,
-  showColorsSection: false,
-});
-// Returns: true
-```
-
-#### Signature
-
-```typescript
-function validateParams(screen: string, params: any): boolean;
-```
-
-### sanitizeParams
-
-Sanitizes and removes invalid params for navigation.
-
-```typescript
-import { sanitizeParams } from '@umituz/react-native-settings';
-
-const cleanParams = sanitizeParams('Appearance', {
-  showThemeSection: true,
-  invalidParam: 'should be removed',
-});
-// Returns: { showThemeSection: true }
-```
-
-#### Signature
-
-```typescript
-function sanitizeParams(screen: string, params: any): any;
-```
-
-## Navigation State Helpers
-
-### getActiveRouteName
-
-Gets the name of the currently active route.
-
-```typescript
-import { getActiveRouteName } from '@umituz/react-native-settings';
-
-const navigation = useNavigation();
-const currentRoute = getActiveRouteName(navigation);
-// Returns: 'Appearance'
-```
-
-#### Signature
-
-```typescript
-function getActiveRouteName(navigation: any): string;
-```
-
-#### Example
-
-```tsx
-function SettingsScreen() {
-  const navigation = useNavigation();
-  const currentRoute = getActiveRouteName(navigation);
-
-  useFocusEffect(
-    useCallback(() => {
-      Analytics.trackScreen(currentRoute);
-    }, [currentRoute])
-  );
-
-  return <SettingsContent />;
-}
-```
-
-### getNavigationDepth
-
-Gets the depth of the current navigation stack.
-
-```typescript
-import { getNavigationDepth } from '@umituz/react-native-settings';
-
-const depth = getNavigationDepth(navigation);
-// Returns: 3 (three screens in stack)
-```
-
-#### Signature
-
-```typescript
-function getNavigationDepth(navigation: any): number;
-```
-
-### canGoBack
-
-Checks if navigation can go back.
-
-```typescript
-import { canGoBack } from '@umituz/react-native-settings';
-
-if (canGoBack(navigation)) {
-  navigation.goBack();
-}
-```
-
-#### Signature
-
-```typescript
-function canGoBack(navigation: any): boolean;
-```
-
-## Navigation Action Helpers
+**Usage**: Always check before navigating to dynamic screens
 
 ### safeNavigate
 
-Safely navigates to a screen with error handling.
+**Purpose**: Safely navigates with error handling
 
-```typescript
-import { safeNavigate } from '@umituz/react-native-settings';
+**Parameters**:
+- `navigation`: React Navigation object
+- `routeName`: Target route name
+- `params?`: Navigation parameters
 
-safeNavigate(navigation, 'Appearance', { showThemeSection: true });
-```
+**Returns**: Boolean success indicator
 
-#### Signature
+**Example**: `safeNavigate(navigation, 'Appearance', config)`
 
-```typescript
-function safeNavigate(
-  navigation: any,
-  routeName: string,
-  params?: any
-): boolean;
-```
-
-#### Example
-
-```tsx
-function NavigateButton() {
-  const navigation = useNavigation();
-
-  const handlePress = () => {
-    const success = safeNavigate(navigation, 'Appearance');
-    if (!success) {
-      Alert.alert('Error', 'Could not navigate to Appearance');
-    }
-  };
-
-  return <Button onPress={handlePress} title="Go to Appearance" />;
-}
-```
+**Usage**: Use for all navigation that might fail
 
 ### navigateWithFallback
 
-Navigates to a screen with a fallback route if the primary doesn't exist.
+**Purpose**: Navigates with fallback route if primary doesn't exist
 
-```typescript
-import { navigateWithFallback } from '@umituz/react-native-settings';
+**Parameters**:
+- `navigation`: React Navigation object
+- `primaryRoute`: Try this route first
+- `fallbackRoute`: Use this if primary doesn't exist
+- `params?`: Navigation parameters
 
-navigateWithFallback(
-  navigation,
-  'CustomAppearance',  // Try this first
-  'Appearance'          // Fallback to this
-);
-```
+**Returns**: void
 
-#### Signature
+**Example**: `navigateWithFallback(navigation, 'CustomAppearance', 'Appearance', config)`
 
-```typescript
-function navigateWithFallback(
-  navigation: any,
-  primaryRoute: string,
-  fallbackRoute: string,
-  params?: any
-): void;
-```
+**Usage**: Use when supporting custom routes with defaults
 
-## Usage Examples
+### getActiveRouteName
 
-### Feature Detection Navigation
+**Purpose**: Gets currently active route name
 
-```tsx
-function AutoNavigateButton() {
-  const navigation = useNavigation();
+**Parameters**:
+- `navigation`: React Navigation object
 
-  const handlePress = useCallback(() => {
-    // Try custom route first, fallback to default
-    const customRoute = config?.appearance?.route || 'Appearance';
-    navigateWithFallback(navigation, customRoute, 'Appearance', config);
-  }, [navigation, config]);
+**Returns**: Current route name string
 
-  return <Button onPress={handlePress} title="Appearance" />;
-}
-```
+**Usage**: Use for analytics or tracking
 
-### Conditional Navigation
+### validateParams
 
-```tsx
-function ConditionalNavigation() {
-  const navigation = useNavigation();
+**Purpose**: Validates navigation params for a screen
 
-  const navigateToScreen = useCallback((screenName: string) => {
-    if (hasNavigationScreen(navigation, screenName)) {
-      safeNavigate(navigation, screenName);
-    } else {
-      console.warn(`Screen ${screenName} not available`);
-    }
-  }, [navigation]);
+**Parameters**:
+- `screen`: Screen name
+- `params`: Params object to validate
 
-  return (
-    <View>
-      <Button onPress={() => navigateToScreen('Appearance')} title="Appearance" />
-      <Button onPress={() => navigateToScreen('Language')} title="Language" />
-    </View>
-  );
-}
-```
+**Returns**: Boolean validity indicator
 
-### Navigation Analytics
+**Usage**: Always validate before navigation
 
-```tsx
-function useNavigationTracking() {
-  const navigation = useNavigation();
-  const currentRoute = getActiveRouteName(navigation);
+### sanitizeParams
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('state', () => {
-      const route = getActiveRouteName(navigation);
-      Analytics.trackScreen(route);
-    });
+**Purpose**: Removes invalid params from navigation params
 
-    return unsubscribe;
-  }, [navigation]);
+**Parameters**:
+- `screen`: Screen name
+- `params`: Params object to sanitize
 
-  return currentRoute;
-}
-```
+**Returns**: Sanitized params object
 
-### Param Validation
+**Usage**: Use to clean params before navigation
 
-```tsx
-function ValidatedNavigation() {
-  const navigation = useNavigation();
-
-  const handleNavigate = useCallback(() => {
-    const params = {
-      showThemeSection: true,
-      showColorsSection: true,
-    };
-
-    if (validateParams('Appearance', params)) {
-      navigation.navigate('Appearance', params);
-    } else {
-      Alert.alert('Error', 'Invalid parameters');
-    }
-  }, [navigation]);
-
-  return <Button onPress={handleNavigate} title="Appearance" />;
-}
-```
-
-## Best Practices
-
-1. **Validation**: Always validate params before navigation
-2. **Fallbacks**: Provide fallback routes for custom navigation
-3. **Error Handling**: Use safeNavigate for error-prone navigation
-4. **Screen Detection**: Check for screen existence before navigation
-5. **Analytics**: Track navigation events for insights
-6. **Type Safety**: Use TypeScript for all navigation utilities
-
-## Related
+## Related Components
 
 - **Navigation Hooks**: Custom navigation hooks
 - **Navigation Components**: Screen wrappers
 - **React Navigation**: Official navigation library
-
-## License
-
-MIT

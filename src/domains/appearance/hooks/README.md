@@ -2,345 +2,144 @@
 
 Custom hooks for managing appearance settings including theme mode and custom colors.
 
-## Hooks
+## Purpose
+
+Provides React hooks for accessing and manipulating appearance settings. These hooks bridge the UI layer with the appearance domain's business logic, offering a clean interface for theme management and color customization.
+
+## File Paths
+
+```
+src/domains/appearance/hooks/
+├── useAppearance.ts             # Access appearance settings
+└── useAppearanceActions.ts      # Modify appearance settings
+```
+
+## Strategy
+
+1. **Separation of Concerns**: Split read operations (useAppearance) from write operations (useAppearanceActions)
+2. **Automatic Persistence**: All changes are automatically persisted without manual save operations
+3. **Type Safety**: Strongly typed theme modes and color palettes
+4. **System Integration**: Respect system theme preferences when in auto mode
+5. **Reactive Updates**: Automatically trigger re-renders when appearance changes
+
+## Restrictions
+
+### DO NOT
+
+- ❌ DO NOT mix appearance hooks with direct settings manipulation
+- ❌ DO NOT bypass validation when setting custom colors
+- ❌ DO NOT assume theme mode is always the same as effective theme
+- ❌ DO NOT manually manage persistence; hooks handle this automatically
+- ❌ DO NOT create circular dependencies between appearance hooks
+
+### NEVER
+
+- ❌ NEVER call useAppearanceActions outside React components
+- ❌ NEVER ignore loading states during appearance operations
+- ❌ EVER hardcode color values; use the hooks instead
+- ❌ EVER mutate theme state directly; use action hooks
+
+### AVOID
+
+- ❌ AVOID frequent theme changes without debouncing
+- ❌ AVOID creating custom appearance logic outside these hooks
+- ❌ AVOID inconsistent theme application across components
+- ❌ AVOID ignoring system theme preferences in auto mode
+
+## Rules
+
+### ALWAYS
+
+- ✅ ALWAYS use useAppearance for reading appearance state
+- ✅ ALWAYS use useAppearanceActions for modifying appearance
+- ✅ ALWAYS validate color values before setting custom colors
+- ✅ ALWAYS handle loading states during theme operations
+- ✅ ALWAYS respect system theme when mode is 'auto'
+
+### MUST
+
+- ✅ MUST apply theme changes consistently across the app
+- ✅ MUST provide visual feedback for theme changes
+- ✅ MUST handle errors in color validation gracefully
+- ✅ MUST persist changes immediately
+
+### SHOULD
+
+- ✅ SHOULD use useMemo for expensive theme computations
+- ✅ SHOULD provide smooth transitions between theme changes
+- ✅ SHOULD offer reset functionality for custom colors
+- ✅ SHOULD show live preview of appearance changes
+
+## AI Agent Guidelines
+
+1. **When creating custom appearance hooks**: Compose existing hooks rather than creating new ones
+2. **When adding new theme modes**: Extend the theme mode type and update all switch statements
+3. **When customizing colors**: Always validate hex format before applying
+4. **When integrating system theme**: Use useColorScheme for detecting system preferences
+5. **When debugging appearance**: Use React DevTools to inspect hook state and dependencies
+
+## Hooks Reference
 
 ### useAppearance
 
 Hook for accessing current appearance settings and theme mode.
 
-```tsx
-import { useAppearance } from '@umituz/react-native-settings';
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/appearance/hooks/useAppearance.ts`
 
-function AppearanceScreen() {
-  const { themeMode, customColors, isLoading } = useAppearance();
+**Returns**:
+- `themeMode: 'light' | 'dark' | 'auto'` - Current theme mode setting
+- `customColors?: ColorPalette` - Custom color palette if set
+- `isLoading: boolean` - Loading state indicator
+- `error?: Error` - Error object if operation failed
 
-  return (
-    <View>
-      <Text>Current theme: {themeMode}</Text>
-      {customColors && <Text>Custom colors enabled</Text>}
-    </View>
-  );
-}
-```
-
-#### Returns
-
-```typescript
-interface UseAppearanceResult {
-  themeMode: 'light' | 'dark' | 'auto';   // Current theme mode
-  customColors?: ColorPalette;             // Custom color palette
-  isLoading: boolean;                      // Loading state
-  error?: Error;                           // Error object
-}
-```
-
-#### Examples
-
-**Basic Usage:**
-
-```tsx
-function ThemeDisplay() {
-  const { themeMode } = useAppearance();
-
-  return (
-    <Text>Current theme: {themeMode}</Text>
-  );
-}
-```
-
-**With Loading State:**
-
-```tsx
-function ThemeSelector() {
-  const { themeMode, isLoading } = useAppearance();
-
-  if (isLoading) {
-    return <ActivityIndicator />;
-  }
-
-  return (
-    <Picker selectedValue={themeMode}>
-      <Picker.Item label="Light" value="light" />
-      <Picker.Item label="Dark" value="dark" />
-      <Picker.Item label="Auto" value="auto" />
-    </Picker>
-  );
-}
-```
-
-**With Custom Colors:**
-
-```tsx
-function ColorDisplay() {
-  const { customColors } = useAppearance();
-
-  return (
-    <View>
-      <View style={{ backgroundColor: customColors?.primary }} />
-      <View style={{ backgroundColor: customColors?.secondary }} />
-      <View style={{ backgroundColor: customColors?.accent }} />
-    </View>
-  );
-}
-```
+**Use Cases**:
+- Displaying current theme mode
+- Checking if custom colors are active
+- Rendering theme-aware UI components
 
 ### useAppearanceActions
 
 Hook for accessing appearance action functions to update theme and colors.
 
-```tsx
-import { useAppearanceActions } from '@umituz/react-native-settings';
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/appearance/hooks/useAppearanceActions.ts`
 
-function AppearanceControls() {
-  const { setThemeMode, setCustomColors, resetColors } = useAppearanceActions();
+**Returns**:
+- `setThemeMode: (mode: 'light' | 'dark' | 'auto') => void` - Set theme mode
+- `setCustomColors: (colors: ColorPalette) => void` - Set custom colors
+- `resetColors: () => void` - Reset to default colors
+- `isUpdating: boolean` - Update in progress indicator
 
-  const handleThemeChange = (theme: 'light' | 'dark') => {
-    setThemeMode(theme);
-  };
+**Use Cases**:
+- Theme switcher component
+- Custom color picker
+- Reset appearance to defaults
 
-  const handleSetColors = (colors: ColorPalette) => {
-    setCustomColors(colors);
-  };
+## Theme Modes
 
-  const handleReset = () => {
-    resetColors();
-  };
+### Light Mode
 
-  return (
-    <View>
-      <Button onPress={() => handleThemeChange('dark')} title="Dark Mode" />
-      <Button onPress={() => handleSetColors(newColors)} title="Set Colors" />
-      <Button onPress={handleReset} title="Reset Colors" />
-    </View>
-  );
-}
-```
+Explicit light theme regardless of system preferences.
 
-#### Returns
+### Dark Mode
+
+Explicit dark theme regardless of system preferences.
+
+### Auto Mode
+
+Automatically switches between light and dark based on system preferences.
+
+## Color Palette Structure
 
 ```typescript
-interface UseAppearanceActionsResult {
-  setThemeMode: (themeMode: 'light' | 'dark' | 'auto') => void;
-  setCustomColors: (colors: ColorPalette) => void;
-  resetColors: () => void;
-  isUpdating: boolean;
-}
-```
-
-#### Actions
-
-**setThemeMode:**
-
-Sets the theme mode.
-
-```tsx
-const { setThemeMode } = useAppearanceActions();
-
-// Set to dark mode
-setThemeMode('dark');
-
-// Set to light mode
-setThemeMode('light');
-
-// Set to auto (system preference)
-setThemeMode('auto');
-```
-
-**setCustomColors:**
-
-Sets custom color palette.
-
-```tsx
-const { setCustomColors } = useAppearanceActions();
-
-const colors = {
-  primary: '#FF5722',
-  secondary: '#2196F3',
-  accent: '#FFC107',
-  background: '#FFFFFF',
-  surface: '#F5F5F5',
-};
-
-setCustomColors(colors);
-```
-
-**resetColors:**
-
-Resets to default colors.
-
-```tsx
-const { resetColors } = useAppearanceActions();
-
-resetColors();
-```
-
-## Complete Example
-
-### Theme Switcher
-
-```tsx
-function ThemeSwitcher() {
-  const { themeMode } = useAppearance();
-  const { setThemeMode } = useAppearanceActions();
-
-  return (
-    <View>
-      <Text>Current Theme: {themeMode}</Text>
-
-      <TouchableOpacity onPress={() => setThemeMode('light')}>
-        <Text>Light Mode</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => setThemeMode('dark')}>
-        <Text>Dark Mode</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => setThemeMode('auto')}>
-        <Text>Auto (System)</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-```
-
-### Color Customizer
-
-```tsx
-function ColorCustomizer() {
-  const { customColors } = useAppearance();
-  const { setCustomColors, resetColors } = useAppearanceActions();
-
-  const [colors, setColors] = useState(customColors || defaultColors);
-
-  const handleSave = () => {
-    setCustomColors(colors);
-  };
-
-  const handleReset = () => {
-    resetColors();
-    setColors(defaultColors);
-  };
-
-  return (
-    <View>
-      <ColorPicker
-        label="Primary Color"
-        value={colors.primary}
-        onChange={(color) => setColors({ ...colors, primary: color })}
-      />
-
-      <ColorPicker
-        label="Secondary Color"
-        value={colors.secondary}
-        onChange={(color) => setColors({ ...colors, secondary: color })}
-      />
-
-      <Button onPress={handleSave} title="Save Colors" />
-      <Button onPress={handleReset} title="Reset to Default" />
-    </View>
-  );
-}
-```
-
-### Theme Toggle Button
-
-```tsx
-function ThemeToggleButton() {
-  const { themeMode } = useAppearance();
-  const { setThemeMode } = useAppearanceActions();
-  const isDark = themeMode === 'dark';
-
-  const handleToggle = useCallback(() => {
-    setThemeMode(isDark ? 'light' : 'dark');
-  }, [isDark, setThemeMode]);
-
-  return (
-    <TouchableOpacity onPress={handleToggle}>
-      <Ionicons
-        name={isDark ? 'sunny-outline' : 'moon-outline'}
-        size={24}
-        color="black"
-      />
-    </TouchableOpacity>
-  );
-}
-```
-
-### Live Preview
-
-```tsx
-function AppearancePreview() {
-  const { themeMode, customColors } = useAppearance();
-  const { setThemeMode } = useAppearanceActions();
-
-  const effectiveTheme = useEffectiveTheme(themeMode);
-
-  return (
-    <View style={{ backgroundColor: effectiveTheme.background }}>
-      <Text style={{ color: effectiveTheme.text }}>
-        Theme Preview
-      </Text>
-
-      <View style={{ backgroundColor: customColors?.primary }}>
-        <Text>Primary Color</Text>
-      </View>
-
-      <TouchableOpacity onPress={() => setThemeMode('dark')}>
-        <Text>Switch to Dark</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-function useEffectiveTheme(themeMode: 'light' | 'dark' | 'auto') {
-  const systemTheme = useColorScheme();
-  const effectiveMode = themeMode === 'auto' ? systemTheme : themeMode;
-
-  return effectiveMode === 'dark' ? darkTheme : lightTheme;
-}
-```
-
-## System Theme Detection
-
-### Auto Theme
-
-```tsx
-function AutoThemeDetector() {
-  const { themeMode } = useAppearance();
-  const systemTheme = useColorScheme();
-
-  const effectiveTheme = useMemo(() => {
-    if (themeMode === 'auto') {
-      return systemTheme;
-    }
-    return themeMode;
-  }, [themeMode, systemTheme]);
-
-  return (
-    <Text>
-      Theme Mode: {themeMode}
-      Effective Theme: {effectiveTheme}
-    </Text>
-  );
-}
-```
-
-### Theme Provider
-
-```tsx
-function AppearanceProvider({ children }) {
-  const { themeMode, customColors } = useAppearance();
-
-  const theme = useMemo(() => ({
-    mode: themeMode,
-    colors: customColors || defaultColors,
-  }), [themeMode, customColors]);
-
-  return (
-    <ThemeContext.Provider value={theme}>
-      {children}
-    </ThemeContext.Provider>
-  );
+interface ColorPalette {
+  primary: string;      // Primary brand color
+  secondary: string;    // Secondary brand color
+  accent: string;       // Accent/highlight color
+  background: string;   // Background color
+  surface: string;      // Surface/card color
+  error: string;        // Error state color
+  success: string;      // Success state color
+  warning: string;      // Warning state color
 }
 ```
 
@@ -353,13 +152,6 @@ function AppearanceProvider({ children }) {
 5. **Reset**: Provide option to reset to defaults
 6. **Preview**: Show live preview of changes
 7. **Performance**: Use useMemo for expensive calculations
-
-## Related
-
-- **AppearanceScreen**: Appearance screen component
-- **ThemeModeSection**: Theme mode section
-- **CustomColorsSection**: Custom colors section
-- **Appearance Store**: Zustand store for appearance state
 
 ## License
 

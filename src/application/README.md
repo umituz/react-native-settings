@@ -1,214 +1,124 @@
 # Application Layer
 
-The application layer defines the core business logic, interfaces, and types for the settings domain following Domain-Driven Design (DDD) principles.
+Defines the core business logic, interfaces, and types for the settings domain following Domain-Driven Design (DDD) principles.
 
-## Architecture
+## Purpose
 
-The application layer serves as the bridge between the presentation and infrastructure layers, defining the contracts that both layers must follow.
+The application layer serves as the bridge between the presentation and infrastructure layers, defining the contracts that both layers must follow. It contains pure business logic without any dependencies on external frameworks or storage mechanisms.
+
+## File Paths
 
 ```
-application/
+src/application/
 └── ports/
     └── ISettingsRepository.ts    # Repository interface and types
 ```
 
-## Core Types
+## Strategy
+
+1. **Interface Segregation**: Define clear, focused interfaces that separate concerns between layers
+2. **Type Safety**: Use TypeScript interfaces to ensure compile-time type checking across the entire application
+3. **Result Pattern**: Wrap all operations in a Result type for consistent error handling
+4. **Dependency Inversion**: High-level modules should not depend on low-level modules; both should depend on abstractions
+5. **Domain Independence**: Keep business logic independent of frameworks, databases, and external services
+
+## Restrictions
+
+### DO NOT
+
+- ❌ DO NOT include any implementation details in interfaces
+- ❌ DO NOT import or use React Native components
+- ❌ DO NOT include storage or persistence logic
+- ❌ DO NOT add framework-specific dependencies
+- ❌ DO NOT expose raw exceptions; use Result types
+
+### NEVER
+
+- ❌ NEVER couple interfaces to specific storage implementations
+- ❌ NEVER change interface signatures without considering backward compatibility
+- ❌ NEVER include UI-related types in domain interfaces
+- ❌ NEVER use any concrete implementations in type definitions
+
+### AVOID
+
+- ❌ AVOID making interfaces too broad or unfocused
+- ❌ AVOID circular dependencies between types
+- ❌ AVOID optional properties in core data structures
+- ❌ AVOID using primitive types where domain-specific types would be clearer
+
+## Rules
+
+### ALWAYS
+
+- ✅ ALWAYS define interfaces before implementations
+- ✅ ALWAYS use Result types for operations that can fail
+- ✅ ALWAYS include comprehensive TypeScript documentation comments
+- ✅ ALWAYS define error codes as string literals for type safety
+- ✅ ALWAYS update timestamps when data changes
+
+### MUST
+
+- ✅ MUST export all public types from index files
+- ✅ MUST keep interfaces framework-agnostic
+- ✅ MUST validate all inputs at the application boundary
+- ✅ MUST provide default values for all optional fields
+
+### SHOULD
+
+- ✅ SHOULD favor composition over inheritance
+- ✅ SHOULD keep interfaces focused and single-purpose
+- ✅ SHOULD use readonly properties where immutability is important
+- ✅ SHOULD provide factory functions for complex object creation
+
+## AI Agent Guidelines
+
+1. **When adding new properties**: Update the UserSettings interface, add validation rules, and provide migration path
+2. **When modifying interfaces**: Consider backward compatibility and provide deprecation warnings if needed
+3. **When defining error codes**: Use descriptive, action-oriented codes (e.g., 'VALIDATION_ERROR' not 'ERR_001')
+4. **When creating Result types**: Always include both success and error states with relevant data
+5. **When documenting types**: Include examples of valid usage and common pitfalls
+
+## Core Types Reference
 
 ### UserSettings
 
-The main data structure for user settings.
+Main data structure for user settings containing theme, language, notifications, and other preferences.
 
-```typescript
-interface UserSettings {
-  userId: string;                      // Unique user identifier
-  theme: 'light' | 'dark' | 'auto';    // Theme preference
-  language: string;                    // Language code (e.g., 'en-US')
-  notificationsEnabled: boolean;       // Master notification switch
-  emailNotifications: boolean;          // Email notification preference
-  pushNotifications: boolean;           // Push notification preference
-  soundEnabled: boolean;               // Sound effects toggle
-  vibrationEnabled: boolean;           // Haptic feedback toggle
-  privacyMode: boolean;                // Privacy/screen shield mode
-  disclaimerAccepted: boolean;         // Legal disclaimer acceptance
-  updatedAt: Date;                     // Last update timestamp
-}
-```
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/application/ports/ISettingsRepository.ts`
 
-### SettingsResult
+### SettingsResult<T>
 
-Result wrapper for settings operations.
+Result wrapper for settings operations with success flag and optional data/error.
 
-```typescript
-interface SettingsResult<T> {
-  success: boolean;                    // Operation success flag
-  data?: T;                            // Result data (if successful)
-  error?: SettingsError;               // Error details (if failed)
-}
-```
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/application/ports/ISettingsRepository.ts`
 
 ### SettingsError
 
-Error structure for settings operations.
+Error structure with code and message for structured error handling.
 
-```typescript
-interface SettingsError {
-  code: string;                        // Error code for identification
-  message: string;                     // Human-readable error message
-}
-```
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/application/ports/ISettingsRepository.ts`
 
 ## Repository Interface
 
 ### ISettingsRepository
 
-The contract that all settings repository implementations must follow.
+Contract that all settings repository implementations must follow.
 
-```typescript
-interface ISettingsRepository {
-  /**
-   * Retrieve settings for a user
-   * @param userId - Unique user identifier
-   * @returns Promise resolving to settings result
-   */
-  getSettings(userId: string): Promise<SettingsResult<UserSettings>>;
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/application/ports/ISettingsRepository.ts`
 
-  /**
-   * Save settings for a user
-   * @param settings - Complete settings object to save
-   * @returns Promise resolving to operation result
-   */
-  saveSettings(settings: UserSettings): Promise<SettingsResult<void>>;
-
-  /**
-   * Delete settings for a user
-   * @param userId - Unique user identifier
-   * @returns Promise resolving to operation result
-   */
-  deleteSettings(userId: string): Promise<SettingsResult<void>>;
-}
-```
-
-## Usage Examples
-
-### Defining a Custom Repository
-
-```typescript
-import type { ISettingsRepository, UserSettings, SettingsResult } from '@umituz/react-native-settings';
-
-class CustomSettingsRepository implements ISettingsRepository {
-  async getSettings(userId: string): Promise<SettingsResult<UserSettings>> {
-    try {
-      // Your custom implementation
-      const settings = await fetchFromAPI(userId);
-      return { success: true, data: settings };
-    } catch (error) {
-      return {
-        success: false,
-        error: {
-          code: 'FETCH_FAILED',
-          message: error.message,
-        },
-      };
-    }
-  }
-
-  async saveSettings(settings: UserSettings): Promise<SettingsResult<void>> {
-    // Your implementation
-  }
-
-  async deleteSettings(userId: string): Promise<SettingsResult<void>> {
-    // Your implementation
-  }
-}
-```
-
-### Using Repository Interface
-
-```typescript
-import type { ISettingsRepository } from '@umituz/react-native-settings';
-
-class SettingsService {
-  constructor(private repository: ISettingsRepository) {}
-
-  async getUserSettings(userId: string) {
-    const result = await this.repository.getSettings(userId);
-
-    if (!result.success) {
-      throw new Error(result.error?.message);
-    }
-
-    return result.data;
-  }
-
-  async updateUserPreferences(userId: string, preferences: Partial<UserSettings>) {
-    const current = await this.getUserSettings(userId);
-    const updated = { ...current, ...preferences, updatedAt: new Date() };
-
-    return this.repository.saveSettings(updated);
-  }
-}
-```
-
-### Testing with Mock Repository
-
-```typescript
-class MockSettingsRepository implements ISettingsRepository {
-  private settings: Map<string, UserSettings> = new Map();
-
-  async getSettings(userId: string): Promise<SettingsResult<UserSettings>> {
-    const settings = this.settings.get(userId);
-    if (!settings) {
-      return {
-        success: false,
-        error: { code: 'NOT_FOUND', message: 'Settings not found' },
-      };
-    }
-    return { success: true, data: settings };
-  }
-
-  async saveSettings(settings: UserSettings): Promise<SettingsResult<void>> {
-    this.settings.set(settings.userId, settings);
-    return { success: true };
-  }
-
-  async deleteSettings(userId: string): Promise<SettingsResult<void>> {
-    this.settings.delete(userId);
-    return { success: true };
-  }
-}
-
-// Usage in tests
-const mockRepo = new MockSettingsRepository();
-const service = new SettingsService(mockRepo);
-
-await service.updateUserPreferences('user123', { theme: 'dark' });
-```
-
-## Default Settings
-
-When no settings exist, the following defaults are used:
-
-```typescript
-const defaultSettings: UserSettings = {
-  userId: '',
-  theme: 'auto',                      // Follow system theme
-  language: 'en-US',                  // English (US)
-  notificationsEnabled: true,         // Notifications on
-  emailNotifications: true,           // Email notifications on
-  pushNotifications: true,            // Push notifications on
-  soundEnabled: true,                 // Sound on
-  vibrationEnabled: true,             // Vibration on
-  privacyMode: false,                 // Privacy mode off
-  disclaimerAccepted: false,          // Disclaimer not accepted
-  updatedAt: new Date(),
-};
-```
+**Methods**:
+- `getSettings(userId: string): Promise<SettingsResult<UserSettings>>`
+- `saveSettings(settings: UserSettings): Promise<SettingsResult<void>>`
+- `deleteSettings(userId: string): Promise<SettingsResult<void>>`
 
 ## Error Handling
 
-### Error Codes
+All operations return `SettingsResult<T>` type with the following structure:
 
-Common error codes used throughout the application:
+**Success**: `{ success: true, data: T }`
+**Error**: `{ success: false, error: { code: string, message: string } }`
+
+## Common Error Codes
 
 | Code | Description |
 |------|-------------|
@@ -220,102 +130,6 @@ Common error codes used throughout the application:
 | `NOT_FOUND` | Settings not found for user |
 | `STORAGE_ERROR` | Underlying storage error |
 | `NETWORK_ERROR` | Network communication error |
-
-### Error Handling Pattern
-
-```typescript
-async function handleSettingsOperation<T>(
-  operation: () => Promise<SettingsResult<T>>
-): Promise<T> {
-  const result = await operation();
-
-  if (!result.success) {
-    throw new SettingsError(
-      result.error?.code || 'UNKNOWN_ERROR',
-      result.error?.message || 'An unknown error occurred'
-    );
-  }
-
-  return result.data!;
-}
-
-// Usage
-try {
-  const settings = await handleSettingsOperation(() =>
-    repository.getSettings(userId)
-  );
-} catch (error) {
-  if (error instanceof SettingsError) {
-    console.error(`[${error.code}] ${error.message}`);
-  }
-}
-```
-
-## Best Practices
-
-1. **Type Safety**: Always use the defined interfaces
-2. **Error Handling**: Check `success` flag before accessing data
-3. **Immutability**: Return new objects, don't mutate existing ones
-4. **Validation**: Validate settings before saving
-5. **Default Values**: Always provide sensible defaults
-6. **Timestamp Updates**: Update `updatedAt` on every change
-7. **Partial Updates**: Support partial updates when possible
-8. **Repository Pattern**: Always program to the interface, not implementation
-
-## Testing Utilities
-
-```typescript
-// Test factory for creating test settings
-function createTestSettings(overrides?: Partial<UserSettings>): UserSettings {
-  return {
-    userId: 'test-user',
-    theme: 'light',
-    language: 'en-US',
-    notificationsEnabled: true,
-    emailNotifications: true,
-    pushNotifications: true,
-    soundEnabled: true,
-    vibrationEnabled: true,
-    privacyMode: false,
-    disclaimerAccepted: true,
-    updatedAt: new Date(),
-    ...overrides,
-  };
-}
-
-// Test factory for creating error results
-function createErrorResult<T>(
-  code: string,
-  message: string
-): SettingsResult<T> {
-  return {
-    success: false,
-    error: { code, message },
-  };
-}
-
-// Test factory for creating success results
-function createSuccessResult<T>(data?: T): SettingsResult<T> {
-  return {
-    success: true,
-    data,
-  };
-}
-```
-
-## Integration Points
-
-The application layer integrates with:
-
-- **Presentation Layer**: Provides interfaces for UI components
-- **Infrastructure Layer**: Defines contracts for storage implementation
-- **Domain Layer**: Contains business logic and entities
-
-## Related
-
-- **Infrastructure**: Repository implementations
-- **Presentation Hooks**: React hooks for UI
-- **Type Definitions**: Complete type definitions
 
 ## License
 

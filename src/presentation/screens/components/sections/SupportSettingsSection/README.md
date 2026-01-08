@@ -2,390 +2,74 @@
 
 Section component that displays user support features including feedback, rating, and FAQs.
 
-## Features
-
-- **Feedback System**: User feedback collection and submission
-- **Rating System**: App rating and review functionality
-- **FAQ Access**: Quick access to frequently asked questions
-- **Modals**: Feedback modal with rating and description
-- **Internationalization**: Full i18n support
-
-## Installation
-
-This component is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Usage
-
-```tsx
-import { SupportSettingsSection } from '@umituz/react-native-settings';
-
-function MySettingsScreen() {
-  const normalizedConfig = {
-    feedback: { config: {} },
-    rating: { config: {} },
-    faqs: { config: {} },
-  };
-
-  const features = {
-    feedback: true,
-    rating: true,
-    faqs: true,
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
-```
-
-## Props
-
-### SupportSettingsSectionProps
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `normalizedConfig` | `NormalizedConfig` | **Required** | Normalized settings configuration |
-| `features` | `FeatureFlags` | **Required** | Feature visibility flags |
-
-### FeatureFlags
-
-```typescript
-interface FeatureFlags {
-  feedback: boolean;  // Show feedback option
-  rating: boolean;    // Show rating option
-  faqs: boolean;      // Show FAQ access
-}
-```
-
-## Component Structure
-
-```
-SupportSettingsSection
-└── SettingsSection "Support"
-    ├── SupportSection
-    │   ├── Feedback Item   (if features.feedback)
-    │   └── Rating Item     (if features.rating)
-    └── FAQ Item            (if features.faqs)
-```
-
-## Examples
-
-### All Support Features
-
-```tsx
-function FullSupportSettings() {
-  const normalizedConfig = {
-    feedback: {
-      config: {
-        title: 'Send Feedback',
-        description: 'Help us improve',
-      },
-    },
-    rating: {
-      config: {
-        title: 'Rate This App',
-        description: 'Love it? Rate us!',
-      },
-    },
-    faqs: {
-      config: {
-        title: 'Help & FAQs',
-        description: 'Find answers',
-      },
-    },
-  };
-
-  const features = {
-    feedback: true,
-    rating: true,
-    faqs: true,
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
-```
-
-### Feedback Only
-
-```tsx
-function FeedbackOnlySettings() {
-  const features = {
-    feedback: true,
-    rating: false,
-    faqs: false,
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={{}}
-      features={features}
-    />
-  );
-}
-```
-
-### Custom Feedback Configuration
-
-```tsx
-function CustomFeedbackSettings() {
-  const normalizedConfig = {
-    feedback: {
-      config: {
-        title: 'Share Your Thoughts',
-        description: 'We value your feedback',
-        feedbackTypes: ['general', 'bug', 'feature'],
-      },
-    },
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={normalizedConfig}
-      features={{ feedback: true, rating: false, faqs: false }}
-    />
-  );
-}
-```
-
-## Sub-Components
-
-### SupportSection
-
-Wrapper component for feedback and rating items.
-
-```tsx
-<SupportSection
-  renderSection={(props) => <SettingsSection>{props.children}</SettingsSection>}
-  renderItem={(props) => <SettingsItemCard {...props} />}
-  feedbackConfig={{
-    enabled: true,
-    config: {
-      title: 'Send Feedback',
-      description: 'Tell us what you think',
-    },
-  }}
-  ratingConfig={{
-    enabled: true,
-    config: {
-      title: 'Rate Us',
-      description: '5 stars would be great!',
-    },
-  }}
-/>
-```
-
-### SupportSection Props
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `renderSection` | `(props) => ReactNode` | Section renderer |
-| `renderItem` | `(props) => ReactNode` | Item renderer |
-| `feedbackConfig` | `FeedbackConfig` | Feedback configuration |
-| `ratingConfig` | `RatingConfig` | Rating configuration |
-
-### FeedbackModalTexts
-
-Configuration for feedback modal texts:
-
-```typescript
-interface FeedbackModalTexts {
-  title: string;
-  ratingLabel: string;
-  descriptionPlaceholder: string;
-  submitButton: string;
-  submittingButton: string;
-  feedbackTypes: Array<{
-    type: FeedbackType;
-    label: string;
-  }>;
-  defaultTitle: (type) => string;
-}
-```
-
-## Feedback Configuration
-
-```typescript
-interface FeedbackConfig {
-  enabled: boolean;
-  config?: {
-    title?: string;
-    description?: string;
-    feedbackTypes?: FeedbackType[];
-  };
-}
-```
-
-### Rating Configuration
-
-```typescript
-interface RatingConfig {
-  enabled: boolean;
-  config?: {
-    title?: string;
-    description?: string;
-    storeUrl?: string;
-  };
-}
-```
-
-### FAQ Configuration
-
-```typescript
-interface FAQConfig {
-  enabled: boolean;
-  config?: {
-    title?: string;
-    description?: string;
-    categories?: FAQCategory[];
-  };
-}
-```
-
-## Internationalization
-
-Translation keys used:
-
-```typescript
-// Section
-t("settings.support.title")
-
-// Feedback
-t("settings.feedback.title")
-t("settings.feedback.description")
-t("settings.feedback.modal.title")
-t("settings.feedback.modal.ratingLabel")
-t("settings.feedback.modal.descriptionPlaceholder")
-t("settings.feedback.modal.submitButton")
-t("settings.feedback.modal.submittingButton")
-
-// Feedback Types
-t("settings.feedback.types.general")
-t("settings.feedback.types.bugReport")
-t("settings.feedback.types.featureRequest")
-t("settings.feedback.types.improvement")
-t("settings.feedback.types.other")
-
-// Rating
-t("settings.rating.title")
-t("settings.rating.description")
-
-// FAQ
-t("settings.faqs.title")
-t("settings.faqs.description")
-```
-
-## Examples
-
-### With Store Rating
-
-```tsx
-function StoreRatingSupport() {
-  const config = {
-    rating: {
-      config: {
-        title: 'Rate Us on App Store',
-        description: 'Your feedback helps us improve',
-        storeUrl: 'https://apps.apple.com/app/id123',
-      },
-    },
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={config}
-      features={{ rating: true }}
-    />
-  );
-}
-```
-
-### Custom Feedback Types
-
-```tsx
-function CustomFeedbackTypes() {
-  const config = {
-    feedback: {
-      config: {
-        feedbackTypes: ['bug_report', 'feature_request', 'ui_issue'],
-      },
-    },
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={config}
-      features={{ feedback: true }}
-    />
-  );
-}
-```
-
-### With FAQ Categories
-
-```tsx
-function FAQWithCategories() {
-  const config = {
-    faqs: {
-      config: {
-        categories: [
-          {
-            id: 'getting-started',
-            title: 'Getting Started',
-            questions: [
-              { id: 'q1', question: 'How to begin?', answer: '...' },
-            ],
-          },
-        ],
-      },
-    },
-  };
-
-  return (
-    <SupportSettingsSection
-      normalizedConfig={config}
-      features={{ faqs: true }}
-    />
-  );
-}
-```
-
-## Navigation
-
-FAQ navigation handler:
-
-```tsx
-const handleFAQPress = useCallback(() => {
-  navigation.navigate("FAQ");
-}, [navigation]);
-```
-
-## Best Practices
-
-1. **User Feedback**: Always provide feedback option
-2. **Rating Prompt**: Show rating prompt at appropriate times
-3. **FAQ Access**: Make FAQs easily accessible
-4. **Modal Design**: Keep feedback modal simple and clear
-5. **Feedback Types**: Provide relevant feedback categories
-6. **Thank Users**: Always thank users for feedback
-7. **Follow Up**: Consider providing support contact
-
-## Related
+## Purpose
+
+Provides a dedicated section for user support options, enabling users to provide feedback, rate the app, and access frequently asked questions. Centralizes all support-related interactions in one cohesive interface.
+
+## File Paths
+
+- **Component**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/SupportSettingsSection/SupportSettingsSection.tsx`
+- **Support Section**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/SupportSettingsSection/SupportSection.tsx`
+- **Feedback Domain**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domain/feedback/`
+- **Rating Domain**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domain/rating/`
+- **FAQs Domain**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domain/faqs/`
+
+## Strategy
+
+1. **Section Grouping**: Group Feedback and Rating items under a single "Support" section while keeping FAQ as a separate item
+2. **Conditional Rendering**: Render each support feature (feedback, rating, FAQs) only when enabled via feature flags
+3. **Modal Integration**: Use feedback modal components for collecting user feedback with rating and description
+4. **Domain Delegation**: Delegate feature-specific logic to respective domain components (Feedback, Rating, FAQs)
+5. **Navigation Handling**: Provide navigation handlers for FAQ access and external store URLs for app rating
+
+## Restrictions
+
+- ❌ DO NOT hardcode store URLs; always use configuration
+- ❌ DO NOT render feedback or rating items if their feature flags are disabled
+- ❌ NEVER bypass the SupportSection wrapper for feedback and rating items
+- ❌ AVOID adding non-support related features to this section
+- ❌ DO NOT duplicate feedback modal logic within this component
+- ❌ NEVER assume all support features are enabled
+- ❌ AVOID mixing support features with other feature categories
+
+## Rules
+
+- ✅ MUST receive both normalizedConfig and features as required props
+- ✅ ALWAYS wrap Feedback and Rating items within SupportSection component
+- ✅ MUST render FAQ item separately from the Support section
+- ✅ MUST support internationalization for all text content
+- ✅ SHOULD handle missing or undefined configuration gracefully
+- ✅ MUST provide proper navigation handlers for FAQ access
+- ✅ ALWAYS use translation keys for consistent localization
+- ✅ MUST support custom feedback types when configured
+
+## AI Agent Guidelines
+
+When working with SupportSettingsSection:
+
+1. **Adding Support Features**: Only add features that relate to user support (Feedback, Rating, Help, FAQs, Contact). Do not add non-support features.
+
+2. **Section Organization**: Keep Feedback and Rating grouped within SupportSection. Place FAQ as a separate item for better visual hierarchy.
+
+3. **Modal Configuration**: When modifying feedback behavior, ensure the modal configuration is properly passed to feedback domain components.
+
+4. **Feature Flag Logic**: When adding new support features, implement corresponding feature flags to control visibility.
+
+5. **Domain Delegation**: Always delegate rendering to domain-specific components. Do not reimplement feedback, rating, or FAQ logic.
+
+6. **Translation Keys**: When adding new text elements or feedback types, always define translation keys in the i18n configuration files.
+
+7. **Store URLs**: Store URLs should be configurable and not hardcoded. Support both App Store and Play Store URLs.
+
+8. **Testing**: Test all combinations of enabled/disabled support features to ensure proper conditional rendering.
+
+9. **User Experience**: Ensure feedback submission flow is smooth and provides user feedback (success/error states).
+
+10. **FAQ Navigation**: Provide flexible navigation handlers for FAQ access to support different navigation patterns.
+
+## Related Components
 
 - **Feedback Domain**: Feedback system components
 - **Rating Domain**: Rating components
 - **FAQs Domain**: FAQ system
-- **Support Section**: Support components
-
-## License
-
-MIT
+- **Support Section**: Support components wrapper

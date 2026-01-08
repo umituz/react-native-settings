@@ -2,508 +2,122 @@
 
 Service layer for settings management including business logic, validation, and orchestration of repository operations.
 
-## Features
+## Purpose
 
-- **Business Logic**: Encapsulates settings-related business rules
-- **Validation**: Validates settings before persistence
-- **Defaults Management**: Handles default value logic
-- **Transformation**: Transforms data between layers
-- **Error Handling**: Consistent error handling across operations
-- **Caching**: Optional caching layer for performance
+Provides high-level business logic for settings management, encapsulating validation, defaults management, and data transformation. The service layer sits between the presentation layer and the repository layer.
 
-## Installation
+## File Paths
 
-This service is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Service Usage
-
-```typescript
-import { SettingsService } from '@umituz/react-native-settings';
-
-const settingsService = new SettingsService();
-
-// Get user settings
-const settings = await settingsService.getSettings('user123');
-
-// Update settings
-const updated = await settingsService.updateSettings('user123', {
-  theme: 'dark',
-  language: 'tr-TR',
-});
-
-// Reset settings
-const defaults = await settingsService.resetSettings('user123');
+```
+src/infrastructure/services/
+└── SettingsService.ts    # Main settings service
 ```
 
-### With Repository Injection
+## Strategy
 
-```typescript
-import { SettingsService, ISettingsRepository } from '@umituz/react-native-settings';
+1. **Business Logic Encapsulation**: Contain all settings-related business rules
+2. **Validation**: Validate settings before persistence
+3. **Defaults Management**: Handle default value logic consistently
+4. **Data Transformation**: Transform data between layers
+5. **Error Handling**: Provide consistent error handling across operations
 
-const repository: ISettingsRepository = new SettingsRepository();
-const settingsService = new SettingsService(repository);
+## Restrictions
 
-const settings = await settingsService.getSettings('user123');
-```
+### DO NOT
 
-## Methods
+- ❌ DO NOT include UI-specific logic in services
+- ❌ DO NOT access storage directly; use repositories
+- ❌ DO NOT bypass validation for any reason
+- ❌ DO NOT swallow errors without proper handling
+- ❌ DO NOT create circular dependencies with repositories
 
-### getSettings(userId: string): Promise<UserSettings>
+### NEVER
 
-Retrieves settings for a user with defaults applied.
+- ❌ NEVER save invalid data to storage
+- ❌ EVER return partial results without proper error indication
+- ❌ EVER assume data exists without checking
+- ❌ EVER expose internal storage format
 
-```typescript
-const settings = await settingsService.getSettings('user123');
+### AVOID
 
-console.log(settings.theme);        // 'light' | 'dark' | 'auto'
-console.log(settings.language);     // 'en-US'
-console.log(settings.notificationsEnabled); // true
-```
+- ❌ AVOID creating services that are too broad
+- ❌ AVOID mixing concerns (validation + persistence + presentation)
+- ❌ AVOID synchronous operations that could block
+- ❌ AVOID inconsistent error handling
 
-**Returns**: Complete UserSettings object with defaults for missing values.
+## Rules
 
-**Example**:
+### ALWAYS
 
-```typescript
-async function loadUserSettings(userId: string) {
-  try {
-    const settings = await settingsService.getSettings(userId);
-    applyTheme(settings.theme);
-    applyLanguage(settings.language);
-    return settings;
-  } catch (error) {
-    console.error('Failed to load settings:', error);
-    throw error;
-  }
-}
-```
+- ✅ ALWAYS validate settings before saving
+- ✅ ALWAYS apply defaults for missing values
+- ✅ ALWAYS handle errors consistently
+- ✅ ALWAYS return typed results
+- ✅ ALWAYS use repositories for persistence
 
-### updateSettings(userId: string, updates: Partial<UserSettings>): Promise<UserSettings>
+### MUST
 
-Updates user settings with validation and transformation.
+- ✅ MUST validate all inputs
+- ✅ MUST provide default values
+- ✅ MUST handle storage errors
+- ✅ MUST maintain data integrity
 
-```typescript
-const updated = await settingsService.updateSettings('user123', {
-  theme: 'dark',
-  notificationsEnabled: false,
-});
+### SHOULD
 
-console.log(updated.theme); // 'dark'
-```
+- ✅ SHOULD provide clear error messages
+- ✅ SHOULD use immutable operations
+- ✅ SHOULD cache frequently accessed settings
+- ✅ SHOULD log important operations
 
-**Validation**:
+## AI Agent Guidelines
 
-```typescript
-// Valid updates
-await settingsService.updateSettings('user123', {
-  theme: 'dark',        // ✅ Valid
-  language: 'tr-TR',     // ✅ Valid
-  notificationsEnabled: true, // ✅ Valid
-});
+1. **When adding validation**: Provide clear error messages for invalid data
+2. **When handling defaults**: Apply defaults consistently across all operations
+3. **When transforming data**: Keep transformations pure and predictable
+4. **When handling errors**: Transform technical errors into domain errors
+5. **When adding methods**: Follow existing patterns for consistency
 
-// Invalid updates
-await settingsService.updateSettings('user123', {
-  theme: 'invalid',      // ❌ Throws ValidationError
-  language: '',          // ❌ Throws ValidationError
-});
-```
+## Service Reference
 
-**Example**:
+### SettingsService
 
-```typescript
-async function updateUserPreferences(
-  userId: string,
-  theme: 'light' | 'dark',
-  language: string
-) {
-  try {
-    const updated = await settingsService.updateSettings(userId, {
-      theme,
-      language,
-    });
+Main service for settings management with validation, defaults, and transformation.
 
-    // Apply changes
-    applyTheme(updated.theme);
-    applyLanguage(updated.language);
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/infrastructure/services/SettingsService.ts`
 
-    return updated;
-  } catch (error) {
-    if (error instanceof ValidationError) {
-      Alert.alert('Invalid Settings', error.message);
-    } else {
-      Alert.alert('Error', 'Failed to update settings');
-    }
-    throw error;
-  }
-}
-```
-
-### resetSettings(userId: string): Promise<UserSettings>
-
-Resets user settings to default values.
-
-```typescript
-const defaults = await settingsService.resetSettings('user123');
-
-console.log(defaults.theme);        // 'light' (default)
-console.log(defaults.language);     // 'en-US' (default)
-```
-
-**Example**:
-
-```typescript
-async function handleResetSettings(userId: string) {
-  Alert.alert(
-    'Reset Settings',
-    'Are you sure you want to reset all settings to default?',
-    [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Reset',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            const defaults = await settingsService.resetSettings(userId);
-            applySettings(defaults);
-            Alert.alert('Success', 'Settings have been reset');
-          } catch (error) {
-            Alert.alert('Error', 'Failed to reset settings');
-          }
-        },
-      },
-    ]
-  );
-}
-```
-
-### validateSettings(settings: Partial<UserSettings>): void
-
-Validates settings and throws ValidationError if invalid.
-
-```typescript
-try {
-  settingsService.validateSettings({
-    theme: 'dark',
-    language: 'en-US',
-  });
-  // Valid
-} catch (error) {
-  // Invalid
-  console.error(error.message);
-}
-```
-
-**Validation Rules**:
-
-```typescript
-// Theme validation
-validateSettings({ theme: 'dark' });      // ✅ Valid
-validateSettings({ theme: 'light' });     // ✅ Valid
-validateSettings({ theme: 'auto' });      // ✅ Valid
-validateSettings({ theme: 'invalid' });   // ❌ Invalid
-
-// Language validation
-validateSettings({ language: 'en-US' });  // ✅ Valid
-validateSettings({ language: 'tr-TR' });  // ✅ Valid
-validateSettings({ language: '' });       // ❌ Invalid
-validateSettings({ language: 'xx' });     // ❌ Invalid
-
-// Boolean validation
-validateSettings({ notificationsEnabled: true });  // ✅ Valid
-validateSettings({ notificationsEnabled: 'yes' }); // ❌ Invalid
-```
-
-### mergeSettings(base: UserSettings, updates: Partial<UserSettings>): UserSettings
-
-Merges updates with base settings, preserving undefined values.
-
-```typescript
-const base = {
-  theme: 'light',
-  language: 'en-US',
-  notificationsEnabled: true,
-};
-
-const merged = settingsService.mergeSettings(base, {
-  theme: 'dark',
-});
-
-console.log(merged);
-// {
-//   theme: 'dark',
-//   language: 'en-US',  // Preserved
-//   notificationsEnabled: true, // Preserved
-// }
-```
-
-## Validation
-
-### Theme Validation
-
-```typescript
-function validateTheme(theme: string): boolean {
-  const validThemes = ['light', 'dark', 'auto'];
-  return validThemes.includes(theme);
-}
-```
-
-### Language Validation
-
-```typescript
-function validateLanguage(language: string): boolean {
-  // Check format (e.g., 'en-US', 'tr-TR')
-  const languageRegex = /^[a-z]{2}-[A-Z]{2}$/;
-  return languageRegex.test(language);
-}
-```
-
-### Boolean Validation
-
-```typescript
-function validateBoolean(value: any): boolean {
-  return typeof value === 'boolean';
-}
-```
-
-### Complete Validation
-
-```typescript
-interface ValidationResult {
-  valid: boolean;
-  errors: Record<string, string>;
-}
-
-function validateSettingsComplete(
-  settings: Partial<UserSettings>
-): ValidationResult {
-  const errors: Record<string, string> = {};
-
-  if (settings.theme !== undefined) {
-    if (!validateTheme(settings.theme)) {
-      errors.theme = 'Invalid theme mode';
-    }
-  }
-
-  if (settings.language !== undefined) {
-    if (!validateLanguage(settings.language)) {
-      errors.language = 'Invalid language format';
-    }
-  }
-
-  if (settings.notificationsEnabled !== undefined) {
-    if (!validateBoolean(settings.notificationsEnabled)) {
-      errors.notificationsEnabled = 'Must be a boolean';
-    }
-  }
-
-  return {
-    valid: Object.keys(errors).length === 0,
-    errors,
-  };
-}
-```
+**Methods**:
+- `getSettings(userId: string): Promise<UserSettings>` - Get user settings with defaults
+- `updateSettings(userId: string, updates: Partial<UserSettings>): Promise<UserSettings>` - Update with validation
+- `resetSettings(userId: string): Promise<UserSettings>` - Reset to defaults
+- `validateSettings(settings: Partial<UserSettings>): void` - Validate and throw on error
+- `mergeSettings(base: UserSettings, updates: Partial<UserSettings>): UserSettings>` - Merge settings
 
 ## Default Values
 
-### Default Settings
+**theme**: `'auto'` - Follow system theme
+**language**: `'en-US'` - English (United States)
+**notificationsEnabled**: `true` - Notifications on
+**emailNotifications**: `true` - Email notifications on
+**pushNotifications**: `true` - Push notifications on
+**soundEnabled**: `true` - Sound on
+**vibrationEnabled**: `true` - Vibration on
 
-```typescript
-const defaultSettings: UserSettings = {
-  userId: '',
-  theme: 'auto',
-  language: 'en-US',
-  notificationsEnabled: true,
-  emailNotifications: true,
-  pushNotifications: true,
-  soundEnabled: true,
-  vibrationEnabled: true,
-  quietHoursEnabled: false,
-  quietHoursStart: '22:00',
-  quietHoursEnd: '08:00',
-};
-```
+## Validation Rules
 
-### Applying Defaults
-
-```typescript
-function applyDefaults(settings: Partial<UserSettings>): UserSettings {
-  return {
-    ...defaultSettings,
-    ...settings,
-  };
-}
-
-const userSettings = applyDefaults({
-  theme: 'dark',
-  language: 'tr-TR',
-});
-// Returns: { theme: 'dark', language: 'tr-TR', notificationsEnabled: true, ... }
-```
-
-## Error Handling
-
-### ValidationError
-
-```typescript
-class ValidationError extends Error {
-  constructor(
-    message: string,
-    public field: string,
-    public value: any
-  ) {
-    super(message);
-    this.name = 'ValidationError';
-  }
-}
-```
-
-**Example**:
-
-```typescript
-try {
-  await settingsService.updateSettings('user123', {
-    theme: 'invalid',
-  });
-} catch (error) {
-  if (error instanceof ValidationError) {
-    console.error(`Field: ${error.field}`);
-    console.error(`Value: ${error.value}`);
-    console.error(`Message: ${error.message}`);
-  }
-}
-```
-
-### SettingsError
-
-```typescript
-class SettingsError extends Error {
-  constructor(
-    message: string,
-    public code: string,
-    public originalError?: Error
-  ) {
-    super(message);
-    this.name = 'SettingsError';
-  }
-}
-```
-
-**Example**:
-
-```typescript
-try {
-  await settingsService.getSettings('user123');
-} catch (error) {
-  if (error instanceof SettingsError) {
-    switch (error.code) {
-      case 'NOT_FOUND':
-        console.log('User not found');
-        break;
-      case 'STORAGE_ERROR':
-        console.log('Storage error');
-        break;
-      case 'NETWORK_ERROR':
-        console.log('Network error');
-        break;
-    }
-  }
-}
-```
-
-## Transformations
-
-### Data Normalization
-
-```typescript
-function normalizeSettings(raw: any): UserSettings {
-  return {
-    userId: raw.userId || '',
-    theme: raw.theme || 'auto',
-    language: raw.language || 'en-US',
-    notificationsEnabled: raw.notificationsEnabled ?? true,
-    emailNotifications: raw.emailNotifications ?? true,
-    pushNotifications: raw.pushNotifications ?? true,
-    soundEnabled: raw.soundEnabled ?? true,
-    vibrationEnabled: raw.vibrationEnabled ?? true,
-  };
-}
-```
-
-### Data Serialization
-
-```typescript
-function serializeSettings(settings: UserSettings): any {
-  return {
-    user_id: settings.userId,
-    theme: settings.theme,
-    language: settings.language,
-    notifications_enabled: settings.notificationsEnabled,
-    email_notifications: settings.emailNotifications,
-    push_notifications: settings.pushNotifications,
-    sound_enabled: settings.soundEnabled,
-    vibration_enabled: settings.vibrationEnabled,
-  };
-}
-```
-
-## Caching
-
-### In-Memory Cache
-
-```typescript
-class CachedSettingsService extends SettingsService {
-  private cache = new Map<string, UserSettings>();
-
-  async getSettings(userId: string): Promise<UserSettings> {
-    // Check cache
-    if (this.cache.has(userId)) {
-      return this.cache.get(userId)!;
-    }
-
-    // Fetch from repository
-    const settings = await super.getSettings(userId);
-
-    // Cache result
-    this.cache.set(userId, settings);
-
-    return settings;
-  }
-
-  async updateSettings(
-    userId: string,
-    updates: Partial<UserSettings>
-  ): Promise<UserSettings> {
-    const settings = await super.updateSettings(userId, updates);
-
-    // Update cache
-    this.cache.set(userId, settings);
-
-    return settings;
-  }
-
-  invalidateCache(userId: string): void {
-    this.cache.delete(userId);
-  }
-}
-```
+**Theme**: Must be 'light', 'dark', or 'auto'
+**Language**: Must match format 'xx-XX' (e.g., 'en-US')
+**Booleans**: Must be boolean type, not string/number
+**Required Fields**: Cannot be empty or undefined
 
 ## Best Practices
 
 1. **Validation**: Always validate before persistence
 2. **Defaults**: Apply defaults for missing values
 3. **Error Handling**: Provide clear error messages
-4. **Type Safety**: Use TypeScript types throughout
+4. **Type Safety**: Use TypeScript throughout
 5. **Immutability**: Return new objects, don't mutate
 6. **Caching**: Cache frequently accessed settings
 7. **Logging**: Log important operations
-
-## Related
-
-- **Settings Repository**: Data persistence layer
-- **Application Layer**: Interface definitions
-- **Settings Mutations**: Mutation hooks
 
 ## License
 

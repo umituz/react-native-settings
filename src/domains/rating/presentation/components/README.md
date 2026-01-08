@@ -1,475 +1,95 @@
-# StarRating
-
-Interactive star rating component with customizable appearance, behavior, and animations.
-
-## Features
-
-- **Interactive**: Tap to rate with visual feedback
-- **Read-Only**: Display existing ratings without interaction
-- **Customizable**: Size, colors, spacing, and star count
-- **Animated**: Smooth animations on rating changes
-- **Accessible**: Full accessibility support
-- **Flexible**: Supports different icon styles
-
-## Installation
-
-This component is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Interactive Rating
-
-```tsx
-import { StarRating } from '@umituz/react-native-settings';
-
-function RatingScreen() {
-  const [rating, setRating] = useState(0);
-
-  return (
-    <StarRating
-      rating={rating}
-      onRatingChange={setRating}
-    />
-  );
-}
-```
-
-### Read-Only Display
-
-```tsx
-function RatingDisplay({ rating }) {
-  return (
-    <StarRating
-      rating={4}
-      readonly={true}
-    />
-  );
-}
-```
-
-### Custom Size
-
-```tsx
-function LargeRating() {
-  return (
-    <StarRating
-      rating={5}
-      size={40}
-      onRatingChange={setRating}
-    />
-  );
-}
-```
-
-### Custom Colors
-
-```tsx
-function CustomColoredRating() {
-  return (
-    <StarRating
-      rating={3}
-      color="#FF5722"
-      emptyColor="#E0E0E0"
-      onRatingChange={setRating}
-    />
-  );
-}
-```
-
-## Props
-
-### StarRatingProps
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `rating` | `number` | **Required** | Current rating value (0 to maxStars) |
-| `onRatingChange` | `(rating: number) => void` | `undefined` | Rating change handler |
-| `maxStars` | `number` | `5` | Maximum number of stars |
-| `size` | `number` | `24` | Star size in pixels |
-| `color` | `string` | `#FFC107` | Filled star color |
-| `emptyColor` | `string` | `#E0E0E0` | Empty star color |
-| `spacing` | `number` | `4` | Spacing between stars |
-| `readonly` | `boolean` | `false` | Disable interaction |
-| `disabled` | `boolean` | `false` | Disabled state |
-| `animate` | `boolean` | `true` | Enable animations |
-| `icon` | `IconName` | `'star'` | Custom icon name |
-| `emptyIcon` | `IconName` | `'star-outline'` | Empty star icon |
-| `style` | `ViewStyle` | `undefined` | Custom container style |
-
-## Component Structure
-
-```
-StarRating
-└── Star Container (flex row)
-    ├── Star 1
-    ├── Star 2
-    ├── Star 3
-    ├── Star 4
-    └── Star 5
-```
-
-## Examples
-
-### Standard Rating
-
-```tsx
-function ProductRating() {
-  const [rating, setRating] = useState(0);
-
-  return (
-    <View>
-      <Text>Rate this product:</Text>
-      <StarRating
-        rating={rating}
-        onRatingChange={setRating}
-      />
-      <Text>Rating: {rating}/5</Text>
-    </View>
-  );
-}
-```
-
-### With Half Stars (Simulated)
-
-```tsx
-function HalfStarRating() {
-  const [rating, setRating] = useState(0);
-
-  return (
-    <View>
-      <StarRating
-        rating={Math.ceil(rating)}
-        maxStars={10}
-        size={12}
-        onRatingChange={(value) => setRating(value / 2)}
-      />
-      <Text>{rating}/5</Text>
-    </View>
-  );
-}
-```
-
-### Large Display Rating
-
-```tsx
-function RatingSummary({ averageRating, totalRatings }) {
-  return (
-    <View style={styles.container}>
-      <StarRating
-        rating={averageRating}
-        size={32}
-        readonly={true}
-      />
-      <Text style={styles.ratingText}>
-        {averageRating.toFixed(1)} out of 5
-      </Text>
-      <Text style={styles.totalText}>
-        {totalRatings} ratings
-      </Text>
-    </View>
-  );
-}
-```
-
-### Custom Star Style
-
-```tsx
-function CustomStyleRating() {
-  const [rating, setRating] = useState(0);
-
-  return (
-    <StarRating
-      rating={rating}
-      onRatingChange={setRating}
-      maxStars={6}
-      size={30}
-      color="#E91E63"
-      emptyColor="#FCE4EC"
-      spacing={8}
-      icon="heart"
-      emptyIcon="heart-outline"
-    />
-  );
-}
-```
-
-### With Rating Labels
-
-```tsx
-function LabeledRating() {
-  const [rating, setRating] = useState(0);
-
-  const labels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
-
-  return (
-    <View>
-      <StarRating
-        rating={rating}
-        onRatingChange={setRating}
-      />
-      {rating > 0 && (
-        <Text style={styles.label}>
-          {labels[rating - 1]}
-        </Text>
-      )}
-    </View>
-  );
-}
-```
-
-### Feedback Form Rating
-
-```tsx
-function FeedbackRating() {
-  const [rating, setRating] = useState(0);
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.question}>
-        How would you rate your experience?
-      </Text>
-
-      <StarRating
-        rating={rating}
-        size={40}
-        spacing={12}
-        color="#FFD700"
-        onRatingChange={setRating}
-      />
-
-      {rating === 0 && (
-        <Text style={styles.hint}>
-          Tap a star to rate
-        </Text>
-      )}
-
-      {rating > 0 && rating <= 2 && (
-        <Text style={styles.message}>
-          We're sorry to hear that. How can we improve?
-        </Text>
-      )}
-
-      {rating >= 4 && (
-        <Text style={styles.message}>
-          Glad you liked it! Tell us more.
-        </Text>
-      )}
-    </View>
-  );
-}
-```
-
-### With Animation Delay
-
-```tsx
-function AnimatedRatingDisplay() {
-  const [rating, setRating] = useState(0);
-
-  const handleRatingChange = (newRating) => {
-    // Animate each star
-    for (let i = 1; i <= newRating; i++) {
-      setTimeout(() => {
-        setRating(i);
-      }, (i - 1) * 100);
-    }
-  };
-
-  return (
-    <StarRating
-      rating={rating}
-      onRatingChange={handleRatingChange}
-    />
-  );
-}
-```
-
-## Styling
-
-### Default Styles
-
-```typescript
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  star: {
-    marginRight: 4,
-  },
-});
-```
-
-### Custom Styled Container
-
-```tsx
-<StarRating
-  rating={rating}
-  onRatingChange={setRating}
-  style={{
-    backgroundColor: '#f5f5f5',
-    padding: 15,
-    borderRadius: 10,
-  }}
-/>
-```
-
-### With Background
-
-```tsx
-function RatingWithBackground() {
-  return (
-    <View style={styles.backgroundContainer}>
-      <StarRating
-        rating={rating}
-        onRatingChange={setRating}
-        size={48}
-        color="#FFFFFF"
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  backgroundContainer: {
-    backgroundColor: '#2196F3',
-    padding: 20,
-    borderRadius: 15,
-    alignItems: 'center',
-  },
-});
-```
-
-## Accessibility
-
-### Accessibility Labels
-
-```tsx
-<StarRating
-  rating={rating}
-  onRatingChange={setRating}
-  accessible={true}
-  accessibilityLabel={`Rating: ${rating} out of 5 stars`}
-  accessibilityHint="Swipe up or down to change rating"
-/>
-```
-
-### Accessibility Value
-
-```tsx
-<StarRating
-  rating={rating}
-  onRatingChange={setRating}
-  accessibilityValue={{
-    min: 0,
-    max: 5,
-    now: rating,
-  }}
-/>
-```
-
-## Touch Handling
-
-### Tap to Rate
-
-```tsx
-function TapToRate() {
-  return (
-    <StarRating
-      rating={rating}
-      onRatingChange={setRating}
-      maxStars={5}
-    />
-  );
-}
-```
-
-### Swipe to Rate
-
-```tsx
-function SwipeToRate() {
-  const handleSwipe = (gestureState) => {
-    const { dx } = gestureState;
-    const swipeDistance = Math.abs(dx);
-
-    if (swipeDistance > 50) {
-      const newRating = dx > 0 ? Math.min(5, rating + 1) : Math.max(0, rating - 1);
-      setRating(newRating);
-    }
-  };
-
-  return (
-    <PanGestureRecognizer onHandlerStateChange={handleSwipe}>
-      <StarRating rating={rating} onRatingChange={setRating} />
-    </PanGestureRecognizer>
-  );
-}
-```
-
-## Rating Statistics
-
-### Rating Distribution
-
-```tsx
-function RatingDistribution({ ratings }) {
-  const distribution = useMemo(() => {
-    return [5, 4, 3, 2, 1].map(star => ({
-      star,
-      count: ratings.filter(r => r === star).length,
-      percentage: (ratings.filter(r => r === star).length / ratings.length) * 100,
-    }));
-  }, [ratings]);
-
-  return (
-    <View>
-      {distribution.map(({ star, count, percentage }) => (
-        <View key={star} style={styles.row}>
-          <Text>{star} ★</Text>
-          <View style={styles.bar}>
-            <View style={[styles.fill, { width: `${percentage}%` }]} />
-          </View>
-          <Text>{count}</Text>
-        </View>
-      ))}
-    </View>
-  );
-}
-```
-
-### Average Rating
-
-```tsx
-function AverageRating({ ratings }) {
-  const average = useMemo(() => {
-    if (ratings.length === 0) return 0;
-    const sum = ratings.reduce((acc, rating) => acc + rating, 0);
-    return sum / ratings.length;
-  }, [ratings]);
-
-  return (
-    <View>
-      <StarRating rating={Math.round(average)} readonly={true} />
-      <Text>{average.toFixed(1)} average</Text>
-    </View>
-  );
-}
-```
-
-## Best Practices
-
-1. **Clear Purpose**: Make the rating purpose clear
-2. **Feedback**: Provide immediate visual feedback
-3. **Labels**: Use labels when appropriate
-4. **Read-Only**: Use readonly mode for display
-5. **Accessibility**: Add proper accessibility labels
-6. **Validation**: Validate rating before submission
-7. **Animation**: Use smooth animations
-
-## Related
-
-- **Rating Domain**: Rating domain documentation
-- **Feedback Form**: Feedback form component
-- **useFeedbackForm**: Feedback form hook
-
-## License
-
-MIT
+# StarRating Component
+
+## Purpose
+
+Interactive star rating component with customizable appearance, behavior, and animations. Provides an intuitive, accessible way for users to rate items and display existing ratings with visual polish.
+
+## File Paths
+
+- **StarRating**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/rating/presentation/components/StarRating.tsx`
+- **Rating Components**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/rating/presentation/components/`
+- **Rating Screen**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/rating/presentation/screens/RatingScreen.tsx`
+
+## Strategy
+
+1. **Dual Mode Operation**: Supports both interactive rating input (writable) and read-only display modes, making it versatile for collecting and displaying ratings throughout the app.
+
+2. **Accessibility Excellence**: Implements comprehensive accessibility features including labels, hints, and semantic values to ensure screen reader users can understand and interact with ratings.
+
+3. **Visual Customization**: Provides extensive customization options for size, colors, spacing, and icons while maintaining consistent visual design through the design system.
+
+4. **Smooth Animations**: Includes default animations for rating changes to provide delightful user feedback, with the option to disable animations for performance or preference.
+
+5. **Flexible Icon System**: Supports custom icon types beyond stars (hearts, thumbs up, etc.) to adapt to different rating contexts and branding requirements.
+
+## Restrictions
+
+### ❌ DO NOT
+
+- Use for non-rating purposes (likes, votes, etc.)
+- Display fractional ratings without clear indication
+- Mix different icon styles within the same rating context
+- Override accessibility properties
+- Use excessive star counts (keep under 10)
+
+### ❌ NEVER
+
+- Allow negative ratings or ratings exceeding maxStars
+- Display invalid or undefined rating values
+- Bypass readonly mode for display-only ratings
+- Use without proper accessibility labels
+- Create circular dependencies with form components
+
+### ❌ AVOID
+
+- Very small star sizes that are hard to tap (minimum 24px)
+- Clashing color schemes that reduce accessibility
+- Over-animated ratings that distract users
+- Inconsistent rating scales across the app
+- Confusing half-star implementations
+
+## Rules
+
+### ✅ ALWAYS
+
+- Use readonly mode for displaying existing ratings
+- Provide clear accessibility labels describing the rating
+- Ensure sufficient touch target size (minimum 44x44)
+- Maintain consistent rating scale throughout the app
+- Show rating values numerically alongside stars
+
+### ✅ MUST
+
+- Pass rating prop as a number between 0 and maxStars
+- Include onRatingChange handler for interactive ratings
+- Use appropriate colors that meet contrast standards
+- Display rating text/labels for clarity
+- Test both light and dark theme appearances
+
+### ✅ SHOULD
+
+- Use 5 stars as the default rating scale
+- Include rating labels (Poor, Fair, Good, etc.) when appropriate
+- Animate rating changes for better UX
+- Show average ratings when displaying multiple ratings
+- Collect ratings after meaningful interactions
+- Consider implementing "tap to rate" hints for first-time users
+
+## AI Agent Guidelines
+
+1. **Rating Context**: Use StarRating immediately after meaningful interactions (feature usage, purchase completion, etc.) to capture fresh user feedback. Context-aware ratings are more accurate and valuable.
+
+2. **Read-Only Display**: For displaying average ratings or review summaries, always use readonly mode. Combine the star display with numerical ratings (e.g., "4.5 out of 5") for clarity and accessibility.
+
+3. **Interactive Collection**: When collecting new ratings, provide clear context about what is being rated. Include labels or hints explaining the rating scale. Consider showing rating descriptions (Poor to Excellent) that update dynamically as users select ratings.
+
+4. **Visual Hierarchy**: Make the rating component prominent but not overwhelming. Use appropriate sizes (24-32px for inline, 40-48px for dedicated rating screens). Ensure star colors match the app's primary or accent color for consistency.
+
+5. **Feedback Integration**: After rating collection, immediately acknowledge the submission. For low ratings (1-2 stars), consider following up with a feedback form to understand issues. For high ratings (4-5 stars), encourage reviews or referrals.
+
+## Reference
+
+- **Component Implementation**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/rating/presentation/components/StarRating.tsx`
+- **Rating Screen**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/rating/presentation/screens/RatingScreen.tsx`
+- **Rating Components**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/rating/presentation/components/`
+- **Feedback Domain**: Combine with feedback components for comprehensive user input collection

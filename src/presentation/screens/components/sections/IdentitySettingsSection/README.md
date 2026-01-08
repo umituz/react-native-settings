@@ -2,324 +2,67 @@
 
 Section component that displays user identity-related settings including About and Legal information.
 
-## Features
+## Purpose
 
-- **About Section**: App information, version, developer details
-- **Legal Section**: Privacy policy, terms of service, legal documents
-- **Conditional Rendering**: Shows only enabled sections
-- **Internationalization**: Full i18n support
+Provides a dedicated section for user identity settings, organizing app information (About) and legal documentation (Privacy Policy, Terms of Service) into a cohesive user interface. Enables conditional rendering of these sections based on feature flags.
 
-## Installation
+## File Paths
 
-This component is part of `@umituz/react-native-settings`.
+- **Component**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/components/sections/IdentitySettingsSection/IdentitySettingsSection.tsx`
+- **About Domain**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domain/about/`
+- **Legal Domain**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domain/legal/`
 
-## Usage
+## Strategy
 
-### Basic Usage
+1. **Conditional Rendering**: Render AboutSection and LegalSection only when their respective feature flags are enabled
+2. **Domain Separation**: Delegate About section rendering to About domain components and Legal section to Legal domain components
+3. **Configuration Normalization**: Accept normalized configuration objects to ensure consistent data structure across features
+4. **Internationalization Support**: Use translation keys for all user-facing text to support multiple languages
+5. **Flexible Legal Documents**: Support both URL-based and inline content for legal documents
 
-```tsx
-import { IdentitySettingsSection } from '@umituz/react-native-settings';
+## Restrictions
 
-function MySettingsScreen() {
-  const normalizedConfig = {
-    about: { config: {} },
-    legal: { config: {} },
-  };
+- ❌ DO NOT hardcode legal document URLs or content within the component
+- ❌ DO NOT render sections that are disabled in feature flags
+- ❌ NEVER bypass the normalized configuration structure
+- ❌ AVOID adding non-identity related features to this section
+- ❌ DO NOT duplicate About or Legal domain logic within this component
+- ❌ NEVER assume all features are enabled; always check feature flags
+- ❌ AVOID mixing identity settings with other feature categories
 
-  const features = {
-    about: true,
-    legal: true,
-  };
+## Rules
 
-  return (
-    <IdentitySettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
-```
+- ✅ MUST receive both normalizedConfig and features as required props
+- ✅ ALWAYS delegate to AboutSection component for About feature rendering
+- ✅ ALWAYS delegate to LegalSection component for Legal feature rendering
+- ✅ MUST support internationalization for all text content
+- ✅ SHOULD maintain separation of concerns between About and Legal features
+- ✅ MUST handle cases where one or both features are disabled
+- ✅ ALWAYS use translation keys for consistent localization
+- ✅ MUST preserve the order: About section first, then Legal section
 
-## Props
+## AI Agent Guidelines
 
-### IdentitySettingsSectionProps
+When working with IdentitySettingsSection:
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `normalizedConfig` | `NormalizedConfig` | **Required** | Normalized settings configuration |
-| `features` | `FeatureFlags` | **Required** | Feature visibility flags |
+1. **Adding Identity Features**: Only add features that relate to user identity (About, Legal, Account, Profile). Do not add non-identity features.
 
-### FeatureFlags
+2. **Configuration Structure**: Always use the normalized configuration format. Do not introduce new configuration shapes without updating the normalization logic.
 
-```typescript
-interface FeatureFlags {
-  about: boolean;  // Show about section
-  legal: boolean;  // Show legal section
-}
-```
+3. **Feature Flag Logic**: When adding new sub-features, implement corresponding feature flags to control visibility.
 
-## Component Structure
+4. **Domain Delegation**: Always delegate rendering to domain-specific components (AboutSection, LegalSection). Do not reimplement domain logic.
 
-```
-IdentitySettingsSection
-├── AboutSection      (if features.about)
-│   ├── App Information
-│   ├── Version
-│   ├── Developer
-│   └── Contact
-└── LegalSection      (if features.legal)
-    ├── Privacy Policy
-    ├── Terms of Service
-    └── EULA (if provided)
-```
+5. **Translation Keys**: When adding new text elements, always define translation keys in the i18n configuration files.
 
-## Examples
+6. **Ordering**: Maintain consistent ordering of sections. About should precede Legal for better user experience.
 
-### All Identity Features
+7. **Documentation**: Update the domain component README files (About, Legal) when making changes to their interfaces.
 
-```tsx
-function FullIdentitySettings() {
-  const normalizedConfig = {
-    about: {
-      config: {
-        appName: 'My App',
-        version: '1.0.0',
-        developer: 'My Company',
-      },
-    },
-    legal: {
-      config: {
-        privacyPolicyUrl: 'https://example.com/privacy',
-        termsOfServiceUrl: 'https://example.com/terms',
-      },
-    },
-  };
+8. **Testing**: Test both enabled and disabled states for each feature flag combination.
 
-  const features = {
-    about: true,
-    legal: true,
-  };
-
-  return (
-    <IdentitySettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
-```
-
-### About Only
-
-```tsx
-function AboutOnlySettings() {
-  const normalizedConfig = {
-    about: {
-      config: {
-        appName: 'My App',
-        version: '1.0.0',
-        showDeveloper: true,
-        showContact: true,
-      },
-    },
-  };
-
-  const features = {
-    about: true,
-    legal: false,
-  };
-
-  return (
-    <IdentitySettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
-```
-
-### Legal Only
-
-```tsx
-function LegalOnlySettings() {
-  const normalizedConfig = {
-    legal: {
-      config: {
-        showPrivacy: true,
-        showTerms: true,
-        showEula: false,
-      },
-    },
-  };
-
-  const features = {
-    about: false,
-    legal: true,
-  };
-
-  return (
-    <IdentitySettingsSection
-      normalizedConfig={normalizedConfig}
-      features={features}
-    />
-  );
-}
-```
-
-### With Custom Configuration
-
-```tsx
-function CustomIdentitySettings() {
-  const normalizedConfig = {
-    about: {
-      config: {
-        appName: 'Custom App',
-        version: '2.0.0',
-        developer: 'Custom Developer',
-        websiteUrl: 'https://custom.com',
-        supportEmail: 'support@custom.com',
-      },
-    },
-    legal: {
-      config: {
-        privacyPolicyContent: 'Our privacy policy...',
-        termsOfServiceContent: 'Our terms...',
-      },
-    },
-  };
-
-  return (
-    <IdentitySettingsSection
-      normalizedConfig={normalizedConfig}
-      features={{ about: true, legal: true }}
-    />
-  );
-}
-```
-
-## Sub-Components
-
-### AboutSection
-
-From About domain, displays app information.
-
-```tsx
-<AboutSection
-  config={{
-    appName: 'My App',
-    version: '1.0.0',
-    developer: 'My Company',
-    contactEmail: 'support@example.com',
-    websiteUrl: 'https://example.com',
-  }}
-  sectionTitle="ABOUT"
-/>
-```
-
-**AboutSection Props:**
-
-- `appName`: Application name
-- `version`: App version
-- `buildNumber`: Build number
-- `developer`: Developer/company name
-- `contactEmail`: Support email
-- `websiteUrl`: Website URL
-- `actions`: Press handlers for email/website
-
-### LegalSection
-
-From Legal domain, displays legal document links.
-
-```tsx
-<LegalSection
-  config={{
-    title: 'Legal',
-    description: 'Important information',
-    privacyPolicyUrl: 'https://example.com/privacy',
-    termsOfServiceUrl: 'https://example.com/terms',
-    eulaUrl: 'https://example.com/eula',
-  }}
-  sectionTitle="LEGAL"
-/>
-```
-
-**LegalSection Props:**
-
-- `privacyPolicyUrl`: Privacy policy URL or content
-- `termsOfServiceUrl`: Terms URL or content
-- `eulaUrl`: EULA URL or content (optional)
-- `onPrivacyPress`: Custom privacy handler
-- `onTermsPress`: Custom terms handler
-- `onEulaPress`: Custom EULA handler
-
-## Configuration
-
-### About Configuration
-
-```typescript
-interface AboutConfig {
-  appName?: string;
-  version?: string;
-  buildNumber?: string;
-  developer?: string;
-  contactEmail?: string;
-  websiteUrl?: string;
-  websiteDisplay?: string;
-  moreAppsUrl?: string;
-  actions?: {
-    onEmailPress?: () => void;
-    onWebsitePress?: () => void;
-    onMoreAppsPress?: () => void;
-  };
-}
-```
-
-### Legal Configuration
-
-```typescript
-interface LegalConfig {
-  privacyPolicyUrl?: string;
-  termsOfServiceUrl?: string;
-  eulaUrl?: string;
-  privacyPolicyContent?: string;
-  termsOfServiceContent?: string;
-  eulaContent?: string;
-  onPrivacyPress?: () => void;
-  onTermsPress?: () => void;
-  onEulaPress?: () => void;
-}
-```
-
-## Internationalization
-
-Translation keys used:
-
-```typescript
-// About
-t("settings.about.title")
-t("settings.about.description")
-
-// Legal
-t("settings.legal.title")
-t("settings.legal.description")
-```
-
-## Best Practices
-
-1. **Separate Concerns**: Keep identity settings separate from other features
-2. **Consistent Order**: About first, then Legal
-3. **Navigation**: Provide proper navigation handlers
-4. **URL Handling**: Handle both URLs and inline content
-5. **Translation**: Use translation keys for all text
-6. **Contact Info**: Always include contact information in About
-7. **Legal Docs**: Include all required legal documents
-
-## Related
+## Related Components
 
 - **About Domain**: App information features
 - **Legal Domain**: Legal document features
 - **Feature Settings**: Other setting sections
-
-## License
-
-MIT

@@ -2,428 +2,151 @@
 
 Custom TanStack Query mutations for updating user settings in the settings system.
 
-## Mutations
+## Purpose
+
+Provides React hooks for mutating (updating) user settings with automatic loading states, error handling, and cache invalidation. These hooks wrap TanStack Query's useMutation hook with settings-specific functionality.
+
+## File Paths
+
+```
+src/presentation/hooks/mutations/
+├── useUpdateSettingsMutation.ts    # Update user settings
+└── useResetSettingsMutation.ts     # Reset to defaults
+```
+
+## Strategy
+
+1. **Optimistic Updates**: Update UI immediately before server confirmation for better UX
+2. **Automatic Invalidation**: Invalidate related queries after mutations complete
+3. **Error Rollback**: Rollback optimistic updates on error
+4. **Loading States**: Provide built-in loading indicators
+5. **Type Safety**: Strongly typed mutation variables and results
+
+## Restrictions
+
+### DO NOT
+
+- ❌ DO NOT use mutations for fetching data; use queries instead
+- ❌ DO NOT call mutations outside event handlers or callbacks
+- ❌ DO NOT assume mutations will always succeed
+- ❌ DO NOT forget to handle error states
+- ❌ DO NOT use multiple mutations for the same data without coordination
+
+### NEVER
+
+- ❌ NEVER call mutate functions in render; use event handlers
+- ❌ NEVER ignore the isLoading state during mutations
+- ❌ NEVER fire mutations without proper user intent (e.g., in useEffect)
+- ❌ EVER use mutations for data transformation; use the service layer
+
+### AVOID
+
+- ❌ AVOID firing mutations too frequently (debounce when needed)
+- ❌ AVOID complex mutation logic in components; extract to custom hooks
+- ❌ AVOID silent failures; always provide user feedback
+- ❌ AVOID mutations that take too long without progress indication
+
+## Rules
+
+### ALWAYS
+
+- ✅ ALWAYS handle loading states during mutations
+- ✅ ALWAYS provide user feedback for success/error
+- ✅ ALWAYS invalidate related queries after mutations
+- ✅ ALWAYS implement rollback for optimistic updates
+- ✅ ALWAYS use mutation variables to pass data
+
+### MUST
+
+- ✅ MUST wrap mutations in event handlers (onClick, onSubmit, etc.)
+- ✅ MUST handle errors gracefully with user-friendly messages
+- ✅ MUST confirm destructive operations (reset, delete)
+- ✅ MUST check success status before accessing result data
+
+### SHOULD
+
+- ✅ SHOULD use optimistic updates for instant feedback
+- ✅ SHOULD debounce rapid successive mutations
+- ✅ SHOULD show progress indicators for long-running operations
+- ✅ SHOULD provide retry functionality on failure
+
+## AI Agent Guidelines
+
+1. **When creating mutations**: Always define clear variable types and return types
+2. **When using optimistic updates**: Always provide rollback logic in onError
+3. **When invalidating queries**: Invalidate all affected queries after mutations
+4. **When handling errors**: Provide actionable error messages to users
+5. **When adding new mutations**: Follow the pattern of existing mutations for consistency
+
+## Mutations Reference
 
 ### useUpdateSettingsMutation
 
-Mutation hook for updating user settings.
+Hook for updating user settings with partial updates support.
 
-```tsx
-import { useUpdateSettingsMutation } from '@umituz/react-native-settings';
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/mutations/useUpdateSettingsMutation.ts`
 
-function SettingsScreen() {
-  const updateSettings = useUpdateSettingsMutation();
+**Variables**: `{ userId: string, settings: Partial<UserSettings> }`
+**Returns**: `UpdateSettingsMutationResult` with mutate, isLoading, isError, error, data
 
-  const handleThemeChange = useCallback((theme: 'light' | 'dark') => {
-    updateSettings.mutate(
-      { userId: 'user123', settings: { theme } },
-      {
-        onSuccess: () => {
-          console.log('Settings updated successfully');
-        },
-        onError: (error) => {
-          console.error('Failed to update settings:', error);
-        },
-      }
-    );
-  }, [updateSettings]);
-
-  return <ThemeSelector onThemeChange={handleThemeChange} />;
-}
-```
-
-#### Returns
-
-```typescript
-interface UpdateSettingsMutationResult {
-  mutate: (variables: UpdateSettingsVariables) => void;
-  mutateAsync: (variables: UpdateSettingsVariables) => Promise<SettingsResult>;
-  isLoading: boolean;
-  isError: boolean;
-  error: Error | null;
-  data: SettingsResult | undefined;
-  reset: () => void;
-}
-```
-
-#### Mutation Variables
-
-```typescript
-interface UpdateSettingsVariables {
-  userId: string;
-  settings: Partial<UserSettings>;
-}
-```
-
-#### Examples
-
-**Update Single Setting:**
-
-```tsx
-const updateSettings = useUpdateSettingsMutation();
-
-const toggleNotifications = () => {
-  updateSettings.mutate({
-    userId: 'user123',
-    settings: { notificationsEnabled: !settings.notificationsEnabled },
-  });
-};
-```
-
-**Update Multiple Settings:**
-
-```tsx
-const updateSettings = useUpdateSettingsMutation();
-
-const updateMultipleSettings = () => {
-  updateSettings.mutate({
-    userId: 'user123',
-    settings: {
-      theme: 'dark',
-      language: 'tr-TR',
-      notificationsEnabled: true,
-    },
-  });
-};
-```
-
-**With Optimistic Updates:**
-
-```tsx
-const updateSettings = useUpdateSettingsMutation();
-
-const handleOptimisticUpdate = (newTheme: 'light' | 'dark') => {
-  updateSettings.mutate(
-    { userId: 'user123', settings: { theme: newTheme } },
-    {
-      onMutate: async (newData) => {
-        // Cancel ongoing queries
-        await queryClient.cancelQueries(['settings', newData.userId]);
-
-        // Snapshot previous value
-        const previousSettings = queryClient.getQueryData(['settings', newData.userId]);
-
-        // Optimistically update
-        queryClient.setQueryData(['settings', newData.userId], (old: any) => ({
-          ...old,
-          ...newData.settings,
-        }));
-
-        // Return context for rollback
-        return { previousSettings };
-      },
-      onError: (err, newData, context) => {
-        // Rollback on error
-        queryClient.setQueryData(['settings', newData.userId], context?.previousSettings);
-      },
-      onSettled: (data, error, newData) => {
-        // Refetch on success or error
-        queryClient.invalidateQueries(['settings', newData.userId]);
-      },
-    }
-  );
-};
-```
+**Use Cases**:
+- Single setting updates (theme, language, etc.)
+- Multiple setting updates in one operation
+- Batch updates with user confirmation
 
 ### useResetSettingsMutation
 
-Mutation hook for resetting user settings to defaults.
+Hook for resetting user settings to default values.
 
-```tsx
-import { useResetSettingsMutation } from '@umituz/react-native-settings';
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/mutations/useResetSettingsMutation.ts`
 
-function SettingsScreen() {
-  const resetSettings = useResetSettingsMutation();
+**Variables**: `userId: string`
+**Returns**: `ResetSettingsMutationResult` with mutate, isLoading, isError, error, data
 
-  const handleReset = useCallback(() => {
-    Alert.alert(
-      'Reset Settings',
-      'Are you sure you want to reset all settings to default?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: () => {
-            resetSettings.mutate('user123', {
-              onSuccess: () => {
-                Alert.alert('Success', 'Settings have been reset');
-              },
-            });
-          },
-        },
-      ]
-    );
-  }, [resetSettings]);
-
-  return <Button onPress={handleReset} title="Reset Settings" />;
-}
-```
-
-#### Returns
-
-```typescript
-interface ResetSettingsMutationResult {
-  mutate: (variables: string) => void;
-  mutateAsync: (variables: string) => Promise<SettingsResult>;
-  isLoading: boolean;
-  isError: boolean;
-  error: Error | null;
-  data: SettingsResult | undefined;
-  reset: () => void;
-}
-```
-
-#### Examples
-
-**Simple Reset:**
-
-```tsx
-const resetSettings = useResetSettingsMutation();
-
-const handleReset = () => {
-  resetSettings.mutate('user123');
-};
-```
-
-**With Confirmation:**
-
-```tsx
-const resetSettings = useResetSettingsMutation();
-
-const handleReset = () => {
-  Alert.alert(
-    'Confirm Reset',
-    'This will reset all settings to default. Continue?',
-    [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Reset',
-        style: 'destructive',
-        onPress: () => resetSettings.mutate('user123'),
-      },
-    ]
-  );
-};
-```
-
-**With Post-Reset Actions:**
-
-```tsx
-const resetSettings = useResetSettingsMutation();
-
-const handleReset = () => {
-  resetSettings.mutate('user123', {
-    onSuccess: (data) => {
-      // Apply default theme
-      applyTheme(data.settings.theme);
-
-      // Restart app if needed
-      if (needsRestart) {
-        Updates.reloadAsync();
-      }
-
-      Alert.alert('Success', 'Settings reset successfully');
-    },
-    onError: (error) => {
-      Alert.alert('Error', 'Failed to reset settings');
-    },
-  });
-};
-```
+**Use Cases**:
+- Reset to defaults button
+- User-initiated settings reset
+- Troubleshooting settings issues
 
 ## Mutation Options
 
 ### onSuccess
 
-Callback executed when mutation succeeds.
-
-```typescript
-const updateSettings = useUpdateSettingsMutation();
-
-updateSettings.mutate(
-  { userId: 'user123', settings: { theme: 'dark' } },
-  {
-    onSuccess: (data, variables) => {
-      console.log('Updated settings:', data);
-      console.log('User ID:', variables.userId);
-    },
-  }
-);
-```
+Callback executed when mutation succeeds. Use for:
+- User feedback (success messages)
+- Navigation after successful mutation
+- Triggering side effects
 
 ### onError
 
-Callback executed when mutation fails.
-
-```typescript
-const updateSettings = useUpdateSettingsMutation();
-
-updateSettings.mutate(
-  { userId: 'user123', settings: { theme: 'dark' } },
-  {
-    onError: (error) => {
-      Alert.alert('Error', error.message);
-    },
-  }
-);
-```
+Callback executed when mutation fails. Use for:
+- Error logging
+- User error notifications
+- Cleanup after failed operations
 
 ### onMutate
 
-Callback executed before mutation, useful for optimistic updates.
-
-```typescript
-updateSettings.mutate(
-  { userId: 'user123', settings: { theme: 'dark' } },
-  {
-    onMutate: async (variables) => {
-      // Cancel related queries
-      await queryClient.cancelQueries(['settings', variables.userId]);
-
-      // Snapshot previous value
-      const previous = queryClient.getQueryData(['settings', variables.userId]);
-
-      // Optimistically update
-      queryClient.setQueryData(['settings', variables.userId], (old: any) => ({
-        ...old,
-        ...variables.settings,
-      }));
-
-      // Return context with snapshot
-      return { previous };
-    },
-  }
-);
-```
+Callback executed before mutation. Use for:
+- Optimistic updates
+- Canceling ongoing queries
+- Context snapshots for rollback
 
 ### onSettled
 
-Callback executed after mutation succeeds or fails.
-
-```typescript
-updateSettings.mutate(
-  { userId: 'user123', settings: { theme: 'dark' } },
-  {
-    onSettled: (data, error, variables) => {
-      // Always invalidate queries
-      queryClient.invalidateQueries(['settings', variables.userId]);
-    },
-  }
-);
-```
-
-## Usage Examples
-
-### Complete Form Handler
-
-```tsx
-function SettingsForm() {
-  const updateSettings = useUpdateSettingsMutation();
-  const [theme, setTheme] = useState('light');
-  const [language, setLanguage] = useState('en-US');
-
-  const handleSubmit = useCallback(() => {
-    updateSettings.mutate(
-      {
-        userId: 'user123',
-        settings: {
-          theme,
-          language,
-          notificationsEnabled: true,
-        },
-      },
-      {
-        onSuccess: () => {
-          Alert.alert('Success', 'Settings saved successfully');
-        },
-        onError: (error) => {
-          Alert.alert('Error', 'Failed to save settings');
-        },
-      }
-    );
-  }, [theme, language, updateSettings]);
-
-  return (
-    <View>
-      <ThemeSelector value={theme} onChange={setTheme} />
-      <LanguagePicker value={language} onChange={setLanguage} />
-      <Button
-        onPress={handleSubmit}
-        loading={updateSettings.isLoading}
-        title="Save Settings"
-      />
-    </View>
-  );
-}
-```
-
-### Batch Updates
-
-```tsx
-function BatchUpdateExample() {
-  const updateSettings = useUpdateSettingsMutation();
-
-  const updateMultiplePreferences = async () => {
-    const updates = [
-      { theme: 'dark' },
-      { language: 'tr-TR' },
-      { notificationsEnabled: true },
-    ];
-
-    // Update sequentially
-    for (const update of updates) {
-      await updateSettings.mutateAsync({
-        userId: 'user123',
-        settings: update,
-      });
-    }
-
-    Alert.alert('Success', 'All settings updated');
-  };
-
-  return <Button onPress={updateMultiplePreferences} title="Update All" />;
-}
-```
-
-### Debounced Updates
-
-```tsx
-function DebouncedSettings() {
-  const updateSettings = useUpdateSettingsMutation();
-  const debouncedUpdate = useMemo(
-    () => debounce((settings: Partial<UserSettings>) => {
-      updateSettings.mutate({
-        userId: 'user123',
-        settings,
-      });
-    }, 500),
-    [updateSettings]
-  );
-
-  const handleThemeChange = (theme: 'light' | 'dark') => {
-    debouncedUpdate({ theme });
-  };
-
-  return <ThemeSelector onChange={handleThemeChange} />;
-}
-```
+Callback executed after mutation succeeds or fails. Use for:
+- Query invalidation
+- Cleanup operations
+- Resetting UI states
 
 ## Best Practices
 
-1. **Optimistic Updates**: Use onMutate for immediate UI feedback
-2. **Error Handling**: Always handle errors gracefully
-3. **Loading States**: Show loading indicators during mutations
-4. **Confirmation**: Confirm destructive operations like reset
-5. **Invalidation**: Invalidate queries after mutations
+1. **Confirm Destructive Actions**: Always confirm reset operations with user
+2. **Optimistic Updates**: Use onMutate for immediate UI feedback
+3. **Error Handling**: Always handle errors gracefully with user-friendly messages
+4. **Loading States**: Show loading indicators during mutations
+5. **Query Invalidation**: Invalidate queries after mutations to refresh data
 6. **Rollback**: Implement rollback for failed optimistic updates
-7. **Type Safety**: Use TypeScript for mutation variables
-
-## Related
-
-- **Settings Queries**: Query hooks for fetching settings
-- **useSettings**: Combined hook for settings management
-- **Settings Repository**: Data persistence layer
+7. **Type Safety**: Use TypeScript for mutation variables and results
 
 ## License
 

@@ -1,433 +1,97 @@
 # Video Tutorials Components
 
-Components for displaying video tutorials including cards, sections, and the main tutorials screen.
-
-## Components
-
-### VideoTutorialCard
-
-Card component for displaying individual video tutorials with thumbnails, titles, and metadata.
-
-```tsx
-import { VideoTutorialCard } from '@umituz/react-native-settings';
-
-function TutorialsList() {
-  const tutorial = {
-    id: '1',
-    title: 'Getting Started with Settings',
-    description: 'Learn how to configure your app settings',
-    thumbnail: 'https://example.com/thumb.jpg',
-    duration: '5:30',
-    views: 1234,
-  };
-
-  return (
-    <VideoTutorialCard
-      tutorial={tutorial}
-      onPress={() => playTutorial(tutorial.id)}
-    />
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `tutorial` | `VideoTutorial` | **Required** | Tutorial data object |
-| `onPress` | `() => void` | `undefined` | Press handler |
-| `showDuration` | `boolean` | `true` | Show video duration |
-| `showViews` | `boolean` | `true` | Show view count |
-| `style` | `ViewStyle` | `undefined` | Custom container style |
-
-#### Example
-
-```tsx
-<VideoTutorialCard
-  tutorial={{
-    id: '1',
-    title: 'Advanced Settings',
-    description: 'Deep dive into settings configuration',
-    thumbnail: 'https://example.com/thumb.jpg',
-    duration: '10:15',
-    views: 5678,
-    publishedAt: new Date('2024-01-01'),
-  }}
-  onPress={() => navigation.navigate('VideoPlayer', { tutorialId: '1' })}
-  showDuration={true}
-  showViews={true}
-/>
-```
-
-### VideoTutorialSection
-
-Section component for grouping related video tutorials with a header.
-
-```tsx
-import { VideoTutorialSection } from '@umituz/react-native-settings';
-
-function FeaturedSection() {
-  const tutorials = [
-    { id: '1', title: 'Tutorial 1', thumbnail: '...' },
-    { id: '2', title: 'Tutorial 2', thumbnail: '...' },
-  ];
-
-  return (
-    <VideoTutorialSection
-      title="Featured Tutorials"
-      tutorials={tutorials}
-      horizontal={true}
-      onTutorialPress={(tutorial) => playTutorial(tutorial)}
-    />
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | **Required** | Section title |
-| `tutorials` | `VideoTutorial[]` | **Required** | Array of tutorials |
-| `horizontal` | `boolean` | `false` | Horizontal scroll |
-| `onTutorialPress` | `(tutorial: VideoTutorial) => void` | `undefined` | Press handler |
-| `style` | `ViewStyle` | `undefined` | Custom container style |
-
-#### Example
-
-```tsx
-<VideoTutorialSection
-  title="Getting Started"
-  tutorials={gettingStartedTutorials}
-  horizontal={true}
-  onTutorialPress={(tutorial) => {
-    Analytics.track('tutorial_opened', { id: tutorial.id });
-    navigation.navigate('VideoPlayer', { tutorial });
-  }}
-/>
-```
-
-### VideoTutorialsScreen
-
-Main screen component for browsing all video tutorials with search and categories.
-
-```tsx
-import { VideoTutorialsScreen } from '@umituz/react-native-settings';
-
-function TutorialsScreen() {
-  return (
-    <VideoTutorialsScreen
-      categories={tutorialCategories}
-      tutorials={allTutorials}
-      featuredTutorials={featuredTutorials}
-      onTutorialPress={handleTutorialPress}
-    />
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `categories` | `TutorialCategory[]` | `[]` | Tutorial categories |
-| `tutorials` | `VideoTutorial[]` | `[]` | All tutorials |
-| `featuredTutorials` | `VideoTutorial[]` | `[]` | Featured tutorials |
-| `onTutorialPress` | `(tutorial: VideoTutorial) => void` | **Required** | Press handler |
-| `showSearch` | `boolean` | `true` | Show search bar |
-| `showFeatured` | `boolean` | `true` | Show featured section |
-
-#### Example
-
-```tsx
-<VideoTutorialsScreen
-  categories={[
-    { id: 'getting-started', title: 'Getting Started', count: 5 },
-    { id: 'advanced', title: 'Advanced', count: 8 },
-  ]}
-  tutorials={allTutorials}
-  featuredTutorials={[tutorial1, tutorial2, tutorial3]}
-  onTutorialPress={(tutorial) => {
-    navigation.navigate('VideoPlayer', { tutorialId: tutorial.id });
-  }}
-  showSearch={true}
-  showFeatured={true}
-/>
-```
-
-## Data Types
-
-### VideoTutorial
-
-```typescript
-interface VideoTutorial {
-  id: string;
-  title: string;
-  description?: string;
-  thumbnail: string;
-  duration?: string;        // e.g., "5:30"
-  views?: number;
-  publishedAt?: Date;
-  categoryId?: string;
-  url?: string;             // Video URL
-  isExternal?: boolean;     // Open in external app
-}
-```
-
-### TutorialCategory
-
-```typescript
-interface TutorialCategory {
-  id: string;
-  title: string;
-  description?: string;
-  thumbnail?: string;
-  count?: number;           // Number of tutorials in category
-}
-```
-
-## Examples
-
-### Basic Tutorial Card
-
-```tsx
-<VideoTutorialCard
-  tutorial={{
-    id: '1',
-    title: 'Introduction to Settings',
-    thumbnail: 'https://example.com/thumb1.jpg',
-  }}
-  onPress={() => console.log('Pressed')}
-/>
-```
-
-### Detailed Tutorial Card
-
-```tsx
-<VideoTutorialCard
-  tutorial={{
-    id: '2',
-    title: 'Advanced Configuration',
-    description: 'Learn advanced settings options',
-    thumbnail: 'https://example.com/thumb2.jpg',
-    duration: '12:45',
-    views: 3456,
-    publishedAt: new Date('2024-01-15'),
-  }}
-  onPress={() => playTutorial('2')}
-  showDuration={true}
-  showViews={true}
-/>
-```
-
-### Horizontal Section
-
-```tsx
-<VideoTutorialSection
-  title="Featured"
-  tutorials={featuredTutorials}
-  horizontal={true}
-  onTutorialPress={(tutorial) => {
-    navigation.navigate('VideoPlayer', { tutorialId: tutorial.id });
-  }}
-/>
-```
-
-### Vertical Section
-
-```tsx
-<VideoTutorialSection
-  title="All Tutorials"
-  tutorials={allTutorials}
-  horizontal={false}
-  onTutorialPress={(tutorial) => {
-    navigation.navigate('VideoPlayer', { tutorialId: tutorial.id });
-  }}
-/>
-```
-
-### Complete Screen
-
-```tsx
-function TutorialsScreenWrapper() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  const filteredTutorials = useMemo(() => {
-    return allTutorials.filter(tutorial => {
-      const matchesSearch = tutorial.title.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = !selectedCategory || tutorial.categoryId === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, selectedCategory]);
-
-  return (
-    <VideoTutorialsScreen
-      categories={categories}
-      tutorials={filteredTutorials}
-      featuredTutorials={featuredTutorials}
-      onTutorialPress={handleTutorialPress}
-      showSearch={true}
-      showFeatured={true}
-    />
-  );
-}
-```
-
-### External Videos
-
-```tsx
-<VideoTutorialCard
-  tutorial={{
-    id: 'yt-1',
-    title: 'Video Tutorial on YouTube',
-    thumbnail: 'https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg',
-    duration: '8:20',
-    url: 'https://youtube.com/watch?v=VIDEO_ID',
-    isExternal: true,
-  }}
-  onPress={(tutorial) => {
-    if (tutorial.isExternal && tutorial.url) {
-      Linking.openURL(tutorial.url);
-    }
-  }}
-/>
-```
-
-## Styling
-
-### Card Styles
-
-```tsx
-<VideoTutorialCard
-  tutorial={tutorial}
-  style={{
-    width: 280,
-    marginHorizontal: 8,
-    borderRadius: 12,
-    overflow: 'hidden',
-  }}
-/>
-```
-
-### Thumbnail Styles
-
-Thumbnails are displayed with aspect ratio preserved:
-
-```tsx
-<Image
-  source={{ uri: tutorial.thumbnail }}
-  style={{
-    width: '100%',
-    aspectRatio: 16 / 9,
-    backgroundColor: '#f0f0f0',
-  }}
-/>
-```
-
-### Overlay Information
-
-Duration and views are overlaid on the thumbnail:
-
-```tsx
-<View style={styles.overlay}>
-  <View style={styles.duration}>
-    <Text style={styles.durationText}>{tutorial.duration}</Text>
-  </View>
-  <View style={styles.views}>
-    <Ionicons name="eye-outline" size={14} color="white" />
-    <Text style={styles.viewsText}>{formatViews(tutorial.views)}</Text>
-  </View>
-</View>
-```
-
-## Loading States
-
-### Skeleton Loading
-
-```tsx
-function TutorialCardSkeleton() {
-  return (
-    <View style={styles.skeleton}>
-      <View style={styles.thumbnailSkeleton} />
-      <View style={styles.titleSkeleton} />
-      <View style={styles.descriptionSkeleton} />
-    </View>
-  );
-}
-
-function TutorialsList() {
-  const { data, isLoading } = useTutorials();
-
-  if (isLoading) {
-    return (
-      <ScrollView horizontal>
-        <TutorialCardSkeleton />
-        <TutorialCardSkeleton />
-        <TutorialCardSkeleton />
-      </ScrollView>
-    );
-  }
-
-  return (
-    <VideoTutorialSection
-      title="Tutorials"
-      tutorials={data}
-      horizontal={true}
-    />
-  );
-}
-```
-
-## Empty States
-
-### No Tutorials
-
-```tsx
-function EmptyTutorials() {
-  return (
-    <View style={styles.emptyContainer}>
-      <Ionicons name="videocam-outline" size={64} color="#ccc" />
-      <Text style={styles.emptyTitle}>No Tutorials</Text>
-      <Text style={styles.emptyMessage}>
-        Check back later for new tutorials
-      </Text>
-    </View>
-  );
-}
-```
-
-### No Search Results
-
-```tsx
-function NoSearchResults({ query }) {
-  return (
-    <View style={styles.emptyContainer}>
-      <Ionicons name="search-outline" size={64} color="#ccc" />
-      <Text style={styles.emptyTitle}>No Results</Text>
-      <Text style={styles.emptyMessage}>
-        No tutorials found for "{query}"
-      </Text>
-    </View>
-  );
-}
-```
-
-## Best Practices
-
-1. **Thumbnails**: Use high-quality thumbnails (16:9 aspect ratio)
-2. **Duration**: Always show video duration
-3. **Metadata**: Include views and publish date
-4. **External**: Mark external videos clearly
-5. **Loading**: Show skeleton loaders while loading
-6. **Empty**: Provide meaningful empty states
-7. **Accessibility**: Add proper accessibility labels
-
-## Related
-
-- **Video Tutorials Domain**: Video tutorials domain documentation
-- **VideoTutorialsScreen**: Main screen component
-
-## License
-
-MIT
+## Purpose
+
+Components for displaying video tutorials including cards, sections, and the main tutorials screen. Provides a complete video learning experience within the app with search, categories, and playback capabilities.
+
+## File Paths
+
+- **VideoTutorialCard**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/components/VideoTutorialCard.tsx`
+- **VideoTutorialSection**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/components/VideoTutorialSection.tsx`
+- **VideoTutorialsScreen**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/screens/VideoTutorialsScreen.tsx`
+- **Tutorial Components**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/components/`
+
+## Strategy
+
+1. **Visual Discovery**: Uses thumbnail-based card layouts to make tutorials visually appealing and discoverable. Horizontal scrolling sections allow users to quickly browse many tutorials without deep navigation.
+
+2. **Metadata Display**: Shows key metadata (duration, view count, publish date) to help users assess tutorial relevance and time commitment before watching.
+
+3. **Organized Structure**: Groups tutorials into categories and sections, making it easy for users to find relevant content based on their skill level or specific interests.
+
+4. **Search and Filter**: Includes search functionality to help users quickly find specific tutorials, with real-time filtering as they type.
+
+5. **Flexible Playback**: Supports both embedded video players and external video apps (YouTube, Vimeo) to accommodate different content hosting strategies.
+
+## Restrictions
+
+### ❌ DO NOT
+
+- Use low-quality or blurry thumbnails
+- Hide important tutorial metadata
+- Mix horizontal and vertical layouts inconsistently
+- Auto-play videos without user consent
+- Show excessive ads or interruptions
+
+### ❌ NEVER
+
+- Display broken or unavailable videos
+- Use incorrect thumbnail URLs
+- Mix aspect ratios (always use 16:9)
+- Allow simultaneous video playback
+- Bypass content rating or age restrictions
+
+### ❌ AVOID
+
+- Overly long tutorial titles (truncate if necessary)
+- Cluttered layouts with too much information
+- Slow thumbnail loading without placeholders
+- Difficult category navigation
+- Missing or incomplete tutorial descriptions
+
+## Rules
+
+### ✅ ALWAYS
+
+- Use high-quality thumbnails with 16:9 aspect ratio
+- Display video duration prominently
+- Show view counts for social proof
+- Organize tutorials into logical categories
+- Provide search functionality
+
+### ✅ MUST
+
+- Handle video loading errors gracefully
+- Show placeholder while thumbnails load
+- Support both embedded and external videos
+- Mark external videos clearly
+- Track tutorial views for analytics
+
+### ✅ SHOULD
+
+- Implement skeleton loading states
+- Show featured tutorials prominently
+- Use horizontal scroll for categories
+- Filter by category or search
+- Show tutorial progress/completion
+- Support offline viewing when possible
+
+## AI Agent Guidelines
+
+1. **Thumbnail Quality**: Always use high-quality thumbnail images (recommended resolution 1280x720px). Implement lazy loading and show skeleton screens while thumbnails load. Use placeholder colors or gradients if thumbnails fail to load.
+
+2. **Metadata Display**: Show duration on all tutorial cards to help users decide if they have time to watch. Display view counts to provide social proof and indicate popularity. Include publish date for time-sensitive content.
+
+3. **Layout Strategy**: Use horizontal scrolling sections for featured tutorials and categories to maximize content density. Use vertical lists for comprehensive tutorial browsing. Maintain consistent card widths (280-320px) for horizontal sections.
+
+4. **External Videos**: Mark videos that open in external apps (YouTube, Vimeo) with clear indicators. Handle deep linking properly to ensure videos open in the user's preferred app. Test on both iOS and Android as video handling differs.
+
+5. **Empty States**: Provide meaningful empty states when no tutorials are available or search returns no results. Use friendly illustrations and helpful text. Include call-to-action buttons to browse all tutorials or contact support.
+
+## Reference
+
+- **Card Component**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/components/VideoTutorialCard.tsx`
+- **Section Component**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/components/VideoTutorialSection.tsx`
+- **Main Screen**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/screens/VideoTutorialsScreen.tsx`
+- **Tutorial Components**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/video-tutorials/presentation/components/`
+- **Video Player**: Check for video player implementation for playback functionality

@@ -1,6 +1,21 @@
 # Testing Guide
 
-Comprehensive testing guide for the `@umituz/react-native-settings` package including unit tests, integration tests, and end-to-end testing.
+Comprehensive testing strategy and guidelines for the `@umituz/react-native-settings` package covering unit tests, integration tests, and end-to-end testing approaches.
+
+## Purpose
+
+This document defines the testing philosophy, strategies, and best practices for ensuring code quality, reliability, and maintainability of the `@umituz/react-native-settings` package. It provides guidelines for testing at each architectural layer and establishes standards for test coverage, performance, and reliability.
+
+## File Paths
+
+**Base Directory**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/`
+
+**Test Locations**:
+- `/src/**/__tests__/` - Test files co-located with source code
+- `/src/**/*.test.ts` - Unit test files
+- `/src/**/*.test.tsx` - Component test files
+- `/src/**/*.integration.test.ts` - Integration test files
+- `/__tests__/` - Shared test utilities and fixtures
 
 ## Testing Philosophy
 
@@ -8,636 +23,335 @@ The settings package follows a comprehensive testing approach:
 
 - **Unit Tests**: Test individual functions, hooks, and components in isolation
 - **Integration Tests**: Test how multiple components work together
-- **E2E Tests**: Test complete user flows
-- **Snapshot Tests**: Ensure UI consistency
-- **Performance Tests**: Monitor rendering performance
+- **E2E Tests**: Test complete user flows across the application
+- **Snapshot Tests**: Ensure UI consistency and prevent unintended changes
+- **Performance Tests**: Monitor rendering performance and identify bottlenecks
 
-## Test Setup
+### Testing Pyramid
 
-### Configuration
-
-```typescript
-// jest.config.js
-module.exports = {
-  preset: 'react-native',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@umituz|@react-navigation)/)',
-  ],
-  testMatch: ['**/__tests__/**/*.test.(ts|tsx)'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-  },
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.tsx',
-  ],
-};
+```
+        /\
+       /  \
+      / E2E \
+     /------\
+    /Integration\
+   /------------\
+  /   Unit Tests  \
+ /----------------\
 ```
 
-### Setup File
+**Foundation**: Unit tests provide the base, being fast and numerous
+**Middle**: Integration tests verify component interactions
+**Top**: E2E tests validate critical user journeys (minimal in number)
 
-```typescript
-// jest.setup.js
-import '@testing-library/jest-native/extend-expect';
-import { configure } = '@testing-library/react-native';
+## Test Configuration
 
-configure({ asyncUtilTimeout: 10000 });
+### Jest Configuration
 
-// Mock AsyncStorage
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
-);
+The project uses Jest as the testing framework with React Native preset. Configuration includes:
 
-// Mock Linking
-jest.mock('react-native/Libraries/Linking/Linking', () => ({
-  openURL: jest.fn(),
-  canOpenURL: jest.fn(),
-}));
+- **Preset**: React Native environment setup
+- **Setup Files**: Custom test environment initialization
+- **Transform Ignore Patterns**: Handle dependencies correctly
+- **Test Match Patterns**: Locate test files automatically
+- **Path Mapping**: Resolve module aliases correctly
+- **Coverage Collection**: Track code coverage metrics
 
-// Mock navigation
-jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({
-    navigate: jest.fn(),
-    goBack: jest.fn(),
-    getState: jest.fn(),
-  }),
-  useFocusEffect: jest.fn(),
-  useRoute: () => ({
-    params: {},
-  }),
-}));
-```
+### Test Setup
+
+Test setup includes:
+
+- **Testing Library Extensions**: Custom matchers for React Native
+- **Async Configuration**: Timeout settings for async operations
+- **Mock Configuration**: Global mocks for external dependencies
+- **Navigation Mocks**: React Navigation mock implementations
+- **Storage Mocks**: AsyncStorage mock for data persistence
 
 ## Component Testing
 
-### SettingsItemCard Tests
+### Testing Approach
 
-```typescript
-// SettingsItemCard.test.tsx
-import { render, fireEvent } from '@testing-library/react-native';
-import { SettingsItemCard } from '../SettingsItemCard';
+Components are tested using React Native Testing Library with focus on:
 
-describe('SettingsItemCard', () => {
-  const mockOnPress = jest.fn();
+- **User Interactions**: Test from user's perspective, not implementation details
+- **Accessibility**: Verify accessibility attributes and labels
+- **Props Validation**: Ensure correct prop handling and validation
+- **Event Handling**: Verify callbacks and event handlers work correctly
+- **Conditional Rendering**: Test different states and configurations
 
-  it('renders correctly with required props', () => {
-    const { getByText } = render(
-      <SettingsItemCard
-        icon="settings-outline"
-        title="Settings"
-        onPress={mockOnPress}
-      />
-    );
+### Component Test Categories
 
-    expect(getByText('Settings')).toBeTruthy();
-  });
+**SettingsItemCard**: Reusable card component for settings items
+- Rendering with various prop combinations
+- Press interactions and callback execution
+- Switch functionality and state changes
+- Disabled state behavior
+- Icon and subtitle display
+- Snapshot verification
 
-  it('calls onPress when pressed', () => {
-    const { getByText } = render(
-      <SettingsItemCard
-        icon="settings-outline"
-        title="Settings"
-        onPress={mockOnPress}
-      />
-    );
+**SettingsSection**: Section wrapper component
+- Title display and visibility
+- Children rendering
+- Conditional title display
+- Styling and layout
 
-    fireEvent.press(getByText('Settings'));
-    expect(mockOnPress).toHaveBeenCalledTimes(1);
-  });
-
-  it('renders subtitle when provided', () => {
-    const { getByText } = render(
-      <SettingsItemCard
-        icon="notifications-outline"
-        title="Notifications"
-        subtitle="Enable push notifications"
-        onPress={mockOnPress}
-      />
-    );
-
-    expect(getByText('Enable push notifications')).toBeTruthy();
-  });
-
-  it('renders switch when showSwitch is true', () => {
-    const { getByTestId } = render(
-      <SettingsItemCard
-        icon="notifications-outline"
-        title="Notifications"
-        showSwitch={true}
-        switchValue={true}
-        onSwitchChange={jest.fn()}
-      />
-    );
-
-    expect(getByTestId('settings-switch')).toBeTruthy();
-  });
-
-  it('is disabled when disabled prop is true', () => {
-    const { getByText } = render(
-      <SettingsItemCard
-        icon="cloud-upload-outline"
-        title="Cloud Sync"
-        disabled={true}
-        onPress={mockOnPress}
-      />
-    );
-
-    const button = getByText('Cloud Sync');
-    fireEvent.press(button);
-    expect(mockOnPress).not.toHaveBeenCalled();
-  });
-
-  it('matches snapshot', () => {
-    const tree = render(
-      <SettingsItemCard
-        icon="settings-outline"
-        title="Settings"
-        onPress={mockOnPress}
-      />
-    ).toJSON();
-
-    expect(tree).toMatchSnapshot();
-  });
-});
-```
-
-### SettingsSection Tests
-
-```typescript
-// SettingsSection.test.tsx
-import { render } from '@testing-library/react-native';
-import { SettingsSection } from '../SettingsSection';
-import { SettingsItemCard } from '../SettingsItemCard';
-
-describe('SettingsSection', () => {
-  it('renders section title', () => {
-    const { getByText } = render(
-      <SettingsSection title="GENERAL">
-        <SettingsItemCard icon="person-outline" title="Profile" onPress={() => {}} />
-      </SettingsSection>
-    );
-
-    expect(getByText('GENERAL')).toBeTruthy();
-  });
-
-  it('renders children components', () => {
-    const { getByText } = render(
-      <SettingsSection title="SETTINGS">
-        <SettingsItemCard icon="person-outline" title="Profile" onPress={() => {}} />
-        <SettingsItemCard icon="notifications-outline" title="Notifications" onPress={() => {}} />
-      </SettingsSection>
-    );
-
-    expect(getByText('Profile')).toBeTruthy();
-    expect(getByText('Notifications')).toBeTruthy();
-  });
-
-  it('hides title when showTitle is false', () => {
-    const { queryByText } = render(
-      <SettingsSection title="GENERAL" showTitle={false}>
-        <SettingsItemCard icon="person-outline" title="Profile" onPress={() => {}} />
-      </SettingsSection>
-    );
-
-    expect(queryByText('GENERAL')).toBeNull();
-  });
-});
-```
+**SettingsScreen**: Main settings screen
+- Navigation integration
+- Settings content composition
+- Feature detection integration
+- Loading and error states
 
 ## Hook Testing
 
-### useSettings Tests
+### Testing Approach
 
-```typescript
-// useSettings.test.ts
-import { renderHook, act, waitFor } from '@testing-library/react-native';
-import { useSettings } from '../useSettings';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+Custom hooks are tested using `renderHook` from React Testing Library:
 
-const wrapper = ({ children }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
+- **State Management**: Verify state changes and updates
+- **Side Effects**: Test useEffect and other effect hooks
+- **Return Values**: Validate hook return structure and values
+- **Error Handling**: Test error states and error recovery
+- **Performance**: Ensure hooks don't cause unnecessary re-renders
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
-};
+### Hook Test Categories
 
-describe('useSettings', () => {
-  it('loads settings for user', async () => {
-    const { result } = renderHook(() => useSettings('user123'), { wrapper });
+**useSettings**: Main settings management hook
+- Loading initial settings
+- Updating settings values
+- Resetting to defaults
+- Error handling
+- Query invalidation
+- Mutation behavior
 
-    await waitFor(() => {
-      expect(result.current.settings).toBeDefined();
-      expect(result.current.isLoading).toBe(false);
-    });
-  });
-
-  it('updates settings', async () => {
-    const { result } = renderHook(() => useSettings('user123'), { wrapper });
-
-    await act(async () => {
-      await result.current.updateSettings({ theme: 'dark' });
-    });
-
-    expect(result.current.settings.theme).toBe('dark');
-  });
-
-  it('resets settings to defaults', async () => {
-    const { result } = renderHook(() => useSettings('user123'), { wrapper });
-
-    await act(async () => {
-      await result.current.resetSettings();
-    });
-
-    expect(result.current.settings.theme).toBe('auto');
-  });
-
-  it('handles errors gracefully', async () => {
-    const { result } = renderHook(() => useSettings('invalid-user'), { wrapper });
-
-    await waitFor(() => {
-      expect(result.current.error).toBeTruthy();
-    });
-  });
-});
-```
-
-### useFeatureDetection Tests
-
-```typescript
-// useFeatureDetection.test.ts
-import { renderHook } from '@testing-library/react-native';
-import { useFeatureDetection } from '../useFeatureDetection';
-
-describe('useFeatureDetection', () => {
-  const mockNavigation = {
-    getState: () => ({
-      routes: [
-        { name: 'Appearance' },
-        { name: 'LanguageSelection' },
-        { name: 'Notifications' },
-      ],
-    }),
-  };
-
-  const normalizedConfig = {
-    appearance: { enabled: true },
-    language: { enabled: true },
-    notifications: { enabled: true },
-  };
-
-  it('detects available screens', () => {
-    const { result } = renderHook(() =>
-      useFeatureDetection(normalizedConfig, mockNavigation)
-    );
-
-    expect(result.current.appearance).toBe(true);
-    expect(result.current.language).toBe(true);
-    expect(result.current.notifications).toBe(true);
-  });
-
-  it('respects explicit disabled', () => {
-    const config = {
-      appearance: { enabled: false },
-    };
-
-    const { result } = renderHook(() =>
-      useFeatureDetection(config, mockNavigation)
-    );
-
-    expect(result.current.appearance).toBe(false);
-  });
-
-  it('returns false for missing screens', () => {
-    const navigation = {
-      getState: () => ({ routes: [] }),
-    };
-
-    const { result } = renderHook(() =>
-      useFeatureDetection(normalizedConfig, navigation)
-    );
-
-    expect(result.current.appearance).toBe(false);
-  });
-});
-```
+**useFeatureDetection**: Feature availability detection
+- Screen availability detection
+- Configuration validation
+- Navigation state checking
+- Feature flag integration
 
 ## Service Testing
 
-### SettingsService Tests
+### Testing Approach
 
-```typescript
-// SettingsService.test.ts
-import { SettingsService } from '../SettingsService';
-import { ISettingsRepository } from '../../application/ports/ISettingsRepository';
+Services are tested in isolation with mocked dependencies:
 
-class MockRepository implements ISettingsRepository {
-  private storage = new Map();
+- **Business Logic**: Verify core business rules and validations
+- **Data Transformation**: Test data mapping and transformation
+- **Error Handling**: Validate error scenarios and messages
+- **Repository Integration**: Test interaction with repositories
+- **Validation Logic**: Verify input validation and sanitization
 
-  async get(userId: string) {
-    if (!this.storage.has(userId)) {
-      return this.createDefaults(userId);
-    }
-    return this.storage.get(userId);
-  }
+### Service Test Categories
 
-  async update(userId: string, updates: any) {
-    const current = await this.get(userId);
-    const updated = { ...current, ...updates };
-    this.storage.set(userId, updated);
-    return updated;
-  }
-
-  async reset(userId: string) {
-    const defaults = this.createDefaults(userId);
-    this.storage.set(userId, defaults);
-    return defaults;
-  }
-
-  private createDefaults(userId: string) {
-    return {
-      userId,
-      theme: 'auto',
-      language: 'en-US',
-      notificationsEnabled: true,
-    };
-  }
-}
-
-describe('SettingsService', () => {
-  let service: SettingsService;
-  let repository: MockRepository;
-
-  beforeEach(() => {
-    repository = new MockRepository();
-    service = new SettingsService(repository);
-  });
-
-  describe('getSettings', () => {
-    it('returns settings with defaults', async () => {
-      const settings = await service.getSettings('new-user');
-
-      expect(settings.theme).toBe('auto');
-      expect(settings.language).toBe('en-US');
-    });
-
-    it('returns existing settings', async () => {
-      await repository.update('user123', { theme: 'dark' });
-
-      const settings = await service.getSettings('user123');
-
-      expect(settings.theme).toBe('dark');
-    });
-  });
-
-  describe('updateSettings', () => {
-    it('updates settings', async () => {
-      const updated = await service.updateSettings('user123', {
-        theme: 'dark',
-      });
-
-      expect(updated.theme).toBe('dark');
-    });
-
-    it('validates theme', async () => {
-      await expect(
-        service.updateSettings('user123', { theme: 'invalid' })
-      ).rejects.toThrow('Invalid theme');
-    });
-
-    it('validates language', async () => {
-      await expect(
-        service.updateSettings('user123', { language: 'xx' })
-      ).rejects.toThrow('Invalid language');
-    });
-  });
-
-  describe('resetSettings', () => {
-    it('resets to defaults', async () => {
-      await repository.update('user123', { theme: 'dark' });
-
-      const defaults = await service.resetSettings('user123');
-
-      expect(defaults.theme).toBe('auto');
-    });
-  });
-});
-```
+**SettingsService**: Core settings business logic
+- Settings retrieval with defaults
+- Settings updates and validation
+- Settings reset functionality
+- Invalid input handling
+- Error propagation
+- Business rule enforcement
 
 ## Integration Testing
 
-### Settings Screen Integration Tests
+### Testing Approach
 
-```typescript
-// SettingsScreen.integration.test.tsx
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { SettingsScreen } from '../SettingsScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+Integration tests verify multiple components working together:
 
-const Stack = createStackNavigator();
+- **User Flows**: Test complete user interactions
+- **Navigation**: Verify screen transitions and navigation
+- **Data Flow**: Test data flow across components
+- **State Management**: Verify global state updates
+- **Error Recovery**: Test error handling across components
 
-function TestWrapper({ children }) {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Settings">{() => children}</Stack.Screen>
-        <Stack.Screen name="Appearance" component={() => <div>Appearance</div>} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+### Integration Test Categories
 
-describe('SettingsScreen Integration', () => {
-  it('navigates to Appearance on press', async () => {
-    const { getByText } = render(
-      <TestWrapper>
-        <SettingsScreen config={{ appearance: true }} />
-      </TestWrapper>
-    );
+**Settings Screen Integration**
+- Navigation to detail screens
+- Settings updates and persistence
+- Theme switching functionality
+- Language selection and application
+- Multi-step workflows
 
-    await waitFor(() => {
-      const appearanceButton = getByText(/appearance/i);
-      fireEvent.press(appearanceButton);
-    });
-
-    // Verify navigation occurred
-    expect(getByText(/appearance/i)).toBeTruthy();
-  });
-
-  it('switches theme correctly', async () => {
-    const { getByTestId } = render(
-      <TestWrapper>
-        <SettingsScreen
-          config={{
-            appearance: {
-              enabled: true,
-              showThemeSection: true,
-            },
-          }}
-        />
-      </TestWrapper>
-    );
-
-    const darkModeSwitch = getByTestId('dark-mode-switch');
-    fireEvent.press(darkModeSwitch);
-
-    await waitFor(() => {
-      // Verify theme changed
-      expect(darkModeSwitch.props.value).toBe(true);
-    });
-  });
-});
-```
+**Feature Integration**
+- Feature detection with navigation
+- Configuration-driven UI rendering
+- Cross-feature interactions
 
 ## Performance Testing
 
-### Rendering Performance
+### Testing Approach
 
-```typescript
-// SettingsItemCard.performance.test.tsx
-import { render } from '@testing-library/react-native';
-import { SettingsItemCard } from '../SettingsItemCard';
+Performance tests ensure components render efficiently:
 
-describe('SettingsItemCard Performance', () => {
-  it('renders quickly', () => {
-    const startTime = performance.now();
+- **Render Time**: Measure initial render performance
+- **Re-render Behavior**: Verify memoization and optimization
+- **Memory Usage**: Monitor memory consumption
+- **Update Performance**: Test state update performance
 
-    render(
-      <SettingsItemCard
-        icon="settings-outline"
-        title="Settings"
-        onPress={() => {}}
-      />
-    );
+### Performance Test Categories
 
-    const endTime = performance.now();
-    const renderTime = endTime - startTime;
+**Component Performance**
+- Initial render time measurements
+- Unnecessary re-render detection
+- Memo effectiveness verification
+- Large list rendering performance
 
-    expect(renderTime).toBeLessThan(100); // Should render in under 100ms
-  });
-
-  it('does not re-render unnecessarily', () => {
-    const renderSpy = jest.fn();
-
-    const Component = () => {
-      renderSpy();
-      return (
-        <SettingsItemCard
-          icon="settings-outline"
-          title="Settings"
-          onPress={() => {}}
-        />
-      );
-    };
-
-    const { rerender } = render(<Component />);
-
-    // Re-render with same props
-    rerender(<Component />);
-
-    // Component should not re-render due to memoization
-    expect(renderSpy).toHaveBeenCalledTimes(1);
-  });
-});
-```
+**Hook Performance**
+- Hook execution time
+- Dependency array optimization
+- Effect cleanup verification
+- Stale closure prevention
 
 ## Snapshot Testing
 
-### Component Snapshots
+### Testing Approach
 
-```typescript
-// SettingsItemCard.snapshot.test.tsx
-import { render } from '@testing-library/react-native';
-import { SettingsItemCard } from '../SettingsItemCard';
+Snapshot tests track UI changes and prevent unintended modifications:
 
-describe('SettingsItemCard Snapshots', () => {
-  it('matches snapshot with basic props', () => {
-    const tree = render(
-      <SettingsItemCard
-        icon="settings-outline"
-        title="Settings"
-        onPress={() => {}}
-      />
-    ).toJSON();
+- **Component Snapshots**: Capture component render output
+- **Configuration Variants**: Snapshot different prop combinations
+- **Update Verification**: Review snapshot changes carefully
+- **Selective Updates**: Update snapshots only for intended changes
 
-    expect(tree).toMatchSnapshot();
-  });
+### Snapshot Guidelines
 
-  it('matches snapshot with all props', () => {
-    const tree = render(
-      <SettingsItemCard
-        icon="notifications-outline"
-        title="Notifications"
-        subtitle="Enable push notifications"
-        showSwitch={true}
-        switchValue={true}
-        onSwitchChange={() => {}}
-        rightIcon="chevron-forward"
-      />
-    ).toJSON();
+- Review snapshot changes during code review
+- Update snapshots only when changes are intentional
+- Keep snapshots focused on meaningful UI structure
+- Avoid snapshotting dynamic content (dates, IDs, etc.)
 
-    expect(tree).toMatchSnapshot();
-  });
-});
-```
+## Strategy
 
-## Best Practices
+1. **Test-Driven Development**: Write tests before or alongside implementation, ensuring requirements are understood and code is testable from the start
 
-1. **Isolation**: Test components in isolation
-2. **Mocking**: Mock external dependencies
-3. **Coverage**: Aim for >80% code coverage
-4. **Speed**: Keep tests fast
-5. **Reliable**: Tests should be flake-free
-6. **Readable**: Use descriptive test names
-7. **Maintenance**: Keep tests updated
+2. **Pyramid Distribution**: Maintain a healthy testing pyramid with many unit tests, fewer integration tests, and minimal E2E tests for optimal feedback speed and maintenance cost
+
+3. **User-Centric Testing**: Focus on testing user behavior and outcomes rather than implementation details, ensuring tests remain valid even when implementation changes
+
+4. **Isolation and Independence**: Ensure tests are independent and can run in any order, using proper setup/teardown and avoiding shared state between tests
+
+5. **Continuous Improvement**: Regularly review and update tests, refactor test code, and maintain high coverage while keeping tests fast and reliable
+
+## Restrictions
+
+### ❌ DO NOT
+
+- Test implementation details instead of user behavior (e.g., checking internal state, method calls)
+- Write fragile tests that break with minor refactoring
+- Create tests that depend on execution order
+- Use shared mutable state between tests
+- Write tests that are slow or flaky
+- Test third-party libraries or external services directly
+
+### ❌ NEVER
+
+- Commit commented-out test code or failing tests
+- Mock or test the framework (React, Jest, React Native)
+- Write tests without assertions or expectations
+- Use arbitrary timeouts or waits instead of proper async handling
+- Test multiple concerns in a single test case
+- Skip testing error states and edge cases
+
+### ❌ AVOID
+
+- Over-mocking components, making tests brittle
+- Testing trivial code (getters, simple pass-through functions)
+- Creating complex test setups that are hard to understand
+- Writing tests that are as complex as the code they test
+- Relying on implementation-specific selectors or test IDs
+- Testing absolute values that vary across environments
+
+## Rules
+
+### ✅ ALWAYS
+
+- Write descriptive test names that explain what is being tested and why
+- Use test helpers and custom matchers to reduce duplication
+- Test both happy paths and error scenarios
+- Follow the Arrange-Act-Assert pattern for clear test structure
+- Clean up resources in afterEach or cleanup functions
+- Use TypeScript for type-safe test code
+
+### ✅ MUST
+
+- Achieve and maintain minimum 80% code coverage
+- Mock all external dependencies (APIs, storage, navigation)
+- Test async operations properly with waitFor or act
+- Verify accessibility attributes and labels
+- Test error boundaries and error states
+- Ensure tests run consistently across different environments
+
+### ✅ SHOULD
+
+- Group related tests with describe blocks
+- Use beforeEach for common test setup
+- Keep tests fast and focused
+- Prioritize testing behavior over implementation
+- Review and update tests when modifying code
+- Use meaningful assertions with clear failure messages
+
+## AI Agent Guidelines
+
+### Writing New Tests
+
+When creating new tests:
+
+1. **Understand Requirements**: Clearly understand what functionality needs to be tested and why before writing tests
+2. **Choose Right Level**: Decide whether to write unit, integration, or E2E tests based on what needs verification
+3. **Follow Patterns**: Use existing test patterns and helpers in the codebase for consistency
+4. **Test Behavior**: Focus on testing user-facing behavior and outcomes, not implementation details
+
+### Modifying Existing Tests
+
+When updating tests:
+
+1. **Maintain Coverage**: Ensure test coverage doesn't decrease when modifying code
+2. **Update Snapshots**: Review snapshot changes carefully and update only when intentional
+3. **Add Missing Cases**: Look for uncovered edge cases and error scenarios
+4. **Refactor Test Code**: Improve test code quality and maintainability alongside production code
+
+### Debugging Test Failures
+
+When tests fail:
+
+1. **Understand Failure**: Read the error message and understand why the test failed
+2. **Isolate Issue**: Run the failing test in isolation to confirm the failure
+3. **Check Environment**: Verify test environment and mocks are properly configured
+4. **Fix Root Cause**: Address the root cause, not just the test symptom
+
+### Test Review Checklist
+
+Review should verify:
+
+- Tests cover both happy paths and error cases
+- Test names clearly describe what is being tested
+- Tests are independent and can run in any order
+- No implementation details are being tested
+- Async operations are handled properly
+- Edge cases and boundaries are covered
+- Tests are readable and maintainable
+- Coverage metrics meet minimum requirements
 
 ## Running Tests
 
-### Run All Tests
+### Test Execution
 
-```bash
-npm test
-```
+- Run all tests: Execute complete test suite
+- Watch mode: Run tests in watch mode for development
+- Coverage: Generate coverage reports
+- Specific tests: Run individual test files or patterns
+- Filter tests: Run tests matching specific patterns
 
-### Run Tests in Watch Mode
+### Test Commands
 
-```bash
-npm test -- --watch
-```
+All test commands should be executed from the project root directory with proper npm/yarn scripts.
 
-### Run Tests with Coverage
+## Related Documentation
 
-```bash
-npm test -- --coverage
-```
-
-### Run Specific Test File
-
-```bash
-npm test SettingsItemCard.test.tsx
-```
-
-### Run Tests for Pattern
-
-```bash
-npm test -- --testPathPattern="domains/appearance"
-```
-
-## Related
-
-- **Jest**: Testing framework
+- **ARCHITECTURE.md**: Understanding the architecture helps write better tests
+- **Jest Documentation**: Testing framework reference
 - **React Native Testing Library**: Component testing utilities
-- **TanStack Query**: Data fetching and testing
+- **TanStack Query Documentation**: Testing hooks and queries
 
 ## License
 

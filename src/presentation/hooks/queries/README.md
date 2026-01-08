@@ -2,423 +2,187 @@
 
 Custom TanStack Query hooks for fetching user settings in the settings system.
 
-## Queries
+## Purpose
+
+Provides React hooks for querying (fetching) user settings with automatic caching, background updates, and loading states. These hooks wrap TanStack Query's useQuery hook with settings-specific functionality.
+
+## File Paths
+
+```
+src/presentation/hooks/queries/
+├── useSettingsQuery.ts           # Fetch user settings
+└── useSettingsSuspenseQuery.ts   # Suspense version
+```
+
+## Strategy
+
+1. **Automatic Caching**: Cache query results to reduce network requests
+2. **Background Refetch**: Refresh data in background when it becomes stale
+3. **Loading States**: Provide built-in loading and error indicators
+4. **Conditional Queries**: Enable/disable queries based on conditions
+5. **Type Safety**: Strongly typed query results and parameters
+
+## Restrictions
+
+### DO NOT
+
+- ❌ DO NOT use queries for mutations/updates; use mutations instead
+- ❌ DO NOT call queries outside React components or custom hooks
+- ❌ DO NOT ignore loading and error states
+- ❌ DO NOT use queries for one-time operations; use direct function calls
+- ❌ DO NOT fire queries without proper error boundaries
+
+### NEVER
+
+- ❌ NEVER assume query data is always available; check for undefined
+- ❌ NEVER use the same query key for different data
+- ❌ EVER fire queries in render without proper dependencies
+- ❌ EVER use queries for non-idempotent operations
+
+### AVOID
+
+- ❌ AVOID over-fetching data; request only what's needed
+- ❌ AVOID very short stale times that cause excessive refetching
+- ❌ AVOID firing queries that won't be used (use enabled option)
+- ❌ AVOID ignoring query performance metrics
+
+## Rules
+
+### ALWAYS
+
+- ✅ ALWAYS handle loading and error states
+- ✅ ALWAYS provide meaningful query keys for cache management
+- ✅ ALWAYS use appropriate staleTime and cacheTime values
+- ✅ ALWAYS check if data exists before accessing it
+- ✅ ALWAYS use enabled option for conditional queries
+
+### MUST
+
+- ✅ MUST wrap queries in React components or custom hooks
+- ✅ MUST provide error boundaries for queries
+- ✅ MUST handle undefined data states
+- ✅ MUST use consistent query key patterns
+
+### SHOULD
+
+- ✅ SHOULD use suspense queries for cleaner code when possible
+- ✅ SHOULD prefetch data for expected navigation
+- ✅ SHOULD configure refetch behavior appropriately
+- ✅ SHOULD use query selectors for derived data
+
+## AI Agent Guidelines
+
+1. **When creating queries**: Always define clear query key patterns and result types
+2. **When setting cache times**: Balance freshness with performance
+3. **When using conditional queries**: Use the enabled option with proper conditions
+4. **When handling errors**: Provide user-friendly error messages and retry options
+5. **When adding new queries**: Follow existing query patterns for consistency
+
+## Queries Reference
 
 ### useSettingsQuery
 
-Query hook for fetching user settings.
+Hook for fetching user settings with caching and automatic refetching.
 
-```tsx
-import { useSettingsQuery } from '@umituz/react-native-settings';
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/queries/useSettingsQuery.ts`
 
-function SettingsScreen() {
-  const { data, isLoading, isError, error } = useSettingsQuery('user123');
+**Parameters**: `userId: string, options?: UseQueryOptions`
+**Returns**: `UseSettingsQueryResult` with data, isLoading, isError, error, isFetching, refetch
 
-  if (isLoading) return <LoadingSpinner />;
-  if (isError) return <ErrorMessage message={error.message} />;
-
-  return (
-    <View>
-      <Text>Theme: {data?.settings.theme}</Text>
-      <Text>Language: {data?.settings.language}</Text>
-    </View>
-  );
-}
-```
-
-#### Returns
-
-```typescript
-interface UseSettingsQueryResult {
-  data: SettingsResult | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: Error | null;
-  isFetching: boolean;
-  refetch: () => void;
-}
-```
-
-#### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `userId` | `string` | Yes | Unique user identifier |
-| `options` | `UseQueryOptions` | No | TanStack Query options |
-
-#### Examples
-
-**Basic Query:**
-
-```tsx
-const { data, isLoading } = useSettingsQuery('user123');
-```
-
-**With Query Options:**
-
-```tsx
-const { data } = useSettingsQuery('user123', {
-  staleTime: 5 * 60 * 1000,  // 5 minutes
-  cacheTime: 10 * 60 * 1000, // 10 minutes
-  refetchOnWindowFocus: false,
-  refetchOnMount: false,
-});
-```
-
-**With Refetch:**
-
-```tsx
-const { data, refetch } = useSettingsQuery('user123');
-
-const handleRefresh = () => {
-  refetch();
-};
-
-return (
-  <PullToRefresh onRefresh={handleRefresh}>
-    <SettingsContent settings={data?.settings} />
-  </PullToRefresh>
-);
-```
-
-**With Conditional Query:**
-
-```tsx
-const { data } = useSettingsQuery(
-  userId,
-  { enabled: !!userId } // Only run query if userId exists
-);
-```
+**Use Cases**:
+- Loading user settings on component mount
+- Displaying current settings
+- Refreshing settings after updates
 
 ### useSettingsSuspenseQuery
 
 Suspense version of settings query for React Suspense boundaries.
 
-```tsx
-import { useSettingsSuspenseQuery } from '@umituz/react-native-settings';
+**Location**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/hooks/queries/useSettingsSuspenseQuery.ts`
 
-function SettingsScreen() {
-  const { data } = useSettingsSuspenseQuery('user123');
+**Parameters**: `userId: string, options?: UseQueryOptions`
+**Returns**: `UseSettingsSuspenseQueryResult` with guaranteed data availability
 
-  // Data is guaranteed to be available
-  return (
-    <View>
-      <Text>Theme: {data.settings.theme}</Text>
-    </View>
-  );
-}
-
-// Wrap in Suspense boundary
-function App() {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <SettingsScreen />
-    </Suspense>
-  );
-}
-```
-
-#### Returns
-
-```typescript
-interface UseSettingsSuspenseQueryResult {
-  data: SettingsResult; // Always defined
-}
-```
+**Use Cases**:
+- Clean code with Suspense boundaries
+- Simplified loading states
+- Route-level data fetching
 
 ## Query Options
 
 ### staleTime
 
-Time in milliseconds after which data is considered stale.
+Time in milliseconds after which data is considered stale. Higher values reduce refetching but may show outdated data.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  staleTime: 5 * 60 * 1000, // 5 minutes
-});
-```
+**Recommended**: 5-15 minutes for user settings
 
 ### cacheTime
 
-Time in milliseconds that unused data remains in cache.
+Time in milliseconds that unused data remains in cache. Higher values use more memory but improve performance.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  cacheTime: 10 * 60 * 1000, // 10 minutes
-});
-```
+**Recommended**: 10-30 minutes for settings
 
 ### refetchOnWindowFocus
 
-Refetch query when window regains focus.
+Refetch query when window regains focus. Useful for keeping data fresh but may cause unnecessary refetches.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  refetchOnWindowFocus: true, // Default: true
-});
-```
+**Recommended**: `false` for settings (rarely changes from external sources)
 
 ### refetchOnMount
 
-Refetch query on component mount.
+Refetch query on component mount. Ensures fresh data but may delay initial render.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  refetchOnMount: true, // Default: true
-});
-```
+**Recommended**: `false` if data is cached and fresh
 
 ### refetchOnReconnect
 
-Refetch query when network reconnects.
+Refetch query when network reconnects. Useful for offline scenarios.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  refetchOnReconnect: true, // Default: true
-});
-```
+**Recommended**: `true` for better offline support
 
 ### enabled
 
-Conditionally enable/disable query.
+Conditionally enable/disable query execution.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  enabled: isLoggedIn, // Only run if logged in
-});
-```
+**Use Cases**:
+- Wait for userId to be available
+- Check authentication status
+- Implement feature flags
 
 ### onSuccess
 
-Callback executed on successful query.
+Callback executed on successful query completion.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  onSuccess: (data) => {
-    console.log('Settings loaded:', data);
-    Analytics.track('settings_loaded', { theme: data.settings.theme });
-  },
-});
-```
+**Use Cases**:
+- Analytics tracking
+- Logging data fetches
+- Triggering side effects
 
 ### onError
 
 Callback executed on query error.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  onError: (error) => {
-    console.error('Failed to load settings:', error);
-    Alert.alert('Error', 'Could not load settings');
-  },
-});
-```
+**Use Cases**:
+- Error logging
+- User notifications
+- Fallback logic
 
 ### onSettled
 
 Callback executed after query succeeds or fails.
 
-```tsx
-const { data } = useSettingsQuery('user123', {
-  onSettled: (data, error) => {
-    if (error) {
-      Analytics.track('settings_load_failed');
-    } else {
-      Analytics.track('settings_load_success');
-    }
-  },
-});
-```
-
-## Usage Examples
-
-### Complete Loading States
-
-```tsx
-function SettingsScreen() {
-  const { data, isLoading, isError, error } = useSettingsQuery('user123');
-
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" />
-        <Text>Loading settings...</Text>
-      </View>
-    );
-  }
-
-  if (isError) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.error}>Error: {error.message}</Text>
-        <Button title="Retry" onPress={() => refetch()} />
-      </View>
-    );
-  }
-
-  return (
-    <SettingsContent settings={data?.settings} />
-  );
-}
-```
-
-### Pull to Refresh
-
-```tsx
-function SettingsScreen() {
-  const { data, refetch, isFetching } = useSettingsQuery('user123');
-
-  return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={isFetching}
-          onRefresh={() => refetch()}
-        />
-      }
-    >
-      <SettingsContent settings={data?.settings} />
-    </ScrollView>
-  );
-}
-```
-
-### Background Refetch
-
-```tsx
-function SettingsScreen() {
-  const { data } = useSettingsQuery('user123', {
-    refetchInterval: 60000, // Refetch every minute
-    refetchIntervalInBackground: true,
-  });
-
-  return <SettingsContent settings={data?.settings} />;
-}
-```
-
-### Conditional Query
-
-```tsx
-function SettingsScreen({ userId, enabled }) {
-  const { data } = useSettingsQuery(userId, {
-    enabled: enabled && !!userId,
-  });
-
-  if (!enabled) {
-    return <Text>Please log in to view settings</Text>;
-  }
-
-  return <SettingsContent settings={data?.settings} />;
-}
-```
-
-### Query Invalidation
-
-```tsx
-function SettingsUpdater() {
-  const queryClient = useQueryClient();
-  const updateSettings = useUpdateSettingsMutation();
-
-  const handleUpdate = (newSettings) => {
-    updateSettings.mutate(
-      { userId: 'user123', settings: newSettings },
-      {
-        onSuccess: () => {
-          // Invalidate and refetch
-          queryClient.invalidateQueries(['settings', 'user123']);
-        },
-      }
-    );
-  };
-
-  return <Button onPress={handleUpdate} title="Update" />;
-}
-```
-
-### Optimistic Updates with Query
-
-```tsx
-function SettingsScreen() {
-  const queryClient = useQueryClient();
-  const { data } = useSettingsQuery('user123');
-
-  const handleThemeChange = (newTheme) => {
-    // Optimistically update
-    queryClient.setQueryData(['settings', 'user123'], (old: any) => ({
-      ...old,
-      settings: {
-        ...old.settings,
-        theme: newTheme,
-      },
-    }));
-
-    // Then update on server
-    updateSettings.mutate({
-      userId: 'user123',
-      settings: { theme: newTheme },
-    });
-  };
-
-  return (
-    <ThemeSelector
-      value={data?.settings.theme}
-      onChange={handleThemeChange}
-    />
-  );
-}
-```
+**Use Cases**:
+- Hide loading indicators
+- Clean up resources
+- Update UI state
 
 ## Query Keys
 
-Query keys follow a consistent pattern for cache management:
+Consistent query key patterns for cache management:
 
-```typescript
-// Single user settings
-['settings', userId]
-
-// All settings (admin)
-['settings']
-
-// Settings with filters
-['settings', userId, { type: 'appearance' }]
-
-// Infinite settings (pagination)
-['settings', 'infinite']
-```
-
-### Manual Invalidation
-
-```tsx
-// Invalidate specific user
-queryClient.invalidateQueries(['settings', 'user123']);
-
-// Invalidate all settings
-queryClient.invalidateQueries(['settings']);
-
-// Remove from cache
-queryClient.removeQueries(['settings', 'user123']);
-
-// Reset cache
-queryClient.resetQueries(['settings']);
-```
-
-### Prefetching
-
-```tsx
-// Prefetch settings for expected navigation
-const prefetchSettings = async (userId: string) => {
-  await queryClient.prefetchQuery(['settings', userId], () =>
-    fetchSettings(userId)
-  );
-};
-
-// Usage
-useEffect(() => {
-  if (likelyToNavigate) {
-    prefetchSettings('user123');
-  }
-}, [likelyToNavigate]);
-```
+**Single user settings**: `['settings', userId]`
+**All settings (admin)**: `['settings']`
+**Settings with filters**: `['settings', userId, { type: 'appearance' }]`
 
 ## Best Practices
 
@@ -428,13 +192,7 @@ useEffect(() => {
 4. **Query Keys**: Use consistent query keys for cache management
 5. **Prefetching**: Prefetch data for smooth navigation
 6. **Optimistic Updates**: Combine with mutations for instant feedback
-7. **Suspense**: Use suspense queries for cleaner code
-
-## Related
-
-- **Settings Mutations**: Mutation hooks for updating settings
-- **useSettings**: Combined hook for settings management
-- **TanStack Query**: Official Query documentation
+7. **Suspense**: Use suspense queries for cleaner code when possible
 
 ## License
 

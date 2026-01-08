@@ -1,288 +1,98 @@
 # Settings Screen Utilities
 
-Utility functions for normalizing and managing settings screen configuration.
+## Purpose
 
-## Functions
+Utility functions for normalizing settings configuration, detecting features, and managing screen state.
+
+## File Paths
+
+- **Config Normalization**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/utils/normalizeConfig.ts`
+
+## Strategy
+
+1. **Config Normalization**: Converts various config formats to consistent structure
+2. **Feature Visibility**: Handles boolean, 'auto', and object config types
+3. **Default Values**: Provides sensible defaults for all features
+4. **Type Safety**: Ensures type safety through TypeScript
+5. **Flexibility**: Supports simple and advanced configuration patterns
+
+## Restrictions (Forbidden)
+
+### DO NOT
+- ❌ DO NOT use raw config values without normalizing
+- ❌ DO NOT modify normalized config objects after creation
+- ❌ DO NOT assume config structure (always normalize first)
+
+### NEVER
+- ❌ NEVER rely on implicit undefined behavior in config
+- ❌ NEVER bypass normalization for "simple" configs
+- ❌ NEVER use hardcoded default values in components
+
+### AVOID
+- ❌ AVOID creating multiple normalization functions for same purpose
+- ❌ AVOID mixing normalized and non-normalized config
+- ❌ AVOID changing normalization logic frequently
+
+## Rules (Mandatory)
+
+### ALWAYS
+- ✅ ALWAYS normalize config before passing to components
+- ✅ ALWAYS use normalized config for feature detection
+- ✅ MUST treat normalized config as immutable
+- ✅ MUST provide defaults for all features
+
+### MUST
+- ✅ MUST handle boolean, 'auto', and object config types
+- ✅ MUST preserve advanced config options in normalization
+- ✅ MUST use TypeScript types for type safety
+
+### SHOULD
+- ✅ SHOULD normalize once and pass to multiple consumers
+- ✅ SHOULD use 'auto' for conditionally shown features
+- ✅ SHOULD keep normalization logic centralized
+
+## AI Agent Guidelines
+
+1. **File Reference**: When modifying normalization logic, refer to `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/screens/utils/normalizeConfig.ts`
+2. **Config Types**: Understand three input types: boolean (true/false), 'auto' (detect), or object (advanced config)
+3. **Default Strategy**: Most features default to 'auto', some to false (userProfile, subscription, etc.)
+4. **Immutable Pattern**: Never mutate normalized config, create new objects if needed
+5. **Type Safety**: Leverage TypeScript for compile-time checking
+
+## Utility Reference
 
 ### normalizeSettingsConfig
 
-Normalizes the settings configuration object to a consistent format.
+**Purpose**: Converts raw config to normalized format
 
+**Parameters**:
+- `config`: Raw SettingsConfig (boolean | 'auto' | object values)
+
+**Returns**: NormalizedConfig with enabled flags and config objects
+
+**Output Structure**:
 ```typescript
-import { normalizeSettingsConfig } from '@umituz/react-native-settings';
-
-const config = {
-  appearance: true,
-  notifications: 'auto',
-  about: false,
-};
-
-const normalized = normalizeSettingsConfig(config);
-// Returns: NormalizedConfig with enabled flags and config objects
-```
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `config` | `SettingsConfig \| undefined` | Raw configuration object |
-
-#### Returns
-
-`NormalizedConfig` - Normalized configuration with consistent structure
-
-#### Examples
-
-**Basic Config:**
-
-```typescript
-const config = {
-  appearance: true,
-  language: true,
-};
-
-const normalized = normalizeSettingsConfig(config);
-// {
-//   appearance: { enabled: true },
-//   language: { enabled: true },
-//   notifications: { enabled: false },
-//   // ... others default to { enabled: false }
-// }
-```
-
-**Auto Detection:**
-
-```typescript
-const config = {
-  appearance: 'auto',  // Enable if screen exists
-  language: 'auto',
-};
-
-const normalized = normalizeSettingsConfig(config);
-// Will check navigation for screen availability
-```
-
-**Advanced Config:**
-
-```typescript
-const config = {
-  appearance: {
-    enabled: true,
-    route: 'CustomAppearance',
-    showThemeSection: true,
-  },
-};
-
-const normalized = normalizeSettingsConfig(config);
-// {
-//   appearance: { enabled: true, config: { route: '...', showThemeSection: true } }
-// }
+{
+  appearance: { enabled: boolean, config?: AppearanceConfig },
+  language: { enabled: boolean, config?: LanguageConfig },
+  // ... other features
+}
 ```
 
 ### normalizeConfigValue
 
-Normalizes a single config value to enabled/config format.
+**Purpose**: Normalizes a single config value
 
-```typescript
-import { normalizeConfigValue } from '@umituz/react-native-settings';
+**Parameters**:
+- `value`: FeatureVisibility | ConfigObject | undefined
+- `defaultValue`: Default enabled state
 
-// Boolean
-normalizeConfigValue(true, false)
-// { enabled: true }
+**Returns**: { enabled: boolean, config?: ConfigObject }
 
-// Auto
-normalizeConfigValue('auto', false)
-// { enabled: false } (will be determined dynamically)
+**Usage**: Use for normalizing individual feature configs
 
-// Object
-normalizeConfigValue({ enabled: true, route: 'Custom' }, false)
-// { enabled: true, config: { enabled: true, route: 'Custom' } }
+## Related Components
 
-// Undefined
-normalizeConfigValue(undefined, true)
-// { enabled: true }
-```
-
-#### Type Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `T` | Config object type | Type of config object |
-| `value` | `FeatureVisibility \| T \| undefined` | Config value to normalize |
-| `defaultValue` | `FeatureVisibility` | Default enabled state |
-
-## NormalizedConfig Structure
-
-```typescript
-interface NormalizedConfig {
-  appearance: {
-    enabled: boolean;
-    config?: AppearanceConfig;
-  };
-  language: {
-    enabled: boolean;
-    config?: LanguageConfig;
-  };
-  notifications: {
-    enabled: boolean;
-    config?: NotificationsConfig;
-  };
-  about: {
-    enabled: boolean;
-    config?: AboutConfig;
-  };
-  legal: {
-    enabled: boolean;
-    config?: LegalConfig;
-  };
-  disclaimer: {
-    enabled: boolean;
-    config?: DisclaimerConfig;
-  };
-  userProfile: {
-    enabled: boolean;
-    config?: UserProfileConfig;
-  };
-  feedback: {
-    enabled: boolean;
-    config?: FeedbackConfig;
-  };
-  rating: {
-    enabled: boolean;
-    config?: RatingConfig;
-  };
-  faqs: {
-    enabled: boolean;
-    config?: FAQConfig;
-  };
-  subscription: {
-    enabled: boolean;
-    config?: SubscriptionConfig;
-  };
-  wallet: {
-    enabled: boolean;
-    config?: WalletConfig;
-  };
-}
-```
-
-## FeatureVisibility
-
-Type alias for feature enablement:
-
-```typescript
-type FeatureVisibility = boolean | 'auto';
-```
-
-- `true`: Feature is enabled
-- `false`: Feature is disabled
-- `'auto'`: Feature is automatically detected (checks navigation)
-
-## Default Values
-
-Default values for each feature:
-
-| Feature | Default | Description |
-|---------|---------|-------------|
-| `appearance` | `'auto'` | Auto-detect |
-| `language` | `'auto'` | Auto-detect |
-| `notifications` | `'auto'` | Auto-detect |
-| `about` | `'auto'` | Auto-detect |
-| `legal` | `'auto'` | Auto-detect |
-| `disclaimer` | `false` | Disabled |
-| `userProfile` | `false` | Disabled |
-| `feedback` | `false` | Disabled |
-| `rating` | `false` | Disabled |
-| `faqs` | `false` | Disabled |
-| `subscription` | `false` | Disabled |
-| `wallet` | `false` | Disabled |
-
-## Usage Examples
-
-### Complete Normalization
-
-```typescript
-import { normalizeSettingsConfig } from '@umituz/react-native-settings';
-
-function SettingsScreenWrapper() {
-  const rawConfig = {
-    appearance: true,
-    language: {
-      enabled: true,
-      route: 'LanguageSelection',
-      showFlags: true,
-    },
-    notifications: 'auto',
-  };
-
-  const normalized = normalizeSettingsConfig(rawConfig);
-
-  return (
-    <SettingsContent
-      normalizedConfig={normalized}
-      features={normalized}
-    />
-  );
-}
-```
-
-### Feature Detection Integration
-
-```typescript
-import { normalizeSettingsConfig, useFeatureDetection } from '@umituz/react-native-settings';
-
-function SettingsScreenWithDetection() {
-  const navigation = useNavigation();
-  const config = {
-    appearance: 'auto',
-    language: 'auto',
-    notifications: 'auto',
-  };
-
-  const normalized = normalizeSettingsConfig(config);
-  const features = useFeatureDetection(normalized, navigation, {
-    notificationServiceAvailable: true,
-  });
-
-  return (
-    <SettingsContent
-      normalizedConfig={normalized}
-      features={features}
-    />
-  );
-}
-```
-
-## Auto Detection
-
-When using `'auto'`, features are detected based on:
-
-1. **Navigation State**: Checks if screen exists in navigation stack
-2. **Config Override**: Respects `enabled: true/false` in config object
-3. **Service Availability**: Checks if required services are available
-
-```typescript
-// Auto detection flow
-appearance.config?.enabled === true  // Explicitly enabled
-|| (appearance.config?.enabled !== false  // Not explicitly disabled
-  && hasNavigationScreen(navigation, 'Appearance'))  // Screen exists
-```
-
-## Best Practices
-
-1. **Always Normalize**: Normalize config before passing to components
-2. **Use Auto**: Use `'auto'` for features that should be conditionally shown
-3. **Explicit Control**: Use boolean for features that must be shown/hidden
-4. **Advanced Config**: Use config objects for detailed customization
-5. **Feature Detection**: Always use with `useFeatureDetection` hook
-6. **Type Safety**: Leverage TypeScript for config type checking
-
-## Related
-
-- **useFeatureDetection**: Hook for detecting features
-- **SettingsConfig**: Configuration types
-- **SettingsContent**: Content component
-
-## License
-
-MIT
+- **useFeatureDetection**: Hook that uses normalized config
+- **SettingsScreen**: Screen that uses normalized config
+- **SettingsContent**: Content component that requires normalized config

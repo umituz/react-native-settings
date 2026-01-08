@@ -1,419 +1,85 @@
 # Disclaimer Domain
 
-The Disclaimer domain provides components for displaying legal notices, warnings, and important information to users in your React Native app through cards, modals, and dedicated screens.
-
-## Features
-
-- **Disclaimer Card**: Compact card component for displaying disclaimer summary
-- **Disclaimer Modal**: Full-screen modal with scrollable content
-- **Disclaimer Setting**: Integrated card + modal component
-- **Disclaimer Screen**: Dedicated screen for comprehensive disclaimers
-- **Internationalization**: Full i18n support with translation keys
-- **Customizable Icons**: Custom icons and colors for different warning levels
-- **Cross-Platform**: Universal design for iOS, Android, and Web
-
-## Installation
-
-This domain is part of `@umituz/react-native-settings`. Install the package to use it:
-
-```bash
-npm install @umituz/react-native-settings
-```
-
-## Components
-
-### DisclaimerSetting
-
-The main component that displays a disclaimer card and opens a modal when tapped.
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-function MySettingsScreen() {
-  return (
-    <View>
-      <DisclaimerSetting />
-    </View>
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `titleKey` | `string` | `'settings.disclaimer.title'` | Translation key for title |
-| `messageKey` | `string` | `'settings.disclaimer.message'` | Translation key for full message |
-| `shortMessageKey` | `string` | `'settings.disclaimer.shortMessage'` | Translation key for short message |
-| `iconName` | `string` | `'alert-triangle'` | Icon name from design system |
-| `iconColor` | `string` | `tokens.colors.warning` | Custom icon color |
-| `backgroundColor` | `string` | `withAlpha(iconColor, 0.1)` | Custom background color |
-| `modalTitle` | `string` | `undefined` | Override modal title (bypasses i18n) |
-| `modalContent` | `string` | `undefined` | Override modal content (bypasses i18n) |
-
-#### Example with Custom Content
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-function CustomDisclaimer() {
-  return (
-    <DisclaimerSetting
-      modalTitle="Beta Version Notice"
-      modalContent="This is a beta version of the app. Features may change and bugs may occur. Use at your own risk."
-      iconName="flask"
-      iconColor="#9333EA"
-    />
-  );
-}
-```
-
-### DisclaimerCard
-
-A compact card displaying disclaimer summary with icon and message.
-
-```tsx
-import { DisclaimerCard } from '@umituz/react-native-settings';
-
-function DisclaimerCardExample() {
-  return (
-    <DisclaimerCard
-      title="Warning"
-      shortMessage="This is an important notice"
-      iconName="alert-triangle"
-      iconColor="#F59E0B"
-      backgroundColor="rgba(245, 158, 11, 0.1)"
-      onPress={() => console.log('Card pressed')}
-    />
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | **Required** | Card title |
-| `shortMessage` | `string` | **Required** | Short message text |
-| `iconName` | `string` | **Required** | Icon name |
-| `iconColor` | `string` | **Required** | Icon color |
-| `backgroundColor` | `string` | **Required** | Background color |
-| `onPress` | `() => void` | **Required** | Press handler |
-
-### DisclaimerModal
-
-Full-screen modal with scrollable disclaimer content.
-
-```tsx
-import { DisclaimerModal } from '@umituz/react-native-settings';
-
-function DisclaimerModalExample() {
-  const [visible, setVisible] = useState(false);
-
-  return (
-    <DisclaimerModal
-      visible={visible}
-      title="Legal Disclaimer"
-      content="Full disclaimer content goes here..."
-      onClose={() => setVisible(false)}
-    />
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `visible` | `boolean` | **Required** | Modal visibility |
-| `title` | `string` | **Required** | Modal title |
-| `content` | `string` | **Required** | Modal content |
-| `onClose` | `() => void` | **Required** | Close handler |
-
-### DisclaimerScreen
-
-A dedicated screen for displaying comprehensive disclaimer information.
-
-```tsx
-import { DisclaimerScreen } from '@umituz/react-native-settings';
-
-function DisclaimerScreenExample() {
-  return (
-    <DisclaimerScreen
-      title="Disclaimer"
-      content="This is the full disclaimer text..."
-      iconName="alert-circle"
-      iconColor="#DC2626"
-    />
-  );
-}
-```
-
-#### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | **Required** | Screen title |
-| `content` | `string` | **Required** | Disclaimer content |
-| `iconName` | `string` | `undefined` | Custom icon name |
-| `iconColor` | `string` | `undefined` | Custom icon color |
-
-## Examples
-
-### Basic Usage with i18n
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-function SettingsScreen() {
-  return (
-    <ScrollView>
-      {/* Other settings */}
-
-      <DisclaimerSetting />
-    </ScrollView>
-  );
-}
-
-// In your localization files:
-// en.json:
-// {
-//   "settings": {
-//     "disclaimer": {
-//       "title": "Disclaimer",
-//       "message": "This is the full disclaimer content...",
-//       "shortMessage": "Important legal information"
-//     }
-//   }
-// }
-```
-
-### Custom Medical Disclaimer
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-function MedicalAppSettings() {
-  return (
-    <DisclaimerSetting
-      modalTitle="Medical Disclaimer"
-      modalContent="This app is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition."
-      iconName="heart-pulse"
-      iconColor="#DC2626"
-    />
-  );
-}
-```
-
-### Financial Warning
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-function FinancialAppSettings() {
-  return (
-    <DisclaimerSetting
-      modalTitle="Risk Warning"
-      modalContent="Trading financial instruments carries a high level of risk and may not be suitable for all investors. You could lose all of your invested capital. Past performance is not indicative of future results."
-      iconName="trending-down"
-      iconColor="#7C3AED"
-    />
-  );
-}
-```
-
-### Beta Software Notice
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-function BetaAppSettings() {
-  return (
-    <DisclaimerSetting
-      modalTitle="Beta Software Notice"
-      modalContent="This is pre-release software. Features may be incomplete or change before final release. Data may be lost. Please back up your important data before using."
-      iconName="flask"
-      iconColor="#0891B2"
-    />
-  );
-}
-```
-
-### Custom Card without Modal
-
-```tsx
-import { DisclaimerCard } from '@umituz/react-native-settings';
-
-function CustomDisclaimerCard() {
-  return (
-    <DisclaimerCard
-      title="Age Restriction"
-      shortMessage="You must be 18+ to use this app"
-      iconName="shield"
-      iconColor="#059669"
-      backgroundColor="rgba(5, 150, 105, 0.1)"
-      onPress={() => {
-        // Navigate to verification screen
-        navigation.navigate('AgeVerification');
-      }}
-    />
-  );
-}
-```
-
-### Standalone Modal
-
-```tsx
-import { DisclaimerModal, useState } from '@umituz/react-native-settings';
-
-function TermsModal() {
-  const [visible, setVisible] = useState(false);
-
-  return (
-    <View>
-      <Button
-        title="Show Disclaimer"
-        onPress={() => setVisible(true)}
-      />
-
-      <DisclaimerModal
-        visible={visible}
-        title="Terms & Conditions"
-        content="By using this app, you agree to our terms..."
-        onClose={() => setVisible(false)}
-      />
-    </View>
-  );
-}
-```
-
-### Custom Disclaimer Screen
-
-```tsx
-import { DisclaimerScreen } from '@umituz/react-native-settings';
-
-function LegalDisclaimerStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Disclaimer"
-        component={DisclaimerScreen}
-        initialParams={{
-          title: 'Legal Disclaimer',
-          content: 'Full legal disclaimer text...',
-          iconName: 'gavel',
-          iconColor: '#DC2626',
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-```
-
-## Translation Keys
-
-The default DisclaimerSetting uses these translation keys. Make sure to include them in your localization files:
-
-```json
-{
-  "settings": {
-    "disclaimer": {
-      "title": "Disclaimer",
-      "message": "Full disclaimer text that appears in the modal...",
-      "shortMessage": "Important notice - tap to read more"
-    }
-  }
-}
-```
-
-## Styling
-
-The disclaimer components use the design system tokens for consistent styling:
-
-- **Icon Size**: Medium (24px)
-- **Card Background**: Semi-transparent version of icon color
-- **Modal Animation**: Slide from bottom (iOS) / Fade (Android)
-- **Text**: Uses design system typography tokens
-
-Custom colors are supported through props:
-
-```tsx
-<DisclaimerSetting
-  iconColor="#DC2626"  // Red for critical
-  iconColor="#F59E0B"  // Amber for warning
-  iconColor="#3B82F6"  // Blue for info
-  iconColor="#10B981"  // Emerald for success
-/>
-```
-
-## Architecture
-
-```
-src/domains/disclaimer/
-├── presentation/
-│   ├── screens/
-│   │   └── DisclaimerScreen.tsx
-│   ├── components/
-│   │   ├── DisclaimerSetting.tsx    # Main component
-│   │   ├── DisclaimerCard.tsx       # Card component
-│   │   └── DisclaimerModal.tsx      # Modal component
-│   └── components/__tests__/        # Component tests
-└── index.ts                         # Public API exports
-```
-
-## Best Practices
-
-1. **Keep Messages Clear**: Use simple, non-technical language
-2. **Be Specific**: Clearly state what the disclaimer covers
-3. **Short + Full**: Use short message on card, full content in modal
-4. **Color Coding**: Use appropriate colors for warning levels:
-   - Red: Critical/legal warnings
-   - Amber: Cautionary notices
-   - Blue: Informational
-   - Emerald: Confirmations
-5. **Test Translations**: Ensure all languages have proper translations
-6. **Accessibility**: Icons should have proper accessibility labels
-7. **Cross-Platform**: Test on iOS, Android, and Web
-
-## Testing
-
-```tsx
-import { render, fireEvent } from '@testing-library/react-native';
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-describe('DisclaimerSetting', () => {
-  it('renders disclaimer card', () => {
-    const { getByText } = render(<DisclaimerSetting />);
-    expect(getByText(/disclaimer/i)).toBeTruthy();
-  });
-
-  it('opens modal on card press', () => {
-    const { getByText, getByTestId } = render(<DisclaimerSetting />);
-
-    fireEvent.press(getByText(/disclaimer/i));
-    expect(getByTestId('close-disclaimer-modal')).toBeTruthy();
-  });
-
-  it('closes modal on close button press', () => {
-    const { getByText, getByTestId, queryByTestId } = render(
-      <DisclaimerSetting />
-    );
-
-    // Open modal
-    fireEvent.press(getByText(/disclaimer/i));
-
-    // Close modal
-    fireEvent.press(getByTestId('close-disclaimer-modal'));
-
-    expect(queryByTestId('close-disclaimer-modal')).toBeNull();
-  });
-});
-```
+## Purpose
+
+Provides components for displaying legal notices, warnings, and important information through cards, modals, and dedicated screens with full i18n support.
+
+## File Paths
+
+**Screens:**
+- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/disclaimer/presentation/screens/DisclaimerScreen.tsx`
+
+**Components:**
+- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/disclaimer/presentation/components/DisclaimerSetting.tsx`
+- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/disclaimer/presentation/components/DisclaimerCard.tsx`
+- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/disclaimer/presentation/components/DisclaimerModal.tsx`
+
+**Index:**
+- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/disclaimer/index.ts`
+
+## Strategy
+
+1. **Internationalization First**: Use translation keys for all text content with support for i18n
+2. **Modular Design**: Compose disclaimers from card and modal components for flexibility
+3. **Color Coding**: Use appropriate colors for different warning levels (red for critical, amber for caution, blue for info)
+4. **Card + Modal Pattern**: Display summary in card, full content in modal for better UX
+5. **Icon Integration**: Use design system icons with customizable colors for visual hierarchy
+
+## Restrictions (Forbidden)
+
+### DO NOT
+- ❌ DO NOT use DisclaimerSetting without proper translation keys in i18n configuration
+- ❌ DO NOT hardcode disclaimer text - always use translation keys or modalContent prop
+- ❌ DO NOT use DisclaimerCard without providing all required props (title, shortMessage, iconName, iconColor, backgroundColor, onPress)
+- ❌ DO NOT bypass the card + modal pattern for displaying disclaimers
+
+### NEVER
+- ❌ NEVER use DisclaimerSetting in production without verifying i18n keys exist
+- ❌ NEVER show modal without a proper close mechanism
+- ❌ NEVER use inappropriate colors for warning levels (e.g., green for critical warnings)
+- ❌ NEVER mix disclaimer content with business logic
+
+### AVOID
+- ❌ AVOID creating custom disclaimer components when existing ones can be configured
+- ❌ AVOID using long text in DisclaimerCard - use modal for full content
+- ❌ AVOID using DisclaimerSetting for critical legal notices that require explicit acceptance
+- ❌ AVOID hardcoding colors - use design system tokens or semantic color names
+
+## Rules
+
+### ALWAYS
+- ✅ ALWAYS provide translation keys for DisclaimerSetting (titleKey, messageKey, shortMessageKey)
+- ✅ ALWAYS provide all required props to DisclaimerCard (title, shortMessage, iconName, iconColor, backgroundColor, onPress)
+- ✅ ALWAYS use modalTitle and modalContent props for custom content that bypasses i18n
+- ✅ ALWAYS ensure modal can be closed with a clear close button
+- ✅ ALWAYS use appropriate colors for warning levels
+
+### MUST
+- ✅ MUST include translation keys in all language files before using DisclaimerSetting
+- ✅ MUST provide custom modalTitle and modalContent when bypassing i18n
+- ✅ MUST ensure disclaimer text is clear and non-technical
+- ✅ MUST test disclaimer rendering on all platforms (iOS, Android, Web)
+- ✅ MUST ensure modal content is scrollable for long disclaimers
+
+### SHOULD
+- ✅ SHOULD use red/amber colors for critical warnings, blue for informational
+- ✅ SHOULD keep card messages short and concise
+- ✅ SHOULD provide specific icons for different warning types (alert-triangle, flask, heart-pulse)
+- ✅ SHOULD ensure disclaimer modals are accessible with proper labels
+- ✅ SHOULD test disclaimer components with different screen sizes
+
+## AI Agent Guidelines
+
+1. **Component Selection**: Use DisclaimerSetting for settings integration (card + modal), DisclaimerCard for custom cards, DisclaimerModal for standalone modals, DisclaimerScreen for dedicated screens
+2. **i18n Usage**: Always use translation keys with DisclaimerSetting - only use modalTitle/modalContent for truly static content
+3. **Color Guidelines**: Always match colors to warning severity - red for critical/legal, amber for caution, blue for informational, emerald for confirmations
+4. **Content Structure**: Always keep card messages short (1-2 lines) with full content in modal
+5. **Platform Testing**: Always test disclaimer rendering on iOS, Android, and Web platforms
 
 ## Related
 
-- **Legal Domain**: Privacy policy, terms of service
-- **Settings Domain**: Main settings management
+- **Legal**: Privacy policy, terms of service
+- **Settings**: Main settings management
 - **Design System**: Icons, colors, and typography
 
 ## License

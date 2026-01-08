@@ -1,428 +1,95 @@
 # useFeedbackForm Hook
 
-Custom hook for managing feedback form state, validation, and submission.
-
-## Features
-
-- **Form State**: Manages feedback type, rating, and message
-- **Validation**: Validates form before submission
-- **Submission**: Handles feedback submission with callbacks
-- **Reset**: Resets form after successful submission
-- **Rating Management**: Handles star rating state
-
-## Installation
-
-This hook is part of `@umituz/react-native-settings`.
-
-## Usage
-
-### Basic Usage
-
-```tsx
-import { useFeedbackForm } from '@umituz/react-native-settings';
-
-function FeedbackScreen() {
-  const {
-    feedbackType,
-    rating,
-    message,
-    setFeedbackType,
-    setRating,
-    setMessage,
-    submitFeedback,
-    canSubmit,
-    isSubmitting,
-  } = useFeedbackForm();
-
-  return (
-    <View>
-      <FeedbackTypeSelector
-        selected={feedbackType}
-        onSelect={setFeedbackType}
-      />
-
-      <StarRating
-        rating={rating}
-        onRatingChange={setRating}
-      />
-
-      <TextInput
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Describe your feedback..."
-      />
-
-      <Button
-        onPress={submitFeedback}
-        disabled={!canSubmit || isSubmitting}
-        title={isSubmitting ? 'Submitting...' : 'Submit Feedback'}
-      />
-    </View>
-  );
-}
-```
-
-## Return Value
-
-```typescript
-interface UseFeedbackFormResult {
-  // Form state
-  feedbackType: FeedbackType | null;
-  rating: number;
-  message: string;
-
-  // Setters
-  setFeedbackType: (type: FeedbackType) => void;
-  setRating: (rating: number) => void;
-  setMessage: (message: string) => void;
-
-  // Actions
-  submitFeedback: () => Promise<void>;
-  resetForm: () => void;
-
-  // State
-  canSubmit: boolean;
-  isSubmitting: boolean;
-  error?: string;
-
-  // Validation
-  errors: {
-    feedbackType?: string;
-    rating?: string;
-    message?: string;
-  };
-}
-```
-
-## Examples
-
-### With Callbacks
-
-```tsx
-function FeedbackForm() {
-  const feedbackForm = useFeedbackForm({
-    onSubmit: async (data) => {
-      await api.submitFeedback(data);
-      Alert.alert('Success', 'Thank you for your feedback!');
-    },
-    onError: (error) => {
-      Alert.alert('Error', 'Failed to submit feedback');
-    },
-  });
-
-  return (
-    <View>
-      <FeedbackTypeSelector
-        selected={feedbackForm.feedbackType}
-        onSelect={feedbackForm.setFeedbackType}
-      />
-      <StarRating
-        rating={feedbackForm.rating}
-        onRatingChange={feedbackForm.setRating}
-      />
-      <TextInput
-        value={feedbackForm.message}
-        onChangeText={feedbackForm.setMessage}
-      />
-      <Button
-        onPress={feedbackForm.submitFeedback}
-        disabled={!feedbackForm.canSubmit}
-        title="Submit"
-      />
-    </View>
-  );
-}
-```
-
-### With Custom Validation
-
-```tsx
-function ValidatedFeedbackForm() {
-  const { feedbackType, rating, message, submitFeedback, canSubmit } = useFeedbackForm({
-    validate: (data) => {
-      const errors = {};
-
-      if (!data.feedbackType) {
-        errors.feedbackType = 'Please select a feedback type';
-      }
-
-      if (data.rating === 0) {
-        errors.rating = 'Please provide a rating';
-      }
-
-      if (data.message.length < 10) {
-        errors.message = 'Message must be at least 10 characters';
-      }
-
-      return errors;
-    },
-  });
-
-  return (
-    <View>
-      {/* Form fields */}
-    </View>
-  );
-}
-```
-
-### With Auto-Reset
-
-```tsx
-function AutoResetFeedbackForm() {
-  const { submitFeedback, resetForm } = useFeedbackForm({
-    autoReset: true,
-    resetDelay: 2000, // Reset after 2 seconds
-    onSubmitSuccess: () => {
-      Alert.alert('Success', 'Feedback submitted!');
-    },
-  });
-
-  return (
-    <View>
-      <Button onPress={submitFeedback} title="Submit" />
-    </View>
-  );
-}
-```
-
-### With Character Limit
-
-```tsx
-function LimitedFeedbackForm() {
-  const { message, setMessage, submitFeedback, canSubmit } = useFeedbackForm({
-    maxLength: 500,
-  });
-
-  const remainingChars = 500 - message.length;
-
-  return (
-    <View>
-      <TextInput
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Your feedback..."
-        maxLength={500}
-        multiline
-      />
-
-      <Text>
-        {remainingChars} characters remaining
-      </Text>
-
-      <Button
-        onPress={submitFeedback}
-        disabled={!canSubmit}
-        title="Submit"
-      />
-    </View>
-  );
-}
-```
-
-### With Categories
-
-```tsx
-function CategorizedFeedbackForm() {
-  const categories = [
-    { id: 'bug', label: 'Bug Report', icon: 'bug-outline' },
-    { id: 'feature', label: 'Feature Request', icon: 'lightbulb-outline' },
-    { id: 'general', label: 'General Feedback', icon: 'chatbubble-outline' },
-  ];
-
-  const { feedbackType, setFeedbackType, submitFeedback } = useFeedbackForm();
-
-  return (
-    <View>
-      <Text style={styles.label}>Feedback Type</Text>
-
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category.id}
-          onPress={() => setFeedbackType(category.id as FeedbackType)}
-          style={[
-            styles.category,
-            feedbackType === category.id && styles.selectedCategory,
-          ]}
-        >
-          <Ionicons
-            name={category.icon}
-            size={24}
-            color={feedbackType === category.id ? 'white' : 'black'}
-          />
-          <Text>{category.label}</Text>
-        </TouchableOpacity>
-      ))}
-
-      <Button onPress={submitFeedback} title="Submit" />
-    </View>
-  );
-}
-```
-
-## Form Options
-
-```typescript
-interface FeedbackFormOptions {
-  onSubmit?: (data: FeedbackData) => Promise<void>;
-  onSubmitSuccess?: () => void;
-  onError?: (error: Error) => void;
-  validate?: (data: FeedbackData) => ValidationErrors;
-  autoReset?: boolean;
-  resetDelay?: number;
-  maxLength?: number;
-  minRating?: number;
-  requireMessage?: boolean;
-  minMessageLength?: number;
-}
-```
-
-## Feedback Types
-
-```typescript
-type FeedbackType =
-  | 'bug'           // Bug report
-  | 'feature'       // Feature request
-  | 'improvement'   // Improvement suggestion
-  | 'compliment'    // Positive feedback
-  | 'complaint'     // Complaint
-  | 'general';      // General feedback
-```
-
-## Validation
-
-### Default Validation
-
-```typescript
-const defaultValidation = {
-  // Feedback type is required
-  feedbackType: (value) => !value ? 'Required' : undefined,
-
-  // Rating must be at least 1
-  rating: (value) => value === 0 ? 'Required' : undefined,
-
-  // Message must be at least 10 characters
-  message: (value) => value.length < 10 ? 'Too short' : undefined,
-};
-```
-
-### Custom Validation Rules
-
-```tsx
-function CustomValidatedForm() {
-  const { message, setMessage, canSubmit } = useFeedbackForm({
-    validate: (data) => {
-      const errors = {};
-
-      // Custom feedback type validation
-      if (!data.feedbackType) {
-        errors.feedbackType = 'Please select a type';
-      }
-
-      // Custom rating validation
-      if (data.rating < 3 && data.message.length < 50) {
-        errors.message = 'Low ratings require detailed explanation';
-      }
-
-      // Custom message validation
-      if (data.message.includes('spam')) {
-        errors.message = 'Inappropriate content detected';
-      }
-
-      return errors;
-    },
-  });
-
-  return (
-    <View>
-      <TextInput
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Your feedback..."
-      />
-      <Button disabled={!canSubmit} title="Submit" />
-    </View>
-  );
-}
-```
-
-## Error Handling
-
-### Display Errors
-
-```tsx
-function FeedbackFormWithErrorDisplay() {
-  const { errors, submitFeedback, feedbackType } = useFeedbackForm();
-
-  return (
-    <View>
-      <FeedbackTypeSelector
-        selected={feedbackType}
-        onSelect={setFeedbackType}
-      />
-
-      {errors.feedbackType && (
-        <Text style={styles.error}>{errors.feedbackType}</Text>
-      )}
-
-      {errors.rating && (
-        <Text style={styles.error}>{errors.rating}</Text>
-      )}
-
-      {errors.message && (
-        <Text style={styles.error}>{errors.message}</Text>
-      )}
-
-      <Button onPress={submitFeedback} title="Submit" />
-    </View>
-  );
-}
-```
-
-### Submission Errors
-
-```tsx
-function FeedbackFormWithErrorHandling() {
-  const { submitFeedback, error, isSubmitting } = useFeedbackForm({
-    onError: (error) => {
-      console.error('Submission error:', error);
-      Alert.alert(
-        'Submission Failed',
-        'Please check your connection and try again'
-      );
-    },
-  });
-
-  return (
-    <View>
-      {error && <Text style={styles.error}>{error}</Text>}
-
-      <Button
-        onPress={submitFeedback}
-        disabled={isSubmitting}
-        title={isSubmitting ? 'Submitting...' : 'Submit'}
-      />
-    </View>
-  );
-}
-```
-
-## Best Practices
-
-1. **Validation**: Always validate form before submission
-2. **Feedback**: Provide immediate feedback on errors
-3. **Loading States**: Show loading indicator during submission
-4. **Reset**: Reset form after successful submission
-5. **Character Limits**: Enforce reasonable message length limits
-6. **Clear Errors**: Display clear, actionable error messages
-7. **Accessibility**: Ensure form is accessible to all users
-
-## Related
-
-- **FeedbackForm**: Feedback form component
-- **FeedbackModal**: Feedback modal component
-- **StarRating**: Star rating component
-
-## License
-
-MIT
+## Purpose
+
+Custom hook for managing feedback form state, validation, and submission. Provides a complete form management solution with built-in validation, error handling, and submission workflows for collecting user feedback.
+
+## File Paths
+
+- **useFeedbackForm**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/presentation/hooks/useFeedbackForm.ts`
+- **Feedback Components**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/presentation/components/`
+- **Feedback Screen**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/presentation/screens/FeedbackScreen.tsx`
+
+## Strategy
+
+1. **Centralized State Management**: Consolidates all feedback form state (type, rating, message) and associated logic in one place, reducing prop drilling and simplifying component implementations.
+
+2. **Validation Framework**: Implements comprehensive validation with both default rules and support for custom validation logic, ensuring feedback data meets quality standards before submission.
+
+3. **User Experience Optimization**: Provides immediate validation feedback, loading states during submission, and optional auto-reset functionality to create smooth, responsive form interactions.
+
+4. **Flexible Submission Handling**: Supports custom submission handlers, success callbacks, and error handling to integrate with various backend services and analytics platforms.
+
+5. **Character Limit Enforcement**: Includes optional character limits with real-time remaining character counts, helping users provide appropriate-length feedback.
+
+## Restrictions
+
+### ❌ DO NOT
+
+- Submit feedback without validation - always check canSubmit
+- Reset the form manually without using resetForm function
+- Bypass loading states during submission
+- Ignore validation errors when displaying the form
+- Allow submission of empty or invalid feedback
+
+### ❌ NEVER
+
+- Mutate form state directly outside of provided setters
+- Submit the same feedback multiple times
+- Store sensitive user information in feedback data
+- Disable validation without proper justification
+- Use the hook for non-feedback form purposes
+
+### ❌ AVOID
+
+- Overly complex custom validation rules
+- Excessive character limits that frustrate users
+- Blocking UI during submission without loading indicators
+- Immediate auto-reset without showing success message
+- Collecting unnecessary personal information
+
+## Rules
+
+### ✅ ALWAYS
+
+- Validate form before submission using canSubmit
+- Display validation errors clearly to users
+- Show loading state during submission (isSubmitting)
+- Provide clear error messages on submission failure
+- Reset form after successful submission
+
+### ✅ MUST
+
+- Require at minimum: feedbackType and rating
+- Validate message length when message is required
+- Handle submission errors gracefully
+- Provide feedback on successful submission
+- Prevent submission while already submitting
+
+### ✅ SHOULD
+
+- Use character limits for message fields (500 chars recommended)
+- Implement auto-reset with delay (2-3 seconds)
+- Provide context-specific validation rules
+- Include feedback type categorization
+- Support anonymous feedback options
+- Test validation with various input combinations
+
+## AI Agent Guidelines
+
+1. **Validation Strategy**: Implement validation that provides immediate feedback. Use the errors object to display inline validation messages next to relevant form fields rather than showing a single error message.
+
+2. **Submission Flow**: Always check canSubmit before allowing submission. Disable the submit button when canSubmit is false or isSubmitting is true. Show a loading indicator during submission to prevent duplicate submissions.
+
+3. **Error Handling**: Display clear, actionable error messages when submission fails. Use the onError callback to log errors for debugging while showing user-friendly messages. Allow users to retry after failed submissions.
+
+4. **User Feedback**: Provide positive feedback after successful submission. Consider using auto-reset with a 2-3 second delay to show success messages before clearing the form. Track feedback submissions for analytics.
+
+5. **Form UX**: Group related feedback types together. Use clear labels for feedback type options. Show character count for message fields. Consider progressive disclosure - only show message field after rating is selected.
+
+## Reference
+
+- **Hook Implementation**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/presentation/hooks/useFeedbackForm.ts`
+- **Feedback Screen**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/presentation/screens/FeedbackScreen.tsx`
+- **Feedback Components**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/presentation/components/`
+- **Types**: Check FeedbackType and related types for all available options

@@ -1,399 +1,107 @@
 # Navigation Hooks
 
+## Purpose
+
 Custom React hooks for navigation utilities and helpers in the settings navigation system.
 
-## Hooks
+## File Paths
+
+- **Navigation Hook**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/navigation/hooks/useSettingsNavigation.ts`
+
+## Strategy
+
+1. **Type-Safe Navigation**: Provides type-safe navigation helpers for all settings screens
+2. **Config Passing**: Handles configuration passing through navigation params
+3. **Consistent API**: Uniform navigation methods across all screens
+4. **Memoization**: Optimizes navigation handlers with useCallback
+5. **Error Handling**: Includes error handling for navigation failures
+
+## Restrictions (Forbidden)
+
+### DO NOT
+- ❌ DO NOT use navigation.navigate() directly (use hook helpers)
+- ❌ DO NOT hardcode screen names (use constants from hook)
+- ❌ DO NOT bypass type safety with incorrect params
+
+### NEVER
+- ❌ NEVER use these hooks outside of NavigationContext
+- ❌ NEVER pass invalid configuration to navigation helpers
+- ❌ NEVER ignore TypeScript errors for navigation params
+
+### AVOID
+- ❌ AVOID creating multiple navigation hooks (use the provided one)
+- ❌ AVOID complex navigation logic in components (keep in hook)
+- ❌ AVOID navigation side effects in render phase
+
+## Rules (Mandatory)
+
+### ALWAYS
+- ✅ ALWAYS use useSettingsNavigation for settings navigation
+- ✅ ALWAYS use proper TypeScript types for config parameters
+- ✅ MUST memoize navigation handlers in components
+- ✅ MUST handle navigation errors gracefully
+
+### MUST
+- ✅ MUST provide valid config objects for each screen
+- ✅ MUST check screen availability before navigation (when needed)
+- ✅ MUST use correct parameter types for each screen
+
+### SHOULD
+- ✅ SHOULD track navigation events for analytics
+- ✅ SHOULD validate configuration before navigation
+- ✅ SHOULD use navigation helpers for consistency
+
+## AI Agent Guidelines
+
+1. **File Reference**: When modifying navigation hooks, refer to `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/presentation/navigation/hooks/useSettingsNavigation.ts`
+2. **Type Safety**: All navigation helpers are type-safe, respect TypeScript types
+3. **Config Validation**: Validate config objects before passing to navigation helpers
+4. **Memoization**: Navigation handlers are already memoized, but you can memoize callbacks that use them
+5. **Analytics**: Track navigation events for insights
+
+## Hook Reference
 
 ### useSettingsNavigation
 
-Hook providing navigation utilities specific to the settings flow.
+**Purpose**: Provides type-safe navigation helpers for all settings screens
 
-```tsx
-import { useSettingsNavigation } from '@umituz/react-native-settings';
+**Returns**: SettingsNavigationHelpers object
 
-function SettingsScreen() {
-  const { navigateToAppearance, navigateToLegal, navigateToAbout } = useSettingsNavigation();
+**Navigation Methods**:
+- `navigateToAppearance(config?)`: Navigate to Appearance screen
+- `navigateToLanguage(config?)`: Navigate to Language selection screen
+- `navigateToNotifications(config?)`: Navigate to Notifications screen
+- `navigateToAbout(config?)`: Navigate to About screen
+- `navigateToLegal(documentType)`: Navigate to Legal screen
+- `navigateToFeedback(config?)`: Navigate to Feedback screen/modal
+- `navigateToFAQs(config?)`: Navigate to FAQ screen
+- `navigateToSubscription(config?)`: Navigate to Subscription screen
+- `navigateToWallet(config?)`: Navigate to Wallet screen
+- `goBack()`: Navigate back
 
-  return (
-    <Button onPress={() => navigateToAppearance()} title="Go to Appearance" />
-  );
-}
-```
+**Usage**: Call hook in component, use returned navigation helpers
 
-#### Returns
+## Parameter Types
 
-```typescript
-interface SettingsNavigationHelpers {
-  navigateToAppearance: (config?: AppearanceConfig) => void;
-  navigateToLanguage: (config?: LanguageConfig) => void;
-  navigateToNotifications: (config?: NotificationsConfig) => void;
-  navigateToAbout: (config?: AboutConfig) => void;
-  navigateToLegal: (documentType: LegalDocumentType) => void;
-  navigateToFeedback: (config?: FeedbackConfig) => void;
-  navigateToFAQs: (config?: FAQConfig) => void;
-  navigateToSubscription: (config?: SubscriptionConfig) => void;
-  navigateToWallet: (config?: WalletConfig) => void;
-  goBack: () => void;
-}
-```
+**AppearanceConfig**: Appearance screen configuration
+- `showThemeSection?: boolean`
+- `showColorsSection?: boolean`
+- `showPreviewSection?: boolean`
 
-## Navigation Helpers
+**LanguageConfig**: Language selection configuration
+- `showFlags?: boolean`
 
-### Appearance Navigation
+**LegalDocumentType**: Legal document type
+- 'privacy-policy' | 'terms-of-service' | 'eula'
 
-```typescript
-navigateToAppearance(config?: {
-  showThemeSection?: boolean;
-  showColorsSection?: boolean;
-  showPreviewSection?: boolean;
-}): void;
-```
+**AboutConfig**: About screen configuration
+- `appName?: string`
+- `version?: string`
+- `developer?: string`
+- `contactEmail?: string`
 
-Navigates to the Appearance settings screen with optional configuration.
+## Related Components
 
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToAppearance({
-    showThemeSection: true,
-    showColorsSection: true,
-  })}
-  title="Customize Appearance"
-/>
-```
-
-### Language Navigation
-
-```typescript
-navigateToLanguage(config?: {
-  showFlags?: boolean;
-}): void;
-```
-
-Navigates to the Language selection screen.
-
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToLanguage({ showFlags: true })}
-  title="Change Language"
-/>
-```
-
-### Legal Navigation
-
-```typescript
-navigateToLegal(documentType: 'privacy-policy' | 'terms-of-service' | 'eula'): void;
-```
-
-Navigates to legal document screens.
-
-#### Example
-
-```tsx
-<TouchableOpacity onPress={() => navigateToLegal('privacy-policy')}>
-  <Text>Privacy Policy</Text>
-</TouchableOpacity>
-```
-
-### About Navigation
-
-```typescript
-navigateToAbout(config?: {
-  appName?: string;
-  version?: string;
-  developer?: string;
-  contactEmail?: string;
-}): void;
-```
-
-Navigates to the About screen with app information.
-
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToAbout({
-    appName: 'My App',
-    version: '1.0.0',
-  })}
-  title="About"
-/>
-```
-
-### Feedback Navigation
-
-```typescript
-navigateToFeedback(config?: {
-  feedbackTypes?: FeedbackType[];
-  title?: string;
-  description?: string;
-}): void;
-```
-
-Opens the feedback modal or navigates to feedback screen.
-
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToFeedback({
-    feedbackTypes: ['bug', 'feature', 'general'],
-    title: 'Send Feedback',
-  })}
-  title="Give Feedback"
-/>
-```
-
-### FAQ Navigation
-
-```typescript
-navigateToFAQs(config?: {
-  categories?: FAQCategory[];
-  title?: string;
-}): void;
-```
-
-Navigates to the FAQ screen.
-
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToFAQs({
-    title: 'Help Center',
-  })}
-  title="FAQs"
-/>
-```
-
-### Subscription Navigation
-
-```typescript
-navigateToSubscription(config?: {
-  title?: string;
-  description?: string;
-  onPress?: () => void;
-}): void;
-```
-
-Navigates to subscription or upgrade screen.
-
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToSubscription({
-    title: 'Upgrade to Pro',
-    description: 'Get all premium features',
-  })}
-  title="Upgrade"
-/>
-```
-
-### Wallet Navigation
-
-```typescript
-navigateToWallet(config?: {
-  title?: string;
-  description?: string;
-  route?: string;
-}): void;
-```
-
-Navigates to wallet/payment settings.
-
-#### Example
-
-```tsx
-<Button
-  onPress={() => navigateToWallet({
-    title: 'My Wallet',
-    route: 'WalletScreen',
-  })}
-  title="Wallet"
-/>
-```
-
-## Usage Examples
-
-### Basic Navigation
-
-```tsx
-import { useSettingsNavigation } from '@umituz/react-native-settings';
-
-function SettingsMenu() {
-  const { navigateToAppearance, navigateToAbout, navigateToLegal } = useSettingsNavigation();
-
-  return (
-    <View>
-      <SettingsItemCard
-        icon="color-palette-outline"
-        title="Appearance"
-        onPress={navigateToAppearance}
-      />
-      <SettingsItemCard
-        icon="information-circle-outline"
-        title="About"
-        onPress={navigateToAbout}
-      />
-      <SettingsItemCard
-        icon="document-text-outline"
-        title="Legal"
-        onPress={() => navigateToLegal('privacy-policy')}
-      />
-    </View>
-  );
-}
-```
-
-### With Configuration
-
-```tsx
-function SettingsWithOptions() {
-  const { navigateToAppearance, navigateToLanguage } = useSettingsNavigation();
-
-  return (
-    <View>
-      <SettingsItemCard
-        icon="moon-outline"
-        title="Theme"
-        onPress={() => navigateToAppearance({
-          showThemeSection: true,
-          showColorsSection: false,
-        })}
-      />
-      <SettingsItemCard
-        icon="globe-outline"
-        title="Language"
-        onPress={() => navigateToLanguage({ showFlags: true })}
-      />
-    </View>
-  );
-}
-```
-
-### Conditional Navigation
-
-```tsx
-function ConditionalNavigation() {
-  const { navigateToSubscription, navigateToFeedback } = useSettingsNavigation();
-  const isPremium = useIsPremium();
-
-  return (
-    <View>
-      {!isPremium && (
-        <SettingsItemCard
-          icon="star-outline"
-          title="Upgrade"
-          onPress={() => navigateToSubscription({
-            title: 'Go Premium',
-            description: 'Unlock all features',
-          })}
-        />
-      )}
-      <SettingsItemCard
-        icon="chatbubble-outline"
-        title="Send Feedback"
-        onPress={() => navigateToFeedback({
-          feedbackTypes: ['bug', 'feature'],
-        })}
-      />
-    </View>
-  );
-}
-```
-
-### Custom Navigation Handler
-
-```tsx
-function CustomNavigation() {
-  const { navigateToAppearance } = useSettingsNavigation();
-
-  const handleAppearancePress = useCallback(() => {
-    // Custom logic before navigation
-    Analytics.track('appearance_opened');
-    navigateToAppearance({ showThemeSection: true });
-  }, [navigateToAppearance]);
-
-  return (
-    <Button onPress={handleAppearancePress} title="Appearance" />
-  );
-}
-```
-
-## Navigation Parameters
-
-### Appearance Config
-
-```typescript
-interface AppearanceNavConfig {
-  showThemeSection?: boolean;      // Show theme mode selection
-  showColorsSection?: boolean;      // Show custom color selection
-  showPreviewSection?: boolean;     // Show live preview
-}
-```
-
-### Language Config
-
-```typescript
-interface LanguageNavConfig {
-  showFlags?: boolean;              // Show language flags
-}
-```
-
-### Legal Config
-
-```typescript
-type LegalDocumentType =
-  | 'privacy-policy'
-  | 'terms-of-service'
-  | 'eula';
-
-interface LegalNavConfig {
-  documentType: LegalDocumentType;
-  content?: string;                 // Custom content
-  title?: string;                   // Custom title
-}
-```
-
-### Feedback Config
-
-```typescript
-interface FeedbackNavConfig {
-  feedbackTypes?: FeedbackType[];
-  title?: string;
-  description?: string;
-}
-```
-
-### FAQ Config
-
-```typescript
-interface FAQNavConfig {
-  categories?: FAQCategory[];
-  title?: string;
-  description?: string;
-}
-```
-
-## Best Practices
-
-1. **Type Safety**: Always use proper TypeScript types for config
-2. **Memoization**: Memoize navigation handlers for performance
-3. **Analytics**: Track navigation events for insights
-4. **Conditional**: Use conditional navigation based on user state
-5. **Validation**: Validate config before navigation
-6. **Error Handling**: Handle navigation errors gracefully
-
-## Related
-
-- **Navigation Components**: Screen wrappers and components
+- **Navigation Components**: Screen wrappers
 - **Navigation Utils**: Utility functions for navigation
 - **Screen Components**: Individual screen implementations
-
-## License
-
-MIT

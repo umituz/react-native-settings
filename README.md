@@ -2,27 +2,13 @@
 
 Comprehensive settings management for React Native apps with modular domain-based architecture.
 
-## 🌟 Features
+## Purpose
 
-### Core Features
-- ✅ **User Settings Management** - Theme, language, notifications, privacy settings
-- ✅ **Zustand State Management** - Global settings state with Zustand
-- ✅ **Persistent Storage** - Uses @umituz/react-native-storage for persistence
-- ✅ **Settings Screens** - Pre-built settings screens with modular architecture
-- ✅ **Setting Components** - Reusable setting item components
-- ✅ **Type-Safe** - Full TypeScript support
+Complete settings solution with pre-built screens, components, and state management for React Native applications.
 
-### Domain Features
-- 🎨 **Appearance** - Theme customization (light/dark mode), custom color schemes
-- ℹ️ **About** - App information, version details, developer contact
-- ⚖️ **Legal** - Privacy policy, terms of service, legal documents
-- ⚠️ **Disclaimer** - Legal notices, warnings, important information
-- 💬 **Feedback** - User feedback forms, support resources
-- ❓ **FAQs** - Searchable frequently asked questions
-- ⭐ **Rating** - Star rating system with statistics
-- 🎥 **Video Tutorials** - Tutorial browser with featured content
-- ☁️ **Cloud Sync** - Sync status and management
-- 🛠️ **Dev Tools** - Development utilities (DEV mode only)
+## File Path
+
+Main package entry: `src/index.ts`
 
 ## Installation
 
@@ -32,501 +18,338 @@ npm install @umituz/react-native-settings
 
 ## Peer Dependencies
 
-```bash
-npm install zustand @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-localization @react-navigation/native @react-navigation/stack react-native-safe-area-context
-```
-
-## Usage
-
-### Basic Settings Hook
-
-```tsx
-import { useSettings } from '@umituz/react-native-settings';
-
-const MyComponent = () => {
-  const { settings, loading, updateSettings, loadSettings } = useSettings();
-
-  useEffect(() => {
-    loadSettings('user123');
-  }, []);
-
-  const handleThemeChange = async () => {
-    await updateSettings({ theme: 'dark' });
-  };
-
-  return (
-    <View>
-      <AtomicText>Current Theme: {settings?.theme}</AtomicText>
-      <AtomicButton onPress={handleThemeChange}>Toggle Theme</AtomicButton>
-    </View>
-  );
-};
-```
-
-### Settings Screen
-
-```tsx
-import { SettingsScreen } from '@umituz/react-native-settings';
-
-// Basic usage in navigation
-<Stack.Screen name="Settings" component={SettingsScreen} />
-```
-
-### Settings Item Card
-
-```tsx
-import { SettingsItemCard } from '@umituz/react-native-settings';
-
-// Basic setting item
-<SettingsItemCard
-  icon="brush-outline"
-  title="Appearance"
-  description="Theme and language settings"
-  onPress={() => navigation.navigate('Appearance')}
-/>
-
-// With switch
-<SettingsItemCard
-  icon="notifications-outline"
-  title="Notifications"
-  showSwitch={true}
-  switchValue={enabled}
-  onSwitchChange={setEnabled}
-/>
-```
-
-### Settings Section
-
-```tsx
-import { SettingsSection, SettingsItemCard } from '@umituz/react-native-settings';
-
-<SettingsSection title="APP SETTINGS">
-  <SettingsItemCard
-    icon="brush-outline"
-    title="Appearance"
-    description="Theme and language settings"
-    onPress={() => navigation.navigate('Appearance')}
-  />
-  <SettingsItemCard
-    icon="notifications-outline"
-    title="Notifications"
-    showSwitch={true}
-    switchValue={enabled}
-    onSwitchChange={setEnabled}
-  />
-</SettingsSection>
-```
-
-### User Profile Header Component
-
-```tsx
-import { UserProfileHeader } from '@umituz/react-native-settings';
-
-<UserProfileHeader
-  displayName="John Doe"
-  userId="user123"
-  isGuest={false}
-  avatarUrl="https://example.com/avatar.jpg"
-  accountSettingsRoute="AccountSettings"
-  onPress={() => navigation.navigate('AccountSettings')}
-/>
-```
-
-### Settings Footer Component
-
-```tsx
-import { SettingsFooter } from '@umituz/react-native-settings';
-
-<SettingsFooter versionText="Version 1.0.0" />
-```
-
-### Disclaimer Setting Component
-
-```tsx
-import { DisclaimerSetting } from '@umituz/react-native-settings';
-
-// Basic usage with translation keys
-<DisclaimerSetting />
-
-// Custom props
-<DisclaimerSetting
-  titleKey="custom.disclaimer.title"
-  messageKey="custom.disclaimer.message"
-  shortMessageKey="custom.disclaimer.shortMessage"
-  iconName="Info"
-  iconColor="#F59E0B"
-  modalTitle="Custom Disclaimer"
-  modalContent="This is a custom disclaimer message for your app."
-/>
-```
-
-### Cloud Sync Setting Component
-
-```tsx
-import { CloudSyncSetting } from '@umituz/react-native-settings';
-
-// Basic usage
-<CloudSyncSetting />
-
-// With custom props
-<CloudSyncSetting
-  title="Cloud Sync"
-  description="Sync your data across devices"
-  isSyncing={false}
-  lastSynced={new Date()}
-  onPress={() => handleSync()}
-  iconColor="#3B82F6"
-/>
-```
-
-### Settings Error Boundary
-
-```tsx
-import { SettingsErrorBoundary } from '@umituz/react-native-settings';
-
-<SettingsErrorBoundary
-  fallbackTitle="custom.error.title"
-  fallbackMessage="custom.error.message"
->
-  <YourSettingsComponents />
-</SettingsErrorBoundary>
-```
-
-## API Reference
-
-### `useSettings()`
-
-React hook for accessing settings state.
-
-**Returns:**
-- `settings: UserSettings | null` - Current settings
-- `loading: boolean` - Loading state
-- `error: string | null` - Error message
-- `loadSettings(userId: string)` - Load settings for user
-- `updateSettings(updates: Partial<UserSettings>)` - Update settings
-- `resetSettings(userId: string)` - Reset to default settings
-- `clearError()` - Clear error state
-
-### `useSettingsStore()`
-
-Direct access to Zustand store.
-
-### `SettingsScreen`
-
-Modern settings screen with organized sections and optional user profile header.
-
-**Props:**
-- `config?: SettingsConfig` - Configuration for which features to show
-- `showUserProfile?: boolean` - Show user profile header
-- `userProfile?: UserProfileHeaderProps` - User profile props
-- `showFooter?: boolean` - Show footer with version
-- `footerText?: string` - Custom footer text
-
-### `AppearanceScreen`
-
-Appearance settings screen with language and theme controls.
-
-### `LanguageSelectionScreen`
-
-Language selection screen with search functionality.
-
-### `SettingsItemCard`
-
-Modern settings item component with Ionicons support and switch support.
-
-**Props:**
-- `icon: IconName` - Icon name from Ionicons
-- `title: string` - Main title text
-- `description?: string` - Optional description/value text (shown below title)
-- `onPress?: () => void` - Callback when pressed
-- `showSwitch?: boolean` - Show switch instead of chevron
-- `switchValue?: boolean` - Switch value
-- `onSwitchChange?: (value: boolean) => void` - Switch change handler
-- `iconColor?: string` - Custom icon color
-- `iconBgColor?: string` - Custom icon background color
-- `rightIcon?: IconName` - Custom right icon (defaults to chevron-forward)
-- `disabled?: boolean` - Disable the item
-
-### `SettingsSection`
-
-Section container with title and styled content area.
-
-**Props:**
-- `title: string` - Section title (uppercase)
-- `children: React.ReactNode` - Section content
-
-### `UserProfileHeader`
-
-User profile header with avatar, name, and ID.
-
-**Props:**
-- `displayName?: string` - User display name
-- `userId?: string` - User ID
-- `isGuest?: boolean` - Whether user is guest
-- `avatarUrl?: string` - Custom avatar URL
-- `accountSettingsRoute?: string` - Navigation route for account settings
-- `onPress?: () => void` - Custom onPress handler
-
-### `SettingsFooter`
-
-Footer component displaying app version.
-
-**Props:**
-- `versionText?: string` - Custom version text (optional)
-
-### `DisclaimerSetting`
-
-Disclaimer component with modal display for legal notices.
-
-**Props:**
-- `titleKey?: string` - Translation key for title (default: "settings.disclaimer.title")
-- `messageKey?: string` - Translation key for message (default: "settings.disclaimer.message")
-- `shortMessageKey?: string` - Translation key for short message (default: "settings.disclaimer.shortMessage")
-- `iconName?: string` - Icon name (default: "AlertTriangle")
-- `iconColor?: string` - Custom icon color
-- `backgroundColor?: string` - Custom background color
-- `modalTitle?: string` - Custom modal title (overrides translation)
-- `modalContent?: string` - Custom modal content (overrides translation)
-
-### `CloudSyncSetting`
-
-Cloud sync setting component with status display.
-
-**Props:**
-- `title?: string` - Custom title (default: "cloud_sync" translation key)
-- `description?: string` - Custom description
-- `isSyncing?: boolean` - Whether currently syncing
-- `lastSynced?: Date | null` - Last sync time
-- `onPress?: () => void` - Press handler
-- `iconColor?: string` - Custom icon color
-- `titleColor?: string` - Custom title color
-
-### `DisclaimerCard`
-
-Card component for disclaimer display (used internally by DisclaimerSetting).
-
-### `DisclaimerModal`
-
-Modal component for full disclaimer display (used internally by DisclaimerSetting).
-
-### `SettingsErrorBoundary`
-
-Error boundary component for settings screens.
-
-**Props:**
-- `children: ReactNode` - Child components
-- `fallback?: ReactNode` - Custom fallback component
-- `fallbackTitle?: string` - Custom error title translation key
-- `fallbackMessage?: string` - Custom error message translation key
-
-## Types
-
-- `UserSettings` - User settings interface
-- `SettingsError` - Settings error interface
-- `SettingsResult<T>` - Result type for settings operations
-- `ISettingsRepository` - Repository interface
-
-## UserSettings Interface
+Required packages (check package.json for versions):
+- zustand
+- @umituz/react-native-storage
+- @umituz/react-native-design-system
+- @umituz/react-native-localization
+- @react-navigation/native
+- @react-navigation/stack
+- react-native-safe-area-context
+
+## Strategy
+
+### Package Architecture
+
+The package follows Domain-Driven Design (DDD) with four layers:
+
+1. **Domain Layer**: Business logic and entities
+2. **Application Layer**: Interfaces and orchestration
+3. **Infrastructure Layer**: Data persistence
+4. **Presentation Layer**: UI components and screens
+
+### Integration Approach
+
+1. Import components from `@umituz/react-native-settings`
+2. Use pre-built screens for standard settings
+3. Customize via configuration objects
+4. Extend with custom sections when needed
+5. Follow design system for consistency
+
+### Domain Structure
+
+Each feature domain is self-contained:
+- `about/`: App information and version
+- `appearance/`: Theme and color management
+- `legal/`: Legal documents and policies
+- `disclaimer/`: Legal notices and warnings
+- `feedback/`: User feedback collection
+- `faqs/`: FAQ management
+- `rating/`: Rating system
+- `video-tutorials/`: Video tutorials
+- `cloud-sync/`: Cloud synchronization
+- `dev/`: Development utilities
+
+## Restrictions (Forbidden)
+
+### ❌ DO NOT
+
+- Create custom settings screens from scratch
+- Duplicate existing component functionality
+- Mix settings logic with business logic
+- Hardcode feature availability
+- Bypass feature detection system
+- Access storage repositories directly from UI
+- Create custom settings item components
+- Ignore design system tokens
+- Mix UI and data layers inappropriately
+
+### ❌ NEVER
+
+- Modify internal package files
+- Override core component behavior
+- Skip type checking
+- Use deprecated APIs
+- Ignore accessibility requirements
+- Bypass error boundaries
+- Hardcode colors or spacing
+- Create circular dependencies between layers
+
+### ❌ AVOID
+
+- Over-complicating configuration
+- Creating one-off solutions
+- Inconsistent styling
+- Skipping proper error handling
+- Not testing on both platforms
+- Ignoring performance optimization
+- Bypassing TypeScript strict mode
+
+## Rules
+
+### ✅ ALWAYS
+
+- Use TypeScript strict mode
+- Import from package exports
+- Follow component documentation strategies
+- Reference implementation files for current patterns
+- Use design system tokens for styling
+- Handle errors gracefully
+- Support both iOS and Android
+- Include proper accessibility labels
+- Test with feature flags
+- Follow DDD layer separation
+
+### ✅ MUST
+
+- Use SettingsScreen for main settings UI
+- Use SettingsItemCard for all settings items
+- Normalize configuration before use
+- Handle loading and error states
+- Provide proper TypeScript types
+- Export types for reuse
+- Follow naming conventions
+- Document custom components
+- Test all new features
+- Maintain backward compatibility
+
+### ✅ SHOULD
+
+- Use auto-detection for features
+- Group related settings together
+- Provide meaningful section titles
+- Support both modal and push navigation
+- Include user profile for authenticated users
+- Add custom sections via config
+- Use feature flags appropriately
+- Optimize performance with memoization
+- Follow AI agent guidelines
+- Keep documentation up to date
+
+## Component Reference
+
+### Main Components
+
+File: `src/index.ts`
+
+**Screens:**
+- `SettingsScreen`: Main settings screen
+  - Implementation: `src/presentation/screens/SettingsScreen.tsx`
+  - Documentation: `SETTINGS_SCREEN_GUIDE.md`
+
+**Components:**
+- `SettingsItemCard`: Reusable settings item
+  - Implementation: `src/presentation/components/SettingsItemCard/SettingsItemCard.tsx`
+  - Strategy: `src/presentation/components/SettingsItemCard/STRATEGY.md`
+
+- `SettingsSection`: Section container
+  - Implementation: `src/presentation/components/SettingsSection/SettingsSection.tsx`
+
+- `SettingsContent`: Content composer
+  - Implementation: `src/presentation/screens/components/SettingsContent/SettingsContent.tsx`
+
+**Hooks:**
+- `useSettings`: Main settings hook
+  - Implementation: `src/presentation/hooks/useSettings.ts`
+
+- `useFeatureDetection`: Feature detection
+  - Implementation: `src/presentation/screens/hooks/useFeatureDetection.ts`
+
+### Domain Components
+
+Each domain has its own components:
+
+**Appearance:**
+- Screen: `src/domains/appearance/presentation/screens/AppearanceScreen.tsx`
+- Components: `src/domains/appearance/presentation/components/`
+- Hooks: `src/domains/appearance/hooks/`
+
+**About:**
+- Screen: `src/domains/about/presentation/screens/AboutScreen.tsx`
+- Components: `src/domains/about/presentation/components/`
+- Hooks: `src/domains/about/presentation/hooks/`
+
+**Other Domains:**
+- Legal: `src/domains/legal/`
+- Disclaimer: `src/domains/disclaimer/`
+- Feedback: `src/domains/feedback/`
+- FAQs: `src/domains/faqs/`
+- Rating: `src/domains/rating/`
+- Video Tutorials: `src/domains/video-tutorials/`
+- Cloud Sync: `src/domains/cloud-sync/`
+- Dev: `src/domains/dev/`
+
+## Configuration
+
+### Settings Configuration
+
+Type definition: `src/presentation/screens/types/SettingsConfig.ts`
+
+Configuration structure:
+- `appearance`: Theme settings
+- `language`: Language selection
+- `notifications`: Notification preferences
+- `about`: App information
+- `legal`: Legal documents
+- `disclaimer`: Legal notices
+- `userProfile`: User profile display
+- `feedback`: Feedback system
+- `rating`: Rating feature
+- `faqs`: FAQ access
+- `subscription`: Subscription/upgrade
+- `wallet`: Wallet/payment
+- `customSections`: App-specific sections
+
+### Feature Flags
+
+Use feature flags to control visibility:
+- `true`: Always show feature
+- `false`: Never show feature
+- `'auto'`: Auto-detect based on navigation
+
+## AI Agent Guidelines
+
+### When Implementing Settings
+
+1. **Read Strategy Documentation First**
+   - Check `STRATEGY.md` files in component directories
+   - Review `AI_AGENT_GUIDELINES.md`
+   - Understand restrictions and rules
+
+2. **Reference Implementation Files**
+   - Check file paths in documentation
+   - Look at similar existing implementations
+   - Follow established patterns
+
+3. **No Code Examples**
+   - Documentation contains strategy, not syntax
+   - Reference implementation files directly
+   - File paths stay valid when code changes
+
+4. **Follow Component Structure**
+   - Use existing components from package
+   - Don't recreate what already exists
+   - Extend via configuration, not modification
+
+5. **Check Restrictions Before Coding**
+   - Review what's forbidden
+   - Verify rules to follow
+   - Ask if unclear
+
+### Common Patterns
+
+**Adding Settings Screen:**
+Reference: `SETTINGS_SCREEN_GUIDE.md`
+- Use SettingsScreen component
+- Configure via SettingsConfig
+- Don't build from scratch
+
+**Adding Settings Item:**
+Reference: `src/presentation/components/SettingsItemCard/STRATEGY.md`
+- Use SettingsItemCard component
+- Follow props interface
+- Don't create custom items
+
+**Adding Domain Feature:**
+Reference: Similar domain README
+- Follow domain structure
+- Implement required layers
+- Document with strategy format
+
+## Documentation Structure
+
+### Key Documentation Files
+
+- `README.md`: This file - package overview
+- `DOCUMENTATION_TEMPLATE.md`: Template for new docs
+- `AI_AGENT_GUIDELINES.md`: AI coding guidelines
+- `SETTINGS_SCREEN_GUIDE.md`: Screen strategy
+- `ARCHITECTURE.md`: Architecture overview
+- `TESTING.md`: Testing guide
+
+### Domain Documentation
+
+Each domain has README.md with:
+- Purpose and file paths
+- Strategy for usage
+- Restrictions (what not to do)
+- Rules (what must be done)
+- Component references
+- AI agent guidelines
+
+### Component Documentation
+
+Each component directory may contain:
+- `README.md`: Component reference
+- `STRATEGY.md`: Detailed strategy guide
+- Implementation file with TypeScript types
+
+## Quick Reference
+
+### Import Patterns
 
 ```typescript
-interface UserSettings {
-  userId: string;
-  theme: 'light' | 'dark' | 'auto';
-  language: string;
-  notificationsEnabled: boolean;
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  soundEnabled: boolean;
-  vibrationEnabled: boolean;
-  privacyMode: boolean;
-  updatedAt: Date;
-}
+// From package
+import { ComponentName } from '@umituz/react-native-settings';
+
+// Types
+import type { SettingsConfig, UserProfile } from '@umituz/react-native-settings';
 ```
 
-## Important Notes
-
-⚠️ **Storage**: This package uses `@umituz/react-native-storage` for all storage operations. Make sure to install it as a peer dependency.
-
-⚠️ **Navigation**: Settings screens require navigation setup. Make sure to add them to your navigation stack.
-
-⚠️ **Translations**: Settings screens require i18n translations. Make sure to provide translations for settings keys.
-
-⚠️ **Dynamic Text**: All text in this package uses translation keys to be app-agnostic. Provide translations like:
-  - `cloud_sync`, `syncing`, `sync_to_cloud`, `never_synced`, `just_now`, `Xm_ago`, `Xh_ago`, `Xd_ago`
-  - `error_boundary.title`, `error_boundary.message`, `error_boundary.dev_title`, `error_boundary.dev_message`
-  - `settings.disclaimer.title`, `settings.disclaimer.message`, `settings.disclaimer.shortMessage`
-
-⚠️ **Design System**: Uses @umituz/react-native-design-system packages for consistent styling across apps.
-
-⚠️ **Development Logs**: All console logs are wrapped in `__DEV__` checks for production safety.
-
-## Architecture
-
-This package follows **Domain-Driven Design (DDD)** principles:
-
-- **Domain Layer**: Repository interfaces and business entities
-- **Infrastructure Layer**: Storage implementation with Zustand
-- **Presentation Layer**: UI components and screens
-
-### Key Principles
-
-✅ **SOLID**: Single responsibility, open/closed, Liskov substitution, interface segregation, dependency inversion  
-✅ **DRY**: No code duplication, reusable components  
-✅ **KISS**: Simple, maintainable code  
-✅ **200-line limit**: All files under 200 lines for maintainability  
-✅ **TypeScript**: Full type safety  
-✅ **Memory Leak Prevention**: Proper cleanup and error handling  
-✅ **App-Agnostic**: No hardcoded app-specific text or logic  
-✅ **Test Coverage**: Comprehensive test suite  
-
-## Performance
-
-- ✅ **Optimized Rendering**: React.memo and useMemo where appropriate
-- ✅ **Memory Management**: Proper cleanup in useEffect hooks
-- ✅ **Error Boundaries**: Prevent crashes and provide graceful fallbacks
-- ✅ **Development Logs**: __DEV__ only logging for production safety
-
-## Domain Documentation
-
-Each domain has comprehensive documentation with usage examples, API references, and best practices:
-
-- **[About Domain Documentation](./src/domains/about/README.md)** - App information, version details, contact information
-- **[Appearance Domain Documentation](./src/domains/appearance/README.md)** - Theme management, dark mode, custom colors
-- **[Legal Domain Documentation](./src/domains/legal/README.md)** - Privacy policy, terms of service, legal documents
-- **[Disclaimer Domain Documentation](./src/domains/disclaimer/README.md)** - Legal notices, warnings, important information
-- **[Feedback Domain Documentation](./src/domains/feedback/README.md)** - Feedback forms, support resources
-- **[FAQs Domain Documentation](./src/domains/faqs/README.md)** - Searchable FAQ system
-- **[Rating Domain Documentation](./src/domains/rating/README.md)** - Star rating component
-- **[Video Tutorials Domain Documentation](./src/domains/video-tutorials/README.md)** - Video tutorial browser
-- **[Cloud Sync Domain Documentation](./src/domains/cloud-sync/README.md)** - Cloud sync status and management
-- **[Dev Domain Documentation](./src/domains/dev/README.md)** - Development utilities (DEV mode only)
-
-## Quick Start Examples
-
-### Complete Settings App
-
-```tsx
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import {
-  SettingsScreen,
-  AppearanceScreen,
-  AboutScreen,
-  LegalScreen,
-  FAQScreen,
-} from '@umituz/react-native-settings';
-
-const Stack = createStackNavigator();
-
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="Appearance" component={AppearanceScreen} />
-        <Stack.Screen name="About" component={AboutScreen} />
-        <Stack.Screen name="Legal" component={LegalScreen} />
-        <Stack.Screen name="FAQ" component={FAQScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-```
-
-### Custom Settings Screen
-
-```tsx
-import { SettingsSection, SettingsItemCard } from '@umituz/react-native-settings';
-
-function CustomSettingsScreen() {
-  return (
-    <ScreenLayout>
-      <SettingsSection title="PREFERENCES">
-        <SettingsItemCard
-          icon="moon-outline"
-          title="Dark Mode"
-          showSwitch={true}
-          switchValue={isDarkMode}
-          onSwitchChange={setDarkMode}
-        />
-        <SettingsItemCard
-          icon="globe-outline"
-          title="Language"
-          description="English"
-          onPress={() => {}}
-        />
-      </SettingsSection>
-
-      <SettingsSection title="SUPPORT">
-        <SettingsItemCard
-          icon="help-circle-outline"
-          title="Help & FAQs"
-          onPress={() => navigation.navigate('FAQ')}
-        />
-        <SettingsItemCard
-          icon="chatbubble-outline"
-          title="Send Feedback"
-          onPress={() => navigation.navigate('Feedback')}
-        />
-      </SettingsSection>
-    </ScreenLayout>
-  );
-}
-```
-
-## Project Structure
+### File Locations
 
 ```
 src/
-├── domains/                    # Feature domains (DDD architecture)
-│   ├── about/                  # App information & about
-│   ├── appearance/             # Theme & appearance settings
-│   ├── legal/                  # Privacy policy & terms
-│   ├── disclaimer/             # Legal disclaimers
-│   ├── feedback/               # User feedback system
-│   ├── faqs/                   # FAQ management
-│   ├── rating/                 # Rating system
-│   ├── video-tutorials/        # Video tutorials
-│   ├── cloud-sync/             # Cloud synchronization
-│   └── dev/                    # Development tools
-├── presentation/               # Shared UI components
-│   ├── screens/               # Settings screens
-│   ├── components/            # Reusable components
-│   └── hooks/                 # Shared hooks
-├── application/               # Application logic
-├── infrastructure/            # External dependencies
-└── index.ts                   # Main exports
+├── domains/              # Feature domains
+│   ├── about/
+│   ├── appearance/
+│   ├── legal/
+│   └── ...
+├── presentation/         # UI layer
+│   ├── components/       # Shared components
+│   ├── screens/          # Screens
+│   ├── hooks/            # Hooks
+│   └── navigation/       # Navigation
+├── application/          # Interfaces
+├── infrastructure/       # Data layer
+└── index.ts             # Package exports
 ```
 
-## Version History
+## Related Documentation
 
-- **v4.20.56**: Added comprehensive domain documentation with README files for each feature
-- **v4.20.55**: Enhanced domain structure with individual README documentation
-- **v4.20.54**: Refactored package structure - split files under 200 lines
-- **v2.2.0**: Major refactor - removed hardcoded text, improved architecture, added comprehensive tests
-- **v2.1.0**: Enhanced component structure and TypeScript support
-- **v2.0.0**: Breaking changes - removed LanguageSelectionScreen, improved API
-- **v1.x.x**: Initial releases with basic settings functionality
+### Core Documentation
+- **Architecture**: `ARCHITECTURE.md`
+- **Testing**: `TESTING.md`
+- **AI Guidelines**: `AI_AGENT_GUIDELINES.md`
+- **Settings Screen**: `SETTINGS_SCREEN_GUIDE.md`
+- **Documentation Template**: `DOCUMENTATION_TEMPLATE.md`
+- **Migration**: `DOCUMENTATION_MIGRATION.md`
 
-## Contributing
+### Community
+- **Contributing**: `CONTRIBUTING.md`
+- **Code of Conduct**: `CODE_OF_CONDUCT.md`
+- **Security**: `SECURITY.md`
+- **Changelog**: `CHANGELOG.md`
 
-When contributing to this package:
-1. Follow the domain-driven design structure
-2. Keep files under 200 lines
-3. Add tests for new features
-4. Update relevant domain README
-5. Follow TypeScript best practices
+### Component Documentation
+- **Domain READMEs**: Check individual domain directories
+- **Component Strategies**: Check component STRATEGY.md files
+- **Component READMEs**: Check component directories
 
 ## License
 
 MIT
 
-## Author
+## Version History
 
-Ümit UZ <umit@umituz.com>
-
----
-
-**Made with ❤️ for the React Native community**
-
+See package.json for version information.

@@ -2,22 +2,21 @@
 
 Comprehensive architecture documentation for the `@umituz/react-native-settings` package following Domain-Driven Design (DDD) principles.
 
-## Table of Contents
+## Purpose
 
-1. [Overview](#overview)
-2. [Architecture Layers](#architecture-layers)
-3. [Directory Structure](#directory-structure)
-4. [Domain Layer](#domain-layer)
-5. [Application Layer](#application-layer)
-6. [Infrastructure Layer](#infrastructure-layer)
-7. [Presentation Layer](#presentation-layer)
-8. [Data Flow](#data-flow)
-9. [Design Patterns](#design-patterns)
-10. [Best Practices](#best-practices)
+This document defines the architectural principles, structural organization, and design patterns governing the `@umituz/react-native-settings` package. It serves as the authoritative reference for understanding the system's layered architecture, domain organization, and interaction patterns between components.
 
-## Overview
+## File Paths
 
-The `@umituz/react-native-settings` package is built using **Domain-Driven Design (DDD)** principles with clear separation of concerns across four main layers:
+**Base Directory**: `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/`
+
+**Key Structure**:
+- `/src/domains/` - Domain-specific modules
+- `/src/application/` - Application layer interfaces
+- `/src/infrastructure/` - Infrastructure implementations
+- `/src/presentation/` - UI components and screens
+
+## Architecture Layers
 
 ```
 ┌─────────────────────────────────────────┐
@@ -41,82 +40,43 @@ The `@umituz/react-native-settings` package is built using **Domain-Driven Desig
 └─────────────────────────────────────────┘
 ```
 
-## Architecture Layers
+### Layer Responsibilities
 
-### Presentation Layer
+**Presentation Layer**: UI rendering and user interaction handling
+**Application Layer**: Business logic orchestration and interface definitions
+**Infrastructure Layer**: Data persistence and external service implementations
+**Domain Layer**: Business entities, rules, and domain-specific logic
 
-**Responsibility**: UI rendering and user interaction
-
-```
-src/presentation/
-├── components/         # Reusable UI components
-├── screens/            # Screen components
-│   ├── components/     # Screen-specific components
-│   ├── hooks/          # Screen-specific hooks
-│   ├── types/          # Screen types
-│   └── utils/          # Screen utilities
-├── hooks/              # Presentation hooks
-└── navigation/         # Navigation setup
-```
-
-**Key Components**:
-- `SettingsScreen`: Main settings screen
-- `SettingsContent`: Content composer
-- `SettingsItemCard`: Reusable item component
-- `useSettings`: Main settings hook
-- `useFeatureDetection`: Feature detection hook
-
-### Application Layer
-
-**Responsibility**: Business logic and interfaces
+## Directory Structure
 
 ```
-src/application/
-└── ports/
-    └── ISettingsRepository.ts    # Repository interface
+src/
+├── domains/                    # Business domains
+│   ├── about/
+│   ├── appearance/
+│   ├── legal/
+│   ├── disclaimer/
+│   ├── feedback/
+│   ├── faqs/
+│   ├── rating/
+│   ├── video-tutorials/
+│   ├── cloud-sync/
+│   └── dev/
+├── application/                # Application layer
+│   └── ports/                  # Layer interfaces
+├── infrastructure/             # Infrastructure layer
+│   ├── repositories/           # Data repositories
+│   └── services/               # Business services
+└── presentation/              # Presentation layer
+    ├── components/             # Shared components
+    ├── screens/                # Screens
+    ├── hooks/                  # Presentation hooks
+    └── navigation/             # Navigation
 ```
 
-**Key Interfaces**:
-- `ISettingsRepository`: Settings repository contract
-- `UserSettings`: Settings data structure
-- `SettingsResult`: Operation result types
-- `SettingsError`: Error definitions
+## Domain Organization
 
-### Infrastructure Layer
-
-**Responsibility**: Data persistence and external services
-
-```
-src/infrastructure/
-├── repositories/
-│   └── SettingsRepository.ts       # Repository implementation
-└── services/
-    └── SettingsService.ts          # Business logic service
-```
-
-**Key Implementations**:
-- `SettingsRepository`: Data persistence
-- `SettingsService`: Business logic
-
-### Domain Layer
-
-**Responsibility**: Business entities and domain rules
-
-```
-src/domains/
-├── about/                          # About domain
-├── appearance/                     # Appearance domain
-├── legal/                          # Legal domain
-├── disclaimer/                     # Disclaimer domain
-├── feedback/                       # Feedback domain
-├── faqs/                          # FAQs domain
-├── rating/                         # Rating domain
-├── video-tutorials/               # Video tutorials domain
-├── cloud-sync/                    # Cloud sync domain
-└── dev/                           # Development tools domain
-```
-
-Each domain follows the structure:
+Each domain follows a consistent self-contained structure:
 
 ```
 domain/
@@ -128,326 +88,25 @@ domain/
 └── utils/            # Domain utilities
 ```
 
-## Directory Structure
+### Domain Examples
 
-```
-src/
-├── domains/                    # Business domains
-│   ├── about/
-│   │   ├── domain/
-│   │   │   ├── entities/       # Business entities
-│   │   │   └── repositories/   # Repository interfaces
-│   │   ├── infrastructure/
-│   │   │   └── repositories/   # Repository implementations
-│   │   └── presentation/
-│   │       ├── screens/        # Screen components
-│   │       ├── components/     # UI components
-│   │       └── hooks/          # Custom hooks
-│   └── appearance/
-│       ├── application/
-│       │   └── ports/          # Domain ports
-│       ├── data/               # Domain data
-│       ├── hooks/              # Domain hooks
-│       ├── infrastructure/
-│       │   ├── repositories/   # Implementations
-│       │   └── services/       # Services
-│       ├── presentation/
-│       │   ├── screens/        # Screens
-│       │   └── components/     # Components
-│       └── types/              # Domain types
-├── application/                # Application layer
-│   └── ports/                  # Layer interfaces
-├── infrastructure/             # Infrastructure layer
-│   ├── repositories/           # Data repositories
-│   └── services/               # Business services
-└── presentation/              # Presentation layer
-    ├── components/             # Shared components
-    ├── screens/                # Screens
-    │   ├── components/         # Screen components
-    │   ├── hooks/              # Screen hooks
-    │   ├── types/              # Screen types
-    │   └── utils/              # Screen utilities
-    ├── hooks/                  # Presentation hooks
-    │   ├── mutations/          # Mutation hooks
-    │   └── queries/            # Query hooks
-    └── navigation/             # Navigation
-        ├── components/         # Nav components
-        ├── hooks/              # Nav hooks
-        └── utils/              # Nav utilities
-```
+**About Domain**: Application information, version details, developer contact
+**Appearance Domain**: Theme settings, language preferences, display options
+**Legal Domain**: Terms of service, privacy policy, legal notices
+**Disclaimer Domain**: Usage disclaimers, liability statements
+**Feedback Domain**: User feedback collection, issue reporting
+**FAQs Domain**: Frequently asked questions and answers
+**Rating Domain**: App store ratings, review prompts
+**Video Tutorials Domain**: Tutorial videos, help content
+**Cloud Sync Domain**: Data synchronization, backup/restore
+**Dev Domain**: Development tools, debugging features
 
-## Domain Layer
-
-### Purpose
-
-Encapsulates business logic, rules, and entities.
-
-### Structure
-
-Each domain is self-contained with:
-
-```typescript
-// Example: About Domain
-src/domains/about/
-├── domain/
-│   ├── entities/
-│   │   └── AppInfo.ts          # Business entity
-│   └── repositories/
-│       └── IAboutRepository.ts # Repository interface
-├── infrastructure/
-│   └── repositories/
-│       └── AboutRepository.ts  # Implementation
-├── presentation/
-│   ├── screens/
-│   │   └── AboutScreen.tsx
-│   ├── components/
-│   │   └── AboutContent.tsx
-│   └── hooks/
-│       └── useAboutInfo.ts
-└── types/
-    └── index.ts
-```
-
-### Example Domain
-
-```typescript
-// Domain Entity
-interface AppInfo {
-  name: string;
-  version: string;
-  buildNumber: string;
-  developer: string;
-  contactEmail?: string;
-  websiteUrl?: string;
-}
-
-// Repository Interface
-interface IAboutRepository {
-  getAppInfo(): Promise<AppInfo>;
-}
-
-// Implementation
-class AboutRepository implements IAboutRepository {
-  async getAppInfo(): Promise<AppInfo> {
-    // Implementation
-  }
-}
-```
-
-## Application Layer
-
-### Purpose
-
-Defines interfaces and orchestrates business logic.
-
-### Interfaces
-
-```typescript
-// ISettingsRepository.ts
-export interface ISettingsRepository {
-  get(userId: string): Promise<UserSettings>;
-  update(userId: string, updates: Partial<UserSettings>): Promise<UserSettings>;
-  reset(userId: string): Promise<UserSettings>;
-}
-```
-
-### Types
-
-```typescript
-// User Settings
-export interface UserSettings {
-  userId: string;
-  theme: 'light' | 'dark' | 'auto';
-  language: string;
-  notificationsEnabled: boolean;
-  // ... more fields
-}
-
-// Result Types
-export interface SettingsResult<T = UserSettings> {
-  success: boolean;
-  data?: T;
-  error?: SettingsError;
-}
-
-// Error Types
-export interface SettingsError {
-  code: string;
-  message: string;
-  details?: any;
-}
-```
-
-## Infrastructure Layer
-
-### Purpose
-
-Implements interfaces defined in application layer.
-
-### Repository Implementation
-
-```typescript
-// SettingsRepository.ts
-export class SettingsRepository implements ISettingsRepository {
-  private storage: StorageRepository;
-
-  constructor(storage?: StorageRepository) {
-    this.storage = storage || new StorageRepository();
-  }
-
-  async get(userId: string): Promise<UserSettings> {
-    const key = `settings:${userId}`;
-    const data = await this.storage.get(key);
-
-    if (!data) {
-      return this.createDefaults(userId);
-    }
-
-    return data;
-  }
-
-  async update(
-    userId: string,
-    updates: Partial<UserSettings>
-  ): Promise<UserSettings> {
-    const current = await this.get(userId);
-    const updated = { ...current, ...updates };
-
-    await this.storage.set(`settings:${userId}`, updated);
-    return updated;
-  }
-
-  async reset(userId: string): Promise<UserSettings> {
-    const defaults = this.createDefaults(userId);
-    await this.storage.set(`settings:${userId}`, defaults);
-    return defaults;
-  }
-
-  private createDefaults(userId: string): UserSettings {
-    return {
-      userId,
-      theme: 'auto',
-      language: 'en-US',
-      notificationsEnabled: true,
-      // ... more defaults
-    };
-  }
-}
-```
-
-### Service Implementation
-
-```typescript
-// SettingsService.ts
-export class SettingsService {
-  private repository: ISettingsRepository;
-
-  constructor(repository?: ISettingsRepository) {
-    this.repository = repository || new SettingsRepository();
-  }
-
-  async getSettings(userId: string): Promise<UserSettings> {
-    return await this.repository.get(userId);
-  }
-
-  async updateSettings(
-    userId: string,
-    updates: Partial<UserSettings>
-  ): Promise<UserSettings> {
-    this.validateSettings(updates);
-    return await this.repository.update(userId, updates);
-  }
-
-  async resetSettings(userId: string): Promise<UserSettings> {
-    return await this.repository.reset(userId);
-  }
-
-  private validateSettings(settings: Partial<UserSettings>): void {
-    // Validation logic
-  }
-}
-```
-
-## Presentation Layer
-
-### Components
-
-```typescript
-// SettingsItemCard.tsx
-export const SettingsItemCard = memo<Props>((props) => {
-  const { icon, title, subtitle, onPress } = props;
-
-  return (
-    <Pressable onPress={onPress}>
-      <View style={styles.container}>
-        <Ionicons name={icon} size={24} />
-        <View style={styles.content}>
-          <Text style={styles.title}>{title}</Text>
-          {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
-        </View>
-      </View>
-    </Pressable>
-  );
-});
-```
-
-### Hooks
-
-```typescript
-// useSettings.ts
-export function useSettings(userId: string) {
-  const queryClient = useQueryClient();
-
-  const {
-    data: settings,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['settings', userId],
-    queryFn: () => settingsService.getSettings(userId),
-  });
-
-  const updateSettingsMutation = useMutation({
-    mutationFn: (updates: Partial<UserSettings>) =>
-      settingsService.updateSettings(userId, updates),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['settings', userId]);
-    },
-  });
-
-  return {
-    settings,
-    isLoading,
-    error,
-    updateSettings: updateSettingsMutation.mutate,
-  };
-}
-```
-
-## Data Flow
+## Data Flow Patterns
 
 ### Reading Settings
 
 ```
 User → UI Component → Hook → Query → Service → Repository → Storage
-```
-
-**Example**:
-
-```typescript
-// 1. UI Component
-function SettingsScreen() {
-  const { settings, isLoading } = useSettings('user123');
-
-  // 2. Hook
-  const { data } = useQuery({
-    queryKey: ['settings', 'user123'],
-    queryFn: () => settingsService.getSettings('user123'),  // 3. Service
-  });
-
-  // Service calls repository
-  // Repository calls storage
-}
 ```
 
 ### Updating Settings
@@ -456,149 +115,131 @@ function SettingsScreen() {
 User → UI → Mutation Hook → Service → Repository → Storage
 ```
 
-**Example**:
-
-```typescript
-// 1. UI
-<Button onPress={() => updateSettings({ theme: 'dark' })} />
-
-// 2. Mutation Hook
-const updateSettingsMutation = useMutation({
-  mutationFn: (updates) => settingsService.updateSettings('user123', updates), // 3. Service
-  onSuccess: () => queryClient.invalidateQueries(['settings', 'user123']),
-});
-```
-
 ## Design Patterns
 
 ### Repository Pattern
-
-Separates data access logic from business logic.
-
-```typescript
-// Interface
-interface ISettingsRepository {
-  get(userId: string): Promise<UserSettings>;
-  update(userId: string, updates: Partial<UserSettings>): Promise<UserSettings>;
-}
-
-// Implementation
-class SettingsRepository implements ISettingsRepository {
-  // Implementation details
-}
-```
+Separates data access logic from business logic through interface-based abstractions
 
 ### Dependency Injection
-
-Inject dependencies for testability.
-
-```typescript
-class SettingsService {
-  constructor(private repository: ISettingsRepository) {}
-}
-
-// Usage
-const repository = new SettingsRepository();
-const service = new SettingsService(repository);
-
-// Testing
-const mockRepository = new MockSettingsRepository();
-const service = new SettingsService(mockRepository);
-```
+Inject dependencies through constructors for testability and flexibility
 
 ### Factory Pattern
-
-Create objects with factory functions.
-
-```typescript
-function createSettingsRepository(storage?: StorageRepository): ISettingsRepository {
-  return new SettingsRepository(storage);
-}
-```
+Create objects with factory functions for consistent object creation
 
 ### Observer Pattern
+React hooks and TanStack Query use observer pattern for reactive state management
 
-React hooks and TanStack Query use observer pattern.
+## Strategy
 
-```typescript
-// Query observes data changes
-const { data } = useQuery(['settings'], fetchSettings);
+1. **Domain-Driven Organization**: Structure the codebase around business domains rather than technical layers, ensuring each domain is self-contained with its own entities, logic, and presentation
 
-// Automatically re-renders when data changes
-```
+2. **Layered Architecture**: Maintain clear separation between presentation, application, infrastructure, and domain layers with unidirectional dependencies flowing from outer to inner layers
 
-## Best Practices
+3. **Interface-Based Design**: Define clear interfaces between layers and components to enable loose coupling, testability, and independent evolution of components
 
-### 1. Layer Separation
+4. **Dependency Inversion**: Depend on abstractions rather than concrete implementations, allowing for easy substitution of implementations (e.g., different storage backends)
 
-- Never skip layers in communication
-- Use interfaces between layers
-- Keep dependencies one-way
+5. **Single Responsibility Principle**: Each component, service, and module should have one reason to change, ensuring focused, maintainable code
 
-**Good**:
-```typescript
-Presentation → Application → Infrastructure → Storage
-```
+## Restrictions
 
-**Bad**:
-```typescript
-Presentation → Storage  // ❌ Skipping layers
-```
+### ❌ DO NOT
 
-### 2. Domain Independence
+- Skip architectural layers when communicating between components (e.g., Presentation must not directly access Storage)
+- Create circular dependencies between layers or domains
+- Mix concerns within a single layer (e.g., business logic in presentation components)
+- Access external services directly from domain or presentation layers
+- Duplicate business logic across multiple domains or components
 
-- Domains should be self-contained
-- Minimize inter-domain dependencies
-- Use clear interfaces
+### ❌ NEVER
 
-### 3. Type Safety
+- Allow presentation components to directly access infrastructure implementations
+- Create dependencies from inner layers (domain/infrastructure) to outer layers (presentation)
+- Implement business rules in UI components or hooks
+- Share mutable state between different domains without proper encapsulation
+- Bypass repository interfaces when accessing data
 
-- Use TypeScript throughout
-- Define clear interfaces
-- Export types for reuse
+### ❌ AVOID
 
-### 4. Error Handling
+- Creating tightly coupled dependencies between different domains
+- Implementing complex business logic in presentation layer hooks
+- Using global state or singletons for sharing data between layers
+- Making infrastructure details (e.g., storage implementation) visible to other layers
+- Creating overly complex abstractions that don't serve a clear purpose
 
-- Handle errors at each layer
-- Use consistent error types
-- Provide meaningful error messages
+## Rules
 
-```typescript
-try {
-  const settings = await repository.get(userId);
-} catch (error) {
-  if (error instanceof SettingsError) {
-    // Handle known error
-  } else {
-    // Handle unknown error
-  }
-}
-```
+### ✅ ALWAYS
 
-### 5. Testing
+- Use interfaces to define contracts between layers and components
+- Follow dependency injection patterns for passing dependencies
+- Implement proper error handling at each layer with consistent error types
+- Maintain type safety with TypeScript throughout the architecture
+- Write tests that verify behavior at each architectural layer
 
-- Test layers independently
-- Use mocks for dependencies
-- Cover business logic
+### ✅ MUST
 
-```typescript
-describe('SettingsService', () => {
-  it('should validate settings', () => {
-    const repository = new MockSettingsRepository();
-    const service = new SettingsService(repository);
+- Ensure all data access goes through repository interfaces
+- Keep domain entities and business rules independent of infrastructure
+- Implement proper separation of concerns in all components
+- Use async/await for all asynchronous operations
+- Handle edge cases and errors gracefully at each layer
 
-    expect(() =>
-      service.updateSettings('user123', { theme: 'invalid' })
-    ).toThrow();
-  });
-});
-```
+### ✅ SHOULD
 
-## Related
+- Prefer composition over inheritance when sharing behavior
+- Keep interfaces focused and cohesive (small, related sets of methods)
+- Use factory functions for creating complex objects with dependencies
+- Implement proper logging at each layer for debugging and monitoring
+- Maintain consistency in naming conventions across all layers
 
-- **Domain Documentation**: Individual domain READMEs
-- **Component Documentation**: Component-specific docs
-- **Testing Guide**: Comprehensive testing guide
+## AI Agent Guidelines
+
+### Architecture Modifications
+
+When modifying the architecture:
+
+1. **Layer Adherence**: Always respect the layered architecture and maintain unidirectional dependencies from outer to inner layers
+2. **Domain Boundaries**: Keep domains self-contained and minimize inter-domain dependencies
+3. **Interface Stability**: When changing interfaces, maintain backward compatibility or provide migration paths
+4. **Incremental Changes**: Make architectural changes incrementally, ensuring tests pass at each step
+
+### Adding New Features
+
+When adding new features:
+
+1. **Domain Identification**: Determine which domain the feature belongs to, or create a new domain if appropriate
+2. **Layer Placement**: Place each piece of functionality in the appropriate layer following the architecture patterns
+3. **Interface Design**: Design clear interfaces before implementing functionality
+4. **Dependency Management**: Use dependency injection to pass dependencies and enable testing
+
+### Refactoring Guidelines
+
+When refactoring existing code:
+
+1. **Maintain Contracts**: Keep existing interfaces stable; internal refactoring should not break external contracts
+2. **Test Coverage**: Ensure comprehensive test coverage before and after refactoring
+3. **Gradual Migration**: Refactor incrementally, maintaining functionality at each step
+4. **Documentation Updates**: Update architecture documentation to reflect significant structural changes
+
+### Code Review Checklist
+
+Review should verify:
+
+- Layer separation is maintained
+- Dependencies flow in correct direction (outer → inner)
+- Interfaces are well-defined and cohesive
+- Domain logic is properly encapsulated
+- Error handling is consistent across layers
+- Tests cover all architectural layers
+- No circular dependencies exist
+- Type safety is maintained throughout
+
+## Related Documentation
+
+- **TESTING.md**: Comprehensive testing strategies for each architectural layer
+- **Domain READMEs**: Individual domain-specific documentation
+- **Component Documentation**: UI component usage and patterns
 
 ## License
 

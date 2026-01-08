@@ -114,6 +114,17 @@
   "files": [
     "src",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+    "ARCHITECTURE.md",
+    "TESTING.md",
+    "AI_AGENT_GUIDELINES.md",
+    "SETTINGS_SCREEN_GUIDE.md",
+    "DOCUMENTATION_TEMPLATE.md",
+    "DOCUMENTATION_MIGRATION.md",
+    ".github"
   ]
 }

@@ -122,10 +122,7 @@ jest.mock('react-native-safe-area-context', () => ({
   }),
 }));
 
-// Mock linear gradient
-jest.mock('expo-linear-gradient', () => ({
-  LinearGradient: ({ children }: any) => children,
-}));
+
 
 // Mock notification service
 jest.mock('@umituz/react-native-notifications', () => ({

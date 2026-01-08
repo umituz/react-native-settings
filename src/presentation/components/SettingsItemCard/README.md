@@ -8,7 +8,7 @@ A premium, consistent card component for settings items with icons, text, option
 - **Customizable**: Icon, title, subtitle, colors, and styles
 - **Interactive**: Press feedback, switch controls, right icons
 - **Accessible**: Full accessibility support with proper labels
-- **Modern**: Gradient overlays, smooth animations
+- **Modern**: Sleek design, smooth animations
 - **Design System**: Uses tokens for consistent styling
 
 ## Installation
@@ -111,7 +111,7 @@ function CustomColoredItem() {
 ```
 SettingsItemCard
 ├── Icon Container
-│   ├── Icon Background (gradient)
+│   ├── Icon Background
 │   └── Icon
 ├── Content
 │   ├── Title
@@ -324,7 +324,7 @@ const defaultIconColors = {
   title="Favorites"
 />
 
-// With gradient
+// Custom color
 <SettingsItemCard
   icon="star"
   iconBgColor="#FFD700"

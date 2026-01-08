@@ -355,48 +355,42 @@ function NavigationBoundary() {
 ```tsx
 function StyledFallback({ error, resetError }) {
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#667eea', '#764ba2']}
-        style={styles.gradient}
-      >
-        <View style={styles.content}>
-          <Ionicons
-            name="warning-outline"
-            size={80}
-            color="white"
-            style={styles.icon}
-          />
+    <View style={[styles.container, { backgroundColor: '#f5f5f5' }]}>
+      <View style={styles.content}>
+        <Ionicons
+          name="warning-outline"
+          size={80}
+          color="#667eea"
+          style={styles.icon}
+        />
 
-          <Text style={styles.title}>Oops!</Text>
+        <Text style={styles.title}>Oops!</Text>
 
-          <Text style={styles.message}>
-            Something went wrong
-          </Text>
+        <Text style={styles.message}>
+          Something went wrong
+        </Text>
 
-          {__DEV__ && (
-            <View style={styles.details}>
-              <Text style={styles.errorText}>
-                {error.message}
-              </Text>
-            </View>
-          )}
+        {__DEV__ && (
+          <View style={styles.details}>
+            <Text style={styles.errorText}>
+              {error.message}
+            </Text>
+          </View>
+        )}
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={resetError}
-          >
-            <Text style={styles.buttonText}>Try Again</Text>
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={resetError}
+        >
+          <Text style={styles.buttonText}>Try Again</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  gradient: { flex: 1 },
   content: {
     flex: 1,
     justifyContent: 'center',
@@ -407,34 +401,34 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#333',
     marginBottom: 10,
   },
   message: {
     fontSize: 16,
-    color: 'white',
+    color: '#666',
     textAlign: 'center',
     marginBottom: 20,
   },
   details: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: '#eee',
     padding: 10,
     borderRadius: 8,
     marginBottom: 20,
   },
   errorText: {
-    color: 'white',
+    color: '#666',
     fontSize: 12,
     fontFamily: 'monospace',
   },
   button: {
-    backgroundColor: 'white',
+    backgroundColor: '#667eea',
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 25,
   },
   buttonText: {
-    color: '#667eea',
+    color: 'white',
     fontWeight: 'bold',
   },
 });

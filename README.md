@@ -33,7 +33,7 @@ npm install @umituz/react-native-settings
 ## Peer Dependencies
 
 ```bash
-npm install zustand @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-localization @react-navigation/native @react-navigation/stack react-native-safe-area-context expo-linear-gradient
+npm install zustand @umituz/react-native-storage @umituz/react-native-design-system @umituz/react-native-localization @react-navigation/native @react-navigation/stack react-native-safe-area-context
 ```
 
 ## Usage

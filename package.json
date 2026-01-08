@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "4.20.61",
+  "version": "4.20.62",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, about, legal, appearance, feedback, FAQs, and rating",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -26,6 +26,8 @@
     "feedback",
     "faqs",
     "rating",
+    "gamification",
+    "achievements",
     "consolidated"
   ],
   "author": "Ümit UZ <umit@umituz.com>",
@@ -38,6 +40,7 @@
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@umituz/react-native-auth": "latest",
     "@umituz/react-native-design-system": "latest",
+    "@umituz/react-native-gamification": "latest",
     "@umituz/react-native-localization": "latest",
     "@umituz/react-native-notifications": "latest",
     "@umituz/react-native-onboarding": "latest",

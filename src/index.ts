@@ -120,14 +120,24 @@ export * from "./domains/cloud-sync";
 // Dev Domain - Development-only settings (DEV mode)
 export * from "./domains/dev";
 
+// Gamification Domain - Achievements, levels, streaks
+export * from "./domains/gamification";
+
+
 // =============================================================================
-// PRESENTATION LAYER - Re-exports from Dependencies
+// PRESENTATION LAYER - Config Creator Utilities
 // =============================================================================
 
-// @ts-ignore - Re-exporting from peer dependency
-export { OnboardingResetSetting } from '@umituz/react-native-onboarding';
-// @ts-ignore - Re-exporting from peer dependency  
-export type { OnboardingResetSettingProps } from '@umituz/react-native-onboarding';
-
-// @ts-ignore - Re-exporting from peer dependency
-// @ts-ignore - Re-exporting from peer dependency
+export {
+  createAppearanceConfig,
+  createLanguageConfig,
+  createNotificationsConfig,
+  createAboutConfig,
+  createLegalConfig,
+  createFeedbackConfig,
+  createRatingConfig,
+  createFAQConfig,
+  createSubscriptionConfig,
+  type TranslationFunction,
+  type FeedbackFormData,
+} from './presentation/utils';

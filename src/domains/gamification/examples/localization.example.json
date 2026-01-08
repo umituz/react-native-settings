@@ -1,0 +1,71 @@
+{
+  "settings": {
+    "gamification": {
+      "title": "Achievements",
+      "menuTitle": "Achievements & Progress",
+      "menuSubtitle": "View your achievements and stats"
+    }
+  },
+  "gamification": {
+    "title": "Your Progress",
+    "level": {
+      "title": "Level {{level}}"
+    },
+    "stats": {
+      "title": "Statistics",
+      "totalPoints": "Total Points",
+      "tasksCompleted": "Tasks Completed",
+      "achievementsUnlocked": "Achievements Unlocked"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "empty": "No achievements yet. Keep going!",
+      "first_task": {
+        "title": "First Steps",
+        "description": "Complete your first task"
+      },
+      "five_tasks": {
+        "title": "Getting Started",
+        "description": "Complete 5 tasks"
+      },
+      "ten_tasks": {
+        "title": "On a Roll",
+        "description": "Complete 10 tasks"
+      },
+      "fifty_tasks": {
+        "title": "Dedicated",
+        "description": "Complete 50 tasks"
+      },
+      "hundred_tasks": {
+        "title": "Century Club",
+        "description": "Complete 100 tasks"
+      },
+      "three_day_streak": {
+        "title": "Consistent",
+        "description": "Maintain a 3-day streak"
+      },
+      "week_streak": {
+        "title": "Week Warrior",
+        "description": "Maintain a 7-day streak"
+      },
+      "month_streak": {
+        "title": "Monthly Master",
+        "description": "Maintain a 30-day streak"
+      },
+      "first_login": {
+        "title": "Welcome!",
+        "description": "Join the community"
+      },
+      "power_user": {
+        "title": "Power User",
+        "description": "Unlock all features"
+      }
+    },
+    "streak": {
+      "title": "Daily Streak",
+      "current": "Current Streak",
+      "best": "Best Streak",
+      "days": "days"
+    }
+  }
+}

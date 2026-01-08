@@ -12,6 +12,8 @@ import type { FeedbackType } from "../../../domains/feedback/domain/entities/Fee
 export interface UserProfileConfig {
   /** Show user profile header */
   enabled?: boolean;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
   /** Custom display name for anonymous users */
   anonymousDisplayName?: string;
   /** Custom avatar service URL */

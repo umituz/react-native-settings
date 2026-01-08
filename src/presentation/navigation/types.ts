@@ -42,6 +42,7 @@ export type SettingsStackParamList = {
   Notifications: undefined;
   FAQ: undefined;
   LanguageSelection: undefined;
+  Gamification: undefined;
 };
 
 /**
@@ -89,4 +90,5 @@ export interface SettingsStackNavigatorProps {
   devSettings?: DevSettingsProps;
   customSections?: CustomSettingsSection[];
   showHeader?: boolean;
+  gamificationConfig?: import("../../domains/gamification").GamificationSettingsConfig;
 }

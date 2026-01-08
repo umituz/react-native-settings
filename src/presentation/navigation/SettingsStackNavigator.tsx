@@ -29,8 +29,10 @@ import {
   createNotificationsScreenOptions,
   createFAQScreenOptions,
   createLanguageSelectionScreenOptions,
+  createGamificationScreenOptions,
 } from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
+import { GamificationScreenWrapper } from "../../domains/gamification";
 
 const Stack = createStackNavigator<SettingsStackParamList>();
 
@@ -45,6 +47,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   devSettings,
   customSections = [],
   showHeader = true,
+  gamificationConfig,
 }) => {
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
@@ -141,6 +144,15 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
             options={screen.options}
           />
         ) : null
+      )}
+
+      {gamificationConfig?.enabled && (
+        <Stack.Screen
+          name="Gamification"
+          options={createGamificationScreenOptions(t)}
+        >
+          {() => <GamificationScreenWrapper config={gamificationConfig} />}
+        </Stack.Screen>
       )}
 
       <Stack.Screen

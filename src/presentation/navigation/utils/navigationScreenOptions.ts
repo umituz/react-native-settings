@@ -54,3 +54,10 @@ export const createLanguageSelectionScreenOptions = (t: any) => ({
   headerTitle: t("settings.language.title"),
   headerTitleAlign: "center" as const,
 });
+
+export const createGamificationScreenOptions = (t: any) => ({
+  headerShown: true,
+  headerTitle: t("settings.gamification.title"),
+  headerTitleAlign: "center" as const,
+});
+

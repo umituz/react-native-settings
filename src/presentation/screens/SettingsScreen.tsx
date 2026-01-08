@@ -50,6 +50,7 @@ export interface SettingsScreenProps {
     notificationServiceAvailable?: boolean;
   };
   /** Dev settings (only shown in __DEV__ mode) */
+  devSettings?: DevSettingsProps;
   /** Show header (default: true) */
   showHeader?: boolean;
 }

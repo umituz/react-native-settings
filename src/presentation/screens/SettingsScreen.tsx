@@ -50,7 +50,8 @@ export interface SettingsScreenProps {
     notificationServiceAvailable?: boolean;
   };
   /** Dev settings (only shown in __DEV__ mode) */
-  devSettings?: DevSettingsProps;
+  /** Show header (default: true) */
+  showHeader?: boolean;
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
@@ -62,6 +63,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   appVersion,
   customSections = [],
   showCloseButton = false,
+  showHeader = true,
   onClose,
   featureOptions,
   devSettings,
@@ -77,7 +79,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   return (
     <ScreenLayout
-      header={<SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />}
+      header={showHeader ? <SettingsHeader showCloseButton={showCloseButton} onClose={onClose} /> : undefined}
     >
       <SettingsErrorBoundary>
         <SettingsContent

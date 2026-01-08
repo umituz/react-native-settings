@@ -88,4 +88,5 @@ export interface SettingsStackNavigatorProps {
   additionalScreens?: AdditionalScreen[];
   devSettings?: DevSettingsProps;
   customSections?: CustomSettingsSection[];
+  showHeader?: boolean;
 }

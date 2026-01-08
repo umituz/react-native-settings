@@ -44,6 +44,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   additionalScreens = [],
   devSettings,
   customSections = [],
+  showHeader = true,
 }) => {
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
@@ -72,6 +73,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
             userProfile={userProfile}
             devSettings={devSettings}
             customSections={customSections}
+            showHeader={showHeader}
           />
         )}
       </Stack.Screen>

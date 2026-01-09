@@ -58,15 +58,15 @@ export function createFeedback(
   };
 }
 
+/**
+ * Get feedback type label
+ * @deprecated Use translation keys instead: `feedback.type.${type}`
+ * This function is kept for backward compatibility but should not be used.
+ * Use t(`feedback.type.${type}`) from useLocalization() instead.
+ */
 export function getFeedbackTypeLabel(type: FeedbackType): string {
-  const labels: Record<FeedbackType, string> = {
-    general: 'General Feedback',
-    bug_report: 'Bug Report',
-    feature_request: 'Feature Request',
-    improvement: 'Improvement',
-    other: 'Other',
-  };
-  return labels[type] || 'Unknown';
+  // Return type key for translation
+  return type;
 }
 
 export function getFeedbackTypeEmoji(type: FeedbackType): string {

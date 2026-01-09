@@ -1,8 +1,8 @@
 import React from "react";
 // @ts-ignore - Optional peer dependency
-import { useNavigation } from "@react-navigation/native";
-import { SettingsItemCard } from "../../components/SettingsItemCard";
+import { useAppNavigation } from "@umituz/react-native-design-system";
 import type { IconName } from "@umituz/react-native-design-system";
+import { SettingsItemCard } from "../../components/SettingsItemCard";
 import { useGamification } from "../../../domains/gamification";
 
 export interface GamificationSettingsItemProps {
@@ -16,7 +16,7 @@ export const GamificationSettingsItem: React.FC<GamificationSettingsItemProps> =
   gamificationConfig, 
   t 
 }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { level } = useGamification(gamificationConfig);
   
   const handlePress = () => {

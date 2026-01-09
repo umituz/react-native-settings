@@ -5,8 +5,7 @@
 
 import React from "react";
 import { View, Pressable, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useAppDesignTokens, AtomicIcon, AtomicText } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicIcon, AtomicText, useAppNavigation } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 
 interface SettingsHeaderProps {
@@ -18,7 +17,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
   showCloseButton = false,
   onClose,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
 

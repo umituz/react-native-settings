@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useAppNavigation } from "@umituz/react-native-design-system";
 import { AppearanceSection } from "../../../../domains/appearance/presentation/components/AppearanceSection";
 import { NotificationsSection } from "../../../../domains/notifications";
 import { useLocalization, getLanguageByCode } from "@umituz/react-native-localization";
@@ -20,7 +20,7 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   features,
 }) => {
   const { t, currentLanguage } = useLocalization();
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
 
   const handleLanguagePress = () => {
     const route = normalizedConfig.language.config?.route || "LanguageSelection";

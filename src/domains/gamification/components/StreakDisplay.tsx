@@ -4,20 +4,19 @@
  */
 
 import React from "react";
-import { View, Text, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface StreakDisplayProps {
   current: number;
   longest: number;
-  currentLabel: string; // e.g., "Current Streak"
-  bestLabel: string; // e.g., "Best"
-  daysLabel: string; // e.g., "days"
+  currentLabel: string;
+  bestLabel: string;
+  daysLabel: string;
   icon?: React.ReactNode;
-  // Customization
   containerStyle?: ViewStyle;
   numberStyle?: TextStyle;
   labelStyle?: TextStyle;
-  // Colors
   primaryColor?: string;
   backgroundColor?: string;
   textColor?: string;
@@ -34,35 +33,42 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
   containerStyle,
   numberStyle,
   labelStyle,
-  primaryColor = "#FF6B35",
-  backgroundColor = "#1A1A1A",
-  textColor = "#FFFFFF",
-  subtextColor = "#888888",
+  primaryColor,
+  backgroundColor,
+  textColor,
+  subtextColor,
 }) => {
+  const tokens = useAppDesignTokens();
+  
+  const finalPrimaryColor = primaryColor || tokens.colors.primary;
+  const finalBackgroundColor = backgroundColor || tokens.colors.surface;
+  const finalTextColor = textColor || tokens.colors.textPrimary;
+  const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
+
   return (
-    <View style={[styles.container, { backgroundColor }, containerStyle]}>
+    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
       <View style={styles.mainStreak}>
         {icon && <View style={styles.iconContainer}>{icon}</View>}
         <View style={styles.streakInfo}>
-          <Text style={[styles.number, { color: primaryColor }, numberStyle]}>
+          <AtomicText style={[styles.number, { color: finalPrimaryColor }, numberStyle]}>
             {current}
-          </Text>
-          <Text style={[styles.label, { color: subtextColor }, labelStyle]}>
+          </AtomicText>
+          <AtomicText style={[styles.label, { color: finalSubtextColor }, labelStyle]}>
             {daysLabel}
-          </Text>
+          </AtomicText>
         </View>
-        <Text style={[styles.currentLabel, { color: textColor }]}>
+        <AtomicText style={[styles.currentLabel, { color: finalTextColor }]}>
           {currentLabel}
-        </Text>
+        </AtomicText>
       </View>
 
-      <View style={[styles.bestStreak, { backgroundColor: `${primaryColor}20` }]}>
-        <Text style={[styles.bestLabel, { color: subtextColor }]}>
+      <View style={[styles.bestStreak, { backgroundColor: withAlpha(finalPrimaryColor, 0.2) }]}>
+        <AtomicText style={[styles.bestLabel, { color: finalSubtextColor }]}>
           {bestLabel}
-        </Text>
-        <Text style={[styles.bestNumber, { color: primaryColor }]}>
+        </AtomicText>
+        <AtomicText style={[styles.bestNumber, { color: finalPrimaryColor }]}>
           {longest}
-        </Text>
+        </AtomicText>
       </View>
     </View>
   );

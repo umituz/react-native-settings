@@ -3,13 +3,8 @@
  * Displays app name, version, and description
  */
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 import { AppInfo } from '../../domain/entities/AppInfo';
 
 export interface AboutHeaderProps {
@@ -26,8 +21,6 @@ export interface AboutHeaderProps {
   testID?: string;
 }
 
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
-
 export const AboutHeader: React.FC<AboutHeaderProps> = ({
   appInfo,
   containerStyle,
@@ -43,14 +36,14 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
 
   return (
     <View style={[styles.header, { borderBottomColor: colors.border }, containerStyle]} testID={testID}>
-      <Text style={[styles.appName, { color: colors.textPrimary }, titleStyle]}>{appInfo.name}</Text>
-      <Text style={[styles.version, { color: colors.textSecondary }, versionStyle]}>
+      <AtomicText style={[styles.appName, { color: colors.textPrimary }, titleStyle]}>{appInfo.name}</AtomicText>
+      <AtomicText style={[styles.version, { color: colors.textSecondary }, versionStyle]}>
         {versionPrefix} {appInfo.version}
-      </Text>
+      </AtomicText>
       {appInfo.description && (
-        <Text style={[styles.description, { color: colors.textSecondary }, descriptionStyle]}>
+        <AtomicText style={[styles.description, { color: colors.textSecondary }, descriptionStyle]}>
           {appInfo.description}
-        </Text>
+        </AtomicText>
       )}
     </View>
   );

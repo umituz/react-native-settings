@@ -5,14 +5,13 @@
 
 import React from 'react';
 import { View } from 'react-native';
-// @ts-ignore - Optional peer dependency
-import { useNavigation } from '@react-navigation/native';
 import { 
   AtomicCard, 
   ScreenLayout, 
   AtomicSpinner,
   NavigationHeader,
-  useAppDesignTokens
+  useAppDesignTokens,
+  useAppNavigation
 } from '@umituz/react-native-design-system';
 import { useLocalization } from '@umituz/react-native-localization';
 import { QuietHoursCard } from '../../quietHours/presentation/components/QuietHoursCard';
@@ -38,7 +37,7 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
   quietHoursTranslations,
   onHapticFeedback,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
   const styles = createStyles(tokens);

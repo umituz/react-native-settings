@@ -6,10 +6,8 @@
 import React, { useCallback, useMemo } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon, useAppNavigation } from '@umituz/react-native-design-system';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
-// @ts-ignore - Optional peer dependency
-import { useNavigation } from '@react-navigation/native';
 // @ts-ignore - Optional peer dependency
 import { useLocalization } from '@umituz/react-native-localization';
 
@@ -29,7 +27,7 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
   config,
   containerStyle,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { t } = useLocalization();
   const tokens = useAppDesignTokens();
   const styles = useMemo(() => createStyles(tokens), [tokens]);

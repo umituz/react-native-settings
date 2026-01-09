@@ -4,18 +4,17 @@
  */
 
 import React from "react";
-import { View, Text, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface StatsCardProps {
   value: number;
   label: string;
   icon: React.ReactNode;
   suffix?: string;
-  // Customization
   containerStyle?: ViewStyle;
   valueStyle?: TextStyle;
   labelStyle?: TextStyle;
-  // Colors
   accentColor?: string;
   backgroundColor?: string;
   textColor?: string;
@@ -30,27 +29,34 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   containerStyle,
   valueStyle,
   labelStyle,
-  accentColor = "#FFD700",
-  backgroundColor = "#1A1A1A",
-  textColor = "#FFFFFF",
-  subtextColor = "#888888",
+  accentColor,
+  backgroundColor,
+  textColor,
+  subtextColor,
 }) => {
+  const tokens = useAppDesignTokens();
+  
+  const finalAccentColor = accentColor || tokens.colors.primary;
+  const finalBackgroundColor = backgroundColor || tokens.colors.surface;
+  const finalTextColor = textColor || tokens.colors.textPrimary;
+  const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
+
   return (
-    <View style={[styles.container, { backgroundColor }, containerStyle]}>
-      <View style={[styles.iconContainer, { backgroundColor: `${accentColor}15` }]}>
+    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
+      <View style={[styles.iconContainer, { backgroundColor: withAlpha(finalAccentColor, 0.15) }]}>
         {icon}
       </View>
       <View style={styles.valueRow}>
-        <Text style={[styles.value, { color: textColor }, valueStyle]}>
+        <AtomicText style={[styles.value, { color: finalTextColor }, valueStyle]}>
           {value}
-        </Text>
+        </AtomicText>
         {suffix && (
-          <Text style={[styles.suffix, { color: subtextColor }]}>{suffix}</Text>
+          <AtomicText style={[styles.suffix, { color: finalSubtextColor }]}>{suffix}</AtomicText>
         )}
       </View>
-      <Text style={[styles.label, { color: subtextColor }, labelStyle]}>
+      <AtomicText style={[styles.label, { color: finalSubtextColor }, labelStyle]}>
         {label}
-      </Text>
+      </AtomicText>
     </View>
   );
 };

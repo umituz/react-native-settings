@@ -1,6 +1,6 @@
 import React from "react";
 // @ts-ignore - Optional peer dependency
-import { useNavigation } from "@react-navigation/native";
+import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import type { IconName } from "@umituz/react-native-design-system";
 
@@ -10,7 +10,7 @@ export interface WalletSettingsItemProps {
 }
 
 export const WalletSettingsItem: React.FC<WalletSettingsItemProps> = ({ config, t }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const handlePress = () => {
     if (config.route) {
       navigation.navigate(config.route as never);

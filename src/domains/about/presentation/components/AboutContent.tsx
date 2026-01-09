@@ -3,12 +3,11 @@
  * Displays the list of about items organized in sections
  */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { AboutSettingItem } from './AboutSettingItem';
 import { AppInfo } from '../../domain/entities/AppInfo';
 import { AboutConfig } from '../../domain/entities/AppInfo';
-
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 
 export interface AboutContentProps {
   /** App information to display */
@@ -23,7 +22,7 @@ const AboutSectionHeader: React.FC<{ title: string }> = ({ title }) => {
   const colors = tokens.colors;
 
   return (
-    <Text style={[styles.sectionHeader, { color: colors.textSecondary }]}>{title}</Text>
+    <AtomicText style={[styles.sectionHeader, { color: colors.textSecondary }]}>{title}</AtomicText>
   );
 };
 

@@ -1,11 +1,12 @@
+import React from "react";
 /**
  * GamificationScreen Component
  * Full gamification screen - all text via props
  * Generic for 100+ apps - NO hardcoded strings
  */
 
-import React from "react";
-import { View, ScrollView, Text, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
+import { useAppDesignTokens, AtomicText } from "@umituz/react-native-design-system";
 import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";
 import { Header } from "./Header";
@@ -30,15 +31,24 @@ export const GamificationScreen: React.FC<GamificationScreenProps> = ({
   headerStyle,
   titleStyle,
   sectionTitleStyle,
-  accentColor = "#FFD700",
-  backgroundColor = "#0A0A0A",
-  cardBackgroundColor = "#1A1A1A",
-  textColor = "#FFFFFF",
-  subtextColor = "#888888",
+  accentColor,
+  backgroundColor,
+  cardBackgroundColor,
+  textColor,
+  subtextColor,
   headerComponent,
 }) => {
+  const tokens = useAppDesignTokens();
+  
+  // Use tokens for fallbacks
+  const finalAccentColor = accentColor || tokens.colors.primary;
+  const finalBackgroundColor = backgroundColor || tokens.colors.backgroundPrimary;
+  const finalCardBackgroundColor = cardBackgroundColor || tokens.colors.surface;
+  const finalTextColor = textColor || tokens.colors.textPrimary;
+  const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
+
   return (
-    <View style={[styles.container, { backgroundColor }, containerStyle]}>
+    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
       {headerComponent}
 
       <ScrollView
@@ -51,34 +61,34 @@ export const GamificationScreen: React.FC<GamificationScreenProps> = ({
           title={title}
           headerStyle={headerStyle}
           titleStyle={titleStyle}
-          textColor={textColor}
+          textColor={finalTextColor}
         />
 
         {/* Level Progress */}
         <View style={styles.section}>
           <LevelProgress
             {...levelProps}
-            primaryColor={accentColor}
-            backgroundColor={cardBackgroundColor}
-            textColor={textColor}
-            subtextColor={subtextColor}
+            primaryColor={finalAccentColor}
+            backgroundColor={finalCardBackgroundColor}
+            textColor={finalTextColor}
+            subtextColor={finalSubtextColor}
           />
         </View>
 
         {/* Streak (if provided) */}
         {streakProps && (
           <View style={styles.section}>
-            <Text
-              style={[styles.sectionTitle, { color: textColor }, sectionTitleStyle]}
+            <AtomicText
+              style={[styles.sectionTitle, { color: finalTextColor }, sectionTitleStyle]}
             >
               {streakTitle}
-            </Text>
+            </AtomicText>
             <StreakDisplay
               {...streakProps}
-              primaryColor={accentColor}
-              backgroundColor={cardBackgroundColor}
-              textColor={textColor}
-              subtextColor={subtextColor}
+              primaryColor={finalAccentColor}
+              backgroundColor={finalCardBackgroundColor}
+              textColor={finalTextColor}
+              subtextColor={finalSubtextColor}
             />
           </View>
         )}
@@ -87,10 +97,10 @@ export const GamificationScreen: React.FC<GamificationScreenProps> = ({
         <StatsGrid
           statsTitle={statsTitle}
           stats={stats}
-          accentColor={accentColor}
-          cardBackgroundColor={cardBackgroundColor}
-          textColor={textColor}
-          subtextColor={subtextColor}
+          accentColor={finalAccentColor}
+          cardBackgroundColor={finalCardBackgroundColor}
+          textColor={finalTextColor}
+          subtextColor={finalSubtextColor}
           sectionTitleStyle={sectionTitleStyle}
         />
 
@@ -99,10 +109,10 @@ export const GamificationScreen: React.FC<GamificationScreenProps> = ({
           achievementsTitle={achievementsTitle}
           achievements={achievements}
           emptyAchievementsText={emptyAchievementsText}
-          accentColor={accentColor}
-          cardBackgroundColor={cardBackgroundColor}
-          textColor={textColor}
-          subtextColor={subtextColor}
+          accentColor={finalAccentColor}
+          cardBackgroundColor={finalCardBackgroundColor}
+          textColor={finalTextColor}
+          subtextColor={finalSubtextColor}
           sectionTitleStyle={sectionTitleStyle}
         />
       </ScrollView>

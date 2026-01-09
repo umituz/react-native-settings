@@ -8,12 +8,11 @@ import React, { memo, useCallback } from 'react';
 import {
   TouchableOpacity,
   View,
-  Text,
   StyleSheet,
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 
 export interface AboutSettingItemProps {
   /** Icon component (any React component) */
@@ -86,11 +85,6 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = memo(({
     iconContainerStyle,
   ];
 
-  const chevronStyles = [
-    styles.chevron,
-    { color: chevronColor || colors.textSecondary },
-  ];
-
   return (
     <Container
       style={containerStyles}
@@ -101,23 +95,30 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = memo(({
       {icon && <View style={iconContainerStyles}>{icon}</View>}
 
       <View style={styles.content}>
-        <Text style={[styles.title, { color: colors.textPrimary }, titleStyle]}>
+        <AtomicText style={[styles.title, { color: colors.textPrimary }, titleStyle]}>
           {title}
-        </Text>
+        </AtomicText>
         {description && (
-          <Text style={[styles.description, { color: colors.textSecondary }, descriptionStyle]}>
+          <AtomicText style={[styles.description, { color: colors.textSecondary }, descriptionStyle]}>
             {description}
-          </Text>
+          </AtomicText>
         )}
       </View>
 
       {value && (
-        <Text style={[styles.value, { color: colors.textSecondary }, valueStyle]}>
+        <AtomicText style={[styles.value, { color: colors.textSecondary }, valueStyle]}>
           {value}
-        </Text>
+        </AtomicText>
       )}
 
-      {showChevron && <Text style={chevronStyles}>›</Text>}
+      {showChevron && (
+        <AtomicIcon
+          name="chevron-right"
+          size={20}
+          customColor={chevronColor || colors.textSecondary}
+          style={styles.chevron}
+        />
+      )}
     </Container>
   );
 });
@@ -156,7 +157,6 @@ const getStyles = (tokens: any) => StyleSheet.create({
     maxWidth: '60%',
   },
   chevron: {
-    fontSize: 20,
-    fontWeight: '300',
+    marginLeft: 4,
   },
 });

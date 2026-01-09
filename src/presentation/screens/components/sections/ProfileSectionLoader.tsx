@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { ProfileSection } from "@umituz/react-native-auth";
 import { useLocalization } from "@umituz/react-native-localization";
+import { useAppNavigation } from "@umituz/react-native-design-system";
 
 export interface ProfileSectionLoaderProps {
     userProfile?: {
@@ -19,7 +19,7 @@ export interface ProfileSectionLoaderProps {
 
 export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = ({ userProfile }) => {
     const { t } = useLocalization();
-    const navigation = useNavigation<any>();
+    const navigation = useAppNavigation();
 
     if (!userProfile) return null;
 

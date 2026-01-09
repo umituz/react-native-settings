@@ -20,6 +20,8 @@ export type {
   CloudSyncConfig,
   SubscriptionConfig,
   WalletConfig,
+  GamificationItemConfig,
 } from "./UserFeatureConfig";
+export type { GamificationSettingsConfig as GamificationConfig } from "../../../domains/gamification";
 export type { SettingsConfig } from "./SettingsConfig";
 export type { CustomSettingsSection } from "./CustomSection";

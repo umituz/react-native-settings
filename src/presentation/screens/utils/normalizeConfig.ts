@@ -17,7 +17,7 @@ import type {
   FAQConfig,
   SubscriptionConfig,
   WalletConfig,
-  GamificationConfig,
+  GamificationItemConfig,
   SettingsConfig,
 } from "../types";
 
@@ -72,7 +72,7 @@ export interface NormalizedConfig {
   };
   gamification: {
     enabled: boolean;
-    config?: GamificationConfig;
+    config?: GamificationItemConfig;
   };
 }
 

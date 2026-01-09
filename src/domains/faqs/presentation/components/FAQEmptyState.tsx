@@ -5,7 +5,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 
 export interface FAQEmptyStateStyles {
@@ -55,7 +55,7 @@ export const FAQEmptyState: React.FC<FAQEmptyStateProps> = ({
 
     return (
         <View style={[styles.container, customStyles?.container]}>
-            <Text style={[styles.icon, customStyles?.icon]}>{icon}</Text>
+            <AtomicText style={[styles.icon, customStyles?.icon]}>{icon}</AtomicText>
             <AtomicText
                 type="headlineSmall"
                 color="textPrimary"

@@ -6,12 +6,11 @@
  */
 
 import React, { useMemo, useCallback } from "react";
-// @ts-ignore - Optional peer dependency
-import { useNavigation } from "@react-navigation/native";
 import { 
   ScreenLayout, 
   useAppDesignTokens,
-  NavigationHeader
+  NavigationHeader,
+  useAppNavigation
 } from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { useAppearance, useAppearanceActions } from "../../hooks";
@@ -39,7 +38,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   showColorsSection = true,
   showPreviewSection = true,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
   const { themeMode } = useAppearance();

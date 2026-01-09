@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
+import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
@@ -15,7 +15,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
     normalizedConfig,
 }) => {
     const { t } = useLocalization();
-    const navigation = useNavigation();
+    const navigation = useAppNavigation();
 
     const handleFAQPress = useCallback(() => {
         navigation.navigate("FAQ" as never);

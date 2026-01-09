@@ -5,10 +5,10 @@
 
 import React from "react";
 import { View, StatusBar, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import {
   useAppDesignTokens,
   ScreenLayout,
+  useAppNavigation,
 } from "@umituz/react-native-design-system";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";
@@ -72,7 +72,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   devSettings,
   gamificationConfig,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
 
   const normalizedConfig = normalizeSettingsConfig(config);

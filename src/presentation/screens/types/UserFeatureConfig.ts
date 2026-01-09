@@ -141,9 +141,9 @@ export interface WalletConfig {
 }
 
 /**
- * Gamification Settings Configuration
+ * Gamification Settings Item Configuration
  */
-export interface GamificationConfig {
+export interface GamificationItemConfig {
   /** Show gamification section */
   enabled?: FeatureVisibility;
   /** Custom title for the gamification section */

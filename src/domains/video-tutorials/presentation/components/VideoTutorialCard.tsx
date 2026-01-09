@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useAppDesignTokens, AtomicText } from "@umituz/react-native-design-system";
 import type { VideoTutorial } from "../../types";
 
 interface VideoTutorialCardProps {
@@ -32,10 +32,7 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
     <TouchableOpacity
       style={[
         styles.container,
-        {
-          backgroundColor: tokens.colors.surface,
-          borderColor: tokens.colors.border,
-        },
+        { backgroundColor: tokens.colors.surface, borderColor: tokens.colors.border },
         horizontal && styles.horizontalContainer,
       ]}
       onPress={onPress}
@@ -47,149 +44,60 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
           style={[styles.thumbnail, horizontal && styles.horizontalThumbnail]}
           resizeMode="cover"
         />
-        <View
-          style={[styles.durationBadge, { backgroundColor: "rgba(0,0,0,0.7)" }]}
-        >
-          <Text style={styles.durationText}>
-            {formatDuration(tutorial.duration)}
-          </Text>
+        <View style={[styles.durationBadge, { backgroundColor: "rgba(0,0,0,0.7)" }]}>
+          <AtomicText style={styles.durationText}>{formatDuration(tutorial.duration)}</AtomicText>
         </View>
         {tutorial.featured && (
-          <View
-            style={[
-              styles.featuredBadge,
-              { backgroundColor: tokens.colors.primary },
-            ]}
-          >
-            <Text style={[styles.featuredText, { color: tokens.colors.onPrimary }]}>
-              Featured
-            </Text>
+          <View style={[styles.featuredBadge, { backgroundColor: tokens.colors.primary }]}>
+            <AtomicText style={[styles.featuredText, { color: tokens.colors.onPrimary }]}>Featured</AtomicText>
           </View>
         )}
       </View>
 
       <View style={styles.content}>
-        <Text
-          style={[
-            styles.title,
-            { color: tokens.colors.textPrimary },
-            horizontal && styles.horizontalTitle,
-          ]}
+        <AtomicText
+          style={[styles.title, horizontal && styles.horizontalTitle]}
           numberOfLines={2}
         >
           {tutorial.title}
-        </Text>
+        </AtomicText>
 
-        <Text
-          style={[
-            styles.description,
-            { color: tokens.colors.textSecondary },
-            horizontal && styles.horizontalDescription,
-          ]}
+        <AtomicText
+          style={[styles.description, horizontal && styles.horizontalDescription]}
           numberOfLines={horizontal ? 2 : 3}
         >
           {tutorial.description}
-        </Text>
+        </AtomicText>
 
         <View style={styles.metadata}>
-          <Text
-            style={[styles.category, { color: tokens.colors.textTertiary }]}
-          >
+          <AtomicText style={styles.category}>
             {tutorial.category.replace("-", " ")}
-          </Text>
-          <Text
-            style={[styles.difficulty, { color: tokens.colors.textSecondary }]}
-          >
+          </AtomicText>
+          <AtomicText style={styles.difficulty}>
             {tutorial.difficulty}
-          </Text>
+          </AtomicText>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
 
-const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
-  StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    borderWidth: 1,
-    marginBottom: 12,
-    overflow: "hidden",
-  },
-  horizontalContainer: {
-    width: 280,
-    marginRight: 12,
-    marginBottom: 0,
-  },
-  imageContainer: {
-    position: "relative",
-  },
-  thumbnail: {
-    width: "100%",
-    height: 180,
-  },
-  horizontalThumbnail: {
-    height: 140,
-  },
-  durationBadge: {
-    position: "absolute",
-    bottom: 8,
-    right: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  durationText: {
-    color: tokens.colors.textInverse,
-    fontSize: 12,
-    fontWeight: "500",
-  },
-  featuredBadge: {
-    position: "absolute",
-    top: 8,
-    left: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  featuredText: {
-    fontSize: 11,
-    fontWeight: "600",
-  },
-  content: {
-    padding: 12,
-  },
-  title: {
-    fontSize: tokens.typography.titleMedium.fontSize,
-    fontWeight: "600",
-    marginBottom: 6,
-  },
-  horizontalTitle: {
-    fontSize: tokens.typography.bodyLarge.fontSize,
-  },
-  description: {
-    fontSize: tokens.typography.bodyMedium.fontSize,
-    lineHeight: 20,
-    marginBottom: 8,
-  },
-  horizontalDescription: {
-    fontSize: tokens.typography.bodySmall.fontSize,
-    lineHeight: 16,
-    marginBottom: 6,
-  },
-  metadata: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  category: {
-    fontSize: 12,
-    textTransform: "capitalize",
-    fontWeight: "500",
-  },
-  difficulty: {
-    fontSize: 12,
-    textTransform: "capitalize",
-    fontWeight: "500",
-  },
+const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) => StyleSheet.create({
+  container: { borderRadius: 12, borderWidth: 1, marginBottom: 12, overflow: "hidden" },
+  horizontalContainer: { width: 280, marginRight: 12, marginBottom: 0 },
+  imageContainer: { position: "relative" },
+  thumbnail: { width: "100%", height: 180 },
+  horizontalThumbnail: { height: 140 },
+  durationBadge: { position: "absolute", bottom: 8, right: 8, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+  durationText: { color: tokens.colors.textInverse, fontSize: 12, fontWeight: "500" },
+  featuredBadge: { position: "absolute", top: 8, left: 8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
+  featuredText: { fontSize: 11, fontWeight: "600" },
+  content: { padding: 12 },
+  title: { fontSize: tokens.typography.titleMedium.fontSize, fontWeight: "600", marginBottom: 6, color: tokens.colors.textPrimary },
+  horizontalTitle: { fontSize: tokens.typography.bodyLarge.fontSize },
+  description: { fontSize: tokens.typography.bodyMedium.fontSize, lineHeight: 20, marginBottom: 8, color: tokens.colors.textSecondary },
+  horizontalDescription: { fontSize: tokens.typography.bodySmall.fontSize, lineHeight: 16, marginBottom: 6 },
+  metadata: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  category: { fontSize: 12, textTransform: "capitalize", fontWeight: "500", color: tokens.colors.textTertiary },
+  difficulty: { fontSize: 12, textTransform: "capitalize", fontWeight: "500", color: tokens.colors.textSecondary },
 });

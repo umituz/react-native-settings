@@ -5,45 +5,26 @@ import {
     AtomicIcon,
     AtomicText,
     type IconName,
+    withAlpha
 } from "@umituz/react-native-design-system";
 
 export interface SettingsItemCardProps {
-    /** Item title */
     title: string;
-    /** Optional description or current value */
     description?: string;
-    /** Icon name from AtomicIcon */
     icon: IconName;
-    /** On press handler - if undefined, item is not clickable */
     onPress?: () => void;
-    /** Optional container style */
     containerStyle?: ViewStyle;
-    /** Optional section title (shows above the card) */
     sectionTitle?: string;
-    /** Optional right icon (defaults to chevron-forward, hidden if not clickable) */
     rightIcon?: IconName;
-    /** Optional icon background color (defaults to primary with opacity) */
     iconBgColor?: string;
-    /** Optional icon color */
     iconColor?: string;
-    /** Show chevron even if not clickable */
     showChevron?: boolean;
-    /** Show switch instead of chevron */
     showSwitch?: boolean;
-    /** Switch value (when showSwitch is true) */
     switchValue?: boolean;
-    /** Switch change handler */
     onSwitchChange?: (value: boolean) => void;
-    /** Disable the item */
     disabled?: boolean;
 }
 
-/**
- * SettingsItemCard
- *
- * A premium, consistent card for settings items used across all apps.
- * Follows the visual style of the Appearance section.
- */
 export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     title,
     description,
@@ -63,7 +44,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     const tokens = useAppDesignTokens();
     const colors = tokens.colors;
 
-    const defaultIconBg = iconBgColor || `${colors.primary}15`;
+    const defaultIconBg = iconBgColor || withAlpha(colors.primary, 0.15);
     const defaultIconColor = iconColor || colors.primary;
     const isClickable = !!onPress && !showSwitch;
     const shouldShowChevron = !showSwitch && (showChevron ?? isClickable);
@@ -137,7 +118,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                     style={({ pressed }) => [
                         styles.itemContainer,
                         {
-                            backgroundColor: pressed ? `${colors.primary}08` : "transparent",
+                            backgroundColor: pressed ? withAlpha(colors.primary, 0.08) : "transparent",
                         },
                     ]}
                     onPress={onPress}

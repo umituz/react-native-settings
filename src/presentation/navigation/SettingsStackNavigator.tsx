@@ -6,15 +6,10 @@
  */
 
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { useAppDesignTokens, StackNavigator, type StackScreen, type StackNavigatorConfig } from "@umituz/react-native-design-system";
 import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
 import { NotificationSettingsScreen } from "../../domains/notifications";
 import { AccountScreen } from "@umituz/react-native-auth";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
-
-// ...
-
-
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { FAQScreen } from "../../domains/faqs";
 import { useNavigationHandlers } from "./hooks";
@@ -30,8 +25,6 @@ import {
 } from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
 import { GamificationScreenWrapper } from "../../domains/gamification";
-
-const Stack = createStackNavigator<SettingsStackParamList>();
 
 export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   appInfo,
@@ -70,6 +63,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     }),
     [tokens, t]
   );
+
   const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);
   const quietHoursTranslations = React.useMemo(() => createQuietHoursTranslations(t), [t]);
   const legalScreenProps = React.useMemo(
@@ -77,13 +71,12 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     [t, handlePrivacyPress, handleTermsPress, handleEulaPress]
   );
 
-  return (
-    <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen
-        name="SettingsMain"
-        options={showHeader ? { headerTitle: t("settings.title") } : { headerShown: false }}
-      >
-        {() => (
+  const screens = React.useMemo(() => {
+    const list: StackScreen<any>[] = [
+      {
+        name: "SettingsMain",
+        options: showHeader ? { headerTitle: t("settings.title") } : { headerShown: false },
+        children: () => (
           <SettingsScreenWrapper
             config={config}
             appVersion={appInfo.version}
@@ -93,94 +86,113 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
             customSections={customSections}
             showHeader={showHeader}
           />
-        )}
-      </Stack.Screen>
-
-      <Stack.Screen
-        name="Appearance"
-        component={AppearanceScreen}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen name="About" options={{ headerTitle: t("settings.about.title") }}>
-        {() => <AboutScreenWrapper config={aboutConfig} />}
-      </Stack.Screen>
-
-      <Stack.Screen name="Legal" options={{ headerTitle: t("settings.legal.title") }}>
-        {() => <LegalScreenWrapper {...legalScreenProps} />}
-      </Stack.Screen>
-
-      <Stack.Screen
-        name="Notifications"
-        options={{ headerShown: false }}
-      >
-        {() => (
+        ),
+      },
+      {
+        name: "Appearance",
+        component: AppearanceScreen,
+        options: { headerShown: false },
+      },
+      {
+        name: "About",
+        options: { headerTitle: t("settings.about.title") },
+        children: () => <AboutScreenWrapper config={aboutConfig} />,
+      },
+      {
+        name: "Legal",
+        options: { headerTitle: t("settings.legal.title") },
+        children: () => <LegalScreenWrapper {...legalScreenProps} />,
+      },
+      {
+        name: "Notifications",
+        options: { headerShown: false },
+        children: () => (
           <NotificationSettingsScreen
             translations={notificationTranslations}
             quietHoursTranslations={quietHoursTranslations}
           />
-        )}
-      </Stack.Screen>
+        ),
+      },
+    ];
 
-      {faqData && faqData.categories.length > 0 && (
-        <Stack.Screen name="FAQ" options={{ headerTitle: t("settings.faqs.title") }}>
-          {() => (
-            <FAQScreen
-              categories={faqData.categories}
-              searchPlaceholder={t("settings.faqs.searchPlaceholder")}
-              emptySearchTitle={t("settings.faqs.emptySearchTitle")}
-              emptySearchMessage={t("settings.faqs.emptySearchMessage")}
-              headerTitle={t("settings.faqs.headerTitle")}
-            />
-          )}
-        </Stack.Screen>
-      )}
-
-      {additionalScreens.map((screen) =>
-        screen.children ? (
-          <Stack.Screen
-            key={screen.name}
-            name={screen.name as keyof SettingsStackParamList}
-            options={screen.options}
-          >
-            {screen.children}
-          </Stack.Screen>
-        ) : screen.component ? (
-          <Stack.Screen
-            key={screen.name}
-            name={screen.name as keyof SettingsStackParamList}
-            component={screen.component}
-            options={screen.options}
+    if (faqData && faqData.categories.length > 0) {
+      list.push({
+        name: "FAQ",
+        options: { headerTitle: t("settings.faqs.title") },
+        children: () => (
+          <FAQScreen
+            categories={faqData.categories}
+            searchPlaceholder={t("settings.faqs.searchPlaceholder")}
+            emptySearchTitle={t("settings.faqs.emptySearchTitle")}
+            emptySearchMessage={t("settings.faqs.emptySearchMessage")}
+            headerTitle={t("settings.faqs.headerTitle")}
           />
-        ) : null
-      )}
+        ),
+      });
+    }
 
-      {gamificationConfig?.enabled && (
-        <Stack.Screen
-          name="Gamification"
-          options={{ headerTitle: t("settings.gamification.title") }}
-        >
-          {() => <GamificationScreenWrapper config={gamificationConfig} />}
-        </Stack.Screen>
-      )}
+    // Add additional screens
+    additionalScreens.forEach((screen) => {
+      list.push({
+        name: screen.name as keyof SettingsStackParamList,
+        component: screen.component as any,
+        children: screen.children as any,
+        options: screen.options as any,
+      });
+    });
 
-      <Stack.Screen
-        name="LanguageSelection"
-        options={{ headerShown: false }}
-      >
-        {() => (
-          <LanguageSelectionScreen
-            headerTitle={t("settings.language.title")}
-            searchPlaceholder={t("settings.languageSelection.searchPlaceholder")}
-          />
-        )}
-      </Stack.Screen>
+    if (gamificationConfig?.enabled) {
+      list.push({
+        name: "Gamification",
+        options: { headerTitle: t("settings.gamification.title") },
+        children: () => <GamificationScreenWrapper config={gamificationConfig} />,
+      });
+    }
 
-      {accountConfig && (
-        <Stack.Screen name="Account" options={{ headerTitle: t("settings.account.title") }}>
-          {() => <AccountScreen config={accountConfig} />}
-        </Stack.Screen>
-      )}
-    </Stack.Navigator>
-  );
+    list.push({
+      name: "LanguageSelection",
+      options: { headerShown: false },
+      children: () => (
+        <LanguageSelectionScreen
+          headerTitle={t("settings.language.title")}
+          searchPlaceholder={t("settings.languageSelection.searchPlaceholder")}
+        />
+      ),
+    });
+
+    if (accountConfig) {
+      list.push({
+        name: "Account",
+        options: { headerTitle: t("settings.account.title") },
+        children: () => <AccountScreen config={accountConfig} />,
+      });
+    }
+
+    return list;
+  }, [
+    t,
+    showHeader,
+    config,
+    appInfo.version,
+    showUserProfile,
+    userProfile,
+    devSettings,
+    customSections,
+    aboutConfig,
+    legalScreenProps,
+    notificationTranslations,
+    quietHoursTranslations,
+    faqData,
+    additionalScreens,
+    gamificationConfig,
+    accountConfig,
+  ]);
+
+  const navigatorConfig: StackNavigatorConfig<SettingsStackParamList> = {
+    initialRouteName: "SettingsMain",
+    screenOptions: screenOptions as any,
+    screens,
+  };
+
+  return <StackNavigator<any> config={navigatorConfig as any} />;
 };

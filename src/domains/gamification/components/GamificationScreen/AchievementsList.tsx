@@ -3,7 +3,8 @@
  */
 
 import React from "react";
-import { View, Text, type TextStyle } from "react-native";
+import { View, type TextStyle } from "react-native";
+import { AtomicText } from "@umituz/react-native-design-system";
 import { AchievementItem } from "../AchievementItem";
 import { styles } from "./styles";
 import type { AchievementItemProps } from "../AchievementItem";
@@ -43,14 +44,14 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
 
   return (
     <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: textColor }, sectionTitleStyle]}>
+      <AtomicText style={[styles.sectionTitle, { color: textColor }, sectionTitleStyle]}>
         {achievementsTitle}
-      </Text>
+      </AtomicText>
 
       {achievements.length === 0 && emptyAchievementsText ? (
-        <Text style={[styles.emptyText, { color: subtextColor }]}>
+        <AtomicText style={[styles.emptyText, { color: subtextColor }]}>
           {emptyAchievementsText}
-        </Text>
+        </AtomicText>
       ) : (
         <>
           {/* Unlocked achievements first */}

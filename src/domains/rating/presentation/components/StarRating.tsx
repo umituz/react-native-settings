@@ -27,8 +27,8 @@ export const StarRating: React.FC<StarRatingProps> = ({
     const styles = getStyles(tokens);
     const [internalRating, setInternalRating] = useState(rating);
 
-    const filledColor = activeColor || tokens.colors.warning || "#FFD700";
-    const emptyColor = inactiveColor || tokens.colors.border || "#E0E0E0";
+    const filledColor = activeColor || tokens.colors.warning;
+    const emptyColor = inactiveColor || tokens.colors.borderLight;
     
     // Scale the size
     const responsiveSize = size;

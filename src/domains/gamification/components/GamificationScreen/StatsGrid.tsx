@@ -3,7 +3,8 @@
  */
 
 import React from "react";
-import { View, Text, type TextStyle } from "react-native";
+import { View, type TextStyle } from "react-native";
+import { AtomicText } from "@umituz/react-native-design-system";
 import { StatsCard } from "../StatsCard";
 import { styles } from "./styles";
 import type { StatsCardProps } from "../StatsCard";
@@ -31,9 +32,9 @@ export const StatsGrid: React.FC<StatsGridProps> = ({
 
   return (
     <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: textColor }, sectionTitleStyle]}>
+      <AtomicText style={[styles.sectionTitle, { color: textColor }, sectionTitleStyle]}>
         {statsTitle}
-      </Text>
+      </AtomicText>
       <View style={styles.statsGrid}>
         {stats.map((stat, index) => (
           <StatsCard

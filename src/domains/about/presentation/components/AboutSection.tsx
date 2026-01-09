@@ -1,6 +1,6 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useAppNavigation } from '@umituz/react-native-design-system';
 import { AboutConfig } from '../../domain/entities/AppInfo';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 
@@ -21,7 +21,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     description: propsDescription,
     sectionTitle: propsSectionTitle,
 }) => {
-    const navigation = useNavigation();
+    const navigation = useAppNavigation();
 
     const route = config?.route || config?.defaultRoute || 'About';
     const title = propsTitle || config?.title;

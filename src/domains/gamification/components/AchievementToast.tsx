@@ -4,20 +4,19 @@
  */
 
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Animated, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, Animated, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface AchievementToastProps {
   visible: boolean;
   title: string;
-  label: string; // e.g., "Achievement Unlocked!" - from app translations
+  label: string;
   icon: React.ReactNode;
   onDismiss: () => void;
   duration?: number;
-  // Customization
   containerStyle?: ViewStyle;
   labelStyle?: TextStyle;
   titleStyle?: TextStyle;
-  // Colors
   backgroundColor?: string;
   textColor?: string;
   labelColor?: string;
@@ -33,11 +32,16 @@ export const AchievementToast: React.FC<AchievementToastProps> = ({
   containerStyle,
   labelStyle,
   titleStyle,
-  backgroundColor = "#FFD700",
-  textColor = "#000000",
-  labelColor = "#00000080",
+  backgroundColor,
+  textColor,
+  labelColor,
 }) => {
+  const tokens = useAppDesignTokens();
   const translateY = useRef(new Animated.Value(-100)).current;
+
+  const finalBackgroundColor = backgroundColor || tokens.colors.primary;
+  const finalTextColor = textColor || tokens.colors.onPrimary;
+  const finalLabelColor = labelColor || withAlpha(finalTextColor, 0.5);
 
   useEffect(() => {
     if (visible) {
@@ -69,15 +73,15 @@ export const AchievementToast: React.FC<AchievementToastProps> = ({
         containerStyle,
       ]}
     >
-      <View style={[styles.toast, { backgroundColor }]}>
+      <View style={[styles.toast, { backgroundColor: finalBackgroundColor }]}>
         <View style={styles.iconContainer}>{icon}</View>
         <View style={styles.content}>
-          <Text style={[styles.label, { color: labelColor }, labelStyle]}>
+          <AtomicText style={[styles.label, { color: finalLabelColor }, labelStyle]}>
             {label}
-          </Text>
-          <Text style={[styles.title, { color: textColor }, titleStyle]}>
+          </AtomicText>
+          <AtomicText style={[styles.title, { color: finalTextColor }, titleStyle]}>
             {title}
-          </Text>
+          </AtomicText>
         </View>
       </View>
     </Animated.View>

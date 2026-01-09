@@ -4,7 +4,8 @@
  */
 
 import React from "react";
-import { View, Text, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface AchievementCardProps {
   title: string;
@@ -12,12 +13,10 @@ export interface AchievementCardProps {
   icon: React.ReactNode;
   isUnlocked: boolean;
   progress: number;
-  // Customization
   containerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   descriptionStyle?: TextStyle;
   progressBarStyle?: ViewStyle;
-  // Colors
   unlockedColor?: string;
   lockedColor?: string;
   backgroundColor?: string;
@@ -35,42 +34,50 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
   titleStyle,
   descriptionStyle,
   progressBarStyle,
-  unlockedColor = "#4CAF50",
-  lockedColor = "#666666",
-  backgroundColor = "#1A1A1A",
-  textColor = "#FFFFFF",
-  subtextColor = "#888888",
+  unlockedColor,
+  lockedColor,
+  backgroundColor,
+  textColor,
+  subtextColor,
 }) => {
-  const accentColor = isUnlocked ? unlockedColor : lockedColor;
+  const tokens = useAppDesignTokens();
+  
+  const finalUnlockedColor = unlockedColor || tokens.colors.success;
+  const finalLockedColor = lockedColor || tokens.colors.textDisabled;
+  const finalBackgroundColor = backgroundColor || tokens.colors.surface;
+  const finalTextColor = textColor || tokens.colors.textPrimary;
+  const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
+  
+  const accentColor = isUnlocked ? finalUnlockedColor : finalLockedColor;
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor, borderColor: `${accentColor}40` },
+        { backgroundColor: finalBackgroundColor, borderColor: withAlpha(accentColor, 0.4) },
         containerStyle,
       ]}
     >
-      <View style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}>
+      <View style={[styles.iconContainer, { backgroundColor: withAlpha(accentColor, 0.2) }]}>
         {icon}
       </View>
 
       <View style={styles.content}>
-        <Text
+        <AtomicText
           style={[
             styles.title,
-            { color: isUnlocked ? textColor : subtextColor },
+            { color: isUnlocked ? finalTextColor : finalSubtextColor },
             titleStyle,
           ]}
         >
           {title}
-        </Text>
-        <Text style={[styles.description, { color: subtextColor }, descriptionStyle]}>
+        </AtomicText>
+        <AtomicText style={[styles.description, { color: finalSubtextColor }, descriptionStyle]}>
           {description}
-        </Text>
+        </AtomicText>
 
         {!isUnlocked && (
-          <View style={[styles.progressBar, { backgroundColor: `${lockedColor}40` }, progressBarStyle]}>
+          <View style={[styles.progressBar, { backgroundColor: withAlpha(finalLockedColor, 0.4) }, progressBarStyle]}>
             <View
               style={[
                 styles.progressFill,
@@ -82,8 +89,8 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
       </View>
 
       {isUnlocked && (
-        <View style={[styles.checkmark, { backgroundColor: unlockedColor }]}>
-          <Text style={styles.checkmarkText}>✓</Text>
+        <View style={[styles.checkmark, { backgroundColor: finalUnlockedColor }]}>
+          <AtomicText style={styles.checkmarkText}>✓</AtomicText>
         </View>
       )}
     </View>

@@ -3,7 +3,8 @@
  */
 
 import React from "react";
-import { View, Text, type ViewStyle, type TextStyle } from "react-native";
+import { View, type ViewStyle, type TextStyle } from "react-native";
+import { AtomicText } from "@umituz/react-native-design-system";
 import { styles } from "./styles";
 
 export interface HeaderProps {
@@ -21,9 +22,9 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <View style={[styles.header, headerStyle]}>
-      <Text style={[styles.title, { color: textColor }, titleStyle]}>
+      <AtomicText style={[styles.title, { color: textColor }, titleStyle]}>
         {title}
-      </Text>
+      </AtomicText>
     </View>
   );
 };

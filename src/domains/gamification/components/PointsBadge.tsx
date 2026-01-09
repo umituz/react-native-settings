@@ -4,15 +4,14 @@
  */
 
 import React from "react";
-import { View, Text, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface PointsBadgeProps {
   points: number;
   icon?: React.ReactNode;
-  // Customization
   containerStyle?: ViewStyle;
   textStyle?: TextStyle;
-  // Colors
   backgroundColor?: string;
   textColor?: string;
   borderColor?: string;
@@ -23,22 +22,27 @@ export const PointsBadge: React.FC<PointsBadgeProps> = ({
   icon,
   containerStyle,
   textStyle,
-  backgroundColor = "#FFD70020",
-  textColor = "#FFD700",
-  borderColor = "#FFD70040",
+  backgroundColor,
+  textColor,
+  borderColor,
 }) => {
+  const tokens = useAppDesignTokens();
+  const finalTextColor = textColor || tokens.colors.primary;
+  const finalBackgroundColor = backgroundColor || withAlpha(finalTextColor, 0.1);
+  const finalBorderColor = borderColor || withAlpha(finalTextColor, 0.2);
+
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor, borderColor },
+        { backgroundColor: finalBackgroundColor, borderColor: finalBorderColor },
         containerStyle,
       ]}
     >
       {icon}
-      <Text style={[styles.text, { color: textColor }, textStyle]}>
+      <AtomicText style={[styles.text, { color: finalTextColor }, textStyle]}>
         {points}
-      </Text>
+      </AtomicText>
     </View>
   );
 };

@@ -4,7 +4,8 @@
  */
 
 import React from "react";
-import { View, Text, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface LevelProgressProps {
   level: number;
@@ -13,7 +14,6 @@ export interface LevelProgressProps {
   pointsToNext: number;
   progress: number;
   showPoints?: boolean;
-  // Customization
   containerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   subtitleStyle?: TextStyle;
@@ -21,7 +21,6 @@ export interface LevelProgressProps {
   progressFillStyle?: ViewStyle;
   badgeStyle?: ViewStyle;
   badgeTextStyle?: TextStyle;
-  // Colors (design system integration)
   primaryColor?: string;
   secondaryColor?: string;
   backgroundColor?: string;
@@ -43,38 +42,46 @@ export const LevelProgress: React.FC<LevelProgressProps> = ({
   progressFillStyle,
   badgeStyle,
   badgeTextStyle,
-  primaryColor = "#FFD700",
-  secondaryColor = "#2A2A2A",
-  backgroundColor = "#1A1A1A",
-  textColor = "#FFFFFF",
-  subtextColor = "#888888",
+  primaryColor,
+  secondaryColor,
+  backgroundColor,
+  textColor,
+  subtextColor,
 }) => {
+  const tokens = useAppDesignTokens();
+  
+  const finalPrimaryColor = primaryColor || tokens.colors.primary;
+  const finalSecondaryColor = secondaryColor || tokens.colors.surfaceSecondary;
+  const finalBackgroundColor = backgroundColor || tokens.colors.surface;
+  const finalTextColor = textColor || tokens.colors.textPrimary;
+  const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
+
   return (
-    <View style={[styles.container, { backgroundColor }, containerStyle]}>
+    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
       <View style={styles.header}>
         <View style={styles.titleSection}>
-          <Text style={[styles.levelTitle, { color: textColor }, titleStyle]}>
+          <AtomicText style={[styles.levelTitle, { color: finalTextColor }, titleStyle]}>
             {levelTitle}
-          </Text>
+          </AtomicText>
           {showPoints && (
-            <Text style={[styles.subtitle, { color: subtextColor }, subtitleStyle]}>
+            <AtomicText style={[styles.subtitle, { color: finalSubtextColor }, subtitleStyle]}>
               {points} / {points + pointsToNext}
-            </Text>
+            </AtomicText>
           )}
         </View>
 
-        <View style={[styles.badge, { backgroundColor: `${primaryColor}20`, borderColor: `${primaryColor}40` }, badgeStyle]}>
-          <Text style={[styles.badgeText, { color: primaryColor }, badgeTextStyle]}>
+        <View style={[styles.badge, { backgroundColor: withAlpha(finalPrimaryColor, 0.2), borderColor: withAlpha(finalPrimaryColor, 0.4) }, badgeStyle]}>
+          <AtomicText style={[styles.badgeText, { color: finalPrimaryColor }, badgeTextStyle]}>
             {level}
-          </Text>
+          </AtomicText>
         </View>
       </View>
 
-      <View style={[styles.progressBar, { backgroundColor: secondaryColor }, progressBarStyle]}>
+      <View style={[styles.progressBar, { backgroundColor: finalSecondaryColor }, progressBarStyle]}>
         <View
           style={[
             styles.progressFill,
-            { width: `${Math.min(100, progress)}%`, backgroundColor: primaryColor },
+            { width: `${Math.min(100, progress)}%`, backgroundColor: finalPrimaryColor },
             progressFillStyle,
           ]}
         />

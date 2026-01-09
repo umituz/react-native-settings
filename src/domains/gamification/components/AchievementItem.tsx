@@ -4,13 +4,8 @@
  */
 
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  type ViewStyle,
-  type TextStyle,
-} from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface AchievementItemProps {
   title: string;
@@ -43,66 +38,73 @@ export const AchievementItem: React.FC<AchievementItemProps> = ({
   containerStyle,
   titleStyle,
   descriptionStyle,
-  accentColor = "#FFD700",
-  backgroundColor = "#1A1A1A",
-  textColor = "#FFFFFF",
-  subtextColor = "#888888",
-  lockedOpacity = 0.5,
+  accentColor,
+  backgroundColor,
+  textColor,
+  subtextColor,
+  lockedOpacity,
 }) => {
+  const tokens = useAppDesignTokens();
+  const finalAccentColor = accentColor || tokens.colors.primary;
+  const finalBackgroundColor = backgroundColor || tokens.colors.surface;
+  const finalTextColor = textColor || tokens.colors.textPrimary;
+  const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
+  const finalLockedOpacity = lockedOpacity !== undefined ? lockedOpacity : 0.5;
+
   const progressPercent = Math.min((progress / threshold) * 100, 100);
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor, opacity: isUnlocked ? 1 : lockedOpacity },
+        { backgroundColor: finalBackgroundColor, opacity: isUnlocked ? 1 : finalLockedOpacity },
         containerStyle,
       ]}
     >
       <View
-        style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}
+        style={[styles.iconContainer, { backgroundColor: withAlpha(finalAccentColor, 0.2) }]}
       >
         {icon}
       </View>
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={[styles.title, { color: textColor }, titleStyle]}>
+          <AtomicText style={[styles.title, { color: finalTextColor }, titleStyle]}>
             {title}
-          </Text>
+          </AtomicText>
           {isUnlocked && (
-            <View style={[styles.checkmark, { backgroundColor: accentColor }]}>
-              <Text style={styles.checkmarkText}>✓</Text>
+            <View style={[styles.checkmark, { backgroundColor: finalAccentColor }]}>
+              <AtomicText style={styles.checkmarkText}>✓</AtomicText>
             </View>
           )}
         </View>
 
-        <Text
-          style={[styles.description, { color: subtextColor }, descriptionStyle]}
+        <AtomicText
+          style={[styles.description, { color: finalSubtextColor }, descriptionStyle]}
           numberOfLines={2}
         >
           {description}
-        </Text>
+        </AtomicText>
 
         {!isUnlocked && (
           <View style={styles.progressContainer}>
             <View
-              style={[styles.progressBar, { backgroundColor: `${accentColor}30` }]}
+              style={[styles.progressBar, { backgroundColor: withAlpha(finalAccentColor, 0.3) }]}
             >
               <View
                 style={[
                   styles.progressFill,
                   {
-                    backgroundColor: accentColor,
+                    backgroundColor: finalAccentColor,
                     width: `${progressPercent}%`,
                   },
                 ]}
               />
             </View>
             {progressLabel && (
-              <Text style={[styles.progressText, { color: subtextColor }]}>
+              <AtomicText style={[styles.progressText, { color: finalSubtextColor }]}>
                 {progressLabel}
-              </Text>
+              </AtomicText>
             )}
           </View>
         )}

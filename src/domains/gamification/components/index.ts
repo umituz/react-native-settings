@@ -11,3 +11,4 @@ export { StreakDisplay, type StreakDisplayProps } from "./StreakDisplay";
 export { StatsCard, type StatsCardProps } from "./StatsCard";
 export { AchievementItem, type AchievementItemProps } from "./AchievementItem";
 export { GamificationScreen, type GamificationScreenProps } from "./GamificationScreen/index";
+export { GamificationScreenWrapper } from "./GamificationScreenWrapper";

@@ -8,9 +8,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
-import { NotificationSettingsScreen } from "@umituz/react-native-notifications";
+import { NotificationSettingsScreen } from "@notifications";
 import { AccountScreen } from "@umituz/react-native-auth";
-import { useAppDesignTokens, createScreenOptions } from "@umituz/react-native-design-system";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
+
+// ...
+
+
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { FAQScreen } from "../../domains/faqs";
 import { useNavigationHandlers } from "./hooks";
@@ -49,15 +53,21 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     useNavigationHandlers(appInfo, legalUrls);
 
   const screenOptions = React.useMemo(
-    () =>
-      createScreenOptions({
-        colors: {
-          surface: tokens.colors.surface,
-          textPrimary: tokens.colors.textPrimary,
-          borderLight: tokens.colors.borderLight,
-        },
-        backTitle: t("settings.title"),
-      }),
+    () => ({
+      headerStyle: {
+        backgroundColor: tokens.colors.surface,
+        borderBottomColor: tokens.colors.borderLight,
+        borderBottomWidth: 1,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: tokens.colors.textPrimary,
+      headerTitleStyle: {
+        color: tokens.colors.textPrimary,
+        fontWeight: "600" as const,
+      },
+      headerBackTitle: t("settings.title"),
+    }),
     [tokens, t]
   );
   const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AppearanceSection } from "../../../../domains/appearance/presentation/components/AppearanceSection";
-import { NotificationsSection } from "@umituz/react-native-notifications";
+import { NotificationsSection } from "@notifications";
 import { useLocalization, getLanguageByCode } from "@umituz/react-native-localization";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";

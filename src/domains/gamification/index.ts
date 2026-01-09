@@ -1,5 +1,6 @@
 /**
- * @umituz/react-native-gamification
+ * Gamification Domain
+ * Part of @umituz/react-native-settings
  *
  * Generic gamification system for React Native apps
  * All text via props - NO hardcoded strings
@@ -18,12 +19,6 @@ export type {
   GamificationActions,
   GamificationStore,
 } from "./types";
-
-// Settings Integration Types
-export type {
-  GamificationSettingsConfig,
-  GamificationMenuConfig,
-} from "./types/settings";
 
 // Store
 export { useGamificationStore } from "./store/gamificationStore";
@@ -58,8 +53,5 @@ export {
   type AchievementItemProps,
   GamificationScreen,
   type GamificationScreenProps,
+  GamificationScreenWrapper,
 } from "./components";
-
-// Settings Integration Components
-export { GamificationScreenWrapper } from "./components/GamificationScreenWrapper";
-export { GamificationSettingsItem } from "./components/GamificationSettingsItem";

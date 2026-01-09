@@ -128,6 +128,9 @@ export * from "./domains/gamification";
 // PRESENTATION LAYER - Config Creator Utilities
 // =============================================================================
 
+// Notifications Domain
+export * from "./notifications";
+
 export {
   createAppearanceConfig,
   createLanguageConfig,

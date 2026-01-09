@@ -61,3 +61,9 @@ export const createGamificationScreenOptions = (t: any) => ({
   headerTitleAlign: "center" as const,
 });
 
+export const createAccountScreenOptions = (t: any) => ({
+  headerShown: true,
+  headerTitle: t("settings.account.title"),
+  headerTitleAlign: "center" as const,
+});
+

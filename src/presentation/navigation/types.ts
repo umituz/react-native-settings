@@ -43,6 +43,7 @@ export type SettingsStackParamList = {
   FAQ: undefined;
   LanguageSelection: undefined;
   Gamification: undefined;
+  Account: undefined;
 };
 
 /**

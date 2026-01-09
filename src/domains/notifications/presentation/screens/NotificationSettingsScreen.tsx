@@ -5,7 +5,16 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { AtomicCard, ScreenLayout, AtomicSpinner } from '@umituz/react-native-design-system';
+// @ts-ignore - Optional peer dependency
+import { useNavigation } from '@react-navigation/native';
+import { 
+  AtomicCard, 
+  ScreenLayout, 
+  AtomicSpinner,
+  NavigationHeader,
+  useAppDesignTokens
+} from '@umituz/react-native-design-system';
+import { useLocalization } from '@umituz/react-native-localization';
 import { QuietHoursCard } from '../../quietHours/presentation/components/QuietHoursCard';
 import { SettingRow } from '../components/SettingRow';
 import { RemindersNavRow } from '../components/RemindersNavRow';
@@ -15,7 +24,6 @@ import { useReminders } from '../../reminders/infrastructure/storage/RemindersSt
 import { useQuietHoursActions } from '../../quietHours/infrastructure/hooks/useQuietHoursActions';
 import type { NotificationSettingsTranslations, QuietHoursTranslations } from '../../infrastructure/services/types';
 import { createStyles } from './NotificationSettingsScreen.styles';
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
 // @ts-ignore - Optional peer dependency
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -30,7 +38,9 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
   quietHoursTranslations,
   onHapticFeedback,
 }) => {
+  const navigation = useNavigation();
   const tokens = useAppDesignTokens();
+  const { t } = useLocalization();
   const styles = createStyles(tokens);
   const reminders = useReminders();
   const { setStartTime, setEndTime } = useQuietHoursActions();
@@ -55,16 +65,33 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
     // Navigate to reminders screen when implemented
   };
 
+  const headerTitle = translations.screenTitle || t("settings.notifications.title");
+
   if (isLoading) {
     return (
-      <ScreenLayout>
+      <ScreenLayout
+        header={
+          <NavigationHeader 
+            title={headerTitle} 
+            onBackPress={() => navigation.goBack()} 
+          />
+        }
+      >
         <AtomicSpinner size="lg" color="primary" fullContainer />
       </ScreenLayout>
     );
   }
 
   return (
-    <ScreenLayout hideScrollIndicator>
+    <ScreenLayout 
+      hideScrollIndicator
+      header={
+        <NavigationHeader 
+          title={headerTitle} 
+          onBackPress={() => navigation.goBack()} 
+        />
+      }
+    >
       <View style={styles.container}>
         <AtomicCard style={styles.card}>
           <SettingRow

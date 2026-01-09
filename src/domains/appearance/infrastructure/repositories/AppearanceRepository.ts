@@ -1,4 +1,4 @@
-import { storageRepository, unwrap } from "@umituz/react-native-storage";
+import { storageRepository, unwrap } from "@umituz/react-native-design-system";
 import { IAppearanceRepository } from "../../application/ports/IAppearanceRepository";
 import { AppearanceSettings } from "../../types";
 

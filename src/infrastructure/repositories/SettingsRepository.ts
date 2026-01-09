@@ -1,10 +1,10 @@
 /**
  * Settings Repository Implementation
  *
- * Handles data access for user settings using @umituz/react-native-storage
+ * Handles data access for user settings using @umituz/react-native-design-system
  */
 
-import { storageRepository, StorageKey, createUserKey } from '@umituz/react-native-storage';
+import { storageRepository, StorageKey, createUserKey } from '@umituz/react-native-design-system';
 import type { ISettingsRepository, UserSettings, SettingsResult } from '../../application/ports/ISettingsRepository';
 
 export class SettingsRepository implements ISettingsRepository {

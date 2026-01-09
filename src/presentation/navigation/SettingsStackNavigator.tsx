@@ -8,7 +8,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
-import { NotificationSettingsScreen } from "@notifications";
+import { NotificationSettingsScreen } from "../../domains/notifications";
 import { AccountScreen } from "@umituz/react-native-auth";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
 
@@ -99,7 +99,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       <Stack.Screen
         name="Appearance"
         component={AppearanceScreen}
-        options={{ headerTitle: t("settings.appearance.title") }}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen name="About" options={{ headerTitle: t("settings.about.title") }}>
@@ -112,7 +112,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 
       <Stack.Screen
         name="Notifications"
-        options={{ headerTitle: t("settings.notifications.title") }}
+        options={{ headerShown: false }}
       >
         {() => (
           <NotificationSettingsScreen
@@ -166,10 +166,11 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 
       <Stack.Screen
         name="LanguageSelection"
-        options={{ headerTitle: t("settings.language.title") }}
+        options={{ headerShown: false }}
       >
         {() => (
           <LanguageSelectionScreen
+            headerTitle={t("settings.language.title")}
             searchPlaceholder={t("settings.languageSelection.searchPlaceholder")}
           />
         )}

@@ -9,8 +9,7 @@
 
 import React from "react";
 import { Alert } from "react-native";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
-import { storageRepository } from "@umituz/react-native-storage";
+import { useAppDesignTokens, storageRepository } from "@umituz/react-native-design-system";
 import { SettingsSection } from "../../../../presentation/components/SettingsSection";
 import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 

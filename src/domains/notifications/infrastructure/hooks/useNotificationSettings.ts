@@ -2,7 +2,7 @@
  * Simple notification settings hook
  */
 
-import { createStore } from '@umituz/react-native-storage';
+import { createStore } from '@umituz/react-native-design-system';
 
 interface NotificationSettingsState {
   notificationsEnabled: boolean;

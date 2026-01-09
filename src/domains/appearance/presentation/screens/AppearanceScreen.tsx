@@ -6,7 +6,13 @@
  */
 
 import React, { useMemo, useCallback } from "react";
-import { ScreenLayout, useAppDesignTokens } from "@umituz/react-native-design-system";
+// @ts-ignore - Optional peer dependency
+import { useNavigation } from "@react-navigation/native";
+import { 
+  ScreenLayout, 
+  useAppDesignTokens,
+  NavigationHeader
+} from "@umituz/react-native-design-system";
 import { useLocalization } from "@umituz/react-native-localization";
 import { useAppearance, useAppearanceActions } from "../../hooks";
 import {
@@ -33,6 +39,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   showColorsSection = true,
   showPreviewSection = true,
 }) => {
+  const navigation = useNavigation();
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
   const { themeMode } = useAppearance();
@@ -152,7 +159,15 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   ]);
 
   return (
-    <ScreenLayout hideScrollIndicator>
+    <ScreenLayout 
+      hideScrollIndicator
+      header={
+        <NavigationHeader 
+          title={t("settings.appearance.title")} 
+          onBackPress={() => navigation.goBack()} 
+        />
+      }
+    >
       {headerComponentMemo}
       {themeSectionMemo}
       {colorsSectionMemo}

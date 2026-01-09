@@ -3,7 +3,7 @@
  * Manages reminder state with AsyncStorage persistence
  */
 
-import { createStore } from '@umituz/react-native-storage';
+import { createStore } from '@umituz/react-native-design-system';
 import type { Reminder, QuietHoursConfig, NotificationPreferences } from '../../../infrastructure/services/types';
 
 // ============================================================================

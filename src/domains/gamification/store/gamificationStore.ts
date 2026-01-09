@@ -3,7 +3,7 @@
  * Zustand store with persist middleware
  */
 
-import { createStore } from "@umituz/react-native-storage";
+import { createStore } from "@umituz/react-native-design-system";
 import type {
   GamificationState,
   GamificationActions,

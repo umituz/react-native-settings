@@ -4,7 +4,7 @@
  * NO backend, NO user IDs, NO notification history
  */
 
-import { createStore } from '@umituz/react-native-storage';
+import { createStore } from '@umituz/react-native-design-system';
 
 interface NotificationsState {
   hasPermissions: boolean;

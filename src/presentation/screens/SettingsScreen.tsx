@@ -51,6 +51,8 @@ export interface SettingsScreenProps {
   };
   /** Dev settings (only shown in __DEV__ mode) */
   devSettings?: DevSettingsProps;
+  /** Gamification configuration */
+  gamificationConfig?: import("../../domains/gamification").GamificationSettingsConfig;
   /** Show header (default: true) */
   showHeader?: boolean;
 }
@@ -68,6 +70,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   onClose,
   featureOptions,
   devSettings,
+  gamificationConfig,
 }) => {
   const navigation = useNavigation();
   const tokens = useAppDesignTokens();
@@ -94,6 +97,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           customSections={customSections}
           showCloseButton={showCloseButton}
           devSettings={devSettings}
+          gamificationConfig={gamificationConfig}
         />
       </SettingsErrorBoundary>
     </ScreenLayout>

@@ -20,6 +20,7 @@ import type {
   CloudSyncConfig,
   SubscriptionConfig,
   WalletConfig,
+  GamificationConfig,
 } from "./UserFeatureConfig";
 
 /**
@@ -129,6 +130,12 @@ export interface SettingsConfig {
    * @default false
    */
   wallet?: FeatureVisibility | WalletConfig;
+
+  /**
+   * Gamification settings configuration
+   * @default false
+   */
+  gamification?: FeatureVisibility | GamificationConfig;
 
   /**
    * Custom empty state text when no settings are available

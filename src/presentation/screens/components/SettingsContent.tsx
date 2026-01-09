@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useLocalization } from "@umituz/react-native-localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
@@ -10,49 +9,14 @@ import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
 import { FeatureSettingsSection } from "./sections/FeatureSettingsSection";
 import { IdentitySettingsSection } from "./sections/IdentitySettingsSection";
 import { SupportSettingsSection } from "./sections/SupportSettingsSection";
-import { SettingsItemCard } from "../../components/SettingsItemCard";
-import type { IconName } from "@umituz/react-native-design-system";
 import { CustomSettingsList } from "./sections/CustomSettingsList";
 import type { NormalizedConfig } from "../utils/normalizeConfig";
-import type { CustomSettingsSection, WalletConfig } from "../types";
+import type { CustomSettingsSection } from "../types";
 
-const WalletSettingsItem: React.FC<{ config: WalletConfig; t: (key: string) => string }> = ({ config, t }) => {
-  const navigation = useNavigation();
-  const handlePress = () => {
-    if (config.route) {
-      navigation.navigate(config.route as never);
-    }
-  };
-  return (
-    <SettingsItemCard
-      title={config.title || t("wallet.title")}
-      description={config.description || t("wallet.description")}
-      icon={(config.icon || "wallet") as IconName}
-      onPress={handlePress}
-      sectionTitle={config.sectionTitle}
-    />
-  );
-};
-
-const SubscriptionSettingsItem: React.FC<{ config: any; t: (key: string) => string }> = ({ config, t }) => {
-  const navigation = useNavigation();
-  const handlePress = () => {
-    if (config.route) {
-      navigation.navigate(config.route as never);
-    } else if (config.onPress) {
-      config.onPress();
-    }
-  };
-  return (
-    <SettingsItemCard
-      title={config.title || t("settings.subscription.title")}
-      description={config.description || t("settings.subscription.description")}
-      icon={(config.icon || "star") as IconName}
-      onPress={handlePress}
-      sectionTitle={config.sectionTitle}
-    />
-  );
-};
+// Extracted Item Components
+import { SubscriptionSettingsItem } from "./SubscriptionSettingsItem";
+import { WalletSettingsItem } from "./WalletSettingsItem";
+import { GamificationSettingsItem } from "./GamificationSettingsItem";
 
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
@@ -70,6 +34,7 @@ interface SettingsContentProps {
     faqs: boolean;
     subscription: boolean;
     wallet: boolean;
+    gamification: boolean;
   };
   showUserProfile?: boolean;
   userProfile?: any;
@@ -79,6 +44,7 @@ interface SettingsContentProps {
   customSections?: CustomSettingsSection[];
   showCloseButton?: boolean;
   devSettings?: DevSettingsProps;
+  gamificationConfig?: import("../../../domains/gamification").GamificationSettingsConfig;
 }
 
 export const SettingsContent: React.FC<SettingsContentProps> = ({
@@ -93,6 +59,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   customSections = [],
   showCloseButton = false,
   devSettings,
+  gamificationConfig,
 }) => {
   const { t } = useLocalization();
 
@@ -108,6 +75,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.faqs ||
     features.subscription ||
     features.wallet ||
+    features.gamification ||
     customSections.length > 0,
     [features, customSections.length]
   );
@@ -125,6 +93,14 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       {features.wallet && normalizedConfig.wallet.config?.route && (
         <WalletSettingsItem
           config={normalizedConfig.wallet.config}
+          t={t}
+        />
+      )}
+
+      {features.gamification && (
+        <GamificationSettingsItem
+          config={normalizedConfig.gamification.config || {}}
+          gamificationConfig={gamificationConfig}
           t={t}
         />
       )}

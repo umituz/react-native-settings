@@ -139,3 +139,24 @@ export interface WalletConfig {
   /** Current balance to display */
   balance?: number;
 }
+
+/**
+ * Gamification Settings Configuration
+ */
+export interface GamificationConfig {
+  /** Show gamification section */
+  enabled?: FeatureVisibility;
+  /** Custom title for the gamification section */
+  title?: string;
+  /** Custom label for the gamification item */
+  description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
+  /** Navigation route for gamification screen */
+  route?: string;
+  /** Achievements to display */
+  achievementsCount?: number;
+}
+

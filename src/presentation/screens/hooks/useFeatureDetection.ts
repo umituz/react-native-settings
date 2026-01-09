@@ -60,6 +60,7 @@ export function useFeatureDetection(
       faqs,
       subscription,
       wallet,
+      gamification,
     } = normalizedConfig;
 
     const notificationServiceAvailable = !!options?.notificationServiceAvailable;
@@ -114,6 +115,7 @@ export function useFeatureDetection(
       faqs: faqs.enabled,
       subscription: subscription.enabled,
       wallet: wallet.enabled,
+      gamification: gamification.enabled,
     };
   }, [normalizedConfig, navigation, options]);
 }

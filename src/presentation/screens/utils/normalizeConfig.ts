@@ -17,6 +17,7 @@ import type {
   FAQConfig,
   SubscriptionConfig,
   WalletConfig,
+  GamificationConfig,
   SettingsConfig,
 } from "../types";
 
@@ -69,6 +70,10 @@ export interface NormalizedConfig {
     enabled: boolean;
     config?: WalletConfig;
   };
+  gamification: {
+    enabled: boolean;
+    config?: GamificationConfig;
+  };
 }
 
 /**
@@ -115,5 +120,6 @@ export function normalizeSettingsConfig(
     faqs: normalizeConfigValue(config?.faqs, false),
     subscription: normalizeConfigValue(config?.subscription, false),
     wallet: normalizeConfigValue(config?.wallet, false),
+    gamification: normalizeConfigValue(config?.gamification, false),
   };
 }

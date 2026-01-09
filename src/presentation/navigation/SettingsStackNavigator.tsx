@@ -10,7 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
 import { NotificationSettingsScreen } from "@umituz/react-native-notifications";
 import { AccountScreen } from "@umituz/react-native-auth";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, createScreenOptions } from "@umituz/react-native-design-system";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { FAQScreen } from "../../domains/faqs";
 import { useNavigationHandlers } from "./hooks";
@@ -23,16 +23,6 @@ import {
   createNotificationTranslations,
   createQuietHoursTranslations,
   createLegalScreenProps,
-  createScreenOptions,
-  createAppearanceScreenOptions,
-  createAboutScreenOptions,
-  createLegalScreenOptions,
-  createNotificationsScreenOptions,
-  createFAQScreenOptions,
-  createLanguageSelectionScreenOptions,
-  createGamificationScreenOptions,
-  createAccountScreenOptions,
-  createSettingsMainScreenOptions,
 } from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
 import { GamificationScreenWrapper } from "../../domains/gamification";
@@ -58,7 +48,18 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   const { handlePrivacyPress, handleTermsPress, handleEulaPress, aboutConfig } =
     useNavigationHandlers(appInfo, legalUrls);
 
-  const screenOptions = React.useMemo(() => createScreenOptions(tokens, t), [tokens, t]);
+  const screenOptions = React.useMemo(
+    () =>
+      createScreenOptions({
+        colors: {
+          surface: tokens.colors.surface,
+          textPrimary: tokens.colors.textPrimary,
+          borderLight: tokens.colors.borderLight,
+        },
+        backTitle: t("settings.title"),
+      }),
+    [tokens, t]
+  );
   const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);
   const quietHoursTranslations = React.useMemo(() => createQuietHoursTranslations(t), [t]);
   const legalScreenProps = React.useMemo(
@@ -70,7 +71,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="SettingsMain"
-        options={showHeader ? createSettingsMainScreenOptions(t) : { headerShown: false }}
+        options={showHeader ? { headerTitle: t("settings.title") } : { headerShown: false }}
       >
         {() => (
           <SettingsScreenWrapper
@@ -88,26 +89,20 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       <Stack.Screen
         name="Appearance"
         component={AppearanceScreen}
-        options={createAppearanceScreenOptions(t)}
+        options={{ headerTitle: t("settings.appearance.title") }}
       />
 
-      <Stack.Screen
-        name="About"
-        options={createAboutScreenOptions(t)}
-      >
+      <Stack.Screen name="About" options={{ headerTitle: t("settings.about.title") }}>
         {() => <AboutScreenWrapper config={aboutConfig} />}
       </Stack.Screen>
 
-      <Stack.Screen
-        name="Legal"
-        options={createLegalScreenOptions(t)}
-      >
+      <Stack.Screen name="Legal" options={{ headerTitle: t("settings.legal.title") }}>
         {() => <LegalScreenWrapper {...legalScreenProps} />}
       </Stack.Screen>
 
       <Stack.Screen
         name="Notifications"
-        options={createNotificationsScreenOptions(t)}
+        options={{ headerTitle: t("settings.notifications.title") }}
       >
         {() => (
           <NotificationSettingsScreen
@@ -118,7 +113,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       </Stack.Screen>
 
       {faqData && faqData.categories.length > 0 && (
-        <Stack.Screen name="FAQ" options={createFAQScreenOptions(t)}>
+        <Stack.Screen name="FAQ" options={{ headerTitle: t("settings.faqs.title") }}>
           {() => (
             <FAQScreen
               categories={faqData.categories}
@@ -153,7 +148,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       {gamificationConfig?.enabled && (
         <Stack.Screen
           name="Gamification"
-          options={createGamificationScreenOptions(t)}
+          options={{ headerTitle: t("settings.gamification.title") }}
         >
           {() => <GamificationScreenWrapper config={gamificationConfig} />}
         </Stack.Screen>
@@ -161,7 +156,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 
       <Stack.Screen
         name="LanguageSelection"
-        options={createLanguageSelectionScreenOptions(t)}
+        options={{ headerTitle: t("settings.language.title") }}
       >
         {() => (
           <LanguageSelectionScreen
@@ -171,10 +166,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       </Stack.Screen>
 
       {accountConfig && (
-        <Stack.Screen
-          name="Account"
-          options={createAccountScreenOptions(t)}
-        >
+        <Stack.Screen name="Account" options={{ headerTitle: t("settings.account.title") }}>
           {() => <AccountScreen config={accountConfig} />}
         </Stack.Screen>
       )}

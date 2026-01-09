@@ -8,6 +8,9 @@ export interface AchievementDefinition {
   id: string;
   threshold: number;
   type: "count" | "streak" | "milestone";
+  title: string;
+  description: string;
+  icon: string;
 }
 
 // Achievement State (internal)
@@ -39,6 +42,17 @@ export interface StreakState {
   lastActivityDate: string | null;
 }
 
+// Gamification Translations
+export interface GamificationTranslations {
+  title: string;
+  statsTitle: string;
+  achievementsTitle: string;
+  streakTitle: string;
+  bestStreak: string;
+  levelTitle: string;
+  emptyAchievements: string;
+}
+
 // Gamification Config (provided by app via props)
 export interface GamificationConfig {
   storageKey: string;
@@ -46,7 +60,11 @@ export interface GamificationConfig {
   levels: LevelDefinition[];
   pointsPerAction?: number;
   streakBonusMultiplier?: number;
+  enabled?: boolean;
+  translations: GamificationTranslations;
 }
+
+export type GamificationSettingsConfig = GamificationConfig;
 
 // Store State
 export interface GamificationState {

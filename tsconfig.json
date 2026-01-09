@@ -18,9 +18,9 @@
       "@domains/feedback/*": ["src/domains/feedback/*"],
       "@domains/faqs/*": ["src/domains/faqs/*"],
       "@domains/rating/*": ["src/domains/rating/*"],
-      "@notifications": ["src/notifications/index.ts"],
-      "@notifications/*": ["src/notifications/*"],
-      "@umituz/react-native-notifications": ["src/notifications/index.ts"]
+      "@notifications": ["src/domains/notifications/index.ts"],
+      "@notifications/*": ["src/domains/notifications/*"],
+      "@umituz/react-native-notifications": ["src/domains/notifications/index.ts"]
     },
 
     /* Emit */

@@ -5,10 +5,10 @@
 
 import { useCallback } from 'react';
 import { useRemindersStore } from '../storage/RemindersStore';
-import { NotificationScheduler } from '../../../../infrastructure/services/NotificationScheduler';
-import { generateReminderId } from '../../../../infrastructure/utils/idGenerator';
-import { buildTrigger } from '../../../../infrastructure/utils/triggerBuilder';
-import type { Reminder, CreateReminderInput, UpdateReminderInput } from '../../../../infrastructure/services/types';
+import { NotificationScheduler } from '../../../infrastructure/services/NotificationScheduler';
+import { generateReminderId } from '../../../infrastructure/utils/idGenerator';
+import { buildTrigger } from '../../../infrastructure/utils/triggerBuilder';
+import type { Reminder, CreateReminderInput, UpdateReminderInput } from '../../../infrastructure/services/types';
 
 const scheduler = new NotificationScheduler();
 

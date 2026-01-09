@@ -5,7 +5,7 @@
 
 import { useCallback } from 'react';
 import { usePreferencesStore, useQuietHours } from '../../../reminders/infrastructure/storage/RemindersStore';
-import type { QuietHoursConfig } from '../../../../infrastructure/services/types';
+import type { QuietHoursConfig } from '../../../infrastructure/services/types';
 
 export const useQuietHoursActions = () => {
   const quietHours = useQuietHours();

@@ -15,6 +15,7 @@ export type {
   LevelState,
   StreakState,
   GamificationConfig,
+  GamificationSettingsConfig,
   GamificationState,
   GamificationActions,
   GamificationStore,

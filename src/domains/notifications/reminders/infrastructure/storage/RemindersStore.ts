@@ -4,7 +4,7 @@
  */
 
 import { createStore } from '@umituz/react-native-storage';
-import type { Reminder, QuietHoursConfig, NotificationPreferences } from '../../../../infrastructure/services/types';
+import type { Reminder, QuietHoursConfig, NotificationPreferences } from '../../../infrastructure/services/types';
 
 // ============================================================================
 // REMINDERS STORE

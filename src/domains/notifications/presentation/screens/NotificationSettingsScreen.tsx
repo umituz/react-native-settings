@@ -6,13 +6,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import { AtomicCard, ScreenLayout, AtomicSpinner } from '@umituz/react-native-design-system';
-import { QuietHoursCard } from '../../domains/quietHours/presentation/components/QuietHoursCard';
+import { QuietHoursCard } from '../../quietHours/presentation/components/QuietHoursCard';
 import { SettingRow } from '../components/SettingRow';
 import { RemindersNavRow } from '../components/RemindersNavRow';
 import { useNotificationSettingsUI } from '../hooks/useNotificationSettingsUI';
 import { useTimePicker } from '../hooks/useTimePicker';
-import { useReminders } from '../../domains/reminders/infrastructure/storage/RemindersStore';
-import { useQuietHoursActions } from '../../domains/quietHours/infrastructure/hooks/useQuietHoursActions';
+import { useReminders } from '../../reminders/infrastructure/storage/RemindersStore';
+import { useQuietHoursActions } from '../../quietHours/infrastructure/hooks/useQuietHoursActions';
 import type { NotificationSettingsTranslations, QuietHoursTranslations } from '../../infrastructure/services/types';
 import { createStyles } from './NotificationSettingsScreen.styles';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';

@@ -129,7 +129,7 @@ export * from "./domains/gamification";
 // =============================================================================
 
 // Notifications Domain
-export * from "./notifications";
+export * from "./domains/notifications";
 
 export {
   createAppearanceConfig,

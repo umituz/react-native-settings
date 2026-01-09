@@ -41,8 +41,8 @@ export {
   getTimePresetById,
   formatTime,
   parseTime,
-} from './domains/reminders/infrastructure/config/reminderPresets';
-export type { FrequencyOption, WeekdayOption } from './domains/reminders/infrastructure/config/reminderPresets';
+} from './reminders/infrastructure/config/reminderPresets';
+export type { FrequencyOption, WeekdayOption } from './reminders/infrastructure/config/reminderPresets';
 
 // ============================================================================
 // SERVICES
@@ -66,15 +66,15 @@ export {
   useQuietHours,
   useRemindersLoading,
   useRemindersInitialized,
-} from './domains/reminders/infrastructure/storage/RemindersStore';
+} from './reminders/infrastructure/storage/RemindersStore';
 
 // ============================================================================
 // HOOKS
 // ============================================================================
 
 export { useNotificationSettings } from './infrastructure/hooks/useNotificationSettings';
-export { useReminderActions } from './domains/reminders/infrastructure/hooks/useReminderActions';
-export { useQuietHoursActions } from './domains/quietHours/infrastructure/hooks/useQuietHoursActions';
+export { useReminderActions } from './reminders/infrastructure/hooks/useReminderActions';
+export { useQuietHoursActions } from './quietHours/infrastructure/hooks/useQuietHoursActions';
 export { useNotificationSettingsUI } from './presentation/hooks/useNotificationSettingsUI';
 
 // ============================================================================
@@ -87,8 +87,8 @@ export type { NotificationsScreenProps } from './presentation/screens/Notificati
 export { NotificationSettingsScreen } from './presentation/screens/NotificationSettingsScreen';
 export type { NotificationSettingsScreenProps } from './presentation/screens/NotificationSettingsScreen';
 
-export { ReminderListScreen } from './domains/reminders/presentation/screens/ReminderListScreen';
-export type { ReminderListScreenProps } from './domains/reminders/presentation/screens/ReminderListScreen';
+export { ReminderListScreen } from './reminders/presentation/screens/ReminderListScreen';
+export type { ReminderListScreenProps } from './reminders/presentation/screens/ReminderListScreen';
 
 // ============================================================================
 // COMPONENTS
@@ -97,26 +97,26 @@ export type { ReminderListScreenProps } from './domains/reminders/presentation/s
 export { NotificationsSection } from './presentation/components/NotificationsSection';
 export type { NotificationsSectionProps, NotificationsSectionConfig } from './presentation/components/NotificationsSection';
 
-export { TimePresetSelector } from './domains/reminders/presentation/components/TimePresetSelector';
-export type { TimePresetSelectorProps } from './domains/reminders/presentation/components/TimePresetSelector';
+export { TimePresetSelector } from './reminders/presentation/components/TimePresetSelector';
+export type { TimePresetSelectorProps } from './reminders/presentation/components/TimePresetSelector';
 
-export { FrequencySelector } from './domains/reminders/presentation/components/FrequencySelector';
-export type { FrequencySelectorProps } from './domains/reminders/presentation/components/FrequencySelector';
+export { FrequencySelector } from './reminders/presentation/components/FrequencySelector';
+export type { FrequencySelectorProps } from './reminders/presentation/components/FrequencySelector';
 
-export { WeekdaySelector } from './domains/reminders/presentation/components/WeekdaySelector';
-export type { WeekdaySelectorProps } from './domains/reminders/presentation/components/WeekdaySelector';
+export { WeekdaySelector } from './reminders/presentation/components/WeekdaySelector';
+export type { WeekdaySelectorProps } from './reminders/presentation/components/WeekdaySelector';
 
-export { ReminderItem } from './domains/reminders/presentation/components/ReminderItem';
-export type { ReminderItemProps, ReminderItemTranslations } from './domains/reminders/presentation/components/ReminderItem';
+export { ReminderItem } from './reminders/presentation/components/ReminderItem';
+export type { ReminderItemProps, ReminderItemTranslations } from './reminders/presentation/components/ReminderItem';
 
-export { ReminderForm } from './domains/reminders/presentation/components/ReminderForm';
-export type { ReminderFormProps, ReminderFormTranslations } from './domains/reminders/presentation/components/ReminderForm';
+export { ReminderForm } from './reminders/presentation/components/ReminderForm';
+export type { ReminderFormProps, ReminderFormTranslations } from './reminders/presentation/components/ReminderForm';
 
-export { FormButton } from './domains/reminders/presentation/components/FormButton';
-export type { FormButtonProps } from './domains/reminders/presentation/components/FormButton';
+export { FormButton } from './reminders/presentation/components/FormButton';
+export type { FormButtonProps } from './reminders/presentation/components/FormButton';
 
-export { QuietHoursCard } from './domains/quietHours/presentation/components/QuietHoursCard';
-export type { QuietHoursCardProps } from './domains/quietHours/presentation/components/QuietHoursCard';
+export { QuietHoursCard } from './quietHours/presentation/components/QuietHoursCard';
+export type { QuietHoursCardProps } from './quietHours/presentation/components/QuietHoursCard';
 
 export { RemindersNavRow } from './presentation/components/RemindersNavRow';
 export type { RemindersNavRowProps } from './presentation/components/RemindersNavRow';

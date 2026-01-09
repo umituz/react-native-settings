@@ -141,6 +141,7 @@ export {
   createRatingConfig,
   createFAQConfig,
   createSubscriptionConfig,
+  createGamificationConfig,
   type TranslationFunction,
   type FeedbackFormData,
 } from './presentation/utils';

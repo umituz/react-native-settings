@@ -47,8 +47,9 @@ export const GamificationScreenWrapper: React.FC<GamificationScreenWrapperProps>
       streakProps={{
         current: streak.current,
         longest: streak.longest,
-        // streakLabel: config.translations.streakTitle, // Omitted by GamificationScreen types apparently
+        currentLabel: config.translations.currentStreak,
         bestLabel: config.translations.bestStreak,
+        daysLabel: config.translations.days,
       }}
       stats={[
         {

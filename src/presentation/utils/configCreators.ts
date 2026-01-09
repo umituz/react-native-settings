@@ -16,6 +16,11 @@ import type {
   FAQConfig,
   SubscriptionConfig,
 } from "../screens/types";
+import type {
+  GamificationConfig,
+  AchievementDefinition,
+  LevelDefinition,
+} from "../../domains/gamification/types";
 
 /**
  * Translation function type
@@ -148,4 +153,31 @@ export const createSubscriptionConfig = (
   route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
   onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
   isPremium,
+});
+
+/**
+ * Create gamification configuration
+ */
+export const createGamificationConfig = (
+  t: TranslationFunction,
+  storageKey: string,
+  achievements: AchievementDefinition[],
+  levels: LevelDefinition[],
+  enabled = true,
+): GamificationConfig => ({
+  enabled,
+  storageKey,
+  achievements,
+  levels,
+  translations: {
+    title: t("settings.gamification.title"),
+    statsTitle: t("settings.gamification.stats.title"),
+    achievementsTitle: t("settings.gamification.achievements.title"),
+    streakTitle: t("settings.gamification.streak.title"),
+    bestStreak: t("settings.gamification.streak.best"),
+    currentStreak: t("settings.gamification.streak.current"),
+    days: t("settings.gamification.streak.days"),
+    levelTitle: t("settings.gamification.level.title"),
+    emptyAchievements: t("settings.gamification.achievements.empty"),
+  },
 });

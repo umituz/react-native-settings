@@ -49,6 +49,8 @@ export interface GamificationTranslations {
   achievementsTitle: string;
   streakTitle: string;
   bestStreak: string;
+  currentStreak: string;
+  days: string;
   levelTitle: string;
   emptyAchievements: string;
 }

@@ -112,7 +112,9 @@ export interface SubscriptionConfig {
   icon?: string;
   /** Custom section title for grouping */
   sectionTitle?: string;
-  /** Handler to open subscription screen */
+  /** Navigation route for subscription screen (preferred over onPress) */
+  route?: string;
+  /** Handler to open subscription screen (use route instead for stack navigation) */
   onPress?: () => void;
   /** Whether user is premium (to show active status) */
   isPremium?: boolean;

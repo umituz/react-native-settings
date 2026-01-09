@@ -130,11 +130,13 @@ export const createFAQConfig = (
 
 /**
  * Create subscription configuration
+ * @param route - Navigation route name (preferred for stack navigation)
+ * @param onPress - Callback function (use route instead when possible)
  */
 export const createSubscriptionConfig = (
   t: TranslationFunction,
   isPremium: boolean,
-  onPress: () => void,
+  routeOrOnPress: string | (() => void),
 ): SubscriptionConfig => ({
   enabled: true,
   title: t("settings.subscription.title"),
@@ -143,6 +145,7 @@ export const createSubscriptionConfig = (
     : t("settings.subscription.description"),
   icon: "diamond",
   sectionTitle: t("settings.sections.subscription").toUpperCase(),
-  onPress,
+  route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
+  onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
   isPremium,
 });

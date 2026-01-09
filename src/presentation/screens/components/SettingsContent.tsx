@@ -34,6 +34,26 @@ const WalletSettingsItem: React.FC<{ config: WalletConfig; t: (key: string) => s
   );
 };
 
+const SubscriptionSettingsItem: React.FC<{ config: any; t: (key: string) => string }> = ({ config, t }) => {
+  const navigation = useNavigation();
+  const handlePress = () => {
+    if (config.route) {
+      navigation.navigate(config.route as never);
+    } else if (config.onPress) {
+      config.onPress();
+    }
+  };
+  return (
+    <SettingsItemCard
+      title={config.title || t("settings.subscription.title")}
+      description={config.description || t("settings.subscription.description")}
+      icon={(config.icon || "star") as IconName}
+      onPress={handlePress}
+      sectionTitle={config.sectionTitle}
+    />
+  );
+};
+
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
   config?: any;
@@ -98,14 +118,8 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       <CustomSettingsList customSections={customSections} />
 
-      {features.subscription && normalizedConfig.subscription.config?.onPress && (
-        <SettingsItemCard
-          title={normalizedConfig.subscription.config.title || t("settings.subscription.title")}
-          description={normalizedConfig.subscription.config.description || t("settings.subscription.description")}
-          icon={(normalizedConfig.subscription.config.icon || "star") as IconName}
-          onPress={normalizedConfig.subscription.config.onPress}
-          sectionTitle={normalizedConfig.subscription.config.sectionTitle}
-        />
+      {features.subscription && (normalizedConfig.subscription.config?.route || normalizedConfig.subscription.config?.onPress) && (
+        <SubscriptionSettingsItem config={normalizedConfig.subscription.config} t={t} />
       )}
 
       {features.wallet && normalizedConfig.wallet.config?.route && (

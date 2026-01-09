@@ -67,3 +67,9 @@ export const createAccountScreenOptions = (t: any) => ({
   headerTitleAlign: "center" as const,
 });
 
+export const createSettingsMainScreenOptions = (t: any) => ({
+  headerShown: true,
+  headerTitle: t("settings.title"),
+  headerTitleAlign: "center" as const,
+});
+

@@ -32,6 +32,7 @@ import {
   createLanguageSelectionScreenOptions,
   createGamificationScreenOptions,
   createAccountScreenOptions,
+  createSettingsMainScreenOptions,
 } from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
 import { GamificationScreenWrapper } from "../../domains/gamification";
@@ -69,7 +70,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="SettingsMain"
-        options={{ headerShown: false }}
+        options={showHeader ? createSettingsMainScreenOptions(t) : { headerShown: false }}
       >
         {() => (
           <SettingsScreenWrapper

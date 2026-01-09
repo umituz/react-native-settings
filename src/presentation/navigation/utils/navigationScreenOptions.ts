@@ -5,7 +5,9 @@
 
 import type { DesignTokens } from "@umituz/react-native-design-system";
 
-export const createScreenOptions = (tokens: DesignTokens) => ({
+type TranslationFunction = (key: string) => string;
+
+export const createScreenOptions = (tokens: DesignTokens, t: TranslationFunction) => ({
   headerStyle: {
     backgroundColor: tokens.colors.surface,
     borderBottomColor: tokens.colors.borderLight,
@@ -17,6 +19,11 @@ export const createScreenOptions = (tokens: DesignTokens) => ({
     color: tokens.colors.textPrimary,
   },
   headerTintColor: tokens.colors.textPrimary,
+  headerBackTitle: t("settings.title"),
+  headerBackTitleStyle: {
+    fontSize: 16,
+    color: tokens.colors.textPrimary,
+  },
 });
 
 export const createAppearanceScreenOptions = (t: any) => ({

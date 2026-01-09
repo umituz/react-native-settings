@@ -58,7 +58,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   const { handlePrivacyPress, handleTermsPress, handleEulaPress, aboutConfig } =
     useNavigationHandlers(appInfo, legalUrls);
 
-  const screenOptions = React.useMemo(() => createScreenOptions(tokens), [tokens]);
+  const screenOptions = React.useMemo(() => createScreenOptions(tokens, t), [tokens, t]);
   const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);
   const quietHoursTranslations = React.useMemo(() => createQuietHoursTranslations(t), [t]);
   const legalScreenProps = React.useMemo(

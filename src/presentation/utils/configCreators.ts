@@ -51,6 +51,7 @@ export const createNotificationsConfig = (t: TranslationFunction): Notifications
   route: "Notifications",
   title: t("settings.notifications.title"),
   description: t("settings.notifications.description"),
+  sectionTitle: t("settings.notifications.sectionTitle"),
   icon: "notifications-outline",
 });
 

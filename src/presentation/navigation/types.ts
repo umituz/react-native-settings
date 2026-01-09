@@ -78,6 +78,30 @@ export interface FAQData {
 }
 
 /**
+ * Account screen configuration from auth package
+ */
+export interface AccountConfig {
+  profile: {
+    displayName?: string;
+    userId?: string;
+    isAnonymous: boolean;
+    avatarUrl?: string;
+  };
+  isAnonymous: boolean;
+  editProfileText?: string;
+  onSignIn?: () => void;
+  onEditProfile?: () => void;
+  accountActions?: {
+    onSignOut: () => void;
+    onDeleteAccount: () => void;
+    signOutText: string;
+    deleteAccountText: string;
+    confirmDeleteTitle: string;
+    confirmDeleteMessage: string;
+  };
+}
+
+/**
  * Settings Stack Navigator Props
  */
 export interface SettingsStackNavigatorProps {
@@ -87,6 +111,7 @@ export interface SettingsStackNavigatorProps {
   config?: SettingsConfig;
   showUserProfile?: boolean;
   userProfile?: UserProfileConfig;
+  accountConfig?: AccountConfig;
   additionalScreens?: AdditionalScreen[];
   devSettings?: DevSettingsProps;
   customSections?: CustomSettingsSection[];

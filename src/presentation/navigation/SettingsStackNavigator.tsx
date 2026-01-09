@@ -5,12 +5,12 @@
  * Receives appInfo and legalUrls from app.
  */
 
-import React, { useCallback } from "react";
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
 import { NotificationSettingsScreen } from "@umituz/react-native-notifications";
-import { AccountScreen, useAuth, useAuthModalStore } from "@umituz/react-native-auth";
-import { useAppDesignTokens, AlertService } from "@umituz/react-native-design-system";
+import { AccountScreen } from "@umituz/react-native-auth";
+import { useAppDesignTokens } from "@umituz/react-native-design-system";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { FAQScreen } from "../../domains/faqs";
 import { useNavigationHandlers } from "./hooks";
@@ -45,6 +45,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   config = {},
   showUserProfile = false,
   userProfile,
+  accountConfig,
   additionalScreens = [],
   devSettings,
   customSections = [],
@@ -53,52 +54,8 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 }) => {
   const tokens = useAppDesignTokens();
   const { t } = useLocalization();
-  const { user, deleteAccount, signOut } = useAuth();
-  const { showAuthModal } = useAuthModalStore();
   const { handlePrivacyPress, handleTermsPress, handleEulaPress, aboutConfig } =
     useNavigationHandlers(appInfo, legalUrls);
-
-  const handleSignOut = useCallback(async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      AlertService.createErrorAlert(t("common.error"), t("auth.errors.unknownError"));
-    }
-  }, [signOut, t]);
-
-  const handleDeleteAccount = useCallback(async () => {
-    try {
-      await deleteAccount();
-    } catch (error) {
-      AlertService.createErrorAlert(t("common.error"), t("account.deleteErrorMessage"));
-    }
-  }, [deleteAccount, t]);
-
-  const handleSignIn = useCallback(() => {
-    showAuthModal(() => {}, "login");
-  }, [showAuthModal]);
-
-  const isAnonymous = user?.isAnonymous ?? true;
-
-  const accountConfig = {
-    profile: {
-      displayName: userProfile?.displayName || user?.displayName || t("settings.profile.anonymousName"),
-      userId: userProfile?.userId || user?.uid,
-      isAnonymous,
-      avatarUrl: userProfile?.avatarUrl || user?.photoURL || undefined,
-    },
-    isAnonymous,
-    editProfileText: t("settings.account.editProfile"),
-    onSignIn: handleSignIn,
-    accountActions: {
-      onSignOut: handleSignOut,
-      onDeleteAccount: handleDeleteAccount,
-      signOutText: t("auth.signOut"),
-      deleteAccountText: t("account.deleteAccount"),
-      confirmDeleteTitle: t("auth.deleteAccountConfirmTitle"),
-      confirmDeleteMessage: t("auth.deleteAccountConfirmMessage"),
-    },
-  };
 
   const screenOptions = React.useMemo(() => createScreenOptions(tokens), [tokens]);
   const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);
@@ -212,12 +169,14 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
         )}
       </Stack.Screen>
 
-      <Stack.Screen
-        name="Account"
-        options={createAccountScreenOptions(t)}
-      >
-        {() => <AccountScreen config={accountConfig} />}
-      </Stack.Screen>
+      {accountConfig && (
+        <Stack.Screen
+          name="Account"
+          options={createAccountScreenOptions(t)}
+        >
+          {() => <AccountScreen config={accountConfig} />}
+        </Stack.Screen>
+      )}
     </Stack.Navigator>
   );
 };

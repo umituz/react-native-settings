@@ -80,7 +80,9 @@ export interface FAQData {
 /**
  * Import AccountScreenConfig from auth package
  */
-export type { AccountScreenConfig as AccountConfig } from "@umituz/react-native-auth";
+import type { AccountScreenConfig } from "@umituz/react-native-auth";
+
+export type AccountConfig = AccountScreenConfig;
 
 /**
  * Settings Stack Navigator Props

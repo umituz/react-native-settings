@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@umituz/react-native-design-system";
 import { getAppearanceService } from "../../../infrastructure/services/AppearanceService";
 import { appearanceKeys } from "../queries/useAppearanceQuery";
 import { ThemeMode, CustomThemeColors } from "@umituz/react-native-design-system";

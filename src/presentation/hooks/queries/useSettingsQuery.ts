@@ -4,7 +4,7 @@
  * Fetches user settings using TanStack Query
  */
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@umituz/react-native-design-system';
 import { getSettingsService } from '../../../infrastructure/services/SettingsService';
 import type { UserSettings } from '../../../application/ports/ISettingsRepository';
 

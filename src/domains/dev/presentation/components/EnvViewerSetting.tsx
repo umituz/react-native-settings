@@ -36,7 +36,7 @@ export const EnvViewerSetting: React.FC<EnvViewerSettingProps> = ({
     if (onPress) {
       onPress();
     } else {
-      navigation.navigate(screenName as never, { config } as never);
+      (navigation.navigate as (screen: string, params?: Record<string, unknown>) => void)(screenName, { config });
     }
   };
 

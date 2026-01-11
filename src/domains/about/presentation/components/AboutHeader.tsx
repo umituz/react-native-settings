@@ -37,7 +37,7 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
   return (
     <View style={[styles.header, { borderBottomColor: colors.border }, containerStyle]} testID={testID}>
       <AtomicText
-        type="headlineSmall"
+        type="titleLarge"
         style={[styles.appName, { color: colors.textPrimary }, titleStyle]}
       >
         {appInfo.name}

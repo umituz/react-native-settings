@@ -36,7 +36,14 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
 
   return (
     <View style={[styles.header, { borderBottomColor: colors.border }, containerStyle]} testID={testID}>
-      <AtomicText style={[styles.appName, { color: colors.textPrimary }, titleStyle]}>{appInfo.name}</AtomicText>
+      <AtomicText
+        style={[styles.appName, { color: colors.textPrimary }, titleStyle]}
+        numberOfLines={2}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+      >
+        {appInfo.name}
+      </AtomicText>
       <AtomicText style={[styles.version, { color: colors.textSecondary }, versionStyle]}>
         {versionPrefix} {appInfo.version}
       </AtomicText>

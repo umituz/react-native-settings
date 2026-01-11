@@ -37,10 +37,8 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
   return (
     <View style={[styles.header, { borderBottomColor: colors.border }, containerStyle]} testID={testID}>
       <AtomicText
+        type="headlineSmall"
         style={[styles.appName, { color: colors.textPrimary }, titleStyle]}
-        numberOfLines={2}
-        adjustsFontSizeToFit
-        minimumFontScale={0.8}
       >
         {appInfo.name}
       </AtomicText>
@@ -64,12 +62,12 @@ const getStyles = (tokens: any) => StyleSheet.create({
     borderBottomWidth: 1,
   },
   appName: {
-    fontSize: tokens.typography.headlineMedium.responsiveFontSize,
     fontWeight: 'bold',
     marginBottom: 4,
     textAlign: 'center',
     paddingHorizontal: 24,
     width: '100%',
+    flexWrap: 'wrap',
   },
   version: {
     fontSize: tokens.typography.bodyLarge.responsiveFontSize,

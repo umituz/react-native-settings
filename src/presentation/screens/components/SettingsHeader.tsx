@@ -31,7 +31,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
 
   return (
     <View style={[styles.container, { padding: tokens.spacing.lg }]}>
-      <AtomicText style={tokens.typography.headingLarge}>
+      <AtomicText type="headlineLarge">
         {t('settings.title')}
       </AtomicText>
       
@@ -42,7 +42,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
             styles.closeButton,
             {
               backgroundColor: pressed ? tokens.colors.surfaceVariant : tokens.colors.surface,
-              borderRadius: tokens.borderRadius.full,
+              borderRadius: tokens.borders.radius.full,
             },
           ]}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

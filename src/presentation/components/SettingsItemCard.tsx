@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Pressable, StyleSheet, ViewStyle, Switch } from "react-native";
+import { View, Pressable, StyleSheet, ViewStyle } from "react-native";
 import {
     useAppDesignTokens,
     AtomicIcon,
     AtomicText,
+    AtomicSwitch,
     type IconName,
-    withAlpha
+    withAlpha,
 } from "@umituz/react-native-design-system";
 
 export interface SettingsItemCardProps {
@@ -52,41 +53,35 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     const renderRightElement = () => {
         if (showSwitch) {
             return (
-                <Switch
-                    value={switchValue}
-                    onValueChange={onSwitchChange}
-                    trackColor={{
-                        false: colors.surfaceVariant,
-                        true: colors.primary,
-                    }}
-                    thumbColor={colors.surface}
-                    ios_backgroundColor={colors.surfaceVariant}
+                <AtomicSwitch
+                    value={!!switchValue}
+                    onValueChange={onSwitchChange || (() => {})}
                     disabled={disabled}
                 />
             );
         }
         if (shouldShowChevron) {
-            return <AtomicIcon name={rightIcon} size="sm" color="secondary" />;
+            return <AtomicIcon name={rightIcon} size="sm" color="textSecondary" />;
         }
         return null;
     };
 
     const renderContent = () => (
         <View style={styles.content}>
-            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg, borderRadius: tokens.borderRadius.md }]}>
+            <View style={[styles.iconContainer, { backgroundColor: defaultIconBg, borderRadius: tokens.borders.radius.md }]}>
                 <AtomicIcon name={icon} size="lg" customColor={defaultIconColor} />
             </View>
             <View style={styles.textContainer}>
                 <AtomicText
                     type="bodyLarge"
-                    color={disabled ? "surfaceVariant" : "onSurface"}
+                    color={disabled ? "onSurfaceVariant" : "onSurface"}
                     numberOfLines={1}
                     style={{ marginBottom: description ? tokens.spacing.xs : 0, opacity: disabled ? 0.6 : 1 }}
                 >
                     {title}
                 </AtomicText>
                 {!!description && (
-                    <AtomicText type="bodyMedium" color="secondary" numberOfLines={2}>
+                    <AtomicText type="bodyMedium" color="textSecondary" numberOfLines={2}>
                         {description}
                     </AtomicText>
                 )}
@@ -101,7 +96,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                 styles.sectionContainer,
                 { 
                     backgroundColor: colors.surface,
-                    borderRadius: tokens.borderRadius.lg,
+                    borderRadius: tokens.borders.radius.lg,
                 },
                 containerStyle,
             ]}

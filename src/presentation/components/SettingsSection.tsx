@@ -12,12 +12,11 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   children,
 }) => {
   const tokens = useAppDesignTokens();
-  const colors = tokens.colors;
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <View style={[styles.container, { backgroundColor: tokens.colors.surface }]}>
       <View style={styles.titleContainer}>
-        <AtomicText type="titleLarge" color="primary">
+        <AtomicText type="titleLarge" color="textPrimary">
           {title}
         </AtomicText>
       </View>

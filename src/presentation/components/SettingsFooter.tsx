@@ -14,7 +14,6 @@ export const SettingsFooter: React.FC<SettingsFooterProps> = ({
   versionLabel,
 }) => {
   const tokens = useAppDesignTokens();
-  const colors = tokens.colors;
 
   const displayText = versionText || (appVersion && versionLabel
     ? `${versionLabel} ${appVersion}`
@@ -24,7 +23,7 @@ export const SettingsFooter: React.FC<SettingsFooterProps> = ({
 
   return (
     <View style={styles.container}>
-      <AtomicText type="labelSmall" style={{ color: colors.textSecondary }}>
+      <AtomicText type="labelSmall" color="textSecondary">
         {displayText}
       </AtomicText>
     </View>

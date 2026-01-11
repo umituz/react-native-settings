@@ -27,6 +27,7 @@ export const EnvViewerSetting: React.FC<EnvViewerSettingProps> = ({
   title = "Environment Variables",
   description = "View app configuration",
   screenName,
+  onPress,
 }) => {
   const tokens = useAppDesignTokens();
   const navigation = useAppNavigation();
@@ -35,7 +36,7 @@ export const EnvViewerSetting: React.FC<EnvViewerSettingProps> = ({
     if (onPress) {
       onPress();
     } else {
-      navigation.navigate(screenName as any, { config } as any);
+      navigation.navigate(screenName as never, { config } as never);
     }
   };
 

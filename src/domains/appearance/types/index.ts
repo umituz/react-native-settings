@@ -30,6 +30,8 @@ export interface AppearanceSectionConfig {
   route?: string;
   /** Default navigation route name */
   defaultRoute?: string;
+  /** Custom onPress handler (overrides navigation) */
+  onPress?: () => void;
 }
 
 export interface ThemeModeTextConfig {

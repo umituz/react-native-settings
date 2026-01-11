@@ -71,4 +71,6 @@ export interface AboutConfig {
   title?: string;
   /** Section description */
   description?: string;
+  /** Custom onPress handler (overrides navigation) */
+  onPress?: () => void;
 }

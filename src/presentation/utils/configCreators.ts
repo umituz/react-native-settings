@@ -144,17 +144,16 @@ export const createRatingConfig = (
 
 /**
  * Create FAQ configuration
+ * Navigation is handled internally by the package - no callback needed
  */
 export const createFAQConfig = (
   t: TranslationFunction,
-  onPress: () => void,
 ): FAQConfig => ({
   enabled: true,
   title: t("settings.faqs.title"),
   description: t("settings.faqs.description"),
   icon: "help-circle-outline",
   sectionTitle: t("settings.sections.support").toUpperCase(),
-  onPress,
 });
 
 /**

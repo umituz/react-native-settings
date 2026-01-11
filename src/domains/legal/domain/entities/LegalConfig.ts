@@ -23,4 +23,6 @@ export interface LegalConfig {
     termsUrl?: string;
     /** EULA URL */
     eulaUrl?: string;
+    /** Custom onPress handler (overrides navigation) */
+    onPress?: () => void;
 }

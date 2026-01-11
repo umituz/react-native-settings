@@ -63,9 +63,10 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
     const handleFeedbackSubmit = async (data: { type: any; rating: number; description: string; title: string }) => {
         if (feedbackConfig.config?.onSubmit) {
             setIsSubmitting(true);
+            setModalVisible(false);
             try {
+                await new Promise(resolve => setTimeout(resolve, 300));
                 await feedbackConfig.config.onSubmit(data);
-                setModalVisible(false);
             } catch {
                 // Silent error handling
             } finally {

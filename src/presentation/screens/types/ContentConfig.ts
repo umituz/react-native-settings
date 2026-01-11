@@ -14,6 +14,8 @@ interface BaseContentConfig {
   enabled?: FeatureVisibility;
   /** Custom navigation route */
   route?: string;
+  /** Custom navigation handler (overrides route) */
+  onPress?: () => void;
   /** Custom title */
   title?: string;
   /** Custom description */

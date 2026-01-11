@@ -23,8 +23,12 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   const navigation = useAppNavigation();
 
   const handleLanguagePress = () => {
-    const route = normalizedConfig.language.config?.route || "LanguageSelection";
-    navigation.navigate(route as never);
+    if (normalizedConfig.language.config?.onPress) {
+      normalizedConfig.language.config.onPress();
+    } else {
+      const route = normalizedConfig.language.config?.route || "LanguageSelection";
+      navigation.navigate(route as never);
+    }
   };
 
   const currentLanguageData = getLanguageByCode(currentLanguage);

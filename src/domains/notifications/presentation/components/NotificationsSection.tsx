@@ -13,6 +13,7 @@ import { useLocalization } from '@umituz/react-native-localization';
 
 export interface NotificationsSectionConfig {
   route?: string;
+  onPress?: () => void;
   title?: string;
   description?: string;
   sectionTitle?: string;
@@ -33,9 +34,13 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
   const styles = useMemo(() => createStyles(tokens), [tokens]);
 
   const handlePress = useCallback(() => {
-    const route = config?.route || 'Notifications';
-    navigation.navigate(route as never);
-  }, [config?.route, navigation]);
+    if (config?.onPress) {
+      config.onPress();
+    } else {
+      const route = config?.route || 'Notifications';
+      navigation.navigate(route as never);
+    }
+  }, [config?.route, config?.onPress, navigation]);
 
   const title = config?.title || t('settings.notifications.title');
   const description = config?.description || t('settings.notifications.description');

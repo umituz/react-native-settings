@@ -32,6 +32,8 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
     const handlePress = () => {
         if (onPress) {
             onPress();
+        } else if (config?.onPress) {
+            config.onPress();
         } else {
             navigation.navigate(route as never);
         }

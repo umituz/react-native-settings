@@ -60,6 +60,9 @@ const getStyles = (tokens: any) => StyleSheet.create({
     fontSize: tokens.typography.headlineMedium.responsiveFontSize,
     fontWeight: 'bold',
     marginBottom: 4,
+    textAlign: 'center',
+    paddingHorizontal: 24,
+    width: '100%',
   },
   version: {
     fontSize: tokens.typography.bodyLarge.responsiveFontSize,

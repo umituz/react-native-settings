@@ -12,7 +12,7 @@ import {
   AtomicTouchable,
   useAppDesignTokens,
   useSafeAreaInsets,
-  AppNavigation,
+  useAppNavigation,
   AlertService,
   NavigationHeader,
 } from "@umituz/react-native-design-system";
@@ -27,6 +27,7 @@ export interface EnvViewerScreenProps {
 export const EnvViewerScreen: React.FC<EnvViewerScreenProps> = ({ config }) => {
   const tokens = useAppDesignTokens();
   const { bottom } = useSafeAreaInsets();
+  const navigation = useAppNavigation();
   const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
 
   const toggleReveal = (key: string) => {
@@ -95,7 +96,7 @@ export const EnvViewerScreen: React.FC<EnvViewerScreenProps> = ({ config }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: tokens.colors.backgroundPrimary }]}>
-      <NavigationHeader title="Environment Variables" onBackPress={() => AppNavigation.goBack()} />
+      <NavigationHeader title="Environment Variables" onBackPress={() => navigation.goBack()} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}

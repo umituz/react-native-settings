@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { useAppDesignTokens, AppNavigation } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, useAppNavigation } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 import type { EnvConfig } from "../../types";
 
@@ -18,6 +18,8 @@ export interface EnvViewerSettingProps {
   description?: string;
   /** Screen name to navigate to */
   screenName: string;
+  /** Custom navigation handler (overrides route) */
+  onPress?: () => void;
 }
 
 export const EnvViewerSetting: React.FC<EnvViewerSettingProps> = ({
@@ -27,9 +29,14 @@ export const EnvViewerSetting: React.FC<EnvViewerSettingProps> = ({
   screenName,
 }) => {
   const tokens = useAppDesignTokens();
+  const navigation = useAppNavigation();
 
   const handlePress = () => {
-    AppNavigation.navigate(screenName as never, { config } as never);
+    if (onPress) {
+      onPress();
+    } else {
+      navigation.navigate(screenName as any, { config } as any);
+    }
   };
 
   return (

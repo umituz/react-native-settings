@@ -20,9 +20,7 @@
       "@domains/rating/*": ["src/domains/rating/*"],
       "@notifications": ["src/domains/notifications/index.ts"],
       "@notifications/*": ["src/domains/notifications/*"],
-      "@umituz/react-native-notifications": ["src/domains/notifications/index.ts"],
-      "@umituz/react-native-design-system": ["../react-native-design-system/src/index.ts"],
-      "@umituz/react-native-localization": ["../react-native-localization/src/index.ts"]
+      "@umituz/react-native-notifications": ["src/domains/notifications/index.ts"]
     },
 
     /* Emit */

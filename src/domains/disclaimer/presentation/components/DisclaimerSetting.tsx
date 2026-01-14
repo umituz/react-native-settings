@@ -91,7 +91,7 @@ export const DisclaimerSetting: React.FC<DisclaimerSettingProps> = ({
 
       <Modal
         visible={modalVisible}
-        animationType="slide"
+        animationType="none"
         presentationStyle="pageSheet"
         onRequestClose={handleCloseModal}
       >

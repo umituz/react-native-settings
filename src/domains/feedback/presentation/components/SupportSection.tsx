@@ -63,12 +63,25 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
     const handleFeedbackSubmit = async (data: { type: any; rating: number; description: string; title: string }) => {
         if (feedbackConfig.config?.onSubmit) {
             setIsSubmitting(true);
-            setModalVisible(false);
             try {
-                await new Promise(resolve => setTimeout(resolve, 300));
+                // Add a small delay for better UX if needed, or remove it if instant response is preferred
+                // await new Promise(resolve => setTimeout(resolve, 300)); 
                 await feedbackConfig.config.onSubmit(data);
-            } catch {
-                // Silent error handling
+                
+                // Only close on success - or let the parent handle it? 
+                // Since onSubmit in config returns Promise<void> and usually handles errors via callbacks (onError),
+                // we can assume if it resolves, we should close.
+                // If the App's onSubmit logic catches errors and resolves, we still close.
+                setModalVisible(false);
+            } catch (error) {
+                // If the passed onSubmit throws, we log it.
+                if (__DEV__) {
+                    console.error("[SupportSection] Feedback submission error:", error);
+                }
+                // Optionally keep modal open? Or close it?
+                // If we keep it open, user can retry.
+                // But usually we close it.
+                setModalVisible(false);
             } finally {
                 setIsSubmitting(false);
             }

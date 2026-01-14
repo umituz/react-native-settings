@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useRef } from "react";
-import { View, StyleSheet, Animated, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
 import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
 
 export interface AchievementToastProps {
@@ -37,7 +37,7 @@ export const AchievementToast: React.FC<AchievementToastProps> = ({
   labelColor,
 }) => {
   const tokens = useAppDesignTokens();
-  const translateY = useRef(new Animated.Value(-100)).current;
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const finalBackgroundColor = backgroundColor || tokens.colors.primary;
   const finalTextColor = textColor || tokens.colors.onPrimary;
@@ -45,34 +45,22 @@ export const AchievementToast: React.FC<AchievementToastProps> = ({
 
   useEffect(() => {
     if (visible) {
-      Animated.sequence([
-        Animated.timing(translateY, {
-          toValue: 0,
-          duration: 400,
-          useNativeDriver: true,
-        }),
-        Animated.delay(duration),
-        Animated.timing(translateY, {
-          toValue: -100,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start(() => {
+      timeoutRef.current = setTimeout(() => {
         onDismiss();
-      });
+      }, duration);
     }
-  }, [visible, duration, onDismiss, translateY]);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [visible, duration, onDismiss]);
 
   if (!visible) return null;
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        { transform: [{ translateY }] },
-        containerStyle,
-      ]}
-    >
+    <View style={[styles.container, containerStyle]}>
       <View style={[styles.toast, { backgroundColor: finalBackgroundColor }]}>
         <View style={styles.iconContainer}>{icon}</View>
         <View style={styles.content}>
@@ -84,7 +72,7 @@ export const AchievementToast: React.FC<AchievementToastProps> = ({
           </AtomicText>
         </View>
       </View>
-    </Animated.View>
+    </View>
   );
 };
 

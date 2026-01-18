@@ -1,5 +1,5 @@
 import { useQuery } from "@umituz/react-native-design-system";
-import { getAppearanceService } from "../../../infrastructure/services/AppearanceService";
+import { getAppearanceService } from "../../../infrastructure/services/appearanceService";
 
 export const appearanceKeys = {
     all: ["appearance"] as const,

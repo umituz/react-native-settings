@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@umituz/react-native-design-system";
-import { getAppearanceService } from "../../../infrastructure/services/AppearanceService";
+import { getAppearanceService } from "../../../infrastructure/services/appearanceService";
 import { appearanceKeys } from "../queries/useAppearanceQuery";
 import { ThemeMode, CustomThemeColors } from "@umituz/react-native-design-system";
 

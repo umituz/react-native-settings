@@ -31,11 +31,15 @@ export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = ({ user
         }
     };
 
+    const anonymousDisplayName = userProfile.isAnonymous && userProfile.userId 
+        ? `${t("profile.guest", "Guest")} ${userProfile.userId.substring(0, 8)}`
+        : t("settings.profile.anonymousName", "Anonymous User");
+
     return (
         <View style={styles.profileContainer}>
             <ProfileSection
                 profile={{
-                    displayName: userProfile.displayName || "",
+                    displayName: userProfile.displayName || anonymousDisplayName,
                     userId: userProfile.userId,
                     isAnonymous: userProfile.isAnonymous ?? true,
                     avatarUrl: userProfile.avatarUrl,
@@ -44,8 +48,8 @@ export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = ({ user
                 }}
                 onPress={handlePress}
                 onSignIn={userProfile.onPress}
-                signInText={t("auth.signIn")}
-                anonymousText={t("settings.profile.anonymousName")}
+                signInText={t("auth.signIn", "Sign In")}
+                anonymousText={anonymousDisplayName}
             />
         </View>
     );

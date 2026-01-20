@@ -13,7 +13,10 @@ export interface AppearanceSectionProps {
     title?: string;
     /** Optional explicit description override */
     description?: string;
+    noBackground?: boolean;
+    hideMargin?: boolean;
 }
+
 
 export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
     config,
@@ -22,7 +25,10 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
     sectionTitle,
     title: titleProp,
     description: descriptionProp,
+    noBackground,
+    hideMargin,
 }) => {
+
     const navigation = useAppNavigation();
 
     const route = config?.route || config?.defaultRoute || 'Appearance';
@@ -49,7 +55,10 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
             onPress={handlePress}
             containerStyle={containerStyle}
             sectionTitle={sectionTitle}
+            noBackground={noBackground}
+            hideMargin={hideMargin}
         />
     );
 };
+
 

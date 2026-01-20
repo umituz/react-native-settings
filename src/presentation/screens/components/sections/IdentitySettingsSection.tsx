@@ -4,6 +4,8 @@ import { LegalSection } from "../../../../domains/legal/presentation/components/
 import { useLocalization } from "@umituz/react-native-localization";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 
+import { SettingsSection } from "../../../components/SettingsSection";
+
 interface IdentitySettingsSectionProps {
     normalizedConfig: NormalizedConfig;
     features: any;
@@ -15,8 +17,10 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
 }) => {
     const { t } = useLocalization();
 
+    if (!features.about && !features.legal) return null;
+
     return (
-        <>
+        <SettingsSection title={t("settings.about.title")}>
             {features.about && (
                 <AboutSection
                     config={{
@@ -24,7 +28,8 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
                         title: t("settings.about.title"),
                         description: t("settings.about.description"),
                     }}
-                    sectionTitle={t("settings.about.title")}
+                    noBackground={true}
+                    hideMargin={true}
                 />
             )}
 
@@ -35,9 +40,12 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
                         title: t("settings.legal.title"),
                         description: t("settings.legal.description"),
                     }}
-                    sectionTitle={t("settings.legal.title")}
+                    noBackground={true}
+                    hideMargin={true}
                 />
             )}
-        </>
+        </SettingsSection>
     );
 };
+
+

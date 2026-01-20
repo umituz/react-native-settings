@@ -24,7 +24,10 @@ export interface SettingsItemCardProps {
     switchValue?: boolean;
     onSwitchChange?: (value: boolean) => void;
     disabled?: boolean;
+    noBackground?: boolean;
+    hideMargin?: boolean;
 }
+
 
 export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     title,
@@ -41,7 +44,10 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     switchValue,
     onSwitchChange,
     disabled = false,
+    noBackground = false,
+    hideMargin = false,
 }) => {
+
     const tokens = useAppDesignTokens();
     const colors = tokens.colors;
 
@@ -95,12 +101,15 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
             style={[
                 styles.sectionContainer,
                 { 
-                    backgroundColor: colors.surface,
-                    borderRadius: tokens.borders.radius.lg,
+                    backgroundColor: noBackground ? "transparent" : colors.surface,
+                    borderRadius: noBackground ? 0 : tokens.borders.radius.lg,
                 },
+                hideMargin && { marginBottom: 0 },
                 containerStyle,
             ]}
         >
+
+
             {!!sectionTitle && (
                 <View style={styles.headerContainer}>
                     <AtomicText type="labelMedium" color="textSecondary" style={{ textTransform: 'uppercase' }}>

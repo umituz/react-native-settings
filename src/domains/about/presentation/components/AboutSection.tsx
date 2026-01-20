@@ -11,7 +11,10 @@ export interface AboutSectionProps {
     title?: string;
     description?: string;
     sectionTitle?: string;
+    noBackground?: boolean;
+    hideMargin?: boolean;
 }
+
 
 export const AboutSection: React.FC<AboutSectionProps> = ({
     config,
@@ -20,7 +23,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     title: propsTitle,
     description: propsDescription,
     sectionTitle: propsSectionTitle,
+    noBackground,
+    hideMargin,
 }) => {
+
     const navigation = useAppNavigation();
 
     const route = config?.route || config?.defaultRoute || 'About';
@@ -48,6 +54,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             onPress={handlePress}
             containerStyle={containerStyle}
             sectionTitle={sectionTitle}
+            noBackground={noBackground}
+            hideMargin={hideMargin}
         />
     );
 };
+

@@ -8,32 +8,22 @@ import type { NormalizedConfig } from "../utils/normalizeConfig";
 
 
 /**
- * Check if navigation screen exists
+ * Check if navigation screen exists or is likely available
  */
-function hasNavigationScreen(
+function isFeatureAvailable(
   navigation: any,
-  screenName: string,
+  route?: string,
+  onPress?: any
 ): boolean {
-  try {
-    const state = navigation.getState();
-    if (!state) return false;
-
-    const checkRoutes = (routes: any[]): boolean => {
-      if (!routes || !Array.isArray(routes)) return false;
-
-      for (const route of routes) {
-        if (route.name === screenName) return true;
-        if (route.state?.routes && checkRoutes(route.state.routes)) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    return checkRoutes(state.routes || []);
-  } catch {
-    return false;
-  }
+  // If we have an onPress, it's definitely available
+  if (onPress) return true;
+  
+  // If we have a navigation and a route, we assume it's available 
+  // since most apps won't provide a route that doesn't exist.
+  // The previous getState check was unreliable.
+  if (navigation && route) return true;
+  
+  return false;
 }
 
 /**
@@ -70,44 +60,56 @@ export function useFeatureDetection(
         appearance.enabled &&
         (appearance.config?.enabled === true ||
           (appearance.config?.enabled !== false &&
-            hasNavigationScreen(
+            isFeatureAvailable(
               navigation,
               appearance.config?.route || "Appearance",
+              appearance.config?.onPress,
             ))),
       language:
         language.enabled &&
         (language.config?.enabled === true ||
           (language.config?.enabled !== false &&
-            hasNavigationScreen(
+            isFeatureAvailable(
               navigation,
               language.config?.route || "LanguageSelection",
+              language.config?.onPress,
             ))),
       notifications:
         notifications.enabled &&
         (notifications.config?.enabled === true ||
           (notifications.config?.enabled !== false &&
-            notificationServiceAvailable &&
-            hasNavigationScreen(
-              navigation,
-              notifications.config?.route || "Notifications",
-            ))),
+            (notificationServiceAvailable ||
+              isFeatureAvailable(
+                navigation,
+                notifications.config?.route || "Notifications",
+                notifications.config?.onPress,
+              )))),
       about:
         about.enabled &&
         (about.config?.enabled === true ||
           (about.config?.enabled !== false &&
-            hasNavigationScreen(navigation, about.config?.route || "About"))),
+            isFeatureAvailable(
+              navigation,
+              about.config?.route || "About",
+              about.config?.onPress,
+            ))),
       legal:
         legal.enabled &&
         (legal.config?.enabled === true ||
           (legal.config?.enabled !== false &&
-            hasNavigationScreen(navigation, legal.config?.route || "Legal"))),
+            isFeatureAvailable(
+              navigation,
+              legal.config?.route || "Legal",
+              legal.config?.onPress,
+            ))),
       disclaimer:
         disclaimer.enabled &&
         (disclaimer.config?.enabled === true ||
           (disclaimer.config?.enabled !== false &&
-            hasNavigationScreen(
+            isFeatureAvailable(
               navigation,
               disclaimer.config?.route || "Disclaimer",
+              disclaimer.config?.onPress,
             ))),
       userProfile: userProfile.enabled,
       feedback: feedback.enabled,

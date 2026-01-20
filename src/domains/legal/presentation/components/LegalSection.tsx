@@ -11,7 +11,10 @@ export interface LegalSectionProps {
     title?: string;
     description?: string;
     sectionTitle?: string;
+    noBackground?: boolean;
+    hideMargin?: boolean;
 }
+
 
 export const LegalSection: React.FC<LegalSectionProps> = ({
     config,
@@ -20,7 +23,10 @@ export const LegalSection: React.FC<LegalSectionProps> = ({
     title: propsTitle,
     description: propsDescription,
     sectionTitle: propsSectionTitle,
+    noBackground,
+    hideMargin,
 }) => {
+
     const navigation = useAppNavigation();
 
     const route = config?.route || config?.defaultRoute || 'Legal';
@@ -48,6 +54,9 @@ export const LegalSection: React.FC<LegalSectionProps> = ({
             onPress={handlePress}
             containerStyle={containerStyle}
             sectionTitle={sectionTitle}
+            noBackground={noBackground}
+            hideMargin={hideMargin}
         />
     );
 };
+

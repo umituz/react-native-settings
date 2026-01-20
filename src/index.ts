@@ -59,6 +59,7 @@ export type {
   UserProfileConfig,
   AdditionalScreen,
   FAQData,
+  AccountConfig,
 } from './presentation/navigation/types';
 
 // =============================================================================

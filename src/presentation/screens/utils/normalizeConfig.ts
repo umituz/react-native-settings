@@ -84,19 +84,20 @@ function normalizeConfigValue<T>(
   defaultValue: FeatureVisibility,
 ): { enabled: boolean; config?: T } {
   if (value === undefined) {
-    return { enabled: defaultValue === true };
+    return { enabled: defaultValue === true || defaultValue === "auto" };
   }
 
   if (typeof value === "boolean" || value === "auto") {
-    return { enabled: value === true };
+    return { enabled: value === true || value === "auto" };
   }
 
   // It's a config object
   const config = value as T;
-  const enabled =
-    (config as { enabled?: FeatureVisibility })?.enabled ?? defaultValue;
+  const enabledValue = (config as { enabled?: FeatureVisibility })?.enabled;
+  const enabled = enabledValue !== undefined ? enabledValue : defaultValue;
+  
   return {
-    enabled: enabled === true,
+    enabled: enabled === true || enabled === "auto",
     config,
   };
 }

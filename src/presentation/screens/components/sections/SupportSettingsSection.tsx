@@ -28,7 +28,15 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
             {(features.feedback || features.rating) && (
                 <SupportSection
                     renderSection={(props: any) => <>{props.children}</>}
-                    renderItem={(props: any) => <SettingsItemCard title={props.title} icon={props.icon} onPress={props.onPress} />}
+                    renderItem={(props: any) => (
+                        <SettingsItemCard 
+                            title={props.title} 
+                            icon={props.icon} 
+                            onPress={props.onPress} 
+                            noBackground={true}
+                            hideMargin={true}
+                        />
+                    )}
                     feedbackConfig={{
                         enabled: features.feedback,
                         config: {
@@ -78,8 +86,11 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                     description={normalizedConfig.faqs.config?.description || t("settings.faqs.description")}
                     icon="help-circle-outline"
                     onPress={handleFAQPress}
+                    noBackground={true}
+                    hideMargin={true}
                 />
             )}
         </SettingsSection>
     );
 };
+

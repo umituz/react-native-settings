@@ -6,6 +6,8 @@ import { useLocalization, getLanguageByCode } from "@umituz/react-native-localiz
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 
+import { SettingsSection } from "../../../components/SettingsSection";
+
 interface FeatureSettingsSectionProps {
   normalizedConfig: NormalizedConfig;
   features: {
@@ -26,18 +28,24 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
     if (normalizedConfig.language.config?.onPress) {
       normalizedConfig.language.config.onPress();
     } else {
-      const route = normalizedConfig.language.config?.route || "LanguageSelection";
+      const route =
+        normalizedConfig.language.config?.route || "LanguageSelection";
       navigation.navigate(route as never);
     }
   };
 
   const currentLanguageData = getLanguageByCode(currentLanguage);
-  const languageDisplayName = currentLanguageData 
+  const languageDisplayName = currentLanguageData
     ? `${currentLanguageData.flag} ${currentLanguageData.nativeName}`
     : currentLanguage;
 
+  if (!features.appearance && !features.language && !features.notifications)
+    return null;
+
   return (
-    <>
+    <SettingsSection
+      title={t("settings.sections.app.title") || t("settings.sections.app") || "App Settings"}
+    >
       {features.appearance && (
         <AppearanceSection
           config={{
@@ -45,7 +53,8 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
             title: t("settings.appearance.title"),
             description: t("settings.appearance.description"),
           }}
-          sectionTitle={t("settings.appearance.title")}
+          noBackground={true}
+          hideMargin={true}
         />
       )}
 
@@ -55,7 +64,8 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
           description={languageDisplayName}
           icon="globe-outline"
           onPress={handleLanguagePress}
-          sectionTitle={t("settings.languageSelection.title")}
+          noBackground={true}
+          hideMargin={true}
         />
       )}
 
@@ -66,8 +76,12 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
             title: t("settings.notifications.title"),
             description: t("settings.notifications.description"),
           }}
+          noBackground={true}
+          hideMargin={true}
         />
       )}
-    </>
+
+    </SettingsSection>
   );
 };
+

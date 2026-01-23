@@ -66,7 +66,7 @@ export const RatingPromptModal: React.FC<RatingPromptModalProps> = ({
             {
               backgroundColor: tokens.colors.surface,
               borderRadius: tokens.borders.radius.xl,
-              padding: responsive.screenPadding,
+              padding: tokens.spacing.lg,
               maxWidth: responsive.maxContentWidth * 0.85,
               width: "90%",
             },
@@ -100,17 +100,17 @@ export const RatingPromptModal: React.FC<RatingPromptModalProps> = ({
 
           <View style={[styles.buttonContainer, { gap: tokens.spacing.sm }]}>
             <AtomicButton
-              variant="filled"
+              variant="fill"
               onPress={onPositive}
-              containerStyle={styles.button}
+              style={styles.button}
             >
               {defaultTranslations.positiveButton}
             </AtomicButton>
 
             <AtomicButton
-              variant="outlined"
+              variant="outline"
               onPress={onNegative}
-              containerStyle={styles.button}
+              style={styles.button}
             >
               {defaultTranslations.negativeButton}
             </AtomicButton>
@@ -118,7 +118,7 @@ export const RatingPromptModal: React.FC<RatingPromptModalProps> = ({
             <AtomicButton
               variant="text"
               onPress={onLater}
-              containerStyle={styles.button}
+              style={styles.button}
             >
               {defaultTranslations.laterButton}
             </AtomicButton>

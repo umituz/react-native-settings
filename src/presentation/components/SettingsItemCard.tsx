@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Pressable, StyleSheet, ViewStyle } from "react-native";
+import { View, Pressable, StyleSheet, type StyleProp, type ViewStyle } from "react-native";
 import {
     useAppDesignTokens,
     AtomicIcon,
@@ -14,7 +14,7 @@ export interface SettingsItemCardProps {
     description?: string;
     icon: IconName;
     onPress?: () => void;
-    containerStyle?: ViewStyle;
+    containerStyle?: StyleProp<ViewStyle>;
     sectionTitle?: string;
     rightIcon?: IconName;
     iconBgColor?: string;

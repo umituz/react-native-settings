@@ -100,7 +100,7 @@ export const RatingPromptModal: React.FC<RatingPromptModalProps> = ({
 
           <View style={[styles.buttonContainer, { gap: tokens.spacing.sm }]}>
             <AtomicButton
-              variant="fill"
+              variant="primary"
               onPress={onPositive}
               style={styles.button}
             >

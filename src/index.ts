@@ -109,8 +109,22 @@ export * from './domains/feedback';
 // FAQs Domain - Frequently asked questions
 export * from './domains/faqs';
 
-// Rating Domain - Star ratings, reviews, statistics
-export * from "./domains/rating";
+// Rating Domain - Star ratings, reviews, statistics, app store rating
+export {
+  StarRating,
+  RatingPromptModal,
+  useAppRating,
+  DEFAULT_RATING_CONFIG,
+  type RatingValue,
+  type Rating,
+  type RatingStats,
+  type RatingConfig as AppStoreRatingConfig,
+  type RatingState as AppStoreRatingState,
+  type RatingTranslations as AppStoreRatingTranslations,
+  type UseAppRatingResult,
+  type StarRatingProps,
+  type RatingPromptModalProps,
+} from "./domains/rating";
 
 // Video Tutorials Domain - Learning resources, tutorials
 export * from "./domains/video-tutorials";

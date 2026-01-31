@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { useAppNavigation } from '@umituz/react-native-design-system';
-import { useLocalization } from '@umituz/react-native-localization';
+import { useLocalization } from '../../../localization';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 
 export interface NotificationsSectionConfig {

@@ -2,7 +2,7 @@ import React from "react";
 import { useAppNavigation } from "@umituz/react-native-design-system";
 import { AppearanceSection } from "../../../../domains/appearance/presentation/components/AppearanceSection";
 import { NotificationsSection } from "../../../../domains/notifications";
-import { useLocalization, getLanguageByCode } from "@umituz/react-native-localization";
+import { useLocalization, getLanguageByCode } from "../../../../domains/localization";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 

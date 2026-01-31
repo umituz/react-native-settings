@@ -12,7 +12,7 @@ import {
   NavigationHeader,
   useAppNavigation
 } from "@umituz/react-native-design-system";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "../../../localization";
 import { useAppearance, useAppearanceActions } from "../../hooks";
 import {
   AppearanceHeader,

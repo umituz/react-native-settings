@@ -7,7 +7,7 @@
 
 import React from "react";
 import { useAppDesignTokens, StackNavigator, type StackScreen, type StackNavigatorConfig } from "@umituz/react-native-design-system";
-import { useLocalization, LanguageSelectionScreen } from "@umituz/react-native-localization";
+import { useLocalization, LanguageSelectionScreen } from "../../domains/localization";
 import { NotificationSettingsScreen } from "../../domains/notifications";
 import { AccountScreen } from "@umituz/react-native-auth";
 import { AppearanceScreen } from "../screens/AppearanceScreen";

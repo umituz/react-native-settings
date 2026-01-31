@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { ProfileSection } from "@umituz/react-native-auth";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "../../../../domains/localization";
 import { useAppNavigation } from "@umituz/react-native-design-system";
 
 export interface ProfileSectionLoaderProps {

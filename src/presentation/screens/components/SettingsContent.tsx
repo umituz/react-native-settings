@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "../../../domains/localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
 import { DevSettingsSection, DevSettingsProps } from "../../../domains/dev";

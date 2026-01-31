@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "../../../../domains/localization";
 import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { SettingsSection } from "../../../components/SettingsSection";

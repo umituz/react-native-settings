@@ -18,7 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
-import { useLocalization } from '@umituz/react-native-localization';
+import { useLocalization } from '../../../localization';
 
 export interface DisclaimerScreenProps {
   /** Custom title (overrides translation) */

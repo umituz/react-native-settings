@@ -138,6 +138,8 @@ export * from "./domains/dev";
 // Gamification Domain - Achievements, levels, streaks
 export * from "./domains/gamification";
 
+// Localization Domain - i18n, language selection, translations
+export * from "./domains/localization";
 
 // =============================================================================
 // PRESENTATION LAYER - Config Creator Utilities

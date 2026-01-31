@@ -21,7 +21,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'react-native';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
-import { useLocalization } from '@umituz/react-native-localization';
+import { useLocalization } from '../../../localization';
 import { DisclaimerCard } from './DisclaimerCard';
 import { DisclaimerModal } from './DisclaimerModal';
 

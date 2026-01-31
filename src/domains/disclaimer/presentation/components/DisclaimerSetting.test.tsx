@@ -7,7 +7,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { DisclaimerSetting } from '../DisclaimerSetting';
 
 // Mock dependencies
-jest.mock('@umituz/react-native-localization', () => ({
+jest.mock('../../../localization', () => ({
   useLocalization: () => ({
     t: (key: string) => key,
   }),

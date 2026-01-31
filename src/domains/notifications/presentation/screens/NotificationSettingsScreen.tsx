@@ -13,7 +13,7 @@ import {
   useAppDesignTokens,
   useAppNavigation
 } from '@umituz/react-native-design-system';
-import { useLocalization } from '@umituz/react-native-localization';
+import { useLocalization } from '../../../localization';
 import { QuietHoursCard } from '../../quietHours/presentation/components/QuietHoursCard';
 import { SettingRow } from '../components/SettingRow';
 import { RemindersNavRow } from '../components/RemindersNavRow';

@@ -1,7 +1,7 @@
 import React from "react";
 import { AboutSection } from "../../../../domains/about/presentation/components/AboutSection";
 import { LegalSection } from "../../../../domains/legal/presentation/components/LegalSection";
-import { useLocalization } from "@umituz/react-native-localization";
+import { useLocalization } from "../../../../domains/localization";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 
 import { SettingsSection } from "../../../components/SettingsSection";

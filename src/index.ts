@@ -41,6 +41,7 @@ export { useSettingsScreenConfig } from './presentation/hooks/useSettingsScreenC
 export type {
   UseSettingsScreenConfigParams,
   SettingsScreenConfigResult,
+  SettingsFeatures,
 } from './presentation/hooks/useSettingsScreenConfig';
 
 

@@ -1,3 +1,6 @@
+// Providers
+export { LocalizationProvider } from './presentation/providers/LocalizationProvider';
+
 // Hooks
 export { useLocalization } from './infrastructure/hooks/useLocalization';
 export { useLocalizationStore } from './infrastructure/storage/LocalizationStore';

@@ -12,6 +12,8 @@ export interface SettingsScreenWrapperProps {
   devSettings: any;
   customSections: any[];
   showHeader?: boolean;
+  showCloseButton?: boolean;
+  onClose?: () => void;
 }
 
 export const SettingsScreenWrapper: React.FC<SettingsScreenWrapperProps> = ({
@@ -22,6 +24,8 @@ export const SettingsScreenWrapper: React.FC<SettingsScreenWrapperProps> = ({
   devSettings,
   customSections,
   showHeader,
+  showCloseButton,
+  onClose,
 }) => (
   <SettingsScreen
     config={config}
@@ -31,5 +35,7 @@ export const SettingsScreenWrapper: React.FC<SettingsScreenWrapperProps> = ({
     devSettings={devSettings}
     customSections={customSections}
     showHeader={showHeader}
+    showCloseButton={showCloseButton}
+    onClose={onClose}
   />
 );

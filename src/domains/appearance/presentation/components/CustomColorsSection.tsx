@@ -81,12 +81,6 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
   // Memoize styles to prevent unnecessary re-creation
   const styles = useMemo(() => getStyles(tokens), [tokens]);
 
-  // Memoize hasCustomColors check to prevent unnecessary re-renders
-  const hasCustomColors = useMemo(() => 
-    Object.keys(localCustomColors).length > 0,
-    [localCustomColors]
-  );
-
   // Memoize color fields to prevent unnecessary re-renders
   const colorFieldsMemo = useMemo(() => colorFields, [colorFields]);
 
@@ -123,14 +117,14 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
 
   // Memoize reset button to prevent unnecessary re-renders
   const resetButton = useMemo(() => {
-    if (!showResetButton || !hasCustomColors) return null;
-    
+    if (!showResetButton) return null;
+
     return (
       <AtomicButton variant="outline" size="sm" onPress={handleResetColors}>
-        {resetButtonText}
+        {resetButtonText || "Reset"}
       </AtomicButton>
     );
-  }, [showResetButton, hasCustomColors, resetButtonText, handleResetColors]);
+  }, [showResetButton, resetButtonText, handleResetColors]);
 
   return (
     <View style={styles.section}>

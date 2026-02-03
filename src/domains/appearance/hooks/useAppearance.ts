@@ -1,11 +1,12 @@
 import { useTheme, type ThemeMode, type CustomThemeColors } from "@umituz/react-native-design-system";
 
 export const useAppearance = () => {
-  const { themeMode, customColors, isInitialized, setThemeMode, setCustomColors } = useTheme();
+  const { themeMode, customColors, defaultColors, isInitialized, setThemeMode, setCustomColors, resetToDefaults } = useTheme();
 
   return {
     themeMode,
     customColors,
+    defaultColors,
     isLoading: !isInitialized,
     setThemeMode: (mode: ThemeMode) => {
       void setThemeMode(mode);
@@ -14,8 +15,7 @@ export const useAppearance = () => {
       void setCustomColors(colors);
     },
     reset: () => {
-      void setThemeMode("light");
-      void setCustomColors(undefined);
+      void resetToDefaults();
     },
   };
 };

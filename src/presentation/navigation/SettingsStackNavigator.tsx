@@ -38,6 +38,8 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   devSettings,
   customSections = [],
   showHeader = true,
+  showCloseButton = false,
+  onClose,
   gamificationConfig,
 }) => {
   const tokens = useAppDesignTokens();
@@ -75,7 +77,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     const list: StackScreen<any>[] = [
       {
         name: "SettingsMain",
-        options: showHeader ? { headerTitle: t("settings.title") } : { headerShown: false },
+        options: { headerShown: false },
         children: () => (
           <SettingsScreenWrapper
             config={config}
@@ -85,6 +87,8 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
             devSettings={devSettings}
             customSections={customSections}
             showHeader={showHeader}
+            showCloseButton={showCloseButton}
+            onClose={onClose}
           />
         ),
       },
@@ -172,6 +176,8 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   }, [
     t,
     showHeader,
+    showCloseButton,
+    onClose,
     config,
     appInfo.version,
     showUserProfile,

@@ -32,12 +32,24 @@ import type { FeedbackFormData } from "../utils/config-creators";
 import type { AppInfo, FAQData, UserProfileConfig, AdditionalScreen } from "../navigation/types";
 import type { AccountScreenConfig } from "@umituz/react-native-auth";
 
+export interface SettingsFeatures {
+  notifications?: boolean;
+  appearance?: boolean;
+  language?: boolean;
+  feedback?: boolean;
+  rating?: boolean;
+  faqs?: boolean;
+  about?: boolean;
+  legal?: boolean;
+}
+
 export interface UseSettingsScreenConfigParams {
   appInfo: AppInfo;
   faqData?: FAQData;
   isPremium: boolean;
   onFeedbackSubmit: (data: FeedbackFormData) => Promise<void>;
   additionalScreens?: AdditionalScreen[];
+  features?: SettingsFeatures;
 }
 
 export interface SettingsScreenConfigResult {
@@ -52,7 +64,18 @@ export interface SettingsScreenConfigResult {
 export const useSettingsScreenConfig = (
   params: UseSettingsScreenConfigParams
 ): SettingsScreenConfigResult => {
-  const { appInfo, faqData, isPremium, onFeedbackSubmit } = params;
+  const { appInfo, faqData, isPremium, onFeedbackSubmit, features = {} } = params;
+
+  const {
+    notifications: showNotifications = true,
+    appearance: showAppearance = true,
+    language: showLanguage = true,
+    feedback: showFeedback = true,
+    rating: showRating = true,
+    faqs: showFaqs = true,
+    about: showAbout = true,
+    legal: showLegal = true,
+  } = features;
 
   const { t } = useLocalization();
   const { user, loading, isAuthReady, signOut } = useAuth();
@@ -88,17 +111,21 @@ export const useSettingsScreenConfig = (
   }, [showAuthModal]);
 
   const settingsConfig = useMemo((): SettingsConfig => ({
-    appearance: createAppearanceConfig(t),
-    language: createLanguageConfig(t),
-    notifications: createNotificationsConfig(t),
-    feedback: createFeedbackConfig(t, onFeedbackSubmit),
-    about: createAboutConfig(t),
-    legal: createLegalConfig(t),
-    faqs: createFAQConfig(t),
-    rating: createRatingConfig(t, handleRatePress, appInfo.appStoreUrl || ""),
+    appearance: showAppearance ? createAppearanceConfig(t) : false,
+    language: showLanguage ? createLanguageConfig(t) : false,
+    notifications: showNotifications ? createNotificationsConfig(t) : false,
+    feedback: showFeedback ? createFeedbackConfig(t, onFeedbackSubmit) : false,
+    about: showAbout ? createAboutConfig(t) : false,
+    legal: showLegal ? createLegalConfig(t) : false,
+    faqs: showFaqs ? createFAQConfig(t) : false,
+    rating: showRating ? createRatingConfig(t, handleRatePress, appInfo.appStoreUrl || "") : false,
     subscription: createSubscriptionConfig(t, isPremium, "SubscriptionDetail"),
     disclaimer: false,
-  }), [t, onFeedbackSubmit, handleRatePress, appInfo.appStoreUrl, isPremium]);
+  }), [
+    t, onFeedbackSubmit, handleRatePress, appInfo.appStoreUrl, isPremium,
+    showAppearance, showLanguage, showNotifications, showFeedback,
+    showAbout, showLegal, showFaqs, showRating,
+  ]);
 
   const userProfile = useMemo((): UserProfileConfig => {
     const isAnonymous = userProfileData?.isAnonymous ?? true;
@@ -121,7 +148,6 @@ export const useSettingsScreenConfig = (
         isAnonymous,
         avatarUrl: userProfileData?.avatarUrl || user?.photoURL || undefined,
         benefits: isAnonymous ? [
-          t("settings.profile.benefits.freeCredits"),
           t("settings.profile.benefits.saveHistory"),
           t("settings.profile.benefits.syncDevices"),
           t("settings.profile.benefits.cloudSync"),

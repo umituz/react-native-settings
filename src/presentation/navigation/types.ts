@@ -99,5 +99,9 @@ export interface SettingsStackNavigatorProps {
   devSettings?: DevSettingsProps;
   customSections?: CustomSettingsSection[];
   showHeader?: boolean;
+  /** Show close button in header (useful for modal presentation) */
+  showCloseButton?: boolean;
+  /** Custom close handler */
+  onClose?: () => void;
   gamificationConfig?: import("../../domains/gamification").GamificationSettingsConfig;
 }

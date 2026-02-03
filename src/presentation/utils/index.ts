@@ -2,4 +2,4 @@
  * Settings Utilities
  */
 
-export * from "./configCreators";
+export * from "./config-creators";

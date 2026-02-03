@@ -1,21 +1,21 @@
-import { useAppearanceQuery } from "../presentation/hooks/queries/useAppearanceQuery";
-import { useAppearanceMutations } from "../presentation/hooks/mutations/useAppearanceMutations";
-import { ThemeMode, CustomThemeColors } from "@umituz/react-native-design-system";
+import { useTheme, type ThemeMode, type CustomThemeColors } from "@umituz/react-native-design-system";
 
 export const useAppearance = () => {
-    const { data: settings, isLoading } = useAppearanceQuery();
-    const {
-        updateThemeMutation,
-        updateColorsMutation,
-        resetAppearanceMutation
-    } = useAppearanceMutations();
+  const { themeMode, customColors, isInitialized, setThemeMode, setCustomColors } = useTheme();
 
-    return {
-        themeMode: settings?.themeMode || "light",
-        customColors: settings?.customColors,
-        isLoading,
-        setThemeMode: (mode: ThemeMode) => updateThemeMutation.mutate(mode),
-        setCustomColors: (colors: CustomThemeColors) => updateColorsMutation.mutate(colors),
-        reset: () => resetAppearanceMutation.mutate(),
-    };
+  return {
+    themeMode,
+    customColors,
+    isLoading: !isInitialized,
+    setThemeMode: (mode: ThemeMode) => {
+      void setThemeMode(mode);
+    },
+    setCustomColors: (colors: CustomThemeColors) => {
+      void setCustomColors(colors);
+    },
+    reset: () => {
+      void setThemeMode("light");
+      void setCustomColors(undefined);
+    },
+  };
 };

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAppearance } from "./useAppearance";
-import { CustomThemeColors } from "@umituz/react-native-design-system";
+import type { CustomThemeColors, ThemeMode } from "@umituz/react-native-design-system";
 
 export const useAppearanceActions = () => {
   const { themeMode, customColors, setThemeMode, setCustomColors, reset } = useAppearance();
@@ -12,7 +12,7 @@ export const useAppearanceActions = () => {
     }
   }, [customColors]);
 
-  const handleThemeSelect = useCallback((mode: any) => {
+  const handleThemeSelect = useCallback((mode: ThemeMode) => {
     setThemeMode(mode);
   }, [setThemeMode]);
 
@@ -28,6 +28,7 @@ export const useAppearanceActions = () => {
   }, [reset]);
 
   return {
+    themeMode,
     localCustomColors,
     handleThemeSelect,
     handleColorChange,

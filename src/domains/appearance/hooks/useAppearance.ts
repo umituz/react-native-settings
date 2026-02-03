@@ -11,7 +11,7 @@ export const useAppearance = () => {
     } = useAppearanceMutations();
 
     return {
-        themeMode: settings?.themeMode || "dark",
+        themeMode: settings?.themeMode || "light",
         customColors: settings?.customColors,
         isLoading,
         setThemeMode: (mode: ThemeMode) => updateThemeMutation.mutate(mode),

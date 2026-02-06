@@ -5,7 +5,6 @@
 
 import React from 'react';
 import { FlatList } from 'react-native';
-// @ts-ignore - Optional peer dependency
 import {
   useAppDesignTokens,
   SearchBar,

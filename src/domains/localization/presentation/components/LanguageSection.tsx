@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
-// @ts-ignore - Optional peer dependency
 import {
     useAppDesignTokens,
     AtomicText,

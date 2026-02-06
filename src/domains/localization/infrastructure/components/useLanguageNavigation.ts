@@ -1,4 +1,3 @@
-// @ts-ignore - Optional peer dependency
 import { useAppNavigation } from '@umituz/react-native-design-system';
 import { useLocalization } from '../hooks/useLocalization';
 import { languageRepository } from '../repository/LanguageRepository';

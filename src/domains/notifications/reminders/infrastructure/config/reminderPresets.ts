@@ -116,5 +116,5 @@ export const formatTime = (hour: number, minute: number): string => {
 
 export const parseTime = (timeString: string): { hour: number; minute: number } => {
   const [hour, minute] = timeString.split(':').map(Number);
-  return { hour: hour || 0, minute: minute || 0 };
+  return { hour: hour ?? 0, minute: minute ?? 0 };
 };

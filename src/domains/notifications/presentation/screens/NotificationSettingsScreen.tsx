@@ -23,7 +23,6 @@ import { useReminders } from '../../reminders/infrastructure/storage/RemindersSt
 import { useQuietHoursActions } from '../../quietHours/infrastructure/hooks/useQuietHoursActions';
 import type { NotificationSettingsTranslations, QuietHoursTranslations } from '../../infrastructure/services/types';
 import { createStyles } from './NotificationSettingsScreen.styles';
-// @ts-ignore - Optional peer dependency
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export interface NotificationSettingsScreenProps {

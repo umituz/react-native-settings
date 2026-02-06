@@ -7,7 +7,7 @@
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { AtomicIcon, AtomicCard, AtomicText, ScreenLayout, STATIC_TOKENS, AtomicSpinner, type IconColor } from '@umituz/react-native-design-system';
+import { AtomicIcon, AtomicCard, AtomicText, ScreenLayout, BASE_TOKENS, AtomicSpinner, type IconColor } from '@umituz/react-native-design-system';
 import { Switch } from 'react-native';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { useNotificationSettings } from '../../infrastructure/hooks/useNotificationSettings';
@@ -58,7 +58,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({
             <AtomicText type="bodyLarge" style={{ color: tokens.colors.textPrimary }}>
               {translations.title}
             </AtomicText>
-            <AtomicText type="bodySmall" style={{ color: tokens.colors.textSecondary, marginTop: STATIC_TOKENS.spacing.xs }}>
+            <AtomicText type="bodySmall" style={{ color: tokens.colors.textSecondary, marginTop: BASE_TOKENS.spacing.xs }}>
               {translations.description}
             </AtomicText>
           </View>
@@ -82,7 +82,7 @@ const getStyles = (tokens: DesignTokens) => StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    padding: STATIC_TOKENS.spacing.lg,
+    padding: BASE_TOKENS.spacing.lg,
     backgroundColor: tokens.colors.surface,
   },
   settingItem: {
@@ -96,11 +96,11 @@ const getStyles = (tokens: DesignTokens) => StyleSheet.create({
     backgroundColor: tokens.colors.surfaceSecondary,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: STATIC_TOKENS.spacing.md,
+    marginRight: BASE_TOKENS.spacing.md,
   },
   textContainer: {
     flex: 1,
-    marginRight: STATIC_TOKENS.spacing.md,
+    marginRight: BASE_TOKENS.spacing.md,
   },
 });
 

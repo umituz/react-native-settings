@@ -1,5 +1,4 @@
 import React from "react";
-// @ts-ignore - Optional peer dependency
 import { useAppNavigation } from "@umituz/react-native-design-system";
 import type { IconName } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";

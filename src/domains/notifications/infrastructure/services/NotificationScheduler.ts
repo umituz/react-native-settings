@@ -67,8 +67,8 @@ export class NotificationScheduler {
     return notifications.map(notification => ({
       identifier: notification.identifier,
       content: {
-        title: notification.content.title || '',
-        body: notification.content.body || '',
+        title: notification.content.title ?? '',
+        body: notification.content.body ?? '',
         data: notification.content.data as Record<string, unknown>,
       },
       trigger: notification.trigger,

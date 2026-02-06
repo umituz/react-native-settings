@@ -36,7 +36,7 @@ export class SettingsRepository implements ISettingsRepository {
 
             return {
                 success: true,
-                data: result.data || defaults,
+                data: result.data ?? defaults,
             };
         } catch (error) {
             return {

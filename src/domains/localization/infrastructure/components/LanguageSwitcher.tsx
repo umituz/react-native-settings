@@ -5,7 +5,6 @@
 
 import React, { useMemo } from 'react';
 import { TouchableOpacity, type StyleProp, type ViewStyle, type TextStyle } from 'react-native';
-// @ts-ignore - Optional peer dependency
 import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 import { useLanguageSwitcher } from './useLanguageSwitcher';
 import { styles, DEFAULT_CONFIG_VALUES } from './LanguageSwitcher.styles';

@@ -17,7 +17,7 @@ export const calculateLevel = (
   for (let i = 0; i < sortedLevels.length; i++) {
     if (points >= sortedLevels[i].minPoints) {
       currentLevelDef = sortedLevels[i];
-      nextLevelDef = sortedLevels[i + 1] || null;
+      nextLevelDef = sortedLevels[i + 1] ?? null;
     }
   }
 

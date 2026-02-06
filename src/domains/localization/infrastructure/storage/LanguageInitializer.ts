@@ -62,7 +62,7 @@ export class LanguageInitializer {
 
     return {
       languageCode: finalLanguageCode,
-      isRTL: finalLanguageObj?.isRTL || false,
+      isRTL: finalLanguageObj?.isRTL ?? false,
     };
   }
 

@@ -13,7 +13,6 @@ import {
   type ViewStyle,
   type TextStyle,
 } from 'react-native';
-// @ts-ignore - Optional peer dependency
 import { useAppDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import type { Language } from '../../infrastructure/storage/types/Language';
 import { styles } from './LanguageItem.styles';

@@ -50,10 +50,10 @@ export class FAQSearchService {
   }
 
   static sortByOrder(items: FAQItem[]): FAQItem[] {
-    return [...items].sort((a, b) => (a.order || 0) - (b.order || 0));
+    return [...items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
 
   static sortCategoriesByOrder(categories: FAQCategory[]): FAQCategory[] {
-    return [...categories].sort((a, b) => (a.order || 0) - (b.order || 0));
+    return [...categories].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
 }

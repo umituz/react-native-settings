@@ -26,7 +26,7 @@ export const buildTrigger = (reminder: Reminder): NotificationTrigger => {
     case 'weekly':
       return {
         type: 'weekly',
-        weekday: weekday || 1,
+        weekday: weekday ?? 1,
         hour,
         minute,
       };
@@ -34,7 +34,7 @@ export const buildTrigger = (reminder: Reminder): NotificationTrigger => {
     case 'monthly':
       return {
         type: 'monthly',
-        day: dayOfMonth || 1,
+        day: dayOfMonth ?? 1,
         hour,
         minute,
       };

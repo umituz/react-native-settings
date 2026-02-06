@@ -19,6 +19,7 @@ import {
   AtomicSpinner,
   AtomicText,
 } from "@umituz/react-native-design-system";
+import type { DesignTokens } from "@umituz/react-native-design-system";
 import type { VideoTutorial } from "../../types";
 import { VideoTutorialCard } from "../components/VideoTutorialCard";
 
@@ -114,7 +115,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
   }
 );
 
-const getStyles = (tokens: any) => StyleSheet.create({
+const getStyles = (tokens: DesignTokens) => StyleSheet.create({
   title: {
     fontSize: tokens.typography.headlineLarge.fontSize,
     color: tokens.colors.textPrimary,

@@ -18,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import type { IconName } from '@umituz/react-native-design-system';
 import { useLocalization } from '../../../localization';
 
 export interface DisclaimerScreenProps {
@@ -68,7 +69,7 @@ export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({
               },
             ]}
           >
-            <AtomicIcon name={iconName as any} color="warning" size="xl" />
+            <AtomicIcon name={iconName as IconName} color="warning" size="xl" />
           </View>
         </View>
 

@@ -4,6 +4,7 @@
  */
 import React from "react";
 import { StyleSheet } from "react-native";
+import type { DesignTokens } from "@umituz/react-native-design-system";
 import { LegalContentScreen } from "./LegalContentScreen";
 
 export interface PrivacyPolicyScreenProps {
@@ -25,7 +26,7 @@ export const PrivacyPolicyScreen: React.FC<PrivacyPolicyScreenProps> = React.mem
   onUrlPress,
   testID = "privacy-policy-screen",
 }) => {
-  const createStyles = (tokens: any) => StyleSheet.create({
+  const createStyles = (tokens: DesignTokens) => StyleSheet.create({
     container: {
       flex: 1,
     },

@@ -38,7 +38,7 @@ export interface AboutScreenProps {
 }
 
 import { useAboutInfo } from '../hooks/useAboutInfo';
-import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, type DesignTokens } from '@umituz/react-native-design-system';
 
 export const AboutScreen: React.FC<AboutScreenProps> = ({
   config,
@@ -174,7 +174,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({
   );
 };
 
-const getStyles = (tokens: any) => StyleSheet.create({
+const getStyles = (tokens: DesignTokens) => StyleSheet.create({
   container: {
     flex: 1,
   },

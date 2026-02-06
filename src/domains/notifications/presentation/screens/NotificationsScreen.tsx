@@ -7,7 +7,7 @@
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { AtomicIcon, AtomicCard, AtomicText, ScreenLayout, STATIC_TOKENS, AtomicSpinner } from '@umituz/react-native-design-system';
+import { AtomicIcon, AtomicCard, AtomicText, ScreenLayout, STATIC_TOKENS, AtomicSpinner, type IconColor } from '@umituz/react-native-design-system';
 import { Switch } from 'react-native';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { useNotificationSettings } from '../../infrastructure/hooks/useNotificationSettings';
@@ -52,7 +52,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({
       <AtomicCard style={styles.card}>
         <View style={styles.settingItem}>
           <View style={styles.iconContainer}>
-            <AtomicIcon name={iconName} size="lg" color={iconColor as any} />
+            <AtomicIcon name={iconName} size="lg" color={iconColor as IconColor} />
           </View>
           <View style={styles.textContainer}>
             <AtomicText type="bodyLarge" style={{ color: tokens.colors.textPrimary }}>

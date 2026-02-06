@@ -14,7 +14,7 @@ export interface FeedbackConfig {
     title?: string;
     description?: string;
     initialType?: FeedbackType;
-    onSubmit?: (data: { type: any; rating: number; description: string; title: string }) => Promise<void>;
+    onSubmit?: (data: { type: FeedbackType; rating: number; description: string; title: string }) => Promise<void>;
     onPress?: () => void;
 }
 
@@ -28,12 +28,12 @@ export interface RatingConfig {
 
 export interface FeedbackModalTexts {
     title?: string;
-    ratingLabel?: string;
-    descriptionPlaceholder?: string;
-    submitButton?: string;
-    submittingButton?: string;
-    feedbackTypes?: Array<{ type: FeedbackType; label: string }>;
-    defaultTitle?: (type: FeedbackType) => string;
+    ratingLabel: string;
+    descriptionPlaceholder: string;
+    submitButton: string;
+    submittingButton: string;
+    feedbackTypes: Array<{ type: FeedbackType; label: string }>;
+    defaultTitle: (type: FeedbackType) => string;
 }
 
 export interface SupportSectionProps {
@@ -42,7 +42,7 @@ export interface SupportSectionProps {
     renderSection: (props: { title: string; children: React.ReactNode }) => React.ReactElement | null;
     renderItem: (props: {
         title: string;
-        icon: any;
+        icon: string;
         onPress: () => void;
         isLast?: boolean
     }) => React.ReactElement | null;
@@ -60,7 +60,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
     const [modalVisible, setModalVisible] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleFeedbackSubmit = async (data: { type: any; rating: number; description: string; title: string }) => {
+    const handleFeedbackSubmit = async (data: { type: FeedbackType; rating: number; description: string; title: string }) => {
         if (feedbackConfig.config?.onSubmit) {
             setIsSubmitting(true);
             try {

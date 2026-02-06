@@ -3,14 +3,17 @@
  */
 import React from "react";
 import { SettingsScreen } from "../../../screens/SettingsScreen";
+import type { SettingsConfig, CustomSettingsSection } from "../../../screens/types";
+import type { UserProfileConfig } from "../../types";
+import type { DevSettingsProps } from "../../../../domains/dev";
 
 export interface SettingsScreenWrapperProps {
-  config: any;
+  config?: SettingsConfig;
   appVersion: string;
   showUserProfile: boolean;
-  userProfile: any;
-  devSettings: any;
-  customSections: any[];
+  userProfile?: UserProfileConfig;
+  devSettings?: DevSettingsProps;
+  customSections?: CustomSettingsSection[];
   showHeader?: boolean;
   showCloseButton?: boolean;
   onClose?: () => void;

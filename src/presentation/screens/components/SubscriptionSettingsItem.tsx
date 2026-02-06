@@ -3,9 +3,10 @@ import React from "react";
 import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import type { IconName } from "@umituz/react-native-design-system";
+import type { SubscriptionConfig } from "../../screens/types/UserFeatureConfig";
 
 export interface SubscriptionSettingsItemProps {
-  config: any;
+  config: SubscriptionConfig;
   t: (key: string) => string;
 }
 

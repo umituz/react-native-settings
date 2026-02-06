@@ -14,18 +14,18 @@ export class TranslationHook {
   /**
    * Get translation function with proper fallbacks
    */
-  static useTranslationFunction(): (key: string, options?: any) => string {
+  static useTranslationFunction(): (key: string, options?: Record<string, unknown>) => string {
     // Always call useTranslation hook (React hooks rules)
     const translationResult = useTranslation(undefined, { i18n });
 
     // Use react-i18next if available, otherwise fallback to direct i18n
     if (translationResult?.t && typeof translationResult.t === 'function' && i18n.isInitialized) {
-      return (key: string, options?: any): string => {
+      return (key: string, options?: Record<string, unknown>): string => {
         const result = translationResult.t(key, options);
         return typeof result === 'string' ? result : String(result);
       };
     } else {
-      return (key: string, options?: any): string => {
+      return (key: string, options?: Record<string, unknown>): string => {
         // Fallback to direct i18n.t
         if (i18n.isInitialized && typeof i18n.t === 'function') {
           const result = i18n.t(key, options);

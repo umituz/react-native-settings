@@ -20,7 +20,7 @@ export interface VideoTutorialSectionProps {
     }) => React.ReactElement | null;
     renderItem: (props: {
         title: string;
-        icon: any;
+        icon: string;
         onPress: () => void;
         isLast?: boolean;
     }) => React.ReactElement | null;

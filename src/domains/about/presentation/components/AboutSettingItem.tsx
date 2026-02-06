@@ -12,7 +12,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { useAppDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, AtomicIcon, type DesignTokens } from '@umituz/react-native-design-system';
 
 export interface AboutSettingItemProps {
   /** Icon component (any React component) */
@@ -123,7 +123,7 @@ export const AboutSettingItem: React.FC<AboutSettingItemProps> = memo(({
   );
 });
 
-const getStyles = (tokens: any) => StyleSheet.create({
+const getStyles = (tokens: DesignTokens) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

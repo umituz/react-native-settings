@@ -3,9 +3,10 @@
  */
 import React from "react";
 import { AboutScreen } from "../../../../domains/about";
+import type { AboutConfig } from "../../../../domains/about/domain/entities/AppInfo";
 
 export interface AboutScreenWrapperProps {
-  config: any;
+  config: AboutConfig;
 }
 
 export const AboutScreenWrapper: React.FC<AboutScreenWrapperProps> = ({

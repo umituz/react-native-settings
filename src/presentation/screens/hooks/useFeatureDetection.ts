@@ -11,9 +11,9 @@ import type { NormalizedConfig } from "../utils/normalizeConfig";
  * Check if navigation screen exists or is likely available
  */
 function isFeatureAvailable(
-  navigation: any,
+  navigation: { navigate: (route: string) => void } | null,
   route?: string,
-  onPress?: any
+  onPress?: (() => void) | undefined
 ): boolean {
   // If we have an onPress, it's definitely available
   if (onPress) return true;
@@ -31,7 +31,7 @@ function isFeatureAvailable(
  */
 export function useFeatureDetection(
   normalizedConfig: NormalizedConfig,
-  navigation: any,
+  navigation: { navigate: (route: string) => void } | null,
   options?: {
     notificationServiceAvailable?: boolean;
   },

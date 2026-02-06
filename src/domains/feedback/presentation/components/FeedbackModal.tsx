@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal } from "@umituz/react-native-design-system";
 import { FeedbackForm } from "./FeedbackForm";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
+import type { FeedbackFormProps } from "./FeedbackForm";
 
 export interface FeedbackModalProps {
     visible: boolean;
@@ -18,7 +19,7 @@ export interface FeedbackModalProps {
     isSubmitting?: boolean;
     title?: string;
     subtitle?: string;
-    texts: any;
+    texts: FeedbackFormProps['texts'];
 }
 
 export const FeedbackModal: React.FC<FeedbackModalProps> = ({

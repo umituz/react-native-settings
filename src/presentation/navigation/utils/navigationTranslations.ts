@@ -3,7 +3,7 @@
  * Creates translation objects for navigation screens
  */
 
-export const createNotificationTranslations = (t: any) => ({
+export const createNotificationTranslations = (t: (key: string) => string) => ({
   screenTitle: t("settings.notifications.title"),
   masterToggleTitle: t("settings.notifications.masterToggleTitle"),
   masterToggleDescription: t("settings.notifications.masterToggleDescription"),
@@ -17,7 +17,7 @@ export const createNotificationTranslations = (t: any) => ({
   quietHoursDescription: t("settings.notifications.quietHoursDescription"),
 });
 
-export const createQuietHoursTranslations = (t: any) => ({
+export const createQuietHoursTranslations = (t: (key: string) => string) => ({
   title: t("settings.notifications.quietHours.title"),
   description: t("settings.notifications.quietHours.description"),
   startTimeLabel: t("settings.notifications.quietHours.startTimeLabel"),

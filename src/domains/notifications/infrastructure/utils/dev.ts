@@ -6,19 +6,19 @@ export const isDev = () => {
   }
 };
 
-export const devLog = (message: string, ...args: any[]) => {
+export const devLog = (message: string, ...args: unknown[]) => {
   if (isDev()) {
     console.log(message, ...args);
   }
 };
 
-export const devError = (message: string, ...args: any[]) => {
+export const devError = (message: string, ...args: unknown[]) => {
   if (isDev()) {
     console.error(message, ...args);
   }
 };
 
-export const devWarn = (message: string, ...args: any[]) => {
+export const devWarn = (message: string, ...args: unknown[]) => {
   if (isDev()) {
     console.warn(message, ...args);
   }

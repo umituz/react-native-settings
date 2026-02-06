@@ -18,7 +18,7 @@ export const GamificationScreenWrapper: React.FC<GamificationScreenWrapperProps>
   } = useGamification(config);
 
   // Transform store achievements to UI props
-  const achievementItems: any[] = achievements.map(a => ({
+  const achievementItems: AchievementItemProps[] = achievements.map(a => ({
     ...a,
     title: a.title,
     description: a.description,

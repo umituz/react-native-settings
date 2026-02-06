@@ -4,10 +4,12 @@ import { useAppNavigation } from "@umituz/react-native-design-system";
 import type { IconName } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import { useGamification } from "../../../domains/gamification";
+import type { GamificationItemConfig } from "../../screens/types/UserFeatureConfig";
+import type { GamificationSettingsConfig } from "../../../domains/gamification";
 
 export interface GamificationSettingsItemProps {
-  config: any;
-  gamificationConfig?: any;
+  config: GamificationItemConfig;
+  gamificationConfig?: GamificationSettingsConfig;
   t: (key: string) => string;
 }
 

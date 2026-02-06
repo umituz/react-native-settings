@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, type StyleProp, type ViewStyle } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system";
 import type { DesignTokens } from "@umituz/react-native-design-system";
 
@@ -16,7 +16,7 @@ export interface AppearanceHeaderProps {
   subtitleType?: "bodyLarge" | "bodyMedium" | "bodySmall";
   titleColor?: "primary" | "secondary" | "tertiary";
   subtitleColor?: "primary" | "secondary" | "tertiary";
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const AppearanceHeader: React.FC<AppearanceHeaderProps> = ({

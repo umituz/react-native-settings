@@ -5,7 +5,7 @@ export class NotificationScheduler {
   async scheduleNotification(options: ScheduleNotificationOptions): Promise<string> {
     const { title, body, data = {}, trigger, sound = true, badge, categoryIdentifier } = options;
 
-    let notificationTrigger: any;
+    let notificationTrigger: Notifications.NotificationTriggerInput = null;
 
     if (trigger.type === 'date') {
       notificationTrigger = {
@@ -69,7 +69,7 @@ export class NotificationScheduler {
       content: {
         title: notification.content.title || '',
         body: notification.content.body || '',
-        data: notification.content.data as Record<string, any>,
+        data: notification.content.data as Record<string, unknown>,
       },
       trigger: notification.trigger,
     }));

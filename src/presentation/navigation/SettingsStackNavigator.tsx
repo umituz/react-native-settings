@@ -74,7 +74,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   );
 
   const screens = React.useMemo(() => {
-    const list: StackScreen<any>[] = [
+    const list: StackScreen[] = [
       {
         name: "SettingsMain",
         options: { headerShown: false },
@@ -138,10 +138,10 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
     // Add additional screens
     additionalScreens.forEach((screen) => {
       list.push({
-        name: screen.name as keyof SettingsStackParamList,
-        component: screen.component as any,
-        children: screen.children as any,
-        options: screen.options as any,
+        name: screen.name,
+        component: screen.component as StackScreen['component'],
+        children: screen.children as StackScreen['children'],
+        options: screen.options as StackScreen['options'],
       });
     });
 
@@ -196,9 +196,9 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
 
   const navigatorConfig: StackNavigatorConfig<SettingsStackParamList> = {
     initialRouteName: "SettingsMain",
-    screenOptions: screenOptions as any,
+    screenOptions,
     screens,
   };
 
-  return <StackNavigator<any> config={navigatorConfig as any} />;
+  return <StackNavigator<SettingsStackParamList> config={navigatorConfig} />;
 };

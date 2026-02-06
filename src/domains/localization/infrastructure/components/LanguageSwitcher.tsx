@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, type StyleProp, type ViewStyle, type TextStyle } from 'react-native';
 // @ts-ignore - Optional peer dependency
 import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
 import { useLanguageSwitcher } from './useLanguageSwitcher';
@@ -15,9 +15,9 @@ export interface LanguageSwitcherProps {
   showFlag?: boolean;
   color?: string;
   onPress?: () => void;
-  style?: any;
-  textStyle?: any;
-  iconStyle?: any;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  iconStyle?: StyleProp<TextStyle>;
   testID?: string;
   disabled?: boolean;
   accessibilityLabel?: string;

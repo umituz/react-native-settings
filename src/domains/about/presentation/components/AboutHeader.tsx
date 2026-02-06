@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, type DesignTokens } from '@umituz/react-native-design-system';
 import { AppInfo } from '../../domain/entities/AppInfo';
 
 export interface AboutHeaderProps {
@@ -54,7 +54,7 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
   );
 };
 
-const getStyles = (tokens: any) => StyleSheet.create({
+const getStyles = (tokens: DesignTokens) => StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingVertical: 24,

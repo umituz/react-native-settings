@@ -8,7 +8,7 @@ import { SettingsSection } from "../../../components/SettingsSection";
 
 interface IdentitySettingsSectionProps {
     normalizedConfig: NormalizedConfig;
-    features: any;
+    features: { about: boolean; legal: boolean; [key: string]: boolean };
 }
 
 export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = ({

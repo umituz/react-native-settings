@@ -7,7 +7,7 @@ import { View, StyleSheet } from 'react-native';
 import { AboutSettingItem } from './AboutSettingItem';
 import { AppInfo } from '../../domain/entities/AppInfo';
 import { AboutConfig } from '../../domain/entities/AppInfo';
-import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, type DesignTokens } from '@umituz/react-native-design-system';
 
 export interface AboutContentProps {
   /** App information to display */
@@ -88,7 +88,7 @@ export const AboutContent: React.FC<AboutContentProps> = ({
   );
 };
 
-const getStyles = (tokens: any) => StyleSheet.create({
+const getStyles = (tokens: DesignTokens) => StyleSheet.create({
   content: {
     paddingVertical: 8,
   },

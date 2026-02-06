@@ -4,6 +4,7 @@
  */
 import React from "react";
 import { StyleSheet } from "react-native";
+import type { DesignTokens } from "@umituz/react-native-design-system";
 import { LegalContentScreen } from "./LegalContentScreen";
 
 export interface TermsOfServiceScreenProps {
@@ -25,7 +26,7 @@ export const TermsOfServiceScreen: React.FC<TermsOfServiceScreenProps> = React.m
   onUrlPress,
   testID = "terms-of-service-screen",
 }) => {
-  const createStyles = (tokens: any) => StyleSheet.create({
+  const createStyles = (tokens: DesignTokens) => StyleSheet.create({
     container: {
       flex: 1,
     },

@@ -5,7 +5,7 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAppDesignTokens } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, type DesignTokens } from "@umituz/react-native-design-system";
 import { AtomicText, AtomicButton } from "@umituz/react-native-design-system";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 import { ContentValidationService } from "../../domain/services/ContentValidationService";
@@ -20,7 +20,7 @@ export interface LegalContentScreenProps {
   onUrlPress?: () => void;
   testID?: string;
   styleCacheKey: string;
-  createStyles: (tokens: any) => ReturnType<typeof StyleSheet.create>;
+  createStyles: (tokens: DesignTokens) => ReturnType<typeof StyleSheet.create>;
 }
 
 export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(({

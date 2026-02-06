@@ -5,6 +5,7 @@
 
 import type { FeatureVisibility } from "./BaseTypes";
 import type { FeedbackType } from "../../../domains/feedback/domain/entities/FeedbackEntity";
+import type { FAQCategory } from "../../../domains/faqs/domain/entities/FAQEntity";
 
 /**
  * User Profile Settings Configuration
@@ -39,7 +40,7 @@ export interface FeedbackConfig {
   /** Initial feedback type */
   initialType?: FeedbackType;
   /** Feedback submission handler */
-  onSubmit?: (data: { type: any; rating: number; description: string; title: string }) => Promise<void>;
+  onSubmit?: (data: { type: FeedbackType; rating: number; description: string; title: string }) => Promise<void>;
   /** Custom handler to open feedback screen (overrides default modal) */
   onPress?: () => void;
 }
@@ -59,7 +60,7 @@ export interface FAQConfig {
   /** Custom section title for grouping */
   sectionTitle?: string;
   /** FAQ items passed from app */
-  items?: any[];
+  items?: FAQCategory[];
   /** Handler to open FAQ screen */
   onPress?: () => void;
 }

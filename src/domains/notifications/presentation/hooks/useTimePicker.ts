@@ -18,7 +18,7 @@ export interface TimePickerHandlers {
   pickerMode: PickerMode;
   handleStartTimePress: () => void;
   handleEndTimePress: () => void;
-  handleTimeChange: (event: any, selectedDate?: Date) => void;
+  handleTimeChange: (event: { type: string }, selectedDate?: Date) => void;
   getPickerDate: () => Date;
 }
 
@@ -37,7 +37,7 @@ export const useTimePicker = ({
     setPickerMode('end');
   }, []);
 
-  const handleTimeChange = useCallback((event: any, selectedDate?: Date) => {
+  const handleTimeChange = useCallback((event: { type: string }, selectedDate?: Date) => {
     if (event.type === 'set' && selectedDate) {
       const hours = selectedDate.getHours();
       const minutes = selectedDate.getMinutes();

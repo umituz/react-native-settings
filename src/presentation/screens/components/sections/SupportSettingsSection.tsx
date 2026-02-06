@@ -4,10 +4,11 @@ import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
+import type { NormalizedConfig } from "../../utils/normalizeConfig";
 
 interface SupportSettingsSectionProps {
-    features: any;
-    normalizedConfig: any;
+    features: { feedback: boolean; rating: boolean; faqs: boolean; [key: string]: boolean };
+    normalizedConfig: NormalizedConfig;
 }
 
 export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
@@ -27,8 +28,8 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
         <SettingsSection title={t("settings.support.title")}>
             {(features.feedback || features.rating) && (
                 <SupportSection
-                    renderSection={(props: any) => <>{props.children}</>}
-                    renderItem={(props: any) => (
+                    renderSection={(props: { title: string; children: React.ReactNode }) => <>{props.children}</>}
+                    renderItem={(props: { title: string; icon: string; onPress: () => void; isLast?: boolean }) => (
                         <SettingsItemCard 
                             title={props.title} 
                             icon={props.icon} 
@@ -40,17 +41,20 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                     feedbackConfig={{
                         enabled: features.feedback,
                         config: {
-                            ...normalizedConfig.feedback.config,
                             title: normalizedConfig.feedback.config?.title || t("settings.feedback.title"),
                             description: normalizedConfig.feedback.config?.description || t("settings.feedback.description"),
+                            initialType: normalizedConfig.feedback.config?.initialType,
+                            onSubmit: normalizedConfig.feedback.config?.onSubmit,
+                            onPress: normalizedConfig.feedback.config?.onPress,
                         }
                     }}
                     ratingConfig={{
                         enabled: features.rating,
                         config: {
-                            ...normalizedConfig.rating.config,
                             title: normalizedConfig.rating.config?.title || t("settings.rating.title"),
                             description: normalizedConfig.rating.config?.description || t("settings.rating.description"),
+                            storeUrl: normalizedConfig.rating.config?.storeUrl,
+                            onRate: normalizedConfig.rating.config?.onRate,
                         }
                     }}
                     feedbackModalTexts={{

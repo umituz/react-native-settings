@@ -15,7 +15,7 @@ export class UrlHandlerService {
   /**
    * Get Linking module - using static import for stability
    */
-  private static getLinkingModule(): any {
+  private static getLinkingModule(): typeof Linking {
     return Linking;
   }
 

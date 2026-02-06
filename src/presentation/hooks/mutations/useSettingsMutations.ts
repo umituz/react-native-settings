@@ -49,7 +49,12 @@ export const useResetSettingsMutation = (userId: string) => {
             if (!result.success) {
                 throw new Error(result.error?.message || 'Failed to reset settings');
             }
-            return (result as any).data as UserSettings;
+            // After reset, fetch fresh settings (defaults)
+            const freshResult = await settingsService.getSettings(userId);
+            if (!freshResult.success || !freshResult.data) {
+                throw new Error('Failed to fetch settings after reset');
+            }
+            return freshResult.data;
         },
         onSuccess: (data) => {
             queryClient.setQueryData([...SETTINGS_QUERY_KEY, userId], data);

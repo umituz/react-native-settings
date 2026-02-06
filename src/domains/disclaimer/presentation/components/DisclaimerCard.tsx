@@ -8,10 +8,12 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  type TextStyle,
 } from 'react-native';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import type { IconName } from '@umituz/react-native-design-system';
 
 export interface DisclaimerCardProps {
   title: string;
@@ -55,7 +57,7 @@ export const DisclaimerCard: React.FC<DisclaimerCardProps> = ({
             },
           ]}
         >
-          <AtomicIcon name={iconName as any} color="warning" />
+          <AtomicIcon name={iconName as IconName} color="warning" />
         </View>
         <AtomicText type="bodyLarge" color="primary" style={styles.title}>
           {title}
@@ -103,7 +105,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
 
     title: {
       flex: 1,
-      fontWeight: tokens.typography.labelLarge.fontWeight as any,
+      fontWeight: tokens.typography.labelLarge.fontWeight as TextStyle['fontWeight'],
       fontSize: tokens.typography.labelLarge.fontSize,
     },
 

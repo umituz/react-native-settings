@@ -4,9 +4,7 @@
  */
 
 import React from "react";
-import { View, StatusBar, StyleSheet } from "react-native";
 import {
-  useAppDesignTokens,
   ScreenLayout,
   useAppNavigation,
 } from "@umituz/react-native-design-system";
@@ -73,7 +71,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   gamificationConfig,
 }) => {
   const navigation = useAppNavigation();
-  const tokens = useAppDesignTokens();
 
   const normalizedConfig = normalizeSettingsConfig(config);
   const features = useFeatureDetection(normalizedConfig, navigation, featureOptions);
@@ -103,9 +100,3 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     </ScreenLayout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

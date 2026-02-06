@@ -29,11 +29,7 @@ export class SettingsService {
     }
 
     async resetSettings(userId: string): Promise<SettingsResult<void>> {
-        // Repository getSettings handles returning defaults if not found, 
-        // but here we want to explicitly reset.
-        // We can just delete and get again.
-        await this.repository.deleteSettings(userId);
-        return this.repository.getSettings(userId) as unknown as SettingsResult<void>;
+        return this.repository.deleteSettings(userId);
     }
 }
 

@@ -49,7 +49,7 @@ export type SettingsStackParamList = {
 /**
  * User profile configuration
  */
-export interface UserProfileConfig {
+export interface UserProfileDisplay {
   displayName?: string;
   userId?: string;
   isAnonymous?: boolean;
@@ -93,7 +93,7 @@ export interface SettingsStackNavigatorProps {
   faqData?: FAQData;
   config?: SettingsConfig;
   showUserProfile?: boolean;
-  userProfile?: UserProfileConfig;
+  userProfile?: UserProfileDisplay;
   accountConfig?: AccountConfig;
   additionalScreens?: AdditionalScreen[];
   devSettings?: DevSettingsProps;

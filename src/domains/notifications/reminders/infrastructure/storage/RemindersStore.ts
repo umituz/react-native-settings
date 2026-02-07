@@ -3,6 +3,7 @@
  * Manages reminder state with AsyncStorage persistence
  */
 
+import { useMemo } from 'react';
 import { createStore } from '@umituz/react-native-design-system';
 import type { Reminder, QuietHoursConfig, NotificationPreferences } from '../../../infrastructure/services/types';
 
@@ -76,7 +77,7 @@ interface PreferencesState {
 }
 
 interface PreferencesActions {
-  initialize: () => Promise<void>;
+  initialize: () => void;
   updatePreferences: (updates: Partial<NotificationPreferences>) => void;
   updateQuietHours: (quietHours: QuietHoursConfig) => void;
   reset: () => void;
@@ -110,7 +111,7 @@ export const usePreferencesStore = createStore<PreferencesState, PreferencesActi
   initialState: initialPreferencesState,
   persist: true,
   actions: (set, get) => ({
-    initialize: async () => {
+    initialize: () => {
       set({ isLoading: false, isInitialized: true });
     },
 
@@ -135,7 +136,10 @@ export const usePreferencesStore = createStore<PreferencesState, PreferencesActi
 // ============================================================================
 
 export const useReminders = () => useRemindersStore(state => state.reminders);
-export const useEnabledReminders = () => useRemindersStore(state => state.reminders.filter(r => r.enabled));
+export const useEnabledReminders = () => {
+  const reminders = useRemindersStore(state => state.reminders);
+  return useMemo(() => reminders.filter(r => r.enabled), [reminders]);
+};
 export const useReminderById = (id: string) => useRemindersStore(state => state.reminders.find(r => r.id === id));
 
 // ============================================================================

@@ -17,10 +17,12 @@ export const useAppearanceActions = () => {
   }, [setThemeMode]);
 
   const handleColorChange = useCallback((key: keyof CustomThemeColors, color: string) => {
-    const newColors = { ...localCustomColors, [key]: color };
-    setLocalCustomColors(newColors);
-    setCustomColors(newColors);
-  }, [localCustomColors, setCustomColors]);
+    setLocalCustomColors(prev => {
+      const newColors = { ...prev, [key]: color };
+      setCustomColors(newColors);
+      return newColors;
+    });
+  }, [setCustomColors]);
 
   const handleResetColors = useCallback(() => {
     reset();

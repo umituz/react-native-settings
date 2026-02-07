@@ -25,15 +25,19 @@ export const useReminderActions = () => {
       updatedAt: now,
     };
 
-    const trigger = buildTrigger(reminder);
-    const notificationId = await scheduler.scheduleNotification({
-      title: reminder.title,
-      body: reminder.body,
-      trigger,
-      data: { reminderId: reminder.id },
-    });
+    try {
+      const trigger = buildTrigger(reminder);
+      const notificationId = await scheduler.scheduleNotification({
+        title: reminder.title,
+        body: reminder.body,
+        trigger,
+        data: { reminderId: reminder.id },
+      });
+      reminder.notificationId = notificationId;
+    } catch {
+      reminder.enabled = false;
+    }
 
-    reminder.notificationId = notificationId;
     await addReminder(reminder);
 
     return reminder;
@@ -86,14 +90,18 @@ export const useReminderActions = () => {
       await scheduler.cancelNotification(reminder.notificationId);
       await updateReminder(id, { enabled: false, notificationId: undefined });
     } else if (!reminder.enabled) {
-      const trigger = buildTrigger(reminder);
-      const notificationId = await scheduler.scheduleNotification({
-        title: reminder.title,
-        body: reminder.body,
-        trigger,
-        data: { reminderId: reminder.id },
-      });
-      await updateReminder(id, { enabled: true, notificationId });
+      try {
+        const trigger = buildTrigger(reminder);
+        const notificationId = await scheduler.scheduleNotification({
+          title: reminder.title,
+          body: reminder.body,
+          trigger,
+          data: { reminderId: reminder.id },
+        });
+        await updateReminder(id, { enabled: true, notificationId });
+      } catch {
+        await updateReminder(id, { enabled: false });
+      }
     }
   }, [updateReminder]);
 

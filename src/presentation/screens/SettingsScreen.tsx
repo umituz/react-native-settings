@@ -92,7 +92,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           footerText={footerText}
           appVersion={appVersion}
           customSections={customSections}
-          showCloseButton={showCloseButton}
           devSettings={devSettings}
           gamificationConfig={gamificationConfig}
         />

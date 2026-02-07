@@ -10,11 +10,11 @@ import { useAppDesignTokens, StackNavigator, type StackScreen, type StackNavigat
 import { useLocalization, LanguageSelectionScreen } from "../../domains/localization";
 import { NotificationSettingsScreen } from "../../domains/notifications";
 import { AccountScreen } from "@umituz/react-native-auth";
+import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { FAQScreen } from "../../domains/faqs";
 import { useNavigationHandlers } from "./hooks";
 import {
-  SettingsScreenWrapper,
   LegalScreenWrapper,
   AboutScreenWrapper,
 } from "./components/wrappers";
@@ -79,7 +79,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
         name: "SettingsMain",
         options: { headerShown: false },
         children: () => (
-          <SettingsScreenWrapper
+          <SettingsScreen
             config={config}
             appVersion={appInfo.version}
             showUserProfile={showUserProfile}

@@ -9,15 +9,9 @@ import type { UserSettings, SettingsResult } from '../../application/ports/ISett
 
 export class SettingsService {
     private repository: SettingsRepository;
-    private initialized: boolean = false;
 
     constructor() {
         this.repository = new SettingsRepository();
-    }
-
-    async initialize(): Promise<void> {
-        if (this.initialized) return;
-        this.initialized = true;
     }
 
     async getSettings(userId: string): Promise<SettingsResult<UserSettings>> {

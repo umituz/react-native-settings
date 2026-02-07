@@ -63,7 +63,7 @@ export type {
   SettingsStackParamList,
   AppInfo,
   LegalUrls,
-  UserProfileConfig,
+  UserProfileDisplay,
   AdditionalScreen,
   FAQData,
   AccountConfig,

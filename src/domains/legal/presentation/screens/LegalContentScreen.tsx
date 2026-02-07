@@ -37,17 +37,6 @@ export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(
   const tokens = useAppDesignTokens();
   const insets = useSafeAreaInsets();
 
-  React.useEffect(() => {
-    ContentValidationService.validateScreenContent(
-      content,
-      url,
-      title,
-      viewOnlineText,
-      openText,
-      styleCacheKey
-    );
-  }, [content, url, title, viewOnlineText, openText, styleCacheKey]);
-
   const styles = React.useMemo(() => {
     const cacheKey = StyleCacheService.createTokenCacheKey(tokens);
     return StyleCacheService.getCachedStyles(

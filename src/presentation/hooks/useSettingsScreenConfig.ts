@@ -29,7 +29,7 @@ import {
 } from "../utils/config-creators";
 import type { SettingsConfig } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
-import type { AppInfo, FAQData, UserProfileConfig, AdditionalScreen } from "../navigation/types";
+import type { AppInfo, FAQData, UserProfileDisplay, AdditionalScreen } from "../navigation/types";
 import type { AccountScreenConfig } from "@umituz/react-native-auth";
 
 export interface SettingsFeatures {
@@ -54,7 +54,7 @@ export interface UseSettingsScreenConfigParams {
 
 export interface SettingsScreenConfigResult {
   settingsConfig: SettingsConfig;
-  userProfile: UserProfileConfig;
+  userProfile: UserProfileDisplay;
   accountConfig: AccountScreenConfig;
   translatedFaqData: FAQData | undefined;
   isLoading: boolean;
@@ -127,7 +127,7 @@ export const useSettingsScreenConfig = (
     showAbout, showLegal, showFaqs, showRating,
   ]);
 
-  const userProfile = useMemo((): UserProfileConfig => {
+  const userProfile = useMemo((): UserProfileDisplay => {
     const isAnonymous = userProfileData?.isAnonymous ?? true;
     return {
       displayName: userProfileData?.displayName || t("settings.profile.anonymousName"),

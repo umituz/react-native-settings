@@ -23,11 +23,13 @@ export function useFAQExpansion(): UseFAQExpansionResult {
 
     const toggleExpansion = useCallback((itemId: string) => {
         setExpandedItems(prev => {
-            if (prev.has(itemId)) {
-                return new Set();
+            const next = new Set(prev);
+            if (next.has(itemId)) {
+                next.delete(itemId);
             } else {
-                return new Set([itemId]);
+                next.add(itemId);
             }
+            return next;
         });
     }, []);
 

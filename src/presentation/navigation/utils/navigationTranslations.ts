@@ -26,7 +26,7 @@ export const createQuietHoursTranslations = (t: (key: string) => string) => ({
 });
 
 export const createLegalScreenProps = (
-  t: any,
+  t: (key: string) => string,
   handlePrivacyPress: () => void,
   handleTermsPress: () => void,
   handleEulaPress: () => void

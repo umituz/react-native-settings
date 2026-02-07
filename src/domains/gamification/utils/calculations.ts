@@ -45,11 +45,10 @@ export const checkAchievementUnlock = (
 ): boolean => {
   switch (definition.type) {
     case "count":
+    case "milestone":
       return tasksCompleted >= definition.threshold;
     case "streak":
       return currentStreak >= definition.threshold;
-    case "milestone":
-      return tasksCompleted >= definition.threshold;
     default:
       return false;
   }

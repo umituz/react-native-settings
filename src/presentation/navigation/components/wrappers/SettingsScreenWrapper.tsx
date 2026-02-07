@@ -4,14 +4,14 @@
 import React from "react";
 import { SettingsScreen } from "../../../screens/SettingsScreen";
 import type { SettingsConfig, CustomSettingsSection } from "../../../screens/types";
-import type { UserProfileConfig } from "../../types";
+import type { UserProfileDisplay } from "../../types";
 import type { DevSettingsProps } from "../../../../domains/dev";
 
 export interface SettingsScreenWrapperProps {
   config?: SettingsConfig;
   appVersion: string;
   showUserProfile: boolean;
-  userProfile?: UserProfileConfig;
+  userProfile?: UserProfileDisplay;
   devSettings?: DevSettingsProps;
   customSections?: CustomSettingsSection[];
   showHeader?: boolean;

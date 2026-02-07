@@ -50,7 +50,6 @@ interface SettingsContentProps {
   footerText?: string;
   appVersion?: string;
   customSections?: CustomSettingsSection[];
-  showCloseButton?: boolean;
   emptyStateText?: string;
   devSettings?: DevSettingsProps;
   gamificationConfig?: import("../../../domains/gamification").GamificationSettingsConfig;
@@ -65,7 +64,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   footerText,
   appVersion,
   customSections = [],
-  showCloseButton = false,
   emptyStateText,
   devSettings,
   gamificationConfig,

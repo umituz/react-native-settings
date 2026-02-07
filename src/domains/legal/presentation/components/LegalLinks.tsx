@@ -7,7 +7,6 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system";
-import { ContentValidationService } from "../../domain/services/ContentValidationService";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 
 export interface LegalLinksProps {
@@ -51,18 +50,6 @@ export const LegalLinks: React.FC<LegalLinksProps> = React.memo(
     onTermsPress,
     style,
   }) => {
-    // Validate required props
-    React.useEffect(() => {
-      ContentValidationService.validateLegalLinks(
-        privacyPolicyUrl,
-        termsOfServiceUrl,
-        privacyText,
-        termsText,
-        onPrivacyPress,
-        onTermsPress
-      );
-    }, [privacyPolicyUrl, termsOfServiceUrl, privacyText, termsText, onPrivacyPress, onTermsPress]);
-
     // Memoize press handlers to prevent child re-renders
     const handlePrivacyPress = React.useCallback(async () => {
       if (onPrivacyPress) {

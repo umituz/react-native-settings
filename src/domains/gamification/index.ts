@@ -54,5 +54,4 @@ export {
   type AchievementItemProps,
   GamificationScreen,
   type GamificationScreenProps,
-  GamificationScreenWrapper,
 } from "./components";

@@ -13,18 +13,16 @@ import { AccountScreen } from "@umituz/react-native-auth";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { AppearanceScreen } from "../screens/AppearanceScreen";
 import { FAQScreen } from "../../domains/faqs";
+import { AboutScreen } from "../../domains/about";
+import { LegalScreen } from "../../domains/legal";
+import { GamificationScreen } from "../../domains/gamification";
 import { useNavigationHandlers } from "./hooks";
-import {
-  LegalScreenWrapper,
-  AboutScreenWrapper,
-} from "./components/wrappers";
 import {
   createNotificationTranslations,
   createQuietHoursTranslations,
   createLegalScreenProps,
 } from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps, AdditionalScreen } from "./types";
-import { GamificationScreenWrapper } from "../../domains/gamification";
 
 export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   appInfo,
@@ -100,12 +98,12 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       {
         name: "About",
         options: { headerTitle: t("settings.about.title") },
-        children: () => <AboutScreenWrapper config={aboutConfig} />,
+        children: () => <AboutScreen config={aboutConfig} />,
       },
       {
         name: "Legal",
         options: { headerTitle: t("settings.legal.title") },
-        children: () => <LegalScreenWrapper {...legalScreenProps} />,
+        children: () => <LegalScreen {...legalScreenProps} />,
       },
       {
         name: "Notifications",
@@ -163,7 +161,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       ? {
           name: "Gamification",
           options: { headerTitle: t("settings.gamification.title") },
-          children: () => <GamificationScreenWrapper config={gamificationConfig} />,
+          children: () => <GamificationScreen config={gamificationConfig} />,
         }
       : null;
 

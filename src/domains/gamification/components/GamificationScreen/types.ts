@@ -9,6 +9,11 @@ import type { StatsCardProps } from "../StatsCard";
 import type { AchievementItemProps } from "../AchievementItem";
 import type { StreakDisplayProps } from "../StreakDisplay";
 import type { ViewStyle, TextStyle } from "react-native";
+import type { GamificationConfig } from "../../types";
+
+export interface GamificationConfigProps extends Partial<Omit<GamificationScreenProps, 'config'>> {
+  config: GamificationConfig;
+}
 
 export interface GamificationScreenProps {
   // Section titles (all via props)

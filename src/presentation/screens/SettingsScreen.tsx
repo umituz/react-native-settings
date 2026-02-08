@@ -7,10 +7,10 @@ import React from "react";
 import {
   ScreenLayout,
   useAppNavigation,
+  ErrorBoundary,
 } from "@umituz/react-native-design-system";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";
-import { SettingsErrorBoundary } from "../components/SettingsErrorBoundary";
 import { normalizeSettingsConfig } from "./utils/normalizeConfig";
 import { useFeatureDetection } from "./hooks/useFeatureDetection";
 import type { SettingsConfig, CustomSettingsSection } from "./types";
@@ -95,7 +95,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   // Workaround: Use conditional rendering with type assertion
   if (showHeader) {
     return <ScreenLayout header={<SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />}>
-      <SettingsErrorBoundary>
+      <ErrorBoundary>
         {children ?? (
           <SettingsContent
             normalizedConfig={normalizedConfig}
@@ -110,12 +110,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             gamificationConfig={gamificationConfig}
           />
         )}
-      </SettingsErrorBoundary>
+      </ErrorBoundary>
     </ScreenLayout>;
   }
 
   return <ScreenLayout>
-    <SettingsErrorBoundary>
+    <ErrorBoundary>
       {children ?? (
         <SettingsContent
           normalizedConfig={normalizedConfig}
@@ -130,6 +130,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           gamificationConfig={gamificationConfig}
         />
       )}
-    </SettingsErrorBoundary>
+    </ErrorBoundary>
   </ScreenLayout>;
 };

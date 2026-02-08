@@ -99,7 +99,12 @@ export const useAboutInfo = (
       isMountedRef.current = false;
 
       if (repository && typeof repository.destroy === 'function') {
-        repository.destroy();
+        try {
+          repository.destroy();
+        } catch (error) {
+          // Log cleanup error but don't throw
+          console.warn('Error during repository cleanup:', error);
+        }
       }
     };
   }, [repository]);
@@ -112,10 +117,16 @@ export const useAboutInfo = (
       isMountedRef.current &&
       !isInitializedRef.current
     ) {
-      const { createDefaultAppInfo } = require('../../utils/AppInfoFactory');
-      const defaultAppInfo = createDefaultAppInfo(initialConfig);
-      setAppInfo(defaultAppInfo);
-      isInitializedRef.current = true;
+      // Dynamic import to avoid require issues
+      import('../../utils/AppInfoFactory').then(({ createDefaultAppInfo }) => {
+        if (isMountedRef.current) {
+          const defaultAppInfo = createDefaultAppInfo(initialConfig);
+          setAppInfo(defaultAppInfo);
+          isInitializedRef.current = true;
+        }
+      }).catch((error) => {
+        console.error('Failed to load AppInfoFactory:', error);
+      });
     }
   }, [initialConfig, autoInit]);
 

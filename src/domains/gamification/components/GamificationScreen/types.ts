@@ -3,6 +3,7 @@
  * Generic types for 100+ apps - NO app-specific code
  */
 
+import type React from 'react';
 import type { LevelProgressProps } from "../LevelProgress";
 import type { StatsCardProps } from "../StatsCard";
 import type { AchievementItemProps } from "../AchievementItem";

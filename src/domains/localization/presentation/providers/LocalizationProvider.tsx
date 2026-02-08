@@ -22,13 +22,28 @@ export const LocalizationProvider: React.FC<LocalizationProviderProps> = ({
   const initialize = useLocalizationStore((state) => state.initialize);
 
   useEffect(() => {
+    let isMounted = true;
+
     const initializeLocalization = async () => {
-      I18nInitializer.initialize(translations, defaultLanguage);
-      await initialize();
-      setIsI18nReady(true);
+      try {
+        I18nInitializer.initialize(translations, defaultLanguage);
+        await initialize();
+        if (isMounted) {
+          setIsI18nReady(true);
+        }
+      } catch (error) {
+        console.error('Failed to initialize localization:', error);
+        if (isMounted) {
+          setIsI18nReady(true); // Set ready even on error to prevent indefinite loading
+        }
+      }
     };
 
     initializeLocalization();
+
+    return () => {
+      isMounted = false;
+    };
   }, [translations, defaultLanguage, initialize]);
 
   if (!isI18nReady) {

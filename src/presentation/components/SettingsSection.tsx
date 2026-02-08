@@ -7,7 +7,7 @@ export interface SettingsSectionProps {
   children: React.ReactNode;
 }
 
-export const SettingsSection: React.FC<SettingsSectionProps> = ({
+export const SettingsSection: React.FC<SettingsSectionProps> = React.memo(({
   title,
   children,
 }) => {
@@ -23,7 +23,9 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
       {children}
     </View>
   );
-};
+});
+
+SettingsSection.displayName = "SettingsSection";
 
 const styles = StyleSheet.create({
   container: {

@@ -29,10 +29,13 @@ export type NotificationTrigger =
   | { type: 'weekly'; weekday: number; hour: number; minute: number }
   | { type: 'monthly'; day: number; hour: number; minute: number };
 
+// More specific data type for notifications to prevent unsafe data
+export type NotificationData = Record<string, string | number | boolean | null>;
+
 export interface ScheduleNotificationOptions {
   title: string;
   body: string;
-  data?: Record<string, unknown>;
+  data?: NotificationData;
   trigger: NotificationTrigger;
   sound?: boolean | string;
   badge?: number;
@@ -44,7 +47,7 @@ export interface ScheduledNotification {
   content: {
     title: string;
     body: string;
-    data: Record<string, unknown>;
+    data: NotificationData;
   };
   trigger: Notifications.NotificationTrigger;
 }
@@ -79,8 +82,8 @@ export interface Reminder {
   dayOfMonth?: number;
   enabled: boolean;
   notificationId?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string; // ISO 8601 date string
+  updatedAt: string; // ISO 8601 date string
 }
 
 export interface CreateReminderInput {

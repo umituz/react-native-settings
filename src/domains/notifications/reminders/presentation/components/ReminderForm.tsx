@@ -14,6 +14,18 @@ import { FormButton } from './FormButton';
 import { DEFAULT_TIME_PRESETS, FREQUENCY_OPTIONS } from '../../infrastructure/config/reminderPresets';
 import type { Reminder, ReminderFrequency, CreateReminderInput, TimePreset } from '../../../infrastructure/services/types';
 
+// Constants for magic numbers
+const DEFAULT_HOUR = 9;
+const DEFAULT_MINUTE = 0;
+const DEFAULT_WEEKDAY = 2; // Tuesday
+const MAX_TITLE_LENGTH = 100;
+const MAX_BODY_LENGTH = 500;
+
+// Validation constants
+const VALID_HOUR_RANGE = { min: 0, max: 23 } as const;
+const VALID_MINUTE_RANGE = { min: 0, max: 59 } as const;
+const VALID_WEEKDAY_RANGE = { min: 0, max: 6 } as const;
+
 export interface ReminderFormTranslations {
   titleLabel: string;
   titlePlaceholder: string;
@@ -52,10 +64,23 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
   const [body, setBody] = useState(initialData?.body || '');
   const [frequency, setFrequency] = useState<ReminderFrequency>(initialData?.frequency || 'daily');
   const [selectedPresetId, setSelectedPresetId] = useState<string | undefined>(initialData?.timePresetId);
-  const [hour, setHour] = useState(initialData?.hour ?? 9);
-  const [minute, setMinute] = useState(initialData?.minute ?? 0);
-  const [weekday, setWeekday] = useState(initialData?.weekday ?? 2);
+  const [hour, setHour] = useState(initialData?.hour ?? DEFAULT_HOUR);
+  const [minute, setMinute] = useState(initialData?.minute ?? DEFAULT_MINUTE);
+  const [weekday, setWeekday] = useState(initialData?.weekday ?? DEFAULT_WEEKDAY);
   const [isCustomTime, setIsCustomTime] = useState(!initialData?.timePresetId);
+
+  // Validation helper functions
+  const isValidHour = useCallback((h: number): boolean => {
+    return h >= VALID_HOUR_RANGE.min && h <= VALID_HOUR_RANGE.max;
+  }, []);
+
+  const isValidMinute = useCallback((m: number): boolean => {
+    return m >= VALID_MINUTE_RANGE.min && m <= VALID_MINUTE_RANGE.max;
+  }, []);
+
+  const isValidWeekday = useCallback((w: number): boolean => {
+    return w >= VALID_WEEKDAY_RANGE.min && w <= VALID_WEEKDAY_RANGE.max;
+  }, []);
 
   const handlePresetSelect = useCallback((preset: TimePreset) => {
     setSelectedPresetId(preset.id);
@@ -70,10 +95,45 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
   }, []);
 
   const handleSave = useCallback(() => {
-    if (!title.trim()) return;
+    const trimmedTitle = title.trim();
+    const trimmedBody = body.trim();
+
+    // Validate title
+    if (!trimmedTitle) {
+      console.warn('Reminder title is required');
+      return;
+    }
+
+    if (trimmedTitle.length > MAX_TITLE_LENGTH) {
+      console.warn(`Reminder title exceeds maximum length of ${MAX_TITLE_LENGTH}`);
+      return;
+    }
+
+    // Validate body length
+    if (trimmedBody.length > MAX_BODY_LENGTH) {
+      console.warn(`Reminder body exceeds maximum length of ${MAX_BODY_LENGTH}`);
+      return;
+    }
+
+    // Validate time values
+    if (!isValidHour(hour) || !isValidMinute(minute)) {
+      console.warn('Invalid time values');
+      return;
+    }
+
+    // Validate weekday if frequency is weekly
+    if (frequency === 'weekly' && !isValidWeekday(weekday)) {
+      console.warn('Invalid weekday value');
+      return;
+    }
+
+    // Sanitize input (React Native handles XSS, but we trim extra whitespace)
+    const sanitizedTitle = trimmedTitle.replace(/\s+/g, ' ').trim();
+    const sanitizedBody = trimmedBody.replace(/\s+/g, ' ').trim();
+
     onSave({
-      title: title.trim(),
-      body: body.trim(),
+      title: sanitizedTitle,
+      body: sanitizedBody,
       frequency,
       timePresetId: isCustomTime ? undefined : selectedPresetId,
       hour,
@@ -81,7 +141,7 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
       weekday: frequency === 'weekly' ? weekday : undefined,
       dayOfMonth: frequency === 'monthly' ? 1 : undefined,
     });
-  }, [title, body, frequency, selectedPresetId, hour, minute, weekday, isCustomTime, onSave]);
+  }, [title, body, frequency, selectedPresetId, hour, minute, weekday, isCustomTime, onSave, isValidHour, isValidMinute, isValidWeekday]);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

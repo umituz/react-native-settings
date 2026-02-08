@@ -2,6 +2,7 @@
  * Settings Navigation Types
  */
 
+import type React from 'react';
 import type { SettingsConfig, CustomSettingsSection } from "../screens/types";
 import type { DevSettingsProps } from "../../domains/dev";
 import type { FAQCategory } from "../../domains/faqs";

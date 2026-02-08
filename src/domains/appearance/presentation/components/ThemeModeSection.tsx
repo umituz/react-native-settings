@@ -43,8 +43,8 @@ export const ThemeModeSection: React.FC<ThemeModeSectionProps> = ({
   const handleThemeSelect = useCallback((mode: ThemeMode) => {
     try {
       onThemeSelect(mode);
-    } catch {
-      // Silent error handling
+    } catch (error) {
+      console.error('Failed to select theme:', error);
     }
   }, [onThemeSelect]);
 

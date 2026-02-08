@@ -15,13 +15,22 @@ export const useUpdateSettingsMutation = (userId: string) => {
 
     return useMutation({
         mutationFn: async (updates: Partial<UserSettings>) => {
-            const currentResult = await settingsService.getSettings(userId);
-            if (!currentResult.success || !currentResult.data) {
-                throw new Error('Could not find existing settings to update');
-            }
+            // Use optimistic updates to prevent race conditions
+            // Get current data from query cache first
+            const cacheKey = [...SETTINGS_QUERY_KEY, userId];
+            const cachedData = queryClient.getQueryData<UserSettings>(cacheKey);
+
+            const baseSettings = cachedData
+                ? { ...cachedData }
+                : await settingsService.getSettings(userId).then(result => {
+                    if (!result.success || !result.data) {
+                        throw new Error('Could not find existing settings to update');
+                    }
+                    return result.data;
+                });
 
             const updatedSettings = {
-                ...currentResult.data,
+                ...baseSettings,
                 ...updates,
                 updatedAt: new Date(),
             };

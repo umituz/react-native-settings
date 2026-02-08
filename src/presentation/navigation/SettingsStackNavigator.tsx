@@ -23,7 +23,7 @@ import {
   createQuietHoursTranslations,
   createLegalScreenProps,
 } from "./utils";
-import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
+import type { SettingsStackParamList, SettingsStackNavigatorProps, AdditionalScreen } from "./types";
 import { GamificationScreenWrapper } from "../../domains/gamification";
 
 export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
@@ -74,7 +74,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
   );
 
   const screens = React.useMemo(() => {
-    const list: StackScreen[] = [
+    const baseScreens: StackScreen[] = [
       {
         name: "SettingsMain",
         options: { headerShown: false },
@@ -119,41 +119,56 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
       },
     ];
 
-    if (faqData && faqData.categories.length > 0) {
-      list.push({
-        name: "FAQ",
-        options: { headerTitle: t("settings.faqs.title") },
-        children: () => (
-          <FAQScreen
-            categories={faqData.categories}
-            searchPlaceholder={t("settings.faqs.searchPlaceholder")}
-            emptySearchTitle={t("settings.faqs.emptySearchTitle")}
-            emptySearchMessage={t("settings.faqs.emptySearchMessage")}
-            headerTitle={t("settings.faqs.headerTitle")}
-          />
-        ),
-      });
-    }
+    // FAQ screen - conditionally add
+    const faqScreen: StackScreen | null = (faqData && faqData.categories.length > 0)
+      ? {
+          name: "FAQ",
+          options: { headerTitle: t("settings.faqs.title") },
+          children: () => (
+            <FAQScreen
+              categories={faqData.categories}
+              searchPlaceholder={t("settings.faqs.searchPlaceholder")}
+              emptySearchTitle={t("settings.faqs.emptySearchTitle")}
+              emptySearchMessage={t("settings.faqs.emptySearchMessage")}
+              headerTitle={t("settings.faqs.headerTitle")}
+            />
+          ),
+        }
+      : null;
 
-    // Add additional screens
-    additionalScreens.forEach((screen) => {
-      list.push({
+    // Additional screens - map to StackScreen format
+    const additionalStackScreens: StackScreen[] = (additionalScreens as readonly AdditionalScreen[]).map((screen: AdditionalScreen): StackScreen => {
+      // Create base screen object
+      const stackScreen: Record<string, unknown> = {
         name: screen.name,
-        component: screen.component as StackScreen['component'],
-        children: screen.children as StackScreen['children'],
-        options: screen.options as StackScreen['options'],
-      });
+      };
+
+      // Conditionally add properties
+      if (screen.component) {
+        stackScreen.component = screen.component;
+      }
+      if (screen.children) {
+        stackScreen.children = screen.children;
+      }
+      if (screen.options) {
+        stackScreen.options = screen.options;
+      }
+
+      // Type assertion to StackScreen
+      return stackScreen as unknown as StackScreen;
     });
 
-    if (gamificationConfig?.enabled) {
-      list.push({
-        name: "Gamification",
-        options: { headerTitle: t("settings.gamification.title") },
-        children: () => <GamificationScreenWrapper config={gamificationConfig} />,
-      });
-    }
+    // Gamification screen - conditionally add
+    const gamificationScreen: StackScreen | null = gamificationConfig?.enabled
+      ? {
+          name: "Gamification",
+          options: { headerTitle: t("settings.gamification.title") },
+          children: () => <GamificationScreenWrapper config={gamificationConfig} />,
+        }
+      : null;
 
-    list.push({
+    // Language selection screen
+    const languageScreen: StackScreen = {
       name: "LanguageSelection",
       options: { headerShown: false },
       children: () => (
@@ -162,17 +177,26 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = ({
           searchPlaceholder={t("settings.languageSelection.searchPlaceholder")}
         />
       ),
-    });
+    };
 
-    if (accountConfig) {
-      list.push({
-        name: "Account",
-        options: { headerTitle: t("settings.account.title") },
-        children: () => <AccountScreen config={accountConfig} />,
-      });
-    }
+    // Account screen - conditionally add
+    const accountScreen: StackScreen | null = accountConfig
+      ? {
+          name: "Account",
+          options: { headerTitle: t("settings.account.title") },
+          children: () => <AccountScreen config={accountConfig} />,
+        }
+      : null;
 
-    return list;
+    // Compose final list using spread operator (immutable)
+    return [
+      ...baseScreens,
+      ...(faqScreen ? [faqScreen] : []),
+      ...additionalStackScreens,
+      ...(gamificationScreen ? [gamificationScreen] : []),
+      languageScreen,
+      ...(accountScreen ? [accountScreen] : []),
+    ];
   }, [
     t,
     showHeader,

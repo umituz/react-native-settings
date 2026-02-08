@@ -40,14 +40,16 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
       // Prevent unnecessary updates if color hasn't changed
       if (value === color) return;
       onValueChange(color);
-    } catch {
-      // Silent error handling
+    } catch (error) {
+      // Log error for debugging while preventing UI crashes
+      console.error('Failed to change color:', error);
+      // Optionally: Show user feedback about the error
     }
   }, [value, onValueChange]);
 
   // Memoize color options to prevent unnecessary re-renders
   const colorOptions = useMemo(() => {
-    return colorsMemo.map((color) => {
+    return colorsMemo.map((color, index) => {
       const isSelected = value === color;
 
       return (
@@ -60,6 +62,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           ]}
           onPress={() => handleColorChange(color)}
           activeOpacity={0.8} // Performance optimization
+          accessibilityLabel={`Color ${color} ${isSelected ? 'selected' : 'not selected'}`}
+          accessibilityRole={isSelected ? 'button' : 'button'}
+          accessibilityState={{ selected: isSelected }}
+          accessibilityHint={`Select ${color} color`}
         >
           {isSelected && (
             <AtomicIcon name="checkmark" size="sm" customColor={tokens.colors.textInverse} />
@@ -67,7 +73,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         </TouchableOpacity>
       );
     });
-  }, [colorsMemo, value, handleColorChange, styles]);
+  }, [colorsMemo, value, handleColorChange, styles, tokens.colors.textInverse]);
 
   return (
     <View style={styles.container}>

@@ -70,30 +70,30 @@ export const LegalDocumentsList: React.FC<LegalDocumentsListProps> = React.memo(
         </AtomicText>
       )}
 
-      {showPrivacy && (
+      {showPrivacy && privacyTitle && (
         <LegalItem
           iconName="shield"
-          title={privacyTitle!}
+          title={privacyTitle}
           description={privacyDescription}
           onPress={onPrivacyPress}
           testID="privacy-policy-item"
         />
       )}
 
-      {showTerms && (
+      {showTerms && termsTitle && (
         <LegalItem
           iconName="document-text"
-          title={termsTitle!}
+          title={termsTitle}
           description={termsDescription}
           onPress={onTermsPress}
           testID="terms-of-service-item"
         />
       )}
 
-      {showEula && (
+      {showEula && eulaTitle && (
         <LegalItem
           iconName="document"
-          title={eulaTitle!}
+          title={eulaTitle}
           description={eulaDescription}
           onPress={handleEulaPress}
           testID="eula-item"

@@ -7,6 +7,23 @@
 import { storageRepository, StorageKey, createUserKey } from '@umituz/react-native-design-system';
 import type { ISettingsRepository, UserSettings, SettingsResult } from '../../application/ports/ISettingsRepository';
 
+/**
+ * Validates userId to prevent key injection attacks
+ */
+const validateUserId = (userId: string): void => {
+    if (!userId || typeof userId !== 'string') {
+        throw new Error('Invalid userId: must be a non-empty string');
+    }
+    // Prevent potential key injection by restricting characters
+    if (!/^[a-zA-Z0-9_-]+$/.test(userId)) {
+        throw new Error('Invalid userId: contains invalid characters');
+    }
+    // Limit length to prevent DoS attacks
+    if (userId.length > 128) {
+        throw new Error('Invalid userId: exceeds maximum length');
+    }
+};
+
 export class SettingsRepository implements ISettingsRepository {
     private readonly defaultSettings: (userId: string) => UserSettings = (userId: string) => ({
         userId,
@@ -24,6 +41,9 @@ export class SettingsRepository implements ISettingsRepository {
 
     async getSettings(userId: string): Promise<SettingsResult<UserSettings>> {
         try {
+            // Validate input
+            validateUserId(userId);
+
             const storageKey = createUserKey(StorageKey.USER_PREFERENCES, userId);
             const defaults = this.defaultSettings(userId);
             const result = await storageRepository.getItem<UserSettings>(storageKey, defaults);
@@ -51,6 +71,9 @@ export class SettingsRepository implements ISettingsRepository {
 
     async saveSettings(settings: UserSettings): Promise<SettingsResult<void>> {
         try {
+            // Validate input
+            validateUserId(settings.userId);
+
             const storageKey = createUserKey(StorageKey.USER_PREFERENCES, settings.userId);
             const result = await storageRepository.setItem(storageKey, settings);
 
@@ -78,6 +101,9 @@ export class SettingsRepository implements ISettingsRepository {
 
     async deleteSettings(userId: string): Promise<SettingsResult<void>> {
         try {
+            // Validate input
+            validateUserId(userId);
+
             const storageKey = createUserKey(StorageKey.USER_PREFERENCES, userId);
             const result = await storageRepository.removeItem(storageKey);
 

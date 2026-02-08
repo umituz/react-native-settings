@@ -59,7 +59,7 @@ export const AppearancePreview: React.FC<AppearancePreviewProps> = ({
 
   const colors = previewColors.map((item) => ({
     label: item.label,
-    color: localCustomColors[item.key] || item.fallbackColor,
+    color: localCustomColors[item.key] ?? item.fallbackColor,
   }));
 
   if (!showPreview) {
@@ -84,8 +84,8 @@ export const AppearancePreview: React.FC<AppearancePreviewProps> = ({
       </AtomicText>
       <View style={styles.previewContainer}>
         <View style={styles.previewColorRow}>
-          {colors.map((item, index) => (
-            <View key={index} style={styles.previewColorItem}>
+          {colors.map((item) => (
+            <View key={`preview-color-${item.label}`} style={styles.previewColorItem}>
               <View
                 style={[
                   styles.previewColorCircle,

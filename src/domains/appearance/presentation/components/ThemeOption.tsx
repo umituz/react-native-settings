@@ -5,7 +5,7 @@
  * Single Responsibility: Render theme option UI
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system";
 import { useAppDesignTokens } from "@umituz/react-native-design-system";
@@ -22,7 +22,24 @@ interface ThemeOptionProps {
   onSelect: () => void;
 }
 
-export const ThemeOption: React.FC<ThemeOptionProps> = ({
+// Valid theme modes for validation
+const VALID_THEME_MODES: readonly ThemeMode[] = ["light", "dark", "auto"];
+
+// Icon names mapping for type safety
+const THEME_ICONS: Record<ThemeMode, string> = {
+  light: "sunny-outline",
+  dark: "moon-outline",
+  auto: "desktop-outline",
+};
+
+// Utility function to add opacity to hex color
+const addOpacityToHex = (hexColor: string, opacity: string): string => {
+  // Remove # if present
+  const color = hexColor.replace("#", "");
+  return `#${color}${opacity}`;
+};
+
+export const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({
   mode,
   title,
   subtitle,
@@ -33,13 +50,27 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
   onSelect,
 }) => {
   const tokens = useAppDesignTokens();
-  const styles = getStyles(tokens);
-  const iconName = mode === "dark" ? "moon-outline" : mode === "light" ? "sunny-outline" : "desktop-outline";
+
+  // Memoize styles to prevent unnecessary re-creation
+  const styles = useMemo(() => getStyles(tokens), [tokens]);
+
+  // Type-safe icon name selection with validation
+  const iconName: string = useMemo(() => {
+    if (VALID_THEME_MODES.includes(mode)) {
+      return THEME_ICONS[mode];
+    }
+    // Fallback for invalid mode
+    console.warn(`Invalid theme mode: ${mode}. Defaulting to auto.`);
+    return THEME_ICONS.auto;
+  }, [mode]);
 
   return (
     <TouchableOpacity
       style={[styles.container, isSelected && styles.selectedContainer]}
       onPress={onSelect}
+      accessibilityLabel={`${title} theme ${isSelected ? 'selected' : 'not selected'}`}
+      accessibilityRole="button"
+      accessibilityState={{ selected: isSelected }}
     >
       <View style={styles.header}>
         <View style={styles.iconContainer}>
@@ -85,7 +116,7 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
           ) : null}
           {features.map((feature, index) => (
             <AtomicText
-              key={index}
+              key={`feature-${index}-${feature.slice(0, 10)}`}
               type="bodySmall"
               color="secondary"
               style={styles.feature}
@@ -97,7 +128,9 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({
       ) : null}
     </TouchableOpacity>
   );
-};
+});
+
+ThemeOption.displayName = "ThemeOption";
 
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
@@ -121,7 +154,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       width: 48,
       height: 48,
       borderRadius: 24,
-      backgroundColor: `${tokens.colors.primary}15`,
+      backgroundColor: addOpacityToHex(tokens.colors.primary, "15"),
       justifyContent: "center",
       alignItems: "center",
       marginRight: 12,
@@ -134,7 +167,7 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       lineHeight: 20,
     },
     featuresContainer: {
-      backgroundColor: `${tokens.colors.primary}08`,
+      backgroundColor: addOpacityToHex(tokens.colors.primary, "08"),
       borderRadius: 8,
       padding: 12,
     },

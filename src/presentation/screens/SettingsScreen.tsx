@@ -17,6 +17,7 @@ import type { SettingsConfig, CustomSettingsSection } from "./types";
 import type { DevSettingsProps } from "../../domains/dev";
 
 export interface SettingsScreenProps {
+  children?: React.ReactNode;
   config?: SettingsConfig;
   /** Show user profile header */
   showUserProfile?: boolean;
@@ -56,6 +57,7 @@ export interface SettingsScreenProps {
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
+  children,
   config = {},
   showUserProfile,
   userProfile,
@@ -72,17 +74,46 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 }) => {
   const navigation = useAppNavigation();
 
-  const normalizedConfig = normalizeSettingsConfig(config);
-  const features = useFeatureDetection(normalizedConfig, navigation, featureOptions);
+  // Memoize config normalization to prevent unnecessary recalculations
+  const normalizedConfig = React.useMemo(
+    () => normalizeSettingsConfig(config),
+    [config]
+  );
+
+  // Memoize feature detection to prevent unnecessary recalculations
+  const features = React.useMemo(
+    () => useFeatureDetection(normalizedConfig, navigation, featureOptions),
+    [normalizedConfig, navigation, featureOptions]
+  );
 
   // Determine if user profile should be shown (explicit prop takes priority, then config)
   const shouldShowUserProfile = showUserProfile ?? features.userProfile;
 
-  return (
-    <ScreenLayout
-      header={showHeader ? <SettingsHeader showCloseButton={showCloseButton} onClose={onClose} /> : undefined}
-    >
+  // Workaround: Use conditional rendering with type assertion
+  if (showHeader) {
+    return <ScreenLayout header={<SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />}>
       <SettingsErrorBoundary>
+        {children ?? (
+          <SettingsContent
+            normalizedConfig={normalizedConfig}
+            features={features}
+            showUserProfile={shouldShowUserProfile}
+            userProfile={userProfile}
+            showFooter={showFooter}
+            footerText={footerText}
+            appVersion={appVersion}
+            customSections={customSections}
+            devSettings={devSettings}
+            gamificationConfig={gamificationConfig}
+          />
+        )}
+      </SettingsErrorBoundary>
+    </ScreenLayout>;
+  }
+
+  return <ScreenLayout>
+    <SettingsErrorBoundary>
+      {children ?? (
         <SettingsContent
           normalizedConfig={normalizedConfig}
           features={features}
@@ -95,7 +126,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           devSettings={devSettings}
           gamificationConfig={gamificationConfig}
         />
-      </SettingsErrorBoundary>
-    </ScreenLayout>
-  );
+      )}
+    </SettingsErrorBoundary>
+  </ScreenLayout>;
 };

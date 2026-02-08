@@ -48,12 +48,22 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
           onValueChange={onToggle}
           trackColor={{ false: tokens.colors.surfaceSecondary, true: tokens.colors.primary }}
           thumbColor={tokens.colors.surface}
+          accessibilityLabel={translations.title}
+          accessibilityHint={translations.description}
+          accessibilityRole="switch"
         />
       </View>
 
       {config.enabled && (
         <View style={styles.timeContainer}>
-          <TouchableOpacity style={styles.timeButton} onPress={onStartTimePress} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={styles.timeButton}
+            onPress={onStartTimePress}
+            activeOpacity={0.7}
+            accessibilityLabel={`${translations.startTimeLabel}: ${formatTime(config.startHour, config.startMinute)}`}
+            accessibilityRole="button"
+            accessibilityHint="Press to change start time"
+          >
             <AtomicText type="bodySmall" style={styles.timeLabel}>{translations.startTimeLabel}</AtomicText>
             <AtomicText type="bodyLarge" style={styles.timeValue}>
               {formatTime(config.startHour, config.startMinute)}
@@ -64,7 +74,14 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
             <AtomicIcon name="arrow-forward" size="sm" color="secondary" />
           </View>
 
-          <TouchableOpacity style={styles.timeButton} onPress={onEndTimePress} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={styles.timeButton}
+            onPress={onEndTimePress}
+            activeOpacity={0.7}
+            accessibilityLabel={`${translations.endTimeLabel}: ${formatTime(config.endHour, config.endMinute)}`}
+            accessibilityRole="button"
+            accessibilityHint="Press to change end time"
+          >
             <AtomicText type="bodySmall" style={styles.timeLabel}>{translations.endTimeLabel}</AtomicText>
             <AtomicText type="bodyLarge" style={styles.timeValue}>
               {formatTime(config.endHour, config.endMinute)}

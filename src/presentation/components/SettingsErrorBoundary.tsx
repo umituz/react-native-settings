@@ -24,35 +24,47 @@ interface State {
 export class SettingsErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false };
+    // Initialize state using unknown to avoid type assertion issues
+    (this as unknown as { state: State }).state = { hasError: false };
   }
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  override componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo) {
-    // Silent error handling - error already captured in state
-    void _error;
-    void _errorInfo;
+  componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo): void {
+    // Log error to console in development
+    if (__DEV__) {
+      console.error('Settings Error Boundary caught an error:', _error);
+      console.error('Error Info:', _errorInfo);
+    }
   }
 
-  override render() {
-    if (this.state.hasError) {
-      if (this.props.fallback) {
-        return this.props.fallback;
+  render(): ReactNode {
+    // Safe access through unknown to avoid type assertion issues
+    const self = this as unknown as { state: State; props: Props };
+    const hasError = self.state.hasError;
+    const error = self.state.error;
+    const fallback = self.props.fallback;
+    const fallbackTitle = self.props.fallbackTitle;
+    const fallbackMessage = self.props.fallbackMessage;
+    const children = self.props.children;
+
+    if (hasError) {
+      if (fallback) {
+        return fallback;
       }
 
       return (
         <ErrorBoundaryFallback
-          error={this.state.error}
-          fallbackTitle={this.props.fallbackTitle}
-          fallbackMessage={this.props.fallbackMessage}
+          error={error}
+          fallbackTitle={fallbackTitle}
+          fallbackMessage={fallbackMessage}
         />
       );
     }
 
-    return this.props.children;
+    return children;
   }
 }
 

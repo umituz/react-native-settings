@@ -116,10 +116,16 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
       });
     },
 
-    checkAchievements: () => {
+    checkAchievements: (): Achievement[] => {
       if (!currentConfig) return [];
 
       const state = get();
+
+      // Safety check for achievements array
+      if (!state.achievements || state.achievements.length === 0) {
+        return [];
+      }
+
       const newlyUnlocked: Achievement[] = [];
 
       const updatedAchievements = state.achievements.map((ach: Achievement) => {

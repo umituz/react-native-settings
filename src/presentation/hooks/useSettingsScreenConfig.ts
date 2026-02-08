@@ -129,11 +129,17 @@ export const useSettingsScreenConfig = (
 
   const userProfile = useMemo((): UserProfileDisplay => {
     const isAnonymous = userProfileData?.isAnonymous ?? true;
+
+    // Ensure t function is available before using it
+    const anonymousName = typeof t === 'function'
+      ? t("settings.profile.anonymousName")
+      : 'Anonymous';
+
     return {
-      displayName: userProfileData?.displayName || t("settings.profile.anonymousName"),
-      userId: userProfileData?.userId,
+      displayName: userProfileData?.displayName || anonymousName,
+      userId: userProfileData?.userId ?? null,
       isAnonymous,
-      avatarUrl: userProfileData?.avatarUrl,
+      avatarUrl: userProfileData?.avatarUrl ?? null,
       onPress: isAnonymous ? handleSignIn : undefined,
       accountSettingsRoute: isAnonymous ? undefined : "Account",
     };
@@ -141,32 +147,37 @@ export const useSettingsScreenConfig = (
 
   const accountConfig = useMemo((): AccountScreenConfig => {
     const isAnonymous = user?.isAnonymous ?? true;
+
+    // Ensure t function is available before using it
+    const getTranslation = (key: string, fallback: string) =>
+      typeof t === 'function' ? t(key) : fallback;
+
     return {
       profile: {
-        displayName: userProfileData?.displayName || user?.displayName || t("settings.profile.anonymousName"),
-        userId: userProfileData?.userId || user?.uid,
+        displayName: userProfileData?.displayName || user?.displayName || getTranslation("settings.profile.anonymousName", "Anonymous"),
+        userId: userProfileData?.userId ?? user?.uid ?? null,
         isAnonymous,
-        avatarUrl: userProfileData?.avatarUrl || user?.photoURL || undefined,
+        avatarUrl: userProfileData?.avatarUrl ?? user?.photoURL ?? undefined,
         benefits: isAnonymous ? [
-          t("settings.profile.benefits.saveHistory"),
-          t("settings.profile.benefits.syncDevices"),
-          t("settings.profile.benefits.cloudSync"),
-          t("settings.profile.benefits.secureBackup"),
+          getTranslation("settings.profile.benefits.saveHistory", "Save history"),
+          getTranslation("settings.profile.benefits.syncDevices", "Sync devices"),
+          getTranslation("settings.profile.benefits.cloudSync", "Cloud sync"),
+          getTranslation("settings.profile.benefits.secureBackup", "Secure backup"),
         ] : undefined,
       },
       isAnonymous,
-      editProfileText: t("settings.account.editProfile"),
+      editProfileText: getTranslation("settings.account.editProfile", "Edit Profile"),
       onSignIn: handleSignIn,
       accountActions: {
         onLogout: handleSignOut,
         onDeleteAccount: handleDeleteAccount,
-        logoutText: t("settings.account.logout"),
-        logoutConfirmTitle: t("settings.account.logoutConfirmTitle"),
-        logoutConfirmMessage: t("settings.account.logoutConfirmMessage"),
-        cancelText: t("common.cancel"),
-        deleteAccountText: t("settings.account.deleteAccount"),
-        deleteConfirmTitle: t("settings.account.deleteConfirmTitle"),
-        deleteConfirmMessage: t("settings.account.deleteConfirmMessage"),
+        logoutText: getTranslation("settings.account.logout", "Log Out"),
+        logoutConfirmTitle: getTranslation("settings.account.logoutConfirmTitle", "Log Out"),
+        logoutConfirmMessage: getTranslation("settings.account.logoutConfirmMessage", "Are you sure you want to log out?"),
+        cancelText: getTranslation("common.cancel", "Cancel"),
+        deleteAccountText: getTranslation("settings.account.deleteAccount", "Delete Account"),
+        deleteConfirmTitle: getTranslation("settings.account.deleteConfirmTitle", "Delete Account"),
+        deleteConfirmMessage: getTranslation("settings.account.deleteConfirmMessage", "Are you sure you want to delete your account? This action cannot be undone."),
       },
     };
   }, [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, t]);

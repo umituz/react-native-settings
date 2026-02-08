@@ -2,6 +2,7 @@
  * Language Selection Screen Types
  */
 
+import type React from 'react';
 import type { Language } from '../../infrastructure/storage/types/Language';
 
 export interface LanguageSelectionScreenProps {

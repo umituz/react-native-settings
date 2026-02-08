@@ -35,10 +35,21 @@ export const useQuietHoursActions = () => {
     const startMinutes = quietHours.startHour * 60 + quietHours.startMinute;
     const endMinutes = quietHours.endHour * 60 + quietHours.endMinute;
 
-    if (startMinutes <= endMinutes) {
-      return currentMinutes >= startMinutes && currentMinutes < endMinutes;
+    // Validate time values
+    if (startMinutes < 0 || startMinutes >= 1440 || endMinutes < 0 || endMinutes >= 1440) {
+      console.error('Invalid quiet hours time values');
+      return false;
     }
-    return currentMinutes >= startMinutes || currentMinutes < endMinutes;
+
+    // Handle case where quiet hours span midnight
+    if (startMinutes <= endMinutes) {
+      // Same day period (e.g., 22:00 - 06:00 is not this case)
+      return currentMinutes >= startMinutes && currentMinutes < endMinutes;
+    } else {
+      // Spans midnight (e.g., 22:00 - 06:00)
+      // Current time is after start OR before end
+      return currentMinutes >= startMinutes || currentMinutes < endMinutes;
+    }
   }, [quietHours]);
 
   return {

@@ -12,7 +12,7 @@ export const CustomSettingsList: React.FC<CustomSettingsListProps> = ({
 }) => {
     const sortedSections = useMemo(() => {
         return Array.from(customSections)
-            .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+            .sort((a: CustomSettingsSection, b: CustomSettingsSection) => (a.order ?? 999) - (b.order ?? 999));
     }, [customSections]);
 
     if (!sortedSections.length) return null;
@@ -25,9 +25,9 @@ export const CustomSettingsList: React.FC<CustomSettingsListProps> = ({
                     title={section.title}
                 >
                     {section.content}
-                    {!section.content && section.items?.map((item) => (
+                    {!section.content && section.items && section.items.length > 0 && section.items.map((item) => (
                         <SettingsItemCard
-                            key={item.id}
+                            key={item.id || `item-${index}`}
                             title={item.title}
                             description={item.subtitle}
                             icon={item.icon}

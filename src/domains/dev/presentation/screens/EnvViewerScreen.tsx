@@ -4,16 +4,16 @@
  * DEV-only feature with hardcoded English text
  */
 
-import React, { useState } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import React, { useState, useMemo } from "react";
+import { View, StyleSheet } from "react-native";
 import {
   AtomicText,
   AtomicIcon,
   AtomicTouchable,
   useAppDesignTokens,
-  useSafeAreaInsets,
   useAppNavigation,
   AlertService,
+  ScreenLayout,
   NavigationHeader,
 } from "@umituz/react-native-design-system";
 import * as Clipboard from "expo-clipboard";
@@ -26,7 +26,6 @@ export interface EnvViewerScreenProps {
 
 export const EnvViewerScreen: React.FC<EnvViewerScreenProps> = ({ config }) => {
   const tokens = useAppDesignTokens();
-  const { bottom } = useSafeAreaInsets();
   const navigation = useAppNavigation();
   const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
 
@@ -94,62 +93,64 @@ export const EnvViewerScreen: React.FC<EnvViewerScreenProps> = ({ config }) => {
     );
   };
 
+  const header = useMemo(() => (
+    <NavigationHeader title="Environment Variables" onBackPress={() => navigation.goBack()} />
+  ), [navigation]);
+
   return (
-    <View style={[styles.container, { backgroundColor: tokens.colors.backgroundPrimary }]}>
-      <NavigationHeader title="Environment Variables" onBackPress={() => navigation.goBack()} />
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottom + tokens.spacing.lg }}
-      >
-        {config.environmentName && (
-          <View style={[styles.infoCard, { backgroundColor: tokens.colors.surfaceSecondary }]}>
-            <AtomicText type="labelSmall" color="textSecondary">
-              Environment
-            </AtomicText>
-            <AtomicText type="titleMedium" color="textPrimary">
-              {config.environmentName}
-            </AtomicText>
-          </View>
-        )}
-
-        {config.version && (
-          <View style={[styles.infoCard, { backgroundColor: tokens.colors.surfaceSecondary }]}>
-            <AtomicText type="labelSmall" color="textSecondary">
-              Version
-            </AtomicText>
-            <AtomicText type="titleMedium" color="textPrimary">
-              {config.version}
-              {config.buildNumber && ` (${config.buildNumber})`}
-            </AtomicText>
-          </View>
-        )}
-
-        <View style={styles.section}>
-          <AtomicText type="titleMedium" color="textPrimary" style={{ marginBottom: tokens.spacing.md }}>
-            Configuration
+    <ScreenLayout
+      scrollable={true}
+      header={header}
+      hideScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent}
+    >
+      {config.environmentName && (
+        <View style={[styles.infoCard, { backgroundColor: tokens.colors.surfaceSecondary }]}>
+          <AtomicText type="labelSmall" color="textSecondary">
+            Environment
           </AtomicText>
-          {config.variables.map(renderVariable)}
-        </View>
-
-        <View style={[styles.warningCard, { backgroundColor: tokens.colors.errorContainer }]}>
-          <AtomicIcon name="alert-circle" size="sm" color="error" />
-          <AtomicText
-            type="bodySmall"
-            color="error"
-            style={{ marginLeft: tokens.spacing.sm, flex: 1 }}
-          >
-            This screen is only visible in development mode. Never share sensitive values.
+          <AtomicText type="titleMedium" color="textPrimary">
+            {config.environmentName}
           </AtomicText>
         </View>
-      </ScrollView>
-    </View>
+      )}
+
+      {config.version && (
+        <View style={[styles.infoCard, { backgroundColor: tokens.colors.surfaceSecondary }]}>
+          <AtomicText type="labelSmall" color="textSecondary">
+            Version
+          </AtomicText>
+          <AtomicText type="titleMedium" color="textPrimary">
+            {config.version}
+            {config.buildNumber && ` (${config.buildNumber})`}
+          </AtomicText>
+        </View>
+      )}
+
+      <View style={styles.section}>
+        <AtomicText type="titleMedium" color="textPrimary" style={{ marginBottom: tokens.spacing.md }}>
+          Configuration
+        </AtomicText>
+        {config.variables.map(renderVariable)}
+      </View>
+
+      <View style={[styles.warningCard, { backgroundColor: tokens.colors.errorContainer }]}>
+        <AtomicIcon name="alert-circle" size="sm" color="error" />
+        <AtomicText
+          type="bodySmall"
+          color="error"
+          style={{ marginLeft: tokens.spacing.sm, flex: 1 }}
+        >
+          This screen is only visible in development mode. Never share sensitive values.
+        </AtomicText>
+      </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContent: {
+    paddingBottom: 20,
   },
   infoCard: {
     padding: 16,

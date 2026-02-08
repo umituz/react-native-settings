@@ -3,9 +3,8 @@
  * Shared logic for legal document screens
  */
 import React from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAppDesignTokens, type DesignTokens } from "@umituz/react-native-design-system";
+import { View, StyleSheet } from "react-native";
+import { useAppDesignTokens, type DesignTokens, ScreenLayout } from "@umituz/react-native-design-system";
 import { AtomicText, AtomicButton } from "@umituz/react-native-design-system";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 import { ContentValidationService } from "../../domain/services/ContentValidationService";
@@ -35,7 +34,6 @@ export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(
   createStyles,
 }) => {
   const tokens = useAppDesignTokens();
-  const insets = useSafeAreaInsets();
 
   const styles = React.useMemo(() => {
     const cacheKey = StyleCacheService.createTokenCacheKey(tokens);
@@ -57,14 +55,6 @@ export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(
       }
     }
   }, [onUrlPress, url]);
-
-  const containerStyle = React.useMemo(() => [
-    styles.container,
-    {
-      backgroundColor: tokens.colors.backgroundPrimary,
-      paddingTop: insets.top,
-    },
-  ], [styles.container, tokens.colors.backgroundPrimary, insets.top]);
 
   const showContent = React.useMemo(() => !!(content), [content]);
   const showUrlSection = React.useMemo(() =>
@@ -107,23 +97,23 @@ export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(
   }, [showContent, showUrlSection, styles, content, viewOnlineText, openText, handleUrlPress]);
 
   return (
-    <View style={containerStyle} testID={testID}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.content}>
-          <AtomicText
-            type="headlineLarge"
-            color="primary"
-            style={styles.title}
-          >
-            {title}
-          </AtomicText>
+    <ScreenLayout
+      testID={testID}
+      scrollable={true}
+      hideScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <View style={styles.content}>
+        <AtomicText
+          type="headlineLarge"
+          color="primary"
+          style={styles.title}
+        >
+          {title}
+        </AtomicText>
 
-          {contentSection}
-        </View>
-      </ScrollView>
-    </View>
+        {contentSection}
+      </View>
+    </ScreenLayout>
   );
 });

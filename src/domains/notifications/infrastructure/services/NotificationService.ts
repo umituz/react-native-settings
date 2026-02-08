@@ -22,7 +22,11 @@ export class NotificationService {
 
   private constructor() {
     // Configure notification handler on initialization
-    NotificationManager.configure();
+    try {
+      NotificationManager.configure();
+    } catch (error) {
+      console.error('[NotificationService] Failed to configure notification handler:', error);
+    }
   }
 
   static getInstance(): NotificationService {

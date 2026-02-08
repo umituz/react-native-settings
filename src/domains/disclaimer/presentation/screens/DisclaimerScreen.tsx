@@ -13,10 +13,8 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
+import { View, StyleSheet } from 'react-native';
+import { useAppDesignTokens, withAlpha, ScreenLayout } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import type { IconName } from '@umituz/react-native-design-system';
 import { useLocalization } from '../../../localization';
@@ -49,52 +47,42 @@ export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({
   const displayContent = content || t(contentKey);
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: tokens.colors.backgroundPrimary }]}
+    <ScreenLayout
+      scrollable={true}
       edges={['bottom']}
+      contentContainerStyle={styles.scrollContent}
+      hideScrollIndicator={false}
     >
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Icon Header */}
-        <View style={styles.iconHeader}>
-          <View
-            style={[
-              styles.iconContainer,
-              {
-                backgroundColor: withAlpha(tokens.colors.warning, 0.1),
-                borderColor: withAlpha(tokens.colors.warning, 0.3),
-              },
-            ]}
-          >
-            <AtomicIcon name={iconName as IconName} color="warning" size="xl" />
-          </View>
+      {/* Icon Header */}
+      <View style={styles.iconHeader}>
+        <View
+          style={[
+            styles.iconContainer,
+            {
+              backgroundColor: withAlpha(tokens.colors.warning, 0.1),
+              borderColor: withAlpha(tokens.colors.warning, 0.3),
+            },
+          ]}
+        >
+          <AtomicIcon name={iconName as IconName} color="warning" size="xl" />
         </View>
+      </View>
 
-        {/* Title */}
-        <AtomicText type="headlineMedium" color="primary" style={styles.title}>
-          {displayTitle}
-        </AtomicText>
+      {/* Title */}
+      <AtomicText type="headlineMedium" color="primary" style={styles.title}>
+        {displayTitle}
+      </AtomicText>
 
-        {/* Content */}
-        <AtomicText type="bodyMedium" color="secondary" style={styles.content}>
-          {displayContent}
-        </AtomicText>
-      </ScrollView>
-    </SafeAreaView>
+      {/* Content */}
+      <AtomicText type="bodyMedium" color="secondary" style={styles.content}>
+        {displayContent}
+      </AtomicText>
+    </ScreenLayout>
   );
 };
 
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    scrollView: {
-      flex: 1,
-    },
     scrollContent: {
       padding: tokens.spacing.lg,
       paddingTop: tokens.spacing.xl,

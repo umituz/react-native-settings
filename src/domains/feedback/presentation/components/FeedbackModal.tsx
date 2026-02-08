@@ -4,9 +4,8 @@
  */
 
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal } from "@umituz/react-native-design-system";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal, ScreenLayout } from "@umituz/react-native-design-system";
 import { FeedbackForm } from "./FeedbackForm";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import type { FeedbackFormProps } from "./FeedbackForm";
@@ -37,43 +36,39 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
 
     return (
         <BaseModal visible={visible} onClose={onClose}>
-            <SafeAreaView style={styles.safeArea}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={styles.keyboardView}
-                >
-                    <View style={[styles.header, { borderBottomColor: tokens.colors.border }]}>
-                        <View style={styles.headerText}>
-                            <AtomicText type="headlineSmall" color="textPrimary">
-                                {title}
+            <ScreenLayout
+                scrollable={true}
+                edges={[]}
+                keyboardAvoiding={true}
+                contentContainerStyle={styles.content}
+                hideScrollIndicator={false}
+            >
+                <View style={[styles.header, { borderBottomColor: tokens.colors.border }]}>
+                    <View style={styles.headerText}>
+                        <AtomicText type="headlineSmall" color="textPrimary">
+                            {title}
+                        </AtomicText>
+                        {subtitle && (
+                            <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 }}>
+                                {subtitle}
                             </AtomicText>
-                            {subtitle && (
-                                <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 }}>
-                                    {subtitle}
-                                </AtomicText>
-                            )}
-                        </View>
-                        <TouchableOpacity
-                            onPress={onClose}
-                            style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
-                        >
-                            <AtomicIcon name="close" size="sm" color="onSurface" />
-                        </TouchableOpacity>
+                        )}
                     </View>
-
-                    <ScrollView
-                        contentContainerStyle={styles.content}
-                        keyboardShouldPersistTaps="handled"
+                    <TouchableOpacity
+                        onPress={onClose}
+                        style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
                     >
-                        <FeedbackForm
-                            onSubmit={onSubmit}
-                            initialType={initialType}
-                            isSubmitting={isSubmitting}
-                            texts={texts}
-                        />
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </SafeAreaView>
+                        <AtomicIcon name="close" size="sm" color="onSurface" />
+                    </TouchableOpacity>
+                </View>
+
+                <FeedbackForm
+                    onSubmit={onSubmit}
+                    initialType={initialType}
+                    isSubmitting={isSubmitting}
+                    texts={texts}
+                />
+            </ScreenLayout>
         </BaseModal>
     );
 };
@@ -81,12 +76,6 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
 
 const getStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
-    safeArea: {
-        flex: 1,
-    },
-    keyboardView: {
-        flex: 1,
-    },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",

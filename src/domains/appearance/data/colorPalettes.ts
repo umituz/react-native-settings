@@ -87,8 +87,3 @@ export const generateColorPalette = (
     colors,
   };
 };
-
-// Legacy exports for backward compatibility
-export const PRIMARY_COLORS = DEFAULT_PRIMARY_COLORS.colors;
-export const SECONDARY_COLORS = DEFAULT_SECONDARY_COLORS.colors;
-export const ACCENT_COLORS = DEFAULT_ACCENT_COLORS.colors;

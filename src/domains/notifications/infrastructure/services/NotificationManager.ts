@@ -6,13 +6,11 @@
  */
 
 import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
-import { Platform } from 'react-native';
 import { NotificationPermissions } from './NotificationPermissions';
 import { NotificationScheduler } from './NotificationScheduler';
 import { NotificationBadgeManager } from './NotificationBadgeManager';
 import { devLog, devError } from '../utils/dev';
-import type { NotificationTrigger, ScheduleNotificationOptions, ScheduledNotification } from './types';
+import type { ScheduleNotificationOptions, ScheduledNotification } from './types';
 
 export class NotificationManager {
   private permissions: NotificationPermissions;

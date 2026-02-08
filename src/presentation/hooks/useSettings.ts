@@ -10,6 +10,14 @@ import { useUpdateSettingsMutation, useResetSettingsMutation } from './mutations
 import type { UserSettings } from '../../application/ports/ISettingsRepository';
 
 export const useSettings = (userId: string) => {
+    // Validate userId
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+        throw new Error(
+            'Invalid userId: must be a non-empty string. ' +
+            'Received: ' + (userId === null ? 'null' : typeof userId)
+        );
+    }
+
     const {
         data: settings,
         isLoading: loading,

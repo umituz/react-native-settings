@@ -51,6 +51,23 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
     const tokens = useAppDesignTokens();
     const colors = tokens.colors;
 
+    // Validate props in development
+    if (__DEV__) {
+        if (!title || typeof title !== 'string') {
+            console.warn('[SettingsItemCard] Invalid title prop:', title);
+        }
+        if (description && typeof description !== 'string') {
+            console.warn('[SettingsItemCard] Invalid description prop:', description);
+        }
+        if (showSwitch && !onSwitchChange) {
+            console.warn('[SettingsItemCard] Switch shown but no onSwitchChange provided. Switch changes will be ignored.');
+        }
+    }
+
+    // Sanitize string props (trim and limit length)
+    const sanitizedTitle = title?.trim().slice(0, 200) || '';
+    const sanitizedDescription = description?.trim().slice(0, 500);
+
     const defaultIconBg = iconBgColor || withAlpha(colors.primary, 0.15);
     const defaultIconColor = iconColor || colors.primary;
     const isClickable = !!onPress && !showSwitch;
@@ -61,7 +78,11 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
             return (
                 <AtomicSwitch
                     value={!!switchValue}
-                    onValueChange={onSwitchChange || (() => {})}
+                    onValueChange={onSwitchChange || (() => {
+                        if (__DEV__) {
+                            console.warn('[SettingsItemCard] Switch toggled but no onSwitchChange handler provided');
+                        }
+                    })}
                     disabled={disabled}
                 />
             );
@@ -82,13 +103,13 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
                     type="bodyLarge"
                     color={disabled ? "onSurfaceVariant" : "onSurface"}
                     numberOfLines={1}
-                    style={{ marginBottom: description ? tokens.spacing.xs : 0, opacity: disabled ? 0.6 : 1 }}
+                    style={{ marginBottom: sanitizedDescription ? tokens.spacing.xs : 0, opacity: disabled ? 0.6 : 1 }}
                 >
-                    {title}
+                    {sanitizedTitle}
                 </AtomicText>
-                {!!description && (
+                {!!sanitizedDescription && (
                     <AtomicText type="bodyMedium" color="textSecondary" numberOfLines={2}>
-                        {description}
+                        {sanitizedDescription}
                     </AtomicText>
                 )}
             </View>
@@ -113,7 +134,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
             {!!sectionTitle && (
                 <View style={styles.headerContainer}>
                     <AtomicText type="labelMedium" color="textSecondary" style={{ textTransform: 'uppercase' }}>
-                        {sectionTitle}
+                        {sectionTitle.trim().slice(0, 100)}
                     </AtomicText>
                 </View>
             )}

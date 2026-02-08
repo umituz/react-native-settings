@@ -137,9 +137,9 @@ export const useSettingsScreenConfig = (
 
     return {
       displayName: userProfileData?.displayName || anonymousName,
-      userId: userProfileData?.userId ?? null,
+      userId: userProfileData?.userId ?? undefined,
       isAnonymous,
-      avatarUrl: userProfileData?.avatarUrl ?? null,
+      avatarUrl: userProfileData?.avatarUrl ?? undefined,
       onPress: isAnonymous ? handleSignIn : undefined,
       accountSettingsRoute: isAnonymous ? undefined : "Account",
     };
@@ -155,7 +155,7 @@ export const useSettingsScreenConfig = (
     return {
       profile: {
         displayName: userProfileData?.displayName || user?.displayName || getTranslation("settings.profile.anonymousName", "Anonymous"),
-        userId: userProfileData?.userId ?? user?.uid ?? null,
+        userId: userProfileData?.userId ?? user?.uid ?? undefined,
         isAnonymous,
         avatarUrl: userProfileData?.avatarUrl ?? user?.photoURL ?? undefined,
         benefits: isAnonymous ? [

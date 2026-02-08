@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { useAppDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
-import { useFeedbackForm } from "../hooks/useFeedbackForm";
 
 export interface FeedbackFormProps {
     onSubmit: (data: { type: FeedbackType; rating: FeedbackRating; description: string; title: string }) => Promise<void>;
@@ -35,16 +34,38 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     const [rating, setRating] = useState<FeedbackRating>(5);
     const [description, setDescription] = useState("");
     const [title, setTitle] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [isSubmittingLocal, setIsSubmittingLocal] = useState(false);
 
     const handleSubmit = async () => {
-        if (!description.trim()) return;
+        // Validate input
+        if (!description.trim()) {
+            setError("Please provide a description");
+            return;
+        }
 
-        await onSubmit({
-            type: selectedType,
-            rating,
-            description,
-            title: title || texts.defaultTitle(selectedType),
-        });
+        setIsSubmittingLocal(true);
+        setError(null);
+
+        try {
+            await onSubmit({
+                type: selectedType,
+                rating,
+                description,
+                title: title || texts.defaultTitle(selectedType),
+            });
+
+            // Clear form on success
+            setDescription("");
+            setTitle("");
+            setRating(5);
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Failed to submit feedback";
+            setError(errorMessage);
+            console.error("[FeedbackForm] Submission error:", err);
+        } finally {
+            setIsSubmittingLocal(false);
+        }
     };
 
     const renderRating = () => (
@@ -116,7 +137,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
             <View style={styles.inputContainer}>
                 <TextInput
                     value={description}
-                    onChangeText={setDescription}
+                    onChangeText={(text) => {
+                        setDescription(text);
+                        setError(null); // Clear error on input
+                    }}
                     placeholder={texts.descriptionPlaceholder}
                     placeholderTextColor={tokens.colors.textTertiary}
                     multiline
@@ -126,18 +150,27 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
                         {
                             color: tokens.colors.textPrimary,
                             backgroundColor: tokens.colors.surface,
-                            borderColor: tokens.colors.border,
+                            borderColor: error ? tokens.colors.error : tokens.colors.border,
                         }
                     ]}
                 />
+                {error && (
+                    <AtomicText
+                        type="bodySmall"
+                        color="error"
+                        style={styles.errorText}
+                    >
+                        {error}
+                    </AtomicText>
+                )}
             </View>
 
             <AtomicButton
                 onPress={handleSubmit}
-                disabled={isSubmitting || !description.trim()}
+                disabled={isSubmitting || isSubmittingLocal || !description.trim()}
                 style={styles.submitButton}
             >
-                {isSubmitting ? texts.submittingButton : texts.submitButton}
+                {(isSubmitting || isSubmittingLocal) ? texts.submittingButton : texts.submitButton}
             </AtomicButton>
         </View>
     );
@@ -184,6 +217,9 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
         borderRadius: 8,
         padding: 12,
         fontSize: tokens.typography.bodyMedium.fontSize,
+    },
+    errorText: {
+        marginTop: 8,
     },
     submitButton: {
         width: "100%",

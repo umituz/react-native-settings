@@ -9,7 +9,6 @@ import { AboutRepository } from '../../infrastructure/repositories/AboutReposito
 import type { UseAboutInfoOptions, UseAboutInfoReturn } from './useAboutInfo.types';
 import {
   setErrorIfMounted,
-  setLoadingIfMounted,
   initializeAppInfo,
   updateAppInfoConfig,
   updateAppInfoPartial,

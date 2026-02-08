@@ -61,7 +61,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
     );
 };
 
-const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+const getStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
         flexDirection: "row",

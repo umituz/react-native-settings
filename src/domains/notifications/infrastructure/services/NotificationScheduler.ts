@@ -1,5 +1,5 @@
 import * as Notifications from 'expo-notifications';
-import type { NotificationTrigger, ScheduleNotificationOptions, ScheduledNotification } from './types';
+import type { ScheduleNotificationOptions, ScheduledNotification } from './types';
 
 export class NotificationScheduler {
   async scheduleNotification(options: ScheduleNotificationOptions): Promise<string> {
@@ -69,7 +69,7 @@ export class NotificationScheduler {
       content: {
         title: notification.content.title ?? '',
         body: notification.content.body ?? '',
-        data: notification.content.data as Record<string, unknown>,
+        data: notification.content.data as Record<string, string | number | boolean | null>,
       },
       trigger: notification.trigger,
     }));

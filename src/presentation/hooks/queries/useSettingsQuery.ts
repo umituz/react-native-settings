@@ -6,7 +6,6 @@
 
 import { useQuery } from '@umituz/react-native-design-system';
 import { getSettingsService } from '../../../infrastructure/services/SettingsService';
-import type { UserSettings } from '../../../application/ports/ISettingsRepository';
 
 export const SETTINGS_QUERY_KEY = ['settings'];
 

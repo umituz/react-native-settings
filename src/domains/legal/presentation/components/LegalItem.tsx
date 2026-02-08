@@ -42,7 +42,7 @@ export const LegalItem: React.FC<LegalItemProps> = React.memo(({
   title,
   description,
   onPress,
-  testID,
+  testID: _testID,
 }) => {
   // Use iconName if provided, otherwise fallback to default
   const finalIcon = iconName || icon || "shield-checkmark";

@@ -70,6 +70,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 }) => {
   const { t } = useLocalization();
 
+  // Optimize: Only track individual feature flags instead of entire object
   const hasAnyFeatures = useMemo(() =>
     features.appearance ||
     features.language ||
@@ -84,7 +85,21 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.wallet ||
     features.gamification ||
     customSections.length > 0,
-    [features, customSections.length]
+    [
+      features.appearance,
+      features.language,
+      features.notifications,
+      features.about,
+      features.legal,
+      features.disclaimer,
+      features.feedback,
+      features.rating,
+      features.faqs,
+      features.subscription,
+      features.wallet,
+      features.gamification,
+      customSections.length,
+    ]
   );
 
   return (

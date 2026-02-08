@@ -79,7 +79,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
 };
 
 
-const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+const getStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     safeArea: {
         flex: 1,

@@ -8,7 +8,6 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { AtomicText, AtomicIcon, AtomicCard } from '@umituz/react-native-design-system';
 import { Switch } from 'react-native';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
-import { SettingRow } from '../../../presentation/components/SettingRow';
 import type { QuietHoursConfig, QuietHoursTranslations } from '../../../infrastructure/services/types';
 
 export interface QuietHoursCardProps {

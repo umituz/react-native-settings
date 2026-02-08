@@ -22,8 +22,6 @@ export type { LanguageSectionProps, LanguageSectionConfig } from './presentation
 export { default as i18n } from './infrastructure/config/i18n';
 export { I18nInitializer } from './infrastructure/config/I18nInitializer';
 export {
-  SUPPORTED_LANGUAGES,
-  LANGUAGES,
   DEFAULT_LANGUAGE,
   getLanguageByCode,
   isLanguageSupported,

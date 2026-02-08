@@ -5,5 +5,6 @@
 
 export * from './presentation/screens/AppearanceScreen';
 export * from './presentation/components';
-export * from './hooks';
+export { useAppearance } from './hooks/useAppearance';
+export { useAppearanceActions } from './hooks/useAppearanceActions';
 export * from './types';

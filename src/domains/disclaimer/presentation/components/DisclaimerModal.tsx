@@ -69,7 +69,7 @@ export const DisclaimerModal: React.FC<DisclaimerModalProps> = ({
 };
 
 
-const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+const getStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     modalContainer: {
       flex: 1,

@@ -5,7 +5,7 @@ import React from "react";
  * Generic for 100+ apps - NO hardcoded strings
  */
 
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useAppDesignTokens, AtomicText } from "@umituz/react-native-design-system";
 import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";

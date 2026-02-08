@@ -22,33 +22,29 @@ interface State {
 }
 
 export class SettingsErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    // Initialize state using unknown to avoid type assertion issues
-    (this as unknown as { state: State }).state = { hasError: false };
-  }
+  override state: State = {
+    hasError: false,
+    error: undefined,
+  };
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo): void {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error to console in development
     if (__DEV__) {
-      console.error('Settings Error Boundary caught an error:', _error);
-      console.error('Error Info:', _errorInfo);
+      console.error('Settings Error Boundary caught an error:', error);
+      console.error('Error Info:', errorInfo);
     }
+
+    // TODO: Send to error tracking service in production
+    // Example: Sentry.captureException(error, { contexts: { react: { errorInfo } } });
   }
 
-  render(): ReactNode {
-    // Safe access through unknown to avoid type assertion issues
-    const self = this as unknown as { state: State; props: Props };
-    const hasError = self.state.hasError;
-    const error = self.state.error;
-    const fallback = self.props.fallback;
-    const fallbackTitle = self.props.fallbackTitle;
-    const fallbackMessage = self.props.fallbackMessage;
-    const children = self.props.children;
+  override render(): ReactNode {
+    const { hasError, error } = this.state;
+    const { children, fallback, fallbackTitle, fallbackMessage } = this.props;
 
     if (hasError) {
       if (fallback) {

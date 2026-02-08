@@ -11,7 +11,7 @@ interface GamificationScreenWrapperProps {
 export const GamificationScreenWrapper: React.FC<GamificationScreenWrapperProps> = ({ config }) => {
   const {
     points,
-    totalTasksCompleted,
+    totalTasksCompleted: _totalTasksCompleted,
     level,
     streak,
     achievements,

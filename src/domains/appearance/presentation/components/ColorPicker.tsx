@@ -49,7 +49,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 
   // Memoize color options to prevent unnecessary re-renders
   const colorOptions = useMemo(() => {
-    return colorsMemo.map((color, index) => {
+    return colorsMemo.map((color) => {
       const isSelected = value === color;
 
       return (

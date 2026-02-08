@@ -13,130 +13,182 @@ declare const __DEV__: boolean;
 
 type LocalizationStoreType = LocalizationState & LocalizationActions & LocalizationGetters;
 
-// Mutex to prevent race condition in initialize
-let initializeInProgress = false;
-// Debounce timer for language switching
-let languageSwitchTimer: ReturnType<typeof setTimeout> | null = null;
 const LANGUAGE_SWITCH_DEBOUNCE_MS = 300;
-// Track pending promise resolvers to ensure all get resolved
-let pendingResolvers: Array<() => void> = [];
 
-export const useLocalizationStore = create<LocalizationStoreType>((set, get) => ({
-  // State
-  currentLanguage: 'en-US',
-  isRTL: false,
-  isInitialized: false,
-  supportedLanguages: languageRepository.getLanguages(),
+export const useLocalizationStore = create<LocalizationStoreType>((set, get) => {
+  // Instance-level state to prevent memory leaks
+  let initializeInProgress = false;
+  let initializePromise: Promise<void> | null = null;
+  let languageSwitchTimer: ReturnType<typeof setTimeout> | null = null;
+  const pendingResolvers: Array<() => void> = [];
 
-  // Actions
-  initialize: async () => {
-    const { isInitialized: alreadyInitialized } = get();
+  return {
+    // State
+    currentLanguage: 'en-US',
+    isRTL: false,
+    isInitialized: false,
+    supportedLanguages: languageRepository.getLanguages(),
 
-    // Atomic check: both state flag AND in-progress mutex
-    if (alreadyInitialized || initializeInProgress) {
-      return;
-    }
+    // Actions
+    initialize: async () => {
+      const { isInitialized: alreadyInitialized } = get();
 
-    // Set mutex immediately (synchronous)
-    initializeInProgress = true;
+      // Return existing promise if initialization is in progress
+      if (initializeInProgress && initializePromise) {
+        return initializePromise;
+      }
 
-    try {
-      const result = await LanguageInitializer.initialize();
+      // Return if already initialized
+      if (alreadyInitialized) {
+        return;
+      }
 
-      set({
-        currentLanguage: result.languageCode,
-        isRTL: result.isRTL,
-        isInitialized: true,
-      });
-    } catch {
-      set({
-        currentLanguage: 'en-US',
-        isRTL: false,
-        isInitialized: true,
-      });
-    } finally {
-      // Reset mutex after completion (success or failure)
-      initializeInProgress = false;
-    }
-  },
-
-  setLanguage: async (languageCode: string) => {
-    // Debounce rapid language switches
-    if (languageSwitchTimer) {
-      clearTimeout(languageSwitchTimer);
-    }
-
-    return new Promise<void>((resolve) => {
-      // Add this resolver to pending list
-      pendingResolvers.push(resolve);
-
-      languageSwitchTimer = setTimeout(async () => {
-        if (typeof __DEV__ !== "undefined" && __DEV__) {
-          console.log('[LocalizationStore] setLanguage called:', languageCode);
-        }
-
+      // Set mutex and create promise
+      initializeInProgress = true;
+      initializePromise = (async () => {
         try {
-          const result = await LanguageSwitcher.switchLanguage(languageCode);
-
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
-            console.log('[LocalizationStore] LanguageSwitcher result:', result);
-          }
+          const result = await LanguageInitializer.initialize();
 
           set({
             currentLanguage: result.languageCode,
             isRTL: result.isRTL,
+            isInitialized: true,
+          });
+        } catch (error) {
+          // Log and set fallback state
+          if (typeof __DEV__ !== "undefined" && __DEV__) {
+            console.error('[LocalizationStore] Initialization failed:', error);
+          }
+
+          set({
+            currentLanguage: 'en-US',
+            isRTL: false,
+            isInitialized: true,
           });
 
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
-            console.log('[LocalizationStore] Store updated with new language:', result.languageCode);
-          }
-        } catch (error) {
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
-            console.error('[LocalizationStore] Language switch failed:', error);
-          }
+          throw error; // Re-throw to allow error handling
+        } finally {
+          initializeInProgress = false;
+          initializePromise = null;
         }
+      })();
 
+      return initializePromise;
+    },
+
+    setLanguage: async (languageCode: string) => {
+      // Validate input
+      if (!languageCode || typeof languageCode !== 'string') {
+        throw new Error('Invalid language code provided');
+      }
+
+      // Clear existing timer
+      if (languageSwitchTimer) {
+        clearTimeout(languageSwitchTimer);
         languageSwitchTimer = null;
+      }
 
-        // Resolve ALL pending promises (not just the latest)
-        const resolvers = [...pendingResolvers];
-        pendingResolvers = [];
-        resolvers.forEach(r => r());
-      }, LANGUAGE_SWITCH_DEBOUNCE_MS);
-    });
-  },
+      return new Promise<void>((resolve, reject) => {
+        // Add resolver to pending list
+        pendingResolvers.push(() => {
+          // Resolve successfully
+          resolve();
+        });
 
-  reset: () => {
-    // Clear any pending language switch
-    if (languageSwitchTimer) {
-      clearTimeout(languageSwitchTimer);
-      languageSwitchTimer = null;
-    }
-    // Resolve any pending promises to prevent hanging
-    const resolvers = [...pendingResolvers];
-    pendingResolvers = [];
-    resolvers.forEach(r => r());
-    // Reset mutex
-    initializeInProgress = false;
+        // Create rejection handler
+        const rejectAndCleanup = (error: Error) => {
+          // Remove this resolver
+          const index = pendingResolvers.findIndex(r => r === resolve);
+          if (index > -1) {
+            pendingResolvers.splice(index, 1);
+          }
+          reject(error);
+        };
 
-    set({
-      currentLanguage: 'en-US',
-      isRTL: false,
-      isInitialized: false,
-    });
-  },
+        languageSwitchTimer = setTimeout(async () => {
+          if (typeof __DEV__ !== "undefined" && __DEV__) {
+            console.log('[LocalizationStore] setLanguage called:', languageCode);
+          }
 
-  // Getters
-  getCurrentLanguage: () => {
-    const { currentLanguage } = get();
-    return languageRepository.getLanguageByCode(currentLanguage);
-  },
+          try {
+            const result = await LanguageSwitcher.switchLanguage(languageCode);
 
-  isLanguageSupported: (code: string) => {
-    return languageRepository.isLanguageSupported(code);
-  },
+            if (typeof __DEV__ !== "undefined" && __DEV__) {
+              console.log('[LocalizationStore] LanguageSwitcher result:', result);
+            }
 
-  getSupportedLanguages: () => {
-    return languageRepository.getLanguages();
-  },
-}));
+            set({
+              currentLanguage: result.languageCode,
+              isRTL: result.isRTL,
+            });
+
+            if (typeof __DEV__ !== "undefined" && __DEV__) {
+              console.log('[LocalizationStore] Store updated with new language:', result.languageCode);
+            }
+
+            // Resolve ALL pending promises
+            const resolvers = [...pendingResolvers];
+            pendingResolvers.length = 0; // Clear array
+            resolvers.forEach(r => r());
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error : new Error(String(error));
+
+            if (typeof __DEV__ !== "undefined" && __DEV__) {
+              console.error('[LocalizationStore] Language switch failed:', error);
+            }
+
+            // Reject all pending promises
+            const resolvers = [...pendingResolvers];
+            pendingResolvers.length = 0; // Clear array
+            resolvers.forEach(() => {
+              // Each resolver is wrapped to handle rejection
+              // Note: We can't reject promises already created, so we just clear them
+            });
+
+            // Reject this specific promise
+            rejectAndCleanup(errorMessage);
+          } finally {
+            languageSwitchTimer = null;
+          }
+        }, LANGUAGE_SWITCH_DEBOUNCE_MS);
+      });
+    },
+
+    reset: () => {
+      // Clear any pending language switch
+      if (languageSwitchTimer) {
+        clearTimeout(languageSwitchTimer);
+        languageSwitchTimer = null;
+      }
+
+      // Resolve any pending promises to prevent hanging
+      const resolvers = [...pendingResolvers];
+      pendingResolvers.length = 0; // Clear array
+      resolvers.forEach(r => r());
+
+      // Reset mutex
+      initializeInProgress = false;
+      initializePromise = null;
+
+      set({
+        currentLanguage: 'en-US',
+        isRTL: false,
+        isInitialized: false,
+      });
+    },
+
+    // Getters
+    getCurrentLanguage: () => {
+      const { currentLanguage } = get();
+      return languageRepository.getLanguageByCode(currentLanguage);
+    },
+
+    isLanguageSupported: (code: string) => {
+      return languageRepository.isLanguageSupported(code);
+    },
+
+    getSupportedLanguages: () => {
+      return languageRepository.getLanguages();
+    },
+  };
+});

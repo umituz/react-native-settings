@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Modal, View, StyleSheet, type StyleProp, type ViewStyle } from "react-native";
+import { Modal, View, StyleSheet } from "react-native";
 import {
   AtomicText,
   AtomicButton,

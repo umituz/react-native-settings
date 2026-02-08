@@ -3,7 +3,7 @@
  * Pure utility functions - NO side effects
  */
 
-import type { LevelDefinition, LevelState, Achievement, AchievementDefinition } from "../types";
+import type { LevelDefinition, LevelState, AchievementDefinition } from "../types";
 
 export const calculateLevel = (
   points: number,

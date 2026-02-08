@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useAppearance } from "./useAppearance";
-import type { CustomThemeColors, ThemeMode } from "@umituz/react-native-design-system";
+import type { CustomThemeColors } from "@umituz/react-native-design-system";
+import type { ThemeMode } from "../types";
 
 export const useAppearanceActions = () => {
   const { themeMode, customColors, setThemeMode, setCustomColors, reset } = useAppearance();

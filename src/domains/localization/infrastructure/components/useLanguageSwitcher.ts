@@ -17,7 +17,24 @@ export const useLanguageSwitcher = ({ onPress, disabled }: UseLanguageSwitcherPr
     const { currentLanguage } = useLocalization();
 
     const currentLang = useMemo((): Language => {
-        return languageRepository.getLanguageByCode(currentLanguage) || languageRepository.getDefaultLanguage();
+        // Double fallback to ensure we always have a valid language
+        const lang = languageRepository.getLanguageByCode(currentLanguage)
+            || languageRepository.getDefaultLanguage()
+            || languageRepository.getLanguages()[0]; // Final fallback
+
+        if (!lang) {
+            // This should never happen if repository is set up correctly
+            console.error('[useLanguageSwitcher] No valid language found. Check language repository configuration.');
+            // Return a minimal fallback language object
+            return {
+                code: 'en',
+                name: 'English',
+                nativeName: 'English',
+                flag: '🇺🇸',
+            };
+        }
+
+        return lang;
     }, [currentLanguage]);
 
     const handlePress = useCallback(() => {

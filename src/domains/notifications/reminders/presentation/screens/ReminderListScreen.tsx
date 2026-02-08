@@ -3,12 +3,12 @@
  * Displays list of reminders with add, edit, delete functionality
  */
 
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { AtomicText, AtomicIcon, AtomicSpinner } from '@umituz/react-native-design-system';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { ReminderItem } from '../components/ReminderItem';
-import { useRemindersStore, useReminders, useRemindersLoading } from '../../infrastructure/storage/RemindersStore';
+import { useReminders, useRemindersLoading } from '../../infrastructure/storage/RemindersStore';
 import { useReminderActions } from '../../infrastructure/hooks/useReminderActions';
 import type { Reminder, ReminderTranslations } from '../../../infrastructure/services/types';
 

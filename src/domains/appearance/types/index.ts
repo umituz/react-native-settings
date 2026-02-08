@@ -5,11 +5,14 @@
  */
 
 import type {
-  ThemeMode,
+  ThemeMode as BaseThemeMode,
   CustomThemeColors,
 } from "@umituz/react-native-design-system";
 
-export type { ThemeMode, CustomThemeColors };
+// Extended theme mode to support 'auto' option
+export type ThemeMode = BaseThemeMode | 'auto';
+
+export type { CustomThemeColors };
 
 export interface AppearanceSettings {
   themeMode: ThemeMode;

@@ -80,10 +80,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     [config]
   );
 
-  // Memoize feature detection to prevent unnecessary recalculations
+  // Feature detection hook (must be called at top level)
+  const detectedFeatures = useFeatureDetection(normalizedConfig, navigation, featureOptions);
+
+  // Memoize features to prevent unnecessary recalculations
   const features = React.useMemo(
-    () => useFeatureDetection(normalizedConfig, navigation, featureOptions),
-    [normalizedConfig, navigation, featureOptions]
+    () => detectedFeatures,
+    [detectedFeatures]
   );
 
   // Determine if user profile should be shown (explicit prop takes priority, then config)

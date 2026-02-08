@@ -16,16 +16,23 @@ export * from './types';
  * Provides simple access to notification manager
  */
 export class NotificationService {
-  private static instance: NotificationService;
+  private static instance: NotificationService | null = null;
+  private isConfigured = false;
 
   readonly notifications = new NotificationManager();
 
   private constructor() {
-    // Configure notification handler on initialization
-    try {
-      NotificationManager.configure();
-    } catch (error) {
-      console.error('[NotificationService] Failed to configure notification handler:', error);
+    // Configuration deferred to first use
+  }
+
+  private ensureConfigured() {
+    if (!this.isConfigured) {
+      try {
+        NotificationManager.configure();
+        this.isConfigured = true;
+      } catch (error) {
+        console.error('[NotificationService] Failed to configure notification handler:', error);
+      }
     }
   }
 
@@ -40,6 +47,7 @@ export class NotificationService {
    * Request notification permissions
    */
   async requestPermissions(): Promise<boolean> {
+    this.ensureConfigured();
     return await this.notifications.requestPermissions();
   }
 
@@ -47,8 +55,10 @@ export class NotificationService {
    * Check if permissions are granted
    */
   async hasPermissions(): Promise<boolean> {
+    this.ensureConfigured();
     return await this.notifications.hasPermissions();
   }
 }
 
+// Lazy initialization - don't create on module load
 export const notificationService = NotificationService.getInstance();

@@ -3,17 +3,18 @@
  * Handles reminder CRUD operations with notification scheduling
  */
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useRemindersStore } from '../storage/RemindersStore';
 import { NotificationScheduler } from '../../../infrastructure/services/NotificationScheduler';
 import { generateReminderId } from '../../../infrastructure/utils/idGenerator';
 import { buildTrigger } from '../../../infrastructure/utils/triggerBuilder';
 import type { Reminder, CreateReminderInput, UpdateReminderInput } from '../../../infrastructure/services/types';
 
-const scheduler = new NotificationScheduler();
-
 export const useReminderActions = () => {
   const { addReminder, updateReminder, deleteReminder, toggleReminder: _toggleReminder } = useRemindersStore();
+
+  // Lazy initialization of scheduler
+  const scheduler = useMemo(() => new NotificationScheduler(), []);
 
   const createReminder = useCallback(async (input: CreateReminderInput): Promise<Reminder> => {
     const now = new Date().toISOString();

@@ -76,30 +76,25 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
 
     // Validate title
     if (!trimmedTitle) {
-      console.warn('Reminder title is required');
       return;
     }
 
     if (trimmedTitle.length > MAX_TITLE_LENGTH) {
-      console.warn(`Reminder title exceeds maximum length of ${MAX_TITLE_LENGTH}`);
       return;
     }
 
     // Validate body length
     if (trimmedBody.length > MAX_BODY_LENGTH) {
-      console.warn(`Reminder body exceeds maximum length of ${MAX_BODY_LENGTH}`);
       return;
     }
 
     // Validate time values
     if (!isValidHour(hour) || !isValidMinute(minute)) {
-      console.warn('Invalid time values');
       return;
     }
 
     // Validate weekday if frequency is weekly
     if (frequency === 'weekly' && !isValidWeekday(weekday)) {
-      console.warn('Invalid weekday value');
       return;
     }
 

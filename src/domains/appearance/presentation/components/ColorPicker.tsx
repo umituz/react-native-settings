@@ -42,7 +42,6 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
       onValueChange(color);
     } catch (error) {
       // Log error for debugging while preventing UI crashes
-      console.error('Failed to change color:', error);
       // Optionally: Show user feedback about the error
     }
   }, [value, onValueChange]);

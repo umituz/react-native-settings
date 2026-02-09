@@ -21,6 +21,7 @@ export type {
   SubscriptionConfig,
   WalletConfig,
   GamificationItemConfig,
+  VideoTutorialConfig,
 } from "./UserFeatureConfig";
 export type { GamificationSettingsConfig as GamificationConfig } from "../../../domains/gamification";
 export type { SettingsConfig } from "./SettingsConfig";

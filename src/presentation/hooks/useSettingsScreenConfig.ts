@@ -27,6 +27,8 @@ import {
   createFAQConfig,
   createSubscriptionConfig,
 } from "../utils/config-creators";
+import { createUserProfileDisplay } from "../utils/userProfileUtils";
+import { createAccountConfig } from "../utils/accountConfigUtils";
 import type { SettingsConfig } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
 import type { AppInfo, FAQData, UserProfileDisplay, AdditionalScreen } from "../navigation/types";
@@ -127,60 +129,23 @@ export const useSettingsScreenConfig = (
     showAbout, showLegal, showFaqs, showRating,
   ]);
 
-  const userProfile = useMemo((): UserProfileDisplay => {
-    const isAnonymous = userProfileData?.isAnonymous ?? true;
+  const userProfile = useMemo(() => createUserProfileDisplay({
+    profileData: userProfileData,
+    t,
+    onSignIn: handleSignIn,
+  }), [userProfileData, t, handleSignIn]);
 
-    // Ensure t function is available before using it
-    const anonymousName = typeof t === 'function'
-      ? t("settings.profile.anonymousName")
-      : 'Anonymous';
-
-    return {
-      displayName: userProfileData?.displayName || anonymousName,
-      userId: userProfileData?.userId ?? undefined,
-      isAnonymous,
-      avatarUrl: userProfileData?.avatarUrl ?? undefined,
-      onPress: isAnonymous ? handleSignIn : undefined,
-      accountSettingsRoute: isAnonymous ? undefined : "Account",
-    };
-  }, [userProfileData, t, handleSignIn]);
-
-  const accountConfig = useMemo((): AccountScreenConfig => {
-    const isAnonymous = user?.isAnonymous ?? true;
-
-    // Ensure t function is available before using it
-    const getTranslation = (key: string, fallback: string) =>
-      typeof t === 'function' ? t(key) : fallback;
-
-    return {
-      profile: {
-        displayName: userProfileData?.displayName || user?.displayName || getTranslation("settings.profile.anonymousName", "Anonymous"),
-        userId: userProfileData?.userId ?? user?.uid ?? undefined,
-        isAnonymous,
-        avatarUrl: userProfileData?.avatarUrl ?? user?.photoURL ?? undefined,
-        benefits: isAnonymous ? [
-          getTranslation("settings.profile.benefits.saveHistory", "Save history"),
-          getTranslation("settings.profile.benefits.syncDevices", "Sync devices"),
-          getTranslation("settings.profile.benefits.cloudSync", "Cloud sync"),
-          getTranslation("settings.profile.benefits.secureBackup", "Secure backup"),
-        ] : undefined,
-      },
-      isAnonymous,
-      editProfileText: getTranslation("settings.account.editProfile", "Edit Profile"),
-      onSignIn: handleSignIn,
-      accountActions: {
-        onLogout: handleSignOut,
-        onDeleteAccount: handleDeleteAccount,
-        logoutText: getTranslation("settings.account.logout", "Log Out"),
-        logoutConfirmTitle: getTranslation("settings.account.logoutConfirmTitle", "Log Out"),
-        logoutConfirmMessage: getTranslation("settings.account.logoutConfirmMessage", "Are you sure you want to log out?"),
-        cancelText: getTranslation("common.cancel", "Cancel"),
-        deleteAccountText: getTranslation("settings.account.deleteAccount", "Delete Account"),
-        deleteConfirmTitle: getTranslation("settings.account.deleteConfirmTitle", "Delete Account"),
-        deleteConfirmMessage: getTranslation("settings.account.deleteConfirmMessage", "Are you sure you want to delete your account? This action cannot be undone."),
-      },
-    };
-  }, [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, t]);
+  const accountConfig = useMemo(() => createAccountConfig({
+    displayName: userProfileData?.displayName || user?.displayName || undefined,
+    userId: userProfileData?.userId ?? user?.uid ?? undefined,
+    photoURL: user?.photoURL ?? undefined,
+    isAnonymous: user?.isAnonymous,
+    avatarUrl: userProfileData?.avatarUrl ?? undefined,
+    onSignIn: handleSignIn,
+    onLogout: handleSignOut,
+    onDeleteAccount: handleDeleteAccount,
+    t,
+  }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, t]);
 
   const translatedFaqData = useMemo((): FAQData | undefined => {
     if (!faqData) return undefined;

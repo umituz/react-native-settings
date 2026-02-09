@@ -34,7 +34,6 @@ export class LanguageInitializer {
       return finalLanguage;
     } catch {
       if (typeof __DEV__ !== "undefined" && __DEV__) {
-        console.warn("[LanguageInitializer] Failed to restore language, falling back to device locale");
       }
       return await this.setupFallbackLanguage();
     }

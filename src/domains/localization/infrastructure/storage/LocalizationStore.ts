@@ -57,7 +57,6 @@ export const useLocalizationStore = create<LocalizationStoreType>((set, get) => 
         } catch (error) {
           // Log and set fallback state
           if (typeof __DEV__ !== "undefined" && __DEV__) {
-            console.error('[LocalizationStore] Initialization failed:', error);
           }
 
           set({
@@ -107,14 +106,12 @@ export const useLocalizationStore = create<LocalizationStoreType>((set, get) => 
 
         languageSwitchTimer = setTimeout(async () => {
           if (typeof __DEV__ !== "undefined" && __DEV__) {
-            console.log('[LocalizationStore] setLanguage called:', languageCode);
           }
 
           try {
             const result = await LanguageSwitcher.switchLanguage(languageCode);
 
             if (typeof __DEV__ !== "undefined" && __DEV__) {
-              console.log('[LocalizationStore] LanguageSwitcher result:', result);
             }
 
             set({
@@ -123,7 +120,6 @@ export const useLocalizationStore = create<LocalizationStoreType>((set, get) => 
             });
 
             if (typeof __DEV__ !== "undefined" && __DEV__) {
-              console.log('[LocalizationStore] Store updated with new language:', result.languageCode);
             }
 
             // Resolve ALL pending promises
@@ -134,7 +130,6 @@ export const useLocalizationStore = create<LocalizationStoreType>((set, get) => 
             const errorMessage = error instanceof Error ? error : new Error(String(error));
 
             if (typeof __DEV__ !== "undefined" && __DEV__) {
-              console.error('[LocalizationStore] Language switch failed:', error);
             }
 
             // Reject all pending promises

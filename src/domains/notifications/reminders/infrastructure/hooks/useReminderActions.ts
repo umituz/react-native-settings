@@ -37,7 +37,6 @@ export const useReminderActions = () => {
       reminder.notificationId = notificationId;
     } catch (error) {
       // Log error for debugging
-      console.error('[useReminderActions] Failed to schedule notification:', error);
       reminder.enabled = false;
     }
 
@@ -58,7 +57,6 @@ export const useReminderActions = () => {
       try {
         await scheduler.cancelNotification(existing.notificationId);
       } catch (error) {
-        console.error('[useReminderActions] Failed to cancel notification:', error);
         // Continue with update even if cancellation fails
       }
     }
@@ -76,7 +74,6 @@ export const useReminderActions = () => {
         });
         updated.notificationId = notificationId;
       } catch (error) {
-        console.error('[useReminderActions] Failed to schedule notification:', error);
         updated.enabled = false;
         updated.notificationId = undefined;
       }
@@ -99,7 +96,6 @@ export const useReminderActions = () => {
       try {
         await scheduler.cancelNotification(reminder.notificationId);
       } catch (error) {
-        console.error('[useReminderActions] Failed to cancel notification:', error);
         // Continue with deletion even if cancellation fails
       }
     }
@@ -120,7 +116,6 @@ export const useReminderActions = () => {
         await scheduler.cancelNotification(reminder.notificationId);
         await updateReminder(id, { enabled: false, notificationId: undefined });
       } catch (error) {
-        console.error('[useReminderActions] Failed to disable reminder:', error);
         throw error; // Re-throw to allow caller to handle
       }
     } else if (!reminder.enabled) {
@@ -134,7 +129,6 @@ export const useReminderActions = () => {
         });
         await updateReminder(id, { enabled: true, notificationId });
       } catch (error) {
-        console.error('[useReminderActions] Failed to enable reminder:', error);
         await updateReminder(id, { enabled: false }); // Ensure disabled state
         throw error; // Re-throw to allow caller to handle
       }

@@ -5,8 +5,8 @@ import { NotificationsSection } from "../../../../domains/notifications";
 import { useLocalization, getLanguageByCode } from "../../../../domains/localization";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
-
 import { SettingsSection } from "../../../components/SettingsSection";
+import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 
 interface FeatureSettingsSectionProps {
   normalizedConfig: NormalizedConfig;
@@ -24,23 +24,22 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   const { t, currentLanguage } = useLocalization();
   const navigation = useAppNavigation();
 
-  const handleLanguagePress = () => {
+  const handleLanguagePress = React.useCallback(() => {
     if (normalizedConfig.language.config?.onPress) {
       normalizedConfig.language.config.onPress();
     } else {
-      const route =
-        normalizedConfig.language.config?.route || "LanguageSelection";
+      const route = normalizedConfig.language.config?.route || "LanguageSelection";
       navigation.navigate(route as never);
     }
-  };
+  }, [navigation, normalizedConfig.language.config]);
 
-  const currentLanguageData = getLanguageByCode(currentLanguage);
-  const languageDisplayName = currentLanguageData
-    ? `${currentLanguageData.flag} ${currentLanguageData.nativeName}`
-    : currentLanguage;
+  const currentLanguageData = React.useMemo(() => getLanguageByCode(currentLanguage), [currentLanguage]);
+  const languageDisplayName = React.useMemo(() => {
+    if (!currentLanguageData) return currentLanguage;
+    return `${currentLanguageData.flag} ${currentLanguageData.nativeName}`;
+  }, [currentLanguageData, currentLanguage]);
 
-  if (!features.appearance && !features.language && !features.notifications)
-    return null;
+  if (!features.appearance && !features.language && !features.notifications) return null;
 
   return (
     <SettingsSection
@@ -85,3 +84,5 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   );
 };
 
+export const MemoizedFeatureSettingsSection = React.memo(FeatureSettingsSection, compareConfigAndFeatures);
+MemoizedFeatureSettingsSection.displayName = "MemoizedFeatureSettingsSection";

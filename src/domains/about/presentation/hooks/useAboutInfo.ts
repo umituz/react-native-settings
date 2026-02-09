@@ -102,7 +102,6 @@ export const useAboutInfo = (
           repository.destroy();
         } catch (error) {
           // Log cleanup error but don't throw
-          console.warn('Error during repository cleanup:', error);
         }
       }
     };
@@ -124,7 +123,6 @@ export const useAboutInfo = (
           isInitializedRef.current = true;
         }
       }).catch((error) => {
-        console.error('Failed to load AppInfoFactory:', error);
       });
     }
   }, [initialConfig, autoInit]);

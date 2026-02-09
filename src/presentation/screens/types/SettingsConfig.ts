@@ -21,6 +21,7 @@ import type {
   SubscriptionConfig,
   WalletConfig,
   GamificationItemConfig,
+  VideoTutorialConfig,
 } from "./UserFeatureConfig";
 
 /**
@@ -133,9 +134,15 @@ export interface SettingsConfig {
 
   /**
    * Gamification settings configuration
-   * @default false
+   * @default 'auto'
    */
   gamification?: FeatureVisibility | GamificationItemConfig;
+
+  /**
+   * Video tutorial settings configuration
+   * @default 'auto'
+   */
+  videoTutorial?: FeatureVisibility | VideoTutorialConfig;
 
   /**
    * Custom empty state text when no settings are available

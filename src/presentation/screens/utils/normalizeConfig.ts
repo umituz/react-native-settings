@@ -18,6 +18,7 @@ import type {
   SubscriptionConfig,
   WalletConfig,
   GamificationItemConfig,
+  VideoTutorialConfig,
   SettingsConfig,
 } from "../types";
 
@@ -74,6 +75,10 @@ export interface NormalizedConfig {
     enabled: boolean;
     config?: GamificationItemConfig;
   };
+  videoTutorial: {
+    enabled: boolean;
+    config?: VideoTutorialConfig;
+  };
 }
 
 /**
@@ -121,6 +126,7 @@ export function normalizeSettingsConfig(
     faqs: normalizeConfigValue(config?.faqs, false),
     subscription: normalizeConfigValue(config?.subscription, false),
     wallet: normalizeConfigValue(config?.wallet, false),
-    gamification: normalizeConfigValue(config?.gamification, false),
+    gamification: normalizeConfigValue(config?.gamification, "auto"),
+    videoTutorial: normalizeConfigValue(config?.videoTutorial, "auto"),
   };
 }

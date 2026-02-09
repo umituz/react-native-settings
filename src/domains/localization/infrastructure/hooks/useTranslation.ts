@@ -82,7 +82,6 @@ export const useTranslationFunction = () => {
     }
 
     if (__DEV__ && !translationFound) {
-      console.warn(`[Localization] Translation missing for key: "${key}" in language: "${i18n.language}"`);
     }
 
     return finalResult;

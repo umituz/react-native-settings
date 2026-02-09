@@ -9,7 +9,13 @@ import { FAQScreen } from "../../../domains/faqs";
 import { AboutScreen } from "../../../domains/about";
 import { LegalScreen } from "../../../domains/legal";
 import { GamificationScreen } from "../../../domains/gamification";
-import type { SettingsStackNavigatorProps, AdditionalScreen } from "../types";
+import {
+  createScreenWithProps,
+  convertAdditionalScreen,
+  createConditionalScreen,
+  combineScreens,
+} from "../../utils/screenFactory";
+import type { SettingsStackNavigatorProps } from "../types";
 
 export interface UseSettingsScreensProps extends SettingsStackNavigatorProps {
   aboutConfig: any;
@@ -42,104 +48,84 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
   } = props;
 
   return useMemo(() => {
-    const baseScreens: StackScreen[] = [
+    const settingsMainScreen = createScreenWithProps(
+      "SettingsMain",
+      SettingsScreen,
       {
-        name: "SettingsMain",
-        options: { headerShown: false },
-        children: () => React.createElement(SettingsScreen, {
-          config,
-          appVersion: appInfo.version,
-          showUserProfile,
-          userProfile,
-          devSettings,
-          customSections,
-          showHeader,
-          showCloseButton,
-          onClose,
-        }),
-      },
-      {
-        name: "Appearance",
-        component: AppearanceScreen as any,
-        options: { headerShown: false },
-      },
-      {
-        name: "About",
-        options: { headerShown: false },
-        children: () => React.createElement(AboutScreen, { config: aboutConfig }),
-      },
-      {
-        name: "Legal",
-        options: { headerShown: false },
-        children: () => React.createElement(LegalScreen, legalProps),
-      },
-      {
-        name: "Notifications",
-        options: { headerShown: false },
-        children: () => React.createElement(NotificationSettingsScreen, {
-          translations: notificationTranslations,
-          quietHoursTranslations,
-        }),
-      },
-    ];
+        config,
+        appVersion: appInfo.version,
+        showUserProfile,
+        userProfile,
+        devSettings,
+        customSections,
+        showHeader,
+        showCloseButton,
+        onClose,
+      }
+    );
 
-    const faqScreen: StackScreen | null = (faqData && faqData.categories?.length > 0)
-      ? {
-          name: "FAQ",
-          options: { headerShown: false },
-          children: () => React.createElement(FAQScreen, {
-            categories: faqData.categories,
-            searchPlaceholder: t("settings.faqs.searchPlaceholder"),
-            emptySearchTitle: t("settings.faqs.emptySearchTitle"),
-            emptySearchMessage: t("settings.faqs.emptySearchMessage"),
-            headerTitle: t("settings.faqs.headerTitle"),
-          }),
-        }
-      : null;
-
-    const additionalStackScreens: StackScreen[] = (additionalScreens || []).map((screen: AdditionalScreen): StackScreen => {
-      const stackScreen: any = { name: screen.name };
-      if (screen.component) stackScreen.component = screen.component;
-      if (screen.children) stackScreen.children = screen.children;
-      if (screen.options) stackScreen.options = screen.options;
-      return stackScreen as StackScreen;
-    });
-
-    const gamificationScreen: StackScreen | null = gamificationConfig?.enabled
-      ? {
-          name: "Gamification",
-          options: { headerShown: false },
-          children: () => React.createElement(GamificationScreen, { config: gamificationConfig }),
-        }
-      : null;
-
-    const languageScreen: StackScreen = {
-      name: "LanguageSelection",
+    const appearanceScreen = {
+      name: "Appearance",
+      component: AppearanceScreen as any,
       options: { headerShown: false },
-      children: () => React.createElement(LanguageSelectionScreen, {
-        headerTitle: t("settings.language.title"),
-        searchPlaceholder: t("settings.languageSelection.searchPlaceholder"),
-      }),
     };
 
-    const accountScreen: StackScreen | null = accountConfig
-      ? {
-          name: "Account",
-          options: { headerShown: false },
-          children: () => React.createElement(AccountScreen, { config: accountConfig }),
-        }
-      : null;
+    const aboutScreen = createScreenWithProps("About", AboutScreen, { config: aboutConfig });
+    const legalScreen = createScreenWithProps("Legal", LegalScreen, legalProps);
 
-    const allScreens: StackScreen[] = [
-      ...baseScreens,
-      ...(faqScreen ? [faqScreen] : []),
-      ...additionalStackScreens,
-      ...(gamificationScreen ? [gamificationScreen] : []),
-      languageScreen,
-      ...(accountScreen ? [accountScreen] : []),
+    const notificationScreen = createScreenWithProps(
+      "Notifications",
+      NotificationSettingsScreen,
+      {
+        translations: notificationTranslations,
+        quietHoursTranslations,
+      }
+    );
+
+    const baseScreens: StackScreen[] = [
+      settingsMainScreen,
+      appearanceScreen,
+      aboutScreen,
+      legalScreen,
+      notificationScreen,
     ];
 
-    return allScreens;
+    const faqScreen = createConditionalScreen(
+      !!(faqData && faqData.categories?.length > 0),
+      () => createScreenWithProps("FAQ", FAQScreen, {
+        categories: faqData!.categories,
+        searchPlaceholder: t("settings.faqs.searchPlaceholder"),
+        emptySearchTitle: t("settings.faqs.emptySearchTitle"),
+        emptySearchMessage: t("settings.faqs.emptySearchMessage"),
+        headerTitle: t("settings.faqs.headerTitle"),
+      })
+    );
+
+    const additionalStackScreens: StackScreen[] = (additionalScreens || []).map(convertAdditionalScreen);
+
+    const gamificationScreen = createConditionalScreen(
+      !!(gamificationConfig?.enabled),
+      () => createScreenWithProps("Gamification", GamificationScreen as any, { config: gamificationConfig })
+    );
+
+    const languageScreen = createScreenWithProps("LanguageSelection", LanguageSelectionScreen, {
+      headerTitle: t("settings.language.title"),
+      searchPlaceholder: t("settings.languageSelection.searchPlaceholder"),
+    });
+
+    const accountScreen = createConditionalScreen(
+      !!accountConfig,
+      () => createScreenWithProps("Account", AccountScreen as any, { config: accountConfig })
+    );
+
+    return combineScreens(
+      baseScreens,
+      faqScreen,
+      additionalStackScreens,
+      gamificationScreen,
+      languageScreen,
+      accountScreen
+    );
   }, [
     t,
     showHeader,

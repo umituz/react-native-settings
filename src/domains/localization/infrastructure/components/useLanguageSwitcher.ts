@@ -24,7 +24,6 @@ export const useLanguageSwitcher = ({ onPress, disabled }: UseLanguageSwitcherPr
 
         if (!lang) {
             // This should never happen if repository is set up correctly
-            console.error('[useLanguageSwitcher] No valid language found. Check language repository configuration.');
             // Return a minimal fallback language object
             return {
                 code: 'en',

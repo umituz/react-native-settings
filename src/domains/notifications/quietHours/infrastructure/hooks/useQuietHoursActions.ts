@@ -37,7 +37,6 @@ export const useQuietHoursActions = () => {
 
     // Validate time values
     if (startMinutes < 0 || startMinutes >= 1440 || endMinutes < 0 || endMinutes >= 1440) {
-      console.error('Invalid quiet hours time values');
       return false;
     }
 

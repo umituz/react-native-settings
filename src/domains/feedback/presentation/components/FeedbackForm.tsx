@@ -64,7 +64,6 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "Failed to submit feedback";
             setError(errorMessage);
-            console.error("[FeedbackForm] Submission error:", err);
         } finally {
             setIsSubmittingLocal(false);
         }

@@ -27,20 +27,20 @@ function daysBetween(dateString: string, now: Date): number {
 }
 
 /**
+ * Format date to ISO string
+ */
+function toISOString(date: Date = new Date()): string {
+  return date.toISOString();
+}
+
+/**
  * Track an event occurrence
  */
 export async function trackEvent(eventType: string): Promise<void> {
   try {
     await incrementEventCount(eventType);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      const count = await getEventCount(eventType);
-      console.log(`[RatingService] Event tracked: ${eventType}, count: ${count}`);
-    }
   } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingService] Error tracking event:", error);
-    }
+    // Silent error handling
   }
 }
 
@@ -51,17 +51,11 @@ export async function shouldShowPrompt(config: RatingConfig): Promise<boolean> {
   try {
     const hasRated = await getHasRated();
     if (hasRated) {
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-        console.log("[RatingService] User has already rated, skipping prompt");
-      }
       return false;
     }
 
     const dismissed = await getDismissed();
     if (dismissed) {
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-        console.log("[RatingService] User permanently dismissed prompt");
-      }
       return false;
     }
 
@@ -69,11 +63,6 @@ export async function shouldShowPrompt(config: RatingConfig): Promise<boolean> {
     const minCount = config.minEventCount ?? 3;
 
     if (eventCount < minCount) {
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-        console.log(
-          `[RatingService] Event count ${eventCount} < ${minCount}, not showing prompt`
-        );
-      }
       return false;
     }
 
@@ -84,24 +73,12 @@ export async function shouldShowPrompt(config: RatingConfig): Promise<boolean> {
       const daysSinceLastPrompt = daysBetween(lastPromptDate, new Date());
 
       if (daysSinceLastPrompt < cooldownDays) {
-        if (typeof __DEV__ !== "undefined" && __DEV__) {
-          console.log(
-            `[RatingService] Cooldown period active: ${daysSinceLastPrompt}/${cooldownDays} days`
-          );
-        }
         return false;
       }
     }
 
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log("[RatingService] All criteria met, prompt should be shown");
-    }
-
     return true;
   } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingService] Error checking criteria:", error);
-    }
     return false;
   }
 }
@@ -111,16 +88,9 @@ export async function shouldShowPrompt(config: RatingConfig): Promise<boolean> {
  */
 export async function markPromptShown(eventType: string): Promise<void> {
   try {
-    const now = new Date().toISOString();
-    await setLastPromptDate(eventType, now);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log(`[RatingService] Prompt shown marked for: ${eventType}`);
-    }
+    await setLastPromptDate(eventType, toISOString());
   } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingService] Error marking prompt shown:", error);
-    }
+    // Silent error handling
   }
 }
 
@@ -130,14 +100,8 @@ export async function markPromptShown(eventType: string): Promise<void> {
 export async function markRated(): Promise<void> {
   try {
     await setHasRated(true);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log("[RatingService] User marked as rated");
-    }
   } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingService] Error marking rated:", error);
-    }
+    // Silent error handling
   }
 }
 
@@ -147,14 +111,8 @@ export async function markRated(): Promise<void> {
 export async function markDismissed(): Promise<void> {
   try {
     await setDismissed(true);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log("[RatingService] User marked as dismissed");
-    }
   } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingService] Error marking dismissed:", error);
-    }
+    // Silent error handling
   }
 }
 
@@ -171,15 +129,7 @@ export async function getState(eventType: string): Promise<RatingState> {
 export async function reset(eventType?: string): Promise<void> {
   try {
     await resetStorage(eventType);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log(
-        `[RatingService] Reset ${eventType ? `event: ${eventType}` : "all rating data"}`
-      );
-    }
   } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingService] Error resetting:", error);
-    }
+    // Silent error handling
   }
 }

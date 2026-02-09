@@ -71,7 +71,6 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
       ]}
       onPress={() => {
         if (__DEV__) {
-          console.log('[LanguageItem] TouchableOpacity pressed:', item.code, item.nativeName);
         }
         onSelect(item.code);
       }}

@@ -39,16 +39,13 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
 
   const onSelect = async (code: string) => {
     if (__DEV__) {
-      console.log('[LanguageSelectionScreen] onSelect called with code:', code);
     }
     await handleLanguageSelect(code, () => {
       if (__DEV__) {
-        console.log('[LanguageSelectionScreen] Navigating back using standard navigation');
       }
       navigation.goBack();
     });
     if (__DEV__) {
-      console.log('[LanguageSelectionScreen] Language change completed');
     }
   };
 

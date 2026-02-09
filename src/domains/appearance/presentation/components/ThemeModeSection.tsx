@@ -44,7 +44,6 @@ export const ThemeModeSection: React.FC<ThemeModeSectionProps> = ({
     try {
       onThemeSelect(mode);
     } catch (error) {
-      console.error('Failed to select theme:', error);
     }
   }, [onThemeSelect]);
 

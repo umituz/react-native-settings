@@ -3,8 +3,9 @@ import { useAppNavigation } from "@umituz/react-native-design-system";
 import type { IconName } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import { useGamification } from "../../../domains/gamification";
-import type { GamificationItemConfig } from "../../screens/types/UserFeatureConfig";
+import type { GamificationItemConfig } from "../types/UserFeatureConfig";
 import type { GamificationSettingsConfig } from "../../../domains/gamification";
+import { compareGamificationProps } from "../../../infrastructure/utils/memoComparisonUtils";
 
 export interface GamificationSettingsItemProps {
   config: GamificationItemConfig;
@@ -12,27 +13,23 @@ export interface GamificationSettingsItemProps {
   t: (key: string) => string;
 }
 
-export const GamificationSettingsItem: React.FC<GamificationSettingsItemProps> = ({ 
-  config, 
-  gamificationConfig, 
-  t 
+const GamificationSettingsItemComponent: React.FC<GamificationSettingsItemProps> = ({
+  config,
+  gamificationConfig,
+  t
 }) => {
   const navigation = useAppNavigation();
   const { level } = useGamification(gamificationConfig);
-  
-  const handlePress = () => {
-    if (config.route) {
-      navigation.navigate(config.route as never);
-    } else {
-      navigation.navigate("Gamification" as never);
-    }
-  };
-  
+
+  const handlePress = React.useCallback(() => {
+    const route = config.route || "Gamification";
+    navigation.navigate(route as never);
+  }, [navigation, config.route]);
+
   const icon = (config.icon || "trophy-outline") as IconName;
   const title = config.title || t("settings.gamification.title");
-  
-  // Dynamic description showing current level and points
-  const description = config.description || 
+
+  const description = config.description ||
     t("settings.gamification.description")
       .replace("{level}", level.currentLevel.toString())
       .replace("{points}", level.currentPoints.toString());
@@ -47,3 +44,9 @@ export const GamificationSettingsItem: React.FC<GamificationSettingsItemProps> =
     />
   );
 };
+
+export const GamificationSettingsItem = React.memo(
+  GamificationSettingsItemComponent,
+  compareGamificationProps
+);
+GamificationSettingsItem.displayName = "GamificationSettingsItem";

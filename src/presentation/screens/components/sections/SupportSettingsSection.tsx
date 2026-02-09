@@ -5,6 +5,7 @@ import { SupportSection } from "../../../../domains/feedback/presentation/compon
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
+import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 
 interface SupportSettingsSectionProps {
     features: { feedback: boolean; rating: boolean; faqs: boolean; [key: string]: boolean };
@@ -30,10 +31,10 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                 <SupportSection
                     renderSection={(props: { title: string; children: React.ReactNode }) => <>{props.children}</>}
                     renderItem={(props: { title: string; icon: string; onPress: () => void; isLast?: boolean }) => (
-                        <SettingsItemCard 
-                            title={props.title} 
-                            icon={props.icon} 
-                            onPress={props.onPress} 
+                        <SettingsItemCard
+                            title={props.title}
+                            icon={props.icon}
+                            onPress={props.onPress}
                             noBackground={true}
                             hideMargin={true}
                         />
@@ -98,3 +99,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
     );
 };
 
+SupportSettingsSection.displayName = "SupportSettingsSection";
+
+export const MemoizedSupportSettingsSection = React.memo(SupportSettingsSection, compareConfigAndFeatures);
+MemoizedSupportSettingsSection.displayName = "MemoizedSupportSettingsSection";

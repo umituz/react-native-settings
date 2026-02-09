@@ -23,25 +23,21 @@ export class LanguageSwitcher {
     isRTL: boolean;
   }> {
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log('[LanguageSwitcher] switchLanguage called:', languageCode);
     }
 
     const language = languageRepository.getLanguageByCode(languageCode);
 
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log('[LanguageSwitcher] Language object:', language);
     }
 
     await i18n.changeLanguage(languageCode);
 
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log('[LanguageSwitcher] i18n language changed to:', i18n.language);
     }
 
     await storageRepository.setString(LANGUAGE_STORAGE_KEY, languageCode);
 
     if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.log('[LanguageSwitcher] Saved to storage');
     }
 
     return {

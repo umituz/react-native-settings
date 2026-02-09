@@ -35,18 +35,18 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     const styles = getStyles(tokens);
 
     const header = (
-        <NavigationHeader
-            title={title || ""}
-            subtitle={subtitle}
-            rightElement={
-                <TouchableOpacity
-                    onPress={onClose}
-                    style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
-                >
-                    <AtomicIcon name="close" size="sm" color="onSurface" />
-                </TouchableOpacity>
-            }
-        />
+        <View style={styles.header}>
+            <View style={styles.headerText}>
+                {title && <AtomicText style={{ fontSize: 20, fontWeight: '600' }}>{title}</AtomicText>}
+                {subtitle && <AtomicText style={{ fontSize: 14, marginTop: 4 }}>{subtitle}</AtomicText>}
+            </View>
+            <TouchableOpacity
+                onPress={onClose}
+                style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
+            >
+                <AtomicIcon name="close" size="sm" color="onSurface" />
+            </TouchableOpacity>
+        </View>
     );
 
     return (

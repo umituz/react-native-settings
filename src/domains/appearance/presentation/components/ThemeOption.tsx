@@ -60,7 +60,6 @@ export const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({
       return THEME_ICONS[mode];
     }
     // Fallback for invalid mode
-    console.warn(`Invalid theme mode: ${mode}. Defaulting to auto.`);
     return THEME_ICONS.auto;
   }, [mode]);
 

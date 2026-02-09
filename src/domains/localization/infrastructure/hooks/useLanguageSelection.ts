@@ -18,19 +18,15 @@ export const useLanguageSelection = () => {
 
     const handleLanguageSelect = async (code: string, onComplete?: () => void) => {
         if (__DEV__) {
-            console.log('[useLanguageSelection] handleLanguageSelect called:', { code, currentLanguage });
         }
         setSelectedCode(code);
         if (__DEV__) {
-            console.log('[useLanguageSelection] Calling setLanguage...');
         }
         await setLanguage(code);
         if (__DEV__) {
-            console.log('[useLanguageSelection] Language changed to:', code);
         }
         onComplete?.();
         if (__DEV__) {
-            console.log('[useLanguageSelection] onComplete callback executed');
         }
     };
 

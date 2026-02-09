@@ -161,3 +161,23 @@ export interface GamificationItemConfig {
   achievementsCount?: number;
 }
 
+/**
+ * Video Tutorial Settings Configuration
+ */
+export interface VideoTutorialConfig {
+  /** Enable video tutorial feature */
+  enabled?: FeatureVisibility;
+  /** Custom title for the video tutorial section */
+  title?: string;
+  /** Custom label for the video tutorial item */
+  description?: string;
+  /** Custom icon name (Ionicons) */
+  icon?: string;
+  /** Custom section title for grouping */
+  sectionTitle?: string;
+  /** Handler to open video tutorial screen */
+  onPress?: () => void;
+  /** Navigation route for video tutorial screen */
+  route?: string;
+}
+

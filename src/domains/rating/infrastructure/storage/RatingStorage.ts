@@ -24,10 +24,7 @@ export async function getEventCount(eventType: string): Promise<number> {
     const result = await storageRepository.getString(KEYS.eventCount(eventType), "0");
     const count = parseInt(unwrap(result, "0"), 10);
     return Number.isNaN(count) ? 0 : count;
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error getting event count:", error);
-    }
+  } catch {
     return 0;
   }
 }
@@ -38,10 +35,8 @@ export async function getEventCount(eventType: string): Promise<number> {
 export async function setEventCount(eventType: string, count: number): Promise<void> {
   try {
     await storageRepository.setString(KEYS.eventCount(eventType), count.toString());
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error setting event count:", error);
-    }
+  } catch {
+    // Silent error handling
   }
 }
 
@@ -61,10 +56,7 @@ export async function getLastPromptDate(eventType: string): Promise<string | nul
     const result = await storageRepository.getString(KEYS.lastPrompt(eventType), "");
     const date = unwrap(result, "");
     return date || null;
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error getting last prompt date:", error);
-    }
+  } catch {
     return null;
   }
 }
@@ -75,10 +67,8 @@ export async function getLastPromptDate(eventType: string): Promise<string | nul
 export async function setLastPromptDate(eventType: string, date: string): Promise<void> {
   try {
     await storageRepository.setString(KEYS.lastPrompt(eventType), date);
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error setting last prompt date:", error);
-    }
+  } catch {
+    // Silent error handling
   }
 }
 
@@ -89,10 +79,7 @@ export async function getHasRated(): Promise<boolean> {
   try {
     const result = await storageRepository.getString(KEYS.hasRated, "false");
     return unwrap(result, "false") === "true";
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error getting hasRated:", error);
-    }
+  } catch {
     return false;
   }
 }
@@ -103,10 +90,8 @@ export async function getHasRated(): Promise<boolean> {
 export async function setHasRated(value: boolean): Promise<void> {
   try {
     await storageRepository.setString(KEYS.hasRated, value.toString());
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error setting hasRated:", error);
-    }
+  } catch {
+    // Silent error handling
   }
 }
 
@@ -117,10 +102,7 @@ export async function getDismissed(): Promise<boolean> {
   try {
     const result = await storageRepository.getString(KEYS.dismissed, "false");
     return unwrap(result, "false") === "true";
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error getting dismissed:", error);
-    }
+  } catch {
     return false;
   }
 }
@@ -131,10 +113,8 @@ export async function getDismissed(): Promise<boolean> {
 export async function setDismissed(value: boolean): Promise<void> {
   try {
     await storageRepository.setString(KEYS.dismissed, value.toString());
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error setting dismissed:", error);
-    }
+  } catch {
+    // Silent error handling
   }
 }
 
@@ -174,9 +154,7 @@ export async function reset(eventType?: string): Promise<void> {
         ratingKeys.map((key) => storageRepository.removeItem(key))
       );
     }
-  } catch (error) {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-      console.error("[RatingStorage] Error resetting data:", error);
-    }
+  } catch {
+    // Silent error handling
   }
 }

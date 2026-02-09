@@ -17,6 +17,7 @@ import type { CustomSettingsSection } from "../types";
 import { SubscriptionSettingsItem } from "./SubscriptionSettingsItem";
 import { WalletSettingsItem } from "./WalletSettingsItem";
 import { GamificationSettingsItem } from "./GamificationSettingsItem";
+import { VideoTutorialSettingsItem } from "./VideoTutorialSettingsItem";
 
 interface SettingsContentProps {
   normalizedConfig: NormalizedConfig;
@@ -34,6 +35,7 @@ interface SettingsContentProps {
     subscription: boolean;
     wallet: boolean;
     gamification: boolean;
+    videoTutorial: boolean;
   };
   showUserProfile?: boolean;
   userProfile?: {
@@ -84,6 +86,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     features.subscription ||
     features.wallet ||
     features.gamification ||
+    features.videoTutorial ||
     customSections.length > 0,
     [
       features.appearance,
@@ -98,6 +101,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       features.subscription,
       features.wallet,
       features.gamification,
+      features.videoTutorial,
       customSections.length,
     ]
   );
@@ -123,6 +127,13 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <GamificationSettingsItem
           config={normalizedConfig.gamification.config || {}}
           gamificationConfig={gamificationConfig}
+          t={t}
+        />
+      )}
+
+      {features.videoTutorial && (
+        <VideoTutorialSettingsItem
+          config={normalizedConfig.videoTutorial.config || {}}
           t={t}
         />
       )}
@@ -155,6 +166,24 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     </View>
   );
 };
+
+export const MemoizedSettingsContent = React.memo(SettingsContent, (prevProps, nextProps) => {
+  return (
+    prevProps.normalizedConfig === nextProps.normalizedConfig &&
+    prevProps.features === nextProps.features &&
+    prevProps.showUserProfile === nextProps.showUserProfile &&
+    prevProps.userProfile === nextProps.userProfile &&
+    prevProps.showFooter === nextProps.showFooter &&
+    prevProps.footerText === nextProps.footerText &&
+    prevProps.appVersion === nextProps.appVersion &&
+    prevProps.customSections === nextProps.customSections &&
+    prevProps.emptyStateText === nextProps.emptyStateText &&
+    prevProps.devSettings === nextProps.devSettings &&
+    prevProps.gamificationConfig === nextProps.gamificationConfig
+  );
+});
+
+MemoizedSettingsContent.displayName = "MemoizedSettingsContent";
 
 const styles = StyleSheet.create({
   container: {

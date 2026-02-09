@@ -1,5 +1,5 @@
-// Providers
-export { LocalizationProvider } from './presentation/providers/LocalizationProvider';
+// Managers
+export { LocalizationManager } from './presentation/providers/LocalizationManager';
 
 // Hooks
 export { useLocalization } from './infrastructure/hooks/useLocalization';

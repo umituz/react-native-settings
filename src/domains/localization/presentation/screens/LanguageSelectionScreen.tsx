@@ -43,7 +43,7 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
     }
     await handleLanguageSelect(code, () => {
       if (__DEV__) {
-        console.log('[LanguageSelectionScreen] Navigating back using context navigation');
+        console.log('[LanguageSelectionScreen] Navigating back using standard navigation');
       }
       navigation.goBack();
     });

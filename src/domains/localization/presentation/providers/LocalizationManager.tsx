@@ -13,7 +13,7 @@ interface LocalizationProviderProps {
   defaultLanguage?: string;
 }
 
-export const LocalizationProvider: React.FC<LocalizationProviderProps> = ({
+export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
   children,
   translations,
   defaultLanguage = "en-US",

@@ -8,10 +8,9 @@ import {
   ScreenLayout,
   useAppNavigation,
 } from "@umituz/react-native-design-system";
+import { useSettingsScreen } from "./hooks/useSettingsScreen";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";
-import { normalizeSettingsConfig } from "./utils/normalizeConfig";
-import { useFeatureDetection } from "./hooks/useFeatureDetection";
 import type { SettingsConfig, CustomSettingsSection } from "./types";
 import type { DevSettingsProps } from "../../domains/dev";
 
@@ -55,63 +54,44 @@ export interface SettingsScreenProps {
   showHeader?: boolean;
 }
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({
-  children,
-  config = {},
-  showUserProfile,
-  userProfile,
-  showFooter = true,
-  footerText,
-  appVersion,
-  customSections = [],
-  showCloseButton = false,
-  showHeader = true,
-  onClose,
-  featureOptions,
-  devSettings,
-  gamificationConfig,
-}) => {
-  const navigation = useAppNavigation();
+export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
+  const {
+    children,
+    config = {},
+    showUserProfile,
+    userProfile,
+    showFooter = true,
+    footerText,
+    appVersion: providedVersion,
+    customSections = [],
+    showCloseButton = false,
+    showHeader = true,
+    onClose,
+    featureOptions,
+    devSettings,
+    gamificationConfig,
+  } = props;
 
-  // Memoize config normalization to prevent unnecessary recalculations
-  const normalizedConfig = React.useMemo(
-    () => normalizeSettingsConfig(config),
-    [config]
-  );
+  const {
+    normalizedConfig,
+    features,
+    shouldShowUserProfile,
+    appVersion,
+    handleClose,
+  } = useSettingsScreen({
+    config,
+    showUserProfile,
+    featureOptions,
+    appVersion: providedVersion,
+    onClose,
+  });
 
-  // Feature detection hook (must be called at top level)
-  const detectedFeatures = useFeatureDetection(normalizedConfig, navigation, featureOptions);
+  const header = showHeader ? (
+    <SettingsHeader showCloseButton={showCloseButton} onClose={handleClose} />
+  ) : undefined;
 
-  // Memoize features to prevent unnecessary recalculations
-  const features = React.useMemo(
-    () => detectedFeatures,
-    [detectedFeatures]
-  );
-
-  // Determine if user profile should be shown (explicit prop takes priority, then config)
-  const shouldShowUserProfile = showUserProfile ?? features.userProfile;
-
-  // Workaround: Use conditional rendering with type assertion
-  if (showHeader) {
-    return <ScreenLayout header={<SettingsHeader showCloseButton={showCloseButton} onClose={onClose} />}>
-        {children ?? (
-          <SettingsContent
-            normalizedConfig={normalizedConfig}
-            features={features}
-            showUserProfile={shouldShowUserProfile}
-            userProfile={userProfile}
-            showFooter={showFooter}
-            footerText={footerText}
-            appVersion={appVersion}
-            customSections={customSections}
-            devSettings={devSettings}
-            gamificationConfig={gamificationConfig}
-          />
-        )}
-    </ScreenLayout>;
-  }
-
-  return <ScreenLayout>
+  return (
+    <ScreenLayout header={header}>
       {children ?? (
         <SettingsContent
           normalizedConfig={normalizedConfig}
@@ -126,5 +106,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           gamificationConfig={gamificationConfig}
         />
       )}
-  </ScreenLayout>;
+    </ScreenLayout>
+  );
 };

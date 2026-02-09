@@ -7,7 +7,6 @@ import React, { useMemo, useCallback } from 'react';
 import {
   View,
   StyleSheet,
-  ScrollView,
 } from 'react-native';
 import { AboutHeader } from '../components/AboutHeader';
 import { AboutContent } from '../components/AboutContent';
@@ -98,15 +97,14 @@ export const AboutScreenContent: React.FC<AboutScreenContentProps> = ({
   }, [containerStyle, colors.backgroundPrimary, styles]);
 
   return (
-    <ScrollView
+    <View
       style={containerStyles}
       testID={testID}
-      contentContainerStyle={{ paddingBottom: 32 }}
     >
       {renderHeader()}
       {renderContent()}
       {renderFooter()}
-    </ScrollView>
+    </View>
   );
 };
 

@@ -34,34 +34,31 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
     const tokens = useAppDesignTokens();
     const styles = getStyles(tokens);
 
+    const header = (
+        <NavigationHeader
+            title={title || ""}
+            subtitle={subtitle}
+            rightElement={
+                <TouchableOpacity
+                    onPress={onClose}
+                    style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
+                >
+                    <AtomicIcon name="close" size="sm" color="onSurface" />
+                </TouchableOpacity>
+            }
+        />
+    );
+
     return (
         <BaseModal visible={visible} onClose={onClose}>
             <ScreenLayout
+                header={header}
                 scrollable={true}
                 edges={[]}
                 keyboardAvoiding={true}
                 contentContainerStyle={styles.content}
                 hideScrollIndicator={false}
             >
-                <View style={[styles.header, { borderBottomColor: tokens.colors.border }]}>
-                    <View style={styles.headerText}>
-                        <AtomicText type="headlineSmall" color="textPrimary">
-                            {title}
-                        </AtomicText>
-                        {subtitle && (
-                            <AtomicText type="bodySmall" color="textSecondary" style={{ marginTop: 4 }}>
-                                {subtitle}
-                            </AtomicText>
-                        )}
-                    </View>
-                    <TouchableOpacity
-                        onPress={onClose}
-                        style={[styles.closeButton, { backgroundColor: tokens.colors.surfaceVariant }]}
-                    >
-                        <AtomicIcon name="close" size="sm" color="onSurface" />
-                    </TouchableOpacity>
-                </View>
-
                 <FeedbackForm
                     onSubmit={onSubmit}
                     initialType={initialType}

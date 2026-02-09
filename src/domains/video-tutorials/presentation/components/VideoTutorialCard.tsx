@@ -44,18 +44,19 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
           style={[styles.thumbnail, horizontal && styles.horizontalThumbnail]}
           resizeMode="cover"
         />
-        <View style={[styles.durationBadge, { backgroundColor: "rgba(0,0,0,0.7)" }]}>
-          <AtomicText style={styles.durationText}>{formatDuration(tutorial.duration)}</AtomicText>
+        <View style={styles.durationBadge}>
+          <AtomicText type="labelSmall" style={styles.durationText}>{formatDuration(tutorial.duration)}</AtomicText>
         </View>
         {tutorial.featured && (
           <View style={[styles.featuredBadge, { backgroundColor: tokens.colors.primary }]}>
-            <AtomicText style={[styles.featuredText, { color: tokens.colors.onPrimary }]}>Featured</AtomicText>
+            <AtomicText type="labelSmall" style={[styles.featuredText, { color: tokens.colors.onPrimary }]}>Featured</AtomicText>
           </View>
         )}
       </View>
 
       <View style={styles.content}>
         <AtomicText
+          type={horizontal ? "titleMedium" : "titleLarge"}
           style={[styles.title, horizontal && styles.horizontalTitle]}
           numberOfLines={2}
         >
@@ -63,6 +64,8 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
         </AtomicText>
 
         <AtomicText
+          type={horizontal ? "bodySmall" : "bodyMedium"}
+          color="textSecondary"
           style={[styles.description, horizontal && styles.horizontalDescription]}
           numberOfLines={horizontal ? 2 : 3}
         >
@@ -70,10 +73,10 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
         </AtomicText>
 
         <View style={styles.metadata}>
-          <AtomicText style={styles.category}>
+          <AtomicText type="labelSmall" color="textTertiary" style={styles.category}>
             {tutorial.category.replace("-", " ")}
           </AtomicText>
-          <AtomicText style={styles.difficulty}>
+          <AtomicText type="labelSmall" color="textSecondary" style={styles.difficulty}>
             {tutorial.difficulty}
           </AtomicText>
         </View>
@@ -88,16 +91,16 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) => StyleSheet.
   imageContainer: { position: "relative" },
   thumbnail: { width: "100%", height: 180 },
   horizontalThumbnail: { height: 140 },
-  durationBadge: { position: "absolute", bottom: 8, right: 8, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
-  durationText: { color: tokens.colors.textInverse, fontSize: 12, fontWeight: "500" },
+  durationBadge: { position: "absolute", bottom: 8, right: 8, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, backgroundColor: "rgba(0,0,0,0.7)" },
+  durationText: { color: tokens.colors.textInverse },
   featuredBadge: { position: "absolute", top: 8, left: 8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
-  featuredText: { fontSize: 11, fontWeight: "600" },
+  featuredText: { fontWeight: "600" },
   content: { padding: 12 },
-  title: { fontSize: tokens.typography.titleMedium.fontSize, fontWeight: "600", marginBottom: 6, color: tokens.colors.textPrimary },
-  horizontalTitle: { fontSize: tokens.typography.bodyLarge.fontSize },
-  description: { fontSize: tokens.typography.bodyMedium.fontSize, lineHeight: 20, marginBottom: 8, color: tokens.colors.textSecondary },
-  horizontalDescription: { fontSize: tokens.typography.bodySmall.fontSize, lineHeight: 16, marginBottom: 6 },
+  title: { fontWeight: "600", marginBottom: 6, color: tokens.colors.textPrimary },
+  horizontalTitle: {},
+  description: { marginBottom: 8 },
+  horizontalDescription: { marginBottom: 6 },
   metadata: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  category: { fontSize: 12, textTransform: "capitalize", fontWeight: "500", color: tokens.colors.textTertiary },
-  difficulty: { fontSize: 12, textTransform: "capitalize", fontWeight: "500", color: tokens.colors.textSecondary },
+  category: { textTransform: "capitalize", fontWeight: "500" },
+  difficulty: { textTransform: "capitalize", fontWeight: "500" },
 });

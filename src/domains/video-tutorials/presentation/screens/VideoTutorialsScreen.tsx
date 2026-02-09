@@ -48,6 +48,7 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
     onTutorialPress,
   }) => {
     const tokens = useAppDesignTokens();
+    const navigation = useAppNavigation();
     const styles = getStyles(tokens);
 
     const handleTutorialPress = React.useCallback(
@@ -69,10 +70,6 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
       [handleTutorialPress]
     );
 
-    const navigation = useAppNavigation();
-
-    if (isLoading) return <AtomicSpinner size="lg" fullContainer />;
-
     const hasFeatured = featuredTutorials && featuredTutorials.length > 0;
     const hasTutorials = tutorials && tutorials.length > 0;
 
@@ -83,21 +80,29 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
       />
     );
 
+    if (isLoading) {
+      return (
+        <ScreenLayout header={header}>
+          <AtomicSpinner size="lg" fullContainer color="primary" />
+        </ScreenLayout>
+      );
+    }
+
     if (!hasTutorials && !hasFeatured) {
       return (
-        <ScreenLayout header={header} edges={["bottom"]}>
+        <ScreenLayout header={header}>
           <View style={styles.emptyContainer}>
-            <AtomicText color="secondary" type="bodyLarge">{emptyMessage}</AtomicText>
+            <AtomicText color="textSecondary" type="bodyLarge" style={{ textAlign: 'center' }}>{emptyMessage}</AtomicText>
           </View>
         </ScreenLayout>
       );
     }
 
-    return (
-      <ScreenLayout header={header} scrollable={false} edges={["bottom"]}>
+    const ListHeader = () => (
+      <>
         {hasFeatured && (
           <View style={styles.section}>
-            <AtomicText color="secondary" style={styles.sectionTitle}>{featuredTitle}</AtomicText>
+            <AtomicText color="textSecondary" type="titleLarge" style={styles.sectionTitle}>{featuredTitle}</AtomicText>
             <FlatList
               data={featuredTutorials}
               renderItem={renderFeaturedItem}
@@ -108,38 +113,47 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
             />
           </View>
         )}
-
         {hasTutorials && (
-          <View style={styles.section}>
-            <AtomicText color="secondary" style={styles.sectionTitle}>{allTutorialsTitle}</AtomicText>
-            <FlatList
-              data={tutorials}
-              renderItem={renderTutorialItem}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.verticalList}
-            />
-          </View>
+          <AtomicText color="textSecondary" type="titleLarge" style={styles.sectionTitle}>{allTutorialsTitle}</AtomicText>
         )}
+      </>
+    );
+
+    return (
+      <ScreenLayout header={header} scrollable={false}>
+        <FlatList
+          data={tutorials}
+          renderItem={renderTutorialItem}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.verticalList}
+          ListHeaderComponent={ListHeader}
+        />
       </ScreenLayout>
     );
   }
 );
 
 const getStyles = (tokens: DesignTokens) => StyleSheet.create({
-  title: {
-    fontSize: tokens.typography.headlineLarge.fontSize,
-    color: tokens.colors.textPrimary,
-    fontWeight: "600",
-    marginBottom: 24,
+  section: {
+    marginBottom: tokens.spacing.lg,
   },
-  section: { marginBottom: 24 },
   sectionTitle: {
-    fontSize: tokens.typography.titleLarge.fontSize,
-    fontWeight: "500",
-    marginBottom: 12,
+    fontWeight: "600",
+    marginBottom: tokens.spacing.sm,
+    paddingHorizontal: tokens.spacing.md,
   },
-  horizontalList: { paddingRight: 16 },
-  verticalList: { paddingBottom: 16 },
-  emptyContainer: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
+  horizontalList: {
+    paddingHorizontal: tokens.spacing.md,
+  },
+  verticalList: {
+    paddingBottom: tokens.spacing.xl,
+    paddingHorizontal: tokens.spacing.md,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: tokens.spacing.lg,
+  },
 });

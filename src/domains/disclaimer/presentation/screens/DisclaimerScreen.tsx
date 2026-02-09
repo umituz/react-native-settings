@@ -14,7 +14,13 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useAppDesignTokens, withAlpha, ScreenLayout } from '@umituz/react-native-design-system';
+import { 
+  useAppDesignTokens, 
+  withAlpha, 
+  ScreenLayout, 
+  useAppNavigation, 
+  NavigationHeader 
+} from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import type { IconName } from '@umituz/react-native-design-system';
 import { useLocalization } from '../../../localization';
@@ -46,12 +52,20 @@ export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({
   const displayTitle = title || t(titleKey);
   const displayContent = content || t(contentKey);
 
+  const navigation = useAppNavigation();
+
   return (
     <ScreenLayout
       scrollable={true}
       edges={['bottom']}
       contentContainerStyle={styles.scrollContent}
       hideScrollIndicator={false}
+      header={
+        <NavigationHeader
+          title={displayTitle}
+          onBackPress={() => navigation.goBack()}
+        />
+      }
     >
       {/* Icon Header */}
       <View style={styles.iconHeader}>

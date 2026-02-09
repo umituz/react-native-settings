@@ -6,7 +6,6 @@
 import React from "react";
 import {
   ScreenLayout,
-  useAppNavigation,
 } from "@umituz/react-native-design-system";
 import { useSettingsScreen } from "./hooks/useSettingsScreen";
 import { SettingsHeader } from "./components/SettingsHeader";

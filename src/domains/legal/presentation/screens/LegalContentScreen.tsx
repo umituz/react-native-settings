@@ -9,6 +9,7 @@ import { AtomicText, AtomicButton } from "@umituz/react-native-design-system";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 import { ContentValidationService } from "../../domain/services/ContentValidationService";
 import { StyleCacheService } from "../../domain/services/StyleCacheService";
+import { useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system";
 
 export interface LegalContentScreenProps {
   content?: string;
@@ -34,6 +35,7 @@ export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(
   createStyles,
 }) => {
   const tokens = useAppDesignTokens();
+  const navigation = useAppNavigation();
 
   const styles = React.useMemo(() => {
     const cacheKey = StyleCacheService.createTokenCacheKey(tokens);
@@ -101,17 +103,15 @@ export const LegalContentScreen: React.FC<LegalContentScreenProps> = React.memo(
       testID={testID}
       scrollable={true}
       hideScrollIndicator={false}
+      header={
+        <NavigationHeader
+          title={title}
+          onBackPress={() => navigation.goBack()}
+        />
+      }
       contentContainerStyle={styles.scrollContent}
     >
       <View style={styles.content}>
-        <AtomicText
-          type="headlineLarge"
-          color="primary"
-          style={styles.title}
-        >
-          {title}
-        </AtomicText>
-
         {contentSection}
       </View>
     </ScreenLayout>

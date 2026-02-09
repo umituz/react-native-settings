@@ -7,11 +7,21 @@
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { AtomicIcon, AtomicCard, AtomicText, ScreenLayout, BASE_TOKENS, AtomicSpinner, type IconColor } from '@umituz/react-native-design-system';
+import { 
+  AtomicIcon, 
+  AtomicCard, 
+  AtomicText, 
+  ScreenLayout, 
+  BASE_TOKENS, 
+  AtomicSpinner, 
+  type IconColor, 
+  NavigationHeader, 
+  useAppNavigation,
+  useAppDesignTokens,
+  type DesignTokens
+} from '@umituz/react-native-design-system';
 import { Switch } from 'react-native';
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { useNotificationSettings } from '../../infrastructure/hooks/useNotificationSettings';
-import type { DesignTokens } from '@umituz/react-native-design-system';
 
 export interface NotificationsScreenProps {
   translations: {
@@ -30,13 +40,21 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({
   iconColor = 'primary',
   testID = 'notifications-screen',
 }) => {
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const styles = useMemo(() => getStyles(tokens), [tokens]);
   const { notificationsEnabled, setNotificationsEnabled, isLoading } = useNotificationSettings();
 
+  const header = (
+    <NavigationHeader
+      title={translations.title}
+      onBackPress={() => navigation.goBack()}
+    />
+  );
+
   if (isLoading) {
     return (
-      <ScreenLayout testID={testID}>
+      <ScreenLayout testID={testID} header={header}>
         <AtomicSpinner
           size="lg"
           color="primary"
@@ -48,34 +66,43 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({
   }
 
   return (
-    <ScreenLayout testID={testID} hideScrollIndicator>
-      <AtomicCard style={styles.card}>
-        <View style={styles.settingItem}>
-          <View style={styles.iconContainer}>
-            <AtomicIcon name={iconName} size="lg" color={iconColor as IconColor} />
+    <ScreenLayout 
+      testID={testID} 
+      hideScrollIndicator 
+      header={header}
+    >
+      <View style={styles.content}>
+        <AtomicCard style={styles.card}>
+          <View style={styles.settingItem}>
+            <View style={styles.iconContainer}>
+              <AtomicIcon name={iconName} size="lg" color={iconColor as IconColor} />
+            </View>
+            <View style={styles.textContainer}>
+              <AtomicText type="bodyLarge" style={{ color: tokens.colors.textPrimary }}>
+                {translations.title}
+              </AtomicText>
+              <AtomicText type="bodySmall" style={{ color: tokens.colors.textSecondary, marginTop: BASE_TOKENS.spacing.xs }}>
+                {translations.description}
+              </AtomicText>
+            </View>
+            <Switch
+              value={notificationsEnabled}
+              onValueChange={setNotificationsEnabled}
+              trackColor={{ false: tokens.colors.surfaceSecondary, true: tokens.colors.primary }}
+              thumbColor={tokens.colors.surface}
+              testID="notifications-toggle"
+            />
           </View>
-          <View style={styles.textContainer}>
-            <AtomicText type="bodyLarge" style={{ color: tokens.colors.textPrimary }}>
-              {translations.title}
-            </AtomicText>
-            <AtomicText type="bodySmall" style={{ color: tokens.colors.textSecondary, marginTop: BASE_TOKENS.spacing.xs }}>
-              {translations.description}
-            </AtomicText>
-          </View>
-          <Switch
-            value={notificationsEnabled}
-            onValueChange={setNotificationsEnabled}
-            trackColor={{ false: tokens.colors.surfaceSecondary, true: tokens.colors.primary }}
-            thumbColor={tokens.colors.surface}
-            testID="notifications-toggle"
-          />
-        </View>
-      </AtomicCard>
+        </AtomicCard>
+      </View>
     </ScreenLayout>
   );
 };
 
 const getStyles = (tokens: DesignTokens) => StyleSheet.create({
+  content: {
+    padding: BASE_TOKENS.spacing.md,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

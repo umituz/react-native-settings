@@ -13,9 +13,9 @@ export const SettingsFooter: React.FC<SettingsFooterProps> = ({
   appVersion,
   versionLabel,
 }) => {
-  const displayText = versionText || (appVersion && versionLabel
-    ? `${versionLabel} ${appVersion}`
-    : appVersion);
+  const displayText = versionText || (appVersion 
+    ? (versionLabel ? `${versionLabel} ${appVersion}` : `Version ${appVersion}`)
+    : undefined);
 
   if (!displayText) return null;
 

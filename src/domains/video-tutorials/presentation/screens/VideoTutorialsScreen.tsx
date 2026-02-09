@@ -18,6 +18,8 @@ import {
   ScreenLayout,
   AtomicSpinner,
   AtomicText,
+  useAppNavigation,
+  NavigationHeader,
 } from "@umituz/react-native-design-system";
 import type { DesignTokens } from "@umituz/react-native-design-system";
 import type { VideoTutorial } from "../../types";
@@ -67,23 +69,32 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
       [handleTutorialPress]
     );
 
+    const navigation = useAppNavigation();
+
     if (isLoading) return <AtomicSpinner size="lg" fullContainer />;
 
     const hasFeatured = featuredTutorials && featuredTutorials.length > 0;
     const hasTutorials = tutorials && tutorials.length > 0;
 
+    const header = (
+      <NavigationHeader
+        title={title}
+        onBackPress={() => navigation.goBack()}
+      />
+    );
+
     if (!hasTutorials && !hasFeatured) {
       return (
-        <View style={styles.emptyContainer}>
-          <AtomicText color="secondary" type="bodyLarge">{emptyMessage}</AtomicText>
-        </View>
+        <ScreenLayout header={header} edges={["bottom"]}>
+          <View style={styles.emptyContainer}>
+            <AtomicText color="secondary" type="bodyLarge">{emptyMessage}</AtomicText>
+          </View>
+        </ScreenLayout>
       );
     }
 
     return (
-      <ScreenLayout scrollable={false} edges={["top", "bottom"]}>
-        <AtomicText style={styles.title}>{title}</AtomicText>
-
+      <ScreenLayout header={header} scrollable={false} edges={["bottom"]}>
         {hasFeatured && (
           <View style={styles.section}>
             <AtomicText color="secondary" style={styles.sectionTitle}>{featuredTitle}</AtomicText>

@@ -11,44 +11,20 @@ import { TimePresetSelector } from './TimePresetSelector';
 import { FrequencySelector } from './FrequencySelector';
 import { WeekdaySelector } from './WeekdaySelector';
 import { FormButton } from './FormButton';
+import { 
+  DEFAULT_HOUR, 
+  DEFAULT_MINUTE, 
+  DEFAULT_WEEKDAY, 
+  MAX_TITLE_LENGTH, 
+  MAX_BODY_LENGTH, 
+  VALID_HOUR_RANGE, 
+  VALID_MINUTE_RANGE, 
+  VALID_WEEKDAY_RANGE,
+  type ReminderFormProps,
+} from './ReminderForm.constants';
+import { createReminderFormStyles as createStyles } from './ReminderForm.styles';
 import { DEFAULT_TIME_PRESETS, FREQUENCY_OPTIONS } from '../../infrastructure/config/reminderPresets';
-import type { Reminder, ReminderFrequency, CreateReminderInput, TimePreset } from '../../../infrastructure/services/types';
-
-// Constants for magic numbers
-const DEFAULT_HOUR = 9;
-const DEFAULT_MINUTE = 0;
-const DEFAULT_WEEKDAY = 2; // Tuesday
-const MAX_TITLE_LENGTH = 100;
-const MAX_BODY_LENGTH = 500;
-
-// Validation constants
-const VALID_HOUR_RANGE = { min: 0, max: 23 } as const;
-const VALID_MINUTE_RANGE = { min: 0, max: 59 } as const;
-const VALID_WEEKDAY_RANGE = { min: 0, max: 6 } as const;
-
-export interface ReminderFormTranslations {
-  titleLabel: string;
-  titlePlaceholder: string;
-  bodyLabel: string;
-  bodyPlaceholder: string;
-  timeLabel: string;
-  frequencyLabel: string;
-  weekdayLabel: string;
-  saveButton: string;
-  cancelButton: string;
-  customTimeLabel: string;
-  getPresetLabel: (key: string) => string;
-  getFrequencyLabel: (key: string) => string;
-  getWeekdayLabel: (key: string) => string;
-}
-
-export interface ReminderFormProps {
-  initialData?: Reminder;
-  translations: ReminderFormTranslations;
-  onSave: (data: CreateReminderInput) => void;
-  onCancel: () => void;
-  timePresets?: TimePreset[];
-}
+import type { ReminderFrequency, TimePreset } from '../../../infrastructure/services/types';
 
 export const ReminderForm: React.FC<ReminderFormProps> = ({
   initialData,
@@ -207,23 +183,3 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
     </ScrollView>
   );
 };
-
-const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 16,
-      backgroundColor: tokens.colors.surface,
-    },
-    section: { marginBottom: 20 },
-    label: { color: tokens.colors.textPrimary, marginBottom: 8 },
-    input: {
-      backgroundColor: tokens.colors.surfaceSecondary,
-      borderRadius: 8,
-      padding: 12,
-      fontSize: 16,
-      color: tokens.colors.textPrimary,
-    },
-    multilineInput: { minHeight: 80, textAlignVertical: 'top' },
-    buttonRow: { flexDirection: 'row', gap: 12, marginTop: 24 },
-  });

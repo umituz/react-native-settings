@@ -1,11 +1,6 @@
-/**
- * Settings Header Component
- * Handles close button functionality
- */
-
 import React from "react";
-import { View, Pressable, StyleSheet } from "react-native";
-import { useAppDesignTokens, AtomicIcon, AtomicText, useAppNavigation } from "@umituz/react-native-design-system";
+import { Pressable } from "react-native";
+import { useAppDesignTokens, AtomicIcon, useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system";
 import { useLocalization } from "../../../domains/localization";
 
 interface SettingsHeaderProps {
@@ -29,41 +24,32 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
     }
   };
 
+  const rightElement = showCloseButton ? (
+    <Pressable
+      onPress={handleClose}
+      style={({ pressed }) => [
+        {
+          width: 44,
+          height: 44,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: pressed ? tokens.colors.surfaceVariant : tokens.colors.surface,
+          borderRadius: tokens.borders.radius.full,
+        },
+      ]}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
+      <AtomicIcon name="close-outline" size="lg" color="textPrimary" />
+    </Pressable>
+  ) : undefined;
+
   return (
-    <View style={[styles.container, { padding: tokens.spacing.lg }]}>
-      <AtomicText type="headlineLarge">
-        {t('settings.title')}
-      </AtomicText>
-      
-      {showCloseButton && (
-        <Pressable
-          onPress={handleClose}
-          style={({ pressed }) => [
-            styles.closeButton,
-            {
-              backgroundColor: pressed ? tokens.colors.surfaceVariant : tokens.colors.surface,
-              borderRadius: tokens.borders.radius.full,
-            },
-          ]}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <AtomicIcon name="close-outline" size="lg" color="textPrimary" />
-        </Pressable>
-      )}
-    </View>
+    <NavigationHeader
+      title={t('settings.title')}
+      rightElement={rightElement}
+      // If NOT showing close button, we might want a back button? 
+      // But usually Settings is a root screen in a modal or stack.
+      onBackPress={!showCloseButton ? handleClose : undefined}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  closeButton: {
-    width: 44,
-    height: 44,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

@@ -6,10 +6,9 @@
 
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { useAppDesignTokens, AtomicText } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, ScreenLayout, NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system";
 import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";
-import { Header } from "./Header";
 import { StatsGrid } from "./StatsGrid";
 import { AchievementsList } from "./AchievementsList";
 import { styles } from "./styles";
@@ -39,6 +38,7 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
   subtextColor,
   headerComponent,
 }) => {
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
 
   // Use tokens for fallbacks
@@ -48,75 +48,72 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
+  const header = (
+    <NavigationHeader
+      title={title}
+      onBackPress={() => navigation.goBack()}
+    />
+  );
+
   return (
-    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
+    <ScreenLayout
+      header={header}
+      contentContainerStyle={styles.scrollContent}
+      hideScrollIndicator={false}
+    >
       {headerComponent}
 
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header */}
-        <Header
-          title={title}
-          headerStyle={headerStyle}
-          titleStyle={titleStyle}
+      {/* Level Progress */}
+      <View style={styles.section}>
+        <LevelProgress
+          {...levelProps}
+          primaryColor={finalAccentColor}
+          backgroundColor={finalCardBackgroundColor}
           textColor={finalTextColor}
+          subtextColor={finalSubtextColor}
         />
+      </View>
 
-        {/* Level Progress */}
+      {/* Streak (if provided) */}
+      {streakProps && (
         <View style={styles.section}>
-          <LevelProgress
-            {...levelProps}
+          <AtomicText
+            style={[styles.sectionTitle, { color: finalTextColor }, sectionTitleStyle]}
+          >
+            {streakTitle}
+          </AtomicText>
+          <StreakDisplay
+            {...streakProps}
             primaryColor={finalAccentColor}
             backgroundColor={finalCardBackgroundColor}
             textColor={finalTextColor}
             subtextColor={finalSubtextColor}
           />
         </View>
+      )}
 
-        {/* Streak (if provided) */}
-        {streakProps && (
-          <View style={styles.section}>
-            <AtomicText
-              style={[styles.sectionTitle, { color: finalTextColor }, sectionTitleStyle]}
-            >
-              {streakTitle}
-            </AtomicText>
-            <StreakDisplay
-              {...streakProps}
-              primaryColor={finalAccentColor}
-              backgroundColor={finalCardBackgroundColor}
-              textColor={finalTextColor}
-              subtextColor={finalSubtextColor}
-            />
-          </View>
-        )}
+      {/* Stats Grid */}
+      <StatsGrid
+        statsTitle={statsTitle}
+        stats={stats}
+        accentColor={finalAccentColor}
+        cardBackgroundColor={finalCardBackgroundColor}
+        textColor={finalTextColor}
+        subtextColor={finalSubtextColor}
+        sectionTitleStyle={sectionTitleStyle}
+      />
 
-        {/* Stats Grid */}
-        <StatsGrid
-          statsTitle={statsTitle}
-          stats={stats}
-          accentColor={finalAccentColor}
-          cardBackgroundColor={finalCardBackgroundColor}
-          textColor={finalTextColor}
-          subtextColor={finalSubtextColor}
-          sectionTitleStyle={sectionTitleStyle}
-        />
-
-        {/* Achievements */}
-        <AchievementsList
-          achievementsTitle={achievementsTitle}
-          achievements={achievements}
-          emptyAchievementsText={emptyAchievementsText}
-          accentColor={finalAccentColor}
-          cardBackgroundColor={finalCardBackgroundColor}
-          textColor={finalTextColor}
-          subtextColor={finalSubtextColor}
-          sectionTitleStyle={sectionTitleStyle}
-        />
-      </ScrollView>
-    </View>
+      {/* Achievements */}
+      <AchievementsList
+        achievementsTitle={achievementsTitle}
+        achievements={achievements}
+        emptyAchievementsText={emptyAchievementsText}
+        accentColor={finalAccentColor}
+        cardBackgroundColor={finalCardBackgroundColor}
+        textColor={finalTextColor}
+        subtextColor={finalSubtextColor}
+        sectionTitleStyle={sectionTitleStyle}
+      />
+    </ScreenLayout>
   );
 };

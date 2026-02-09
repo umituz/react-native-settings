@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { View, ScrollView, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
-import { useAppDesignTokens, AtomicText, ScreenLayout, getContentMaxWidth } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, AtomicText, ScreenLayout, getContentMaxWidth, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system';
 import { FAQCategory } from '../../domain/entities/FAQEntity';
 import { useFAQSearch } from '../hooks/useFAQSearch';
 import { useFAQExpansion } from '../hooks/useFAQExpansion';
@@ -45,6 +45,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
   renderHeader,
   styles: customStyles,
 }) => {
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const { width: windowWidth } = useWindowDimensions();
   const contentMaxWidth = useMemo(() => getContentMaxWidth(windowWidth), [windowWidth]);
@@ -67,6 +68,21 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     [tokens]
   );
 
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const header = renderHeader ? renderHeader({ onBack: handleBack }) : (
+    <NavigationHeader
+      title={headerTitle}
+      onBackPress={handleBack}
+    />
+  );
+
   const renderContent = () => {
     if (searchQuery && !hasResults) {
       return (
@@ -81,13 +97,6 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     return (
       <View style={{ flex: 1 }}>
         <View style={[styles.header, customStyles?.header]}>
-          <AtomicText
-            type="headlineMedium"
-            color="textPrimary"
-            style={{ marginBottom: tokens.spacing.md, fontWeight: '700' }}
-          >
-            {headerTitle}
-          </AtomicText>
           <FAQSearchBar
             value={searchQuery}
             onChangeText={setSearchQuery}
@@ -116,23 +125,16 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     );
   };
 
-  if (renderHeader && onBack) {
-    return (
-      <View style={{ flex: 1, backgroundColor: tokens.colors.backgroundPrimary }}>
-        <View style={[styles.container, customStyles?.container]}>
-          <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
-            {renderHeader({ onBack })}
-          </View>
+  return (
+    <ScreenLayout 
+      edges={['bottom']} 
+      scrollable={false}
+      header={header}
+    >
+      <View style={[styles.container, customStyles?.container]}>
+        <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth, flex: 1 }}>
           {renderContent()}
         </View>
-      </View>
-    );
-  }
-
-  return (
-    <ScreenLayout edges={['bottom']} scrollable={false}>
-      <View style={[styles.container, customStyles?.container]}>
-        {renderContent()}
       </View>
     </ScreenLayout>
   );

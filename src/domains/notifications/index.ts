@@ -110,7 +110,7 @@ export { ReminderItem } from './reminders/presentation/components/ReminderItem';
 export type { ReminderItemProps, ReminderItemTranslations } from './reminders/presentation/components/ReminderItem';
 
 export { ReminderForm } from './reminders/presentation/components/ReminderForm';
-export type { ReminderFormProps, ReminderFormTranslations } from './reminders/presentation/components/ReminderForm';
+export type { ReminderFormProps, ReminderFormTranslations } from './reminders/presentation/components/ReminderForm.constants';
 
 export { FormButton } from './reminders/presentation/components/FormButton';
 export type { FormButtonProps } from './reminders/presentation/components/FormButton';

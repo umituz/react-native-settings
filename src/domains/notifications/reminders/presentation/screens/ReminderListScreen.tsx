@@ -5,8 +5,15 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { AtomicText, AtomicIcon, AtomicSpinner } from '@umituz/react-native-design-system';
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
+import { 
+  AtomicText, 
+  AtomicIcon, 
+  AtomicSpinner, 
+  ScreenLayout, 
+  NavigationHeader, 
+  useAppNavigation,
+  useAppDesignTokens
+} from '@umituz/react-native-design-system';
 import { ReminderItem } from '../components/ReminderItem';
 import { useReminders, useRemindersLoading } from '../../infrastructure/storage/RemindersStore';
 import { useReminderActions } from '../../infrastructure/hooks/useReminderActions';
@@ -25,6 +32,7 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
   onEditPress,
   maxReminders = 20,
 }) => {
+  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const styles = useMemo(() => createStyles(tokens), [tokens]);
 
@@ -69,32 +77,39 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
 
   const keyExtractor = useCallback((item: Reminder) => item.id, []);
 
+  const header = (
+    <NavigationHeader
+      title={translations.screenTitle}
+      onBackPress={() => navigation.goBack()}
+    />
+  );
+
   if (isLoading) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: tokens.colors.surface }]}>
+      <ScreenLayout header={header}>
         <AtomicSpinner size="lg" color="primary" fullContainer />
-      </View>
+      </ScreenLayout>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScreenLayout header={header}>
       <FlatList
         data={reminders}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         ListEmptyComponent={renderEmpty}
-        contentContainerStyle={[styles.listContent, { backgroundColor: tokens.colors.surface }]}
+        contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
 
       {canAddMore && (
         <TouchableOpacity style={styles.fab} onPress={onAddPress} activeOpacity={0.8}>
-          <AtomicIcon name="add" size="md" color="onSurface" />
+          <AtomicIcon name="add" size="md" color="onPrimary" />
           <AtomicText type="bodyMedium" style={styles.fabText}>{translations.addButtonLabel}</AtomicText>
         </TouchableOpacity>
       )}
-    </View>
+    </ScreenLayout>
   );
 };
 
@@ -102,7 +117,7 @@ const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
-    emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 32 },
+    emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 32, paddingTop: 100 },
     emptyIconContainer: {
       width: 80,
       height: 80,
@@ -127,5 +142,5 @@ const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       justifyContent: 'center',
       gap: 8,
     },
-    fabText: { color: tokens.colors.surface, fontWeight: '600' },
+    fabText: { color: tokens.colors.onPrimary, fontWeight: '600' },
   });

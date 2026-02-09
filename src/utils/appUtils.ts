@@ -17,6 +17,13 @@ export function getAppVersion(): string {
 }
 
 /**
+ * Gets the current build number from Expo constants
+ */
+export function getBuildNumber(): string | undefined {
+  return Constants.expoConfig?.ios?.buildNumber ?? Constants.expoConfig?.android?.versionCode?.toString();
+}
+
+/**
  * Validates if the current platform is supported
  */
 export function validatePlatform(): "ios" | "android" {

@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { ScreenLayout } from "@umituz/react-native-design-system";
+import { ScreenLayout, NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system";
 import { LegalScreenHeader } from "../components/LegalScreenHeader";
 import { LegalDocumentsList } from "../components/LegalDocumentsList";
 
@@ -45,10 +45,21 @@ export const LegalScreen: React.FC<LegalScreenProps> = React.memo((props) => {
     testID = "legal-screen",
   } = props;
 
+  const navigation = useAppNavigation();
+
   return (
-    <ScreenLayout testID={testID} hideScrollIndicator>
+    <ScreenLayout
+      testID={testID}
+      hideScrollIndicator
+      header={
+        <NavigationHeader
+          title={title || ""}
+          onBackPress={() => navigation.goBack()}
+        />
+      }
+    >
       <LegalScreenHeader title={title} description={description} />
-      
+
       <LegalDocumentsList
         documentsHeader={documentsHeader}
         privacyTitle={privacyTitle}

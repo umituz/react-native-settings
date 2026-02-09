@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import type { useAppDesignTokens } from "@umituz/react-native-design-system";
 
-export const getFeedbackFormStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
+export const getFeedbackFormStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
         width: "100%",

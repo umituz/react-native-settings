@@ -36,7 +36,7 @@ export function createStackScreen(
 /**
  * Create a screen with props
  */
-export function createScreenWithProps<P extends Record<string, unknown>>(
+export function createScreenWithProps<P>(
   name: string,
   component: React.ComponentType<P>,
   props: P,

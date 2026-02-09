@@ -5,8 +5,6 @@
  * These functions follow best practices for shallow comparison in React components.
  */
 
-import type { ComponentType } from "react";
-
 /**
  * Standard comparison for components with config and translation props
  * @param prevProps Previous props

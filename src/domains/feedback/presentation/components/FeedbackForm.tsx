@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import { View, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { useAppDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 

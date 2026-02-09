@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import type { StackScreen } from "@umituz/react-native-design-system";
 import { LanguageSelectionScreen } from "../../../domains/localization";
 import { NotificationSettingsScreen } from "../../../domains/notifications";

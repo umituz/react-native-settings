@@ -1,4 +1,4 @@
-import type { Reminder, ReminderFrequency, CreateReminderInput, TimePreset } from '../../../infrastructure/services/types';
+import type { Reminder, CreateReminderInput, TimePreset } from '../../../infrastructure/services/types';
 
 export const DEFAULT_HOUR = 9;
 export const DEFAULT_MINUTE = 0;

@@ -122,7 +122,7 @@ export const useAboutInfo = (
           setAppInfo(defaultAppInfo);
           isInitializedRef.current = true;
         }
-      }).catch((error) => {
+      }).catch((_error) => {
       });
     }
   }, [initialConfig, autoInit]);

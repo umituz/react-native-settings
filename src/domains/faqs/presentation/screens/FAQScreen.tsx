@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { View, ScrollView, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
-import { useAppDesignTokens, AtomicText, ScreenLayout, getContentMaxWidth, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, ScreenLayout, getContentMaxWidth, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system';
 import { FAQCategory } from '../../domain/entities/FAQEntity';
 import { useFAQSearch } from '../hooks/useFAQSearch';
 import { useFAQExpansion } from '../hooks/useFAQExpansion';

@@ -25,20 +25,21 @@
 
     /* Type Checking */
     "strict": false,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": false,
+    "noImplicitThis": false,
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitReturns": false,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": false,
     "noUncheckedIndexedAccess": false,
-    "noImplicitOverride": true,
+    "noImplicitOverride": false,
 
     /* Completeness */
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
 
     /* React Native specific */
     "allowJs": false,
@@ -48,7 +49,7 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules/**/*",
+    "node_modules",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",

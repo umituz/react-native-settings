@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { View, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, ScrollView } from 'react-native';
 import { AtomicText } from '@umituz/react-native-design-system';
 import { useAppDesignTokens } from '@umituz/react-native-design-system';
 import { TimePresetSelector } from './TimePresetSelector';

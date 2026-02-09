@@ -6,17 +6,17 @@ export const isDev = () => {
   }
 };
 
-export const devLog = (message: string, ...args: unknown[]) => {
+export const devLog = (_message: string, ..._args: unknown[]) => {
   if (isDev()) {
   }
 };
 
-export const devError = (message: string, ...args: unknown[]) => {
+export const devError = (_message: string, ..._args: unknown[]) => {
   if (isDev()) {
   }
 };
 
-export const devWarn = (message: string, ...args: unknown[]) => {
+export const devWarn = (_message: string, ..._args: unknown[]) => {
   if (isDev()) {
   }
 };

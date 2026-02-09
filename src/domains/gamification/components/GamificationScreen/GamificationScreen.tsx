@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { useAppDesignTokens, AtomicText, ScreenLayout, NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system";
 import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";
@@ -27,12 +27,8 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
   achievements,
   streakProps,
   emptyAchievementsText,
-  containerStyle,
-  headerStyle,
-  titleStyle,
   sectionTitleStyle,
   accentColor,
-  backgroundColor,
   cardBackgroundColor,
   textColor,
   subtextColor,
@@ -43,7 +39,6 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
 
   // Use tokens for fallbacks
   const finalAccentColor = accentColor || tokens.colors.primary;
-  const finalBackgroundColor = backgroundColor || tokens.colors.backgroundPrimary;
   const finalCardBackgroundColor = cardBackgroundColor || tokens.colors.surface;
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;

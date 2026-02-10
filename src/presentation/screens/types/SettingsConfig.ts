@@ -64,6 +64,11 @@ export interface SettingsTranslations {
     guest?: string;
     anonymousName?: string;
     signIn?: string;
+    signInDescription?: string;
+    anonymousBenefits?: {
+      title?: string;
+      items?: string[];
+    };
   };
   sections?: {
     app?: string;
@@ -73,8 +78,20 @@ export interface SettingsTranslations {
     subscription?: string;
   };
   features?: {
-    appearance?: { title?: string; description?: string };
-    language?: { title?: string };
+    appearance?: { 
+      title?: string; 
+      description?: string;
+      themeModes?: {
+        light?: string;
+        dark?: string;
+        auto?: string;
+      };
+    };
+    language?: { 
+      title?: string;
+      description?: string;
+      searchPlaceholder?: string;
+    };
     notifications?: { 
       title?: string; 
       description?: string;
@@ -96,7 +113,17 @@ export interface SettingsTranslations {
         enabledLabel?: string;
       };
     };
-    about?: { title?: string; description?: string };
+    about?: { 
+      title?: string; 
+      description?: string;
+      contact?: string;
+      more?: string;
+      developer?: string;
+      email?: string;
+      website?: string;
+      moreApps?: string;
+      versionPrefix?: string;
+    };
     legal?: { 
       title?: string; 
       description?: string;
@@ -120,6 +147,10 @@ export interface SettingsTranslations {
     };
     languageSelection?: {
       searchPlaceholder?: string;
+    };
+    subscription?: {
+      title?: string;
+      description?: string;
     };
     videoTutorial?: {
       title?: string;
@@ -147,6 +178,8 @@ export interface SettingsTranslations {
   errors?: {
     common?: string;
     unknown?: string;
+    unknownError?: string;
+    appStoreUrlMissing?: string;
     appStoreUrlNotConfigured?: string;
     unableToOpenAppStore?: string;
     failedToOpenAppStore?: string;

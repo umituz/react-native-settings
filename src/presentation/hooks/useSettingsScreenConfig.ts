@@ -90,10 +90,23 @@ export const useSettingsScreenConfig = (
     },
   });
 
-  const settingsConfig = useMemo(() => ({
-    ...baseSettingsConfig,
-    translations,
-  }), [baseSettingsConfig, translations]);
+  const settingsConfig = useMemo(() => {
+    const config = {
+      ...baseSettingsConfig,
+      translations,
+    };
+
+    // Add subscription title and description from translations if available
+    if (config.subscription && typeof config.subscription === 'object' && translations?.features?.subscription) {
+      config.subscription = {
+        ...config.subscription,
+        title: translations.features.subscription.title,
+        description: translations.features.subscription.description,
+      };
+    }
+
+    return config;
+  }, [baseSettingsConfig, translations]);
 
   const userProfile = useMemo(() => createUserProfileDisplay({
     profileData: userProfileData,

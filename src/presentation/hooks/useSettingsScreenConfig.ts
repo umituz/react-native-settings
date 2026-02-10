@@ -114,23 +114,34 @@ export const useSettingsScreenConfig = (
       };
     }
 
+    // Add subscription title and description from translations if available
+    if (config.subscription && typeof config.subscription === 'object') {
+      config.subscription = {
+        ...config.subscription,
+        title: translations?.features?.subscription?.title || config.subscription.title || "Subscription",
+        description: translations?.features?.subscription?.description || config.subscription.description,
+      };
+    }
+
     // Add gamification title and description
-    if ((config.gamification === true || (config.gamification && typeof config.gamification === 'object')) && translations?.features?.gamification) {
-      const existingConfig = typeof config.gamification === 'object' ? config.gamification : { enabled: true, storageKey: '' };
+    if (config.gamification) {
+      const existingConfig = typeof config.gamification === 'object' ? config.gamification : { enabled: true };
       config.gamification = {
         ...existingConfig,
-        title: translations.features.gamification.title,
-        description: translations.features.gamification.description,
+        enabled: true,
+        title: translations?.features?.gamification?.title || (existingConfig as any).title || "Your Progress",
+        description: translations?.features?.gamification?.description || (existingConfig as any).description,
       };
     }
 
     // Add videoTutorial title and description
-    if ((config.videoTutorial === true || (config.videoTutorial && typeof config.videoTutorial === 'object')) && translations?.features?.videoTutorial) {
+    if (config.videoTutorial) {
       const existingConfig = typeof config.videoTutorial === 'object' ? config.videoTutorial : { enabled: true };
       config.videoTutorial = {
         ...existingConfig,
-        title: translations.features.videoTutorial.title,
-        description: translations.features.videoTutorial.description,
+        enabled: true,
+        title: translations?.features?.videoTutorial?.title || (existingConfig as any).title || "Video Tutorials",
+        description: translations?.features?.videoTutorial?.description || (existingConfig as any).description,
       };
     }
 

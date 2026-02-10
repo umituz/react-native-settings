@@ -5,12 +5,12 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha } from "@umituz/react-native-design-system";
 
 export interface StatsCardProps {
   value: number;
   label: string;
-  icon: React.ReactNode;
+  icon: React.ReactNode | string;
   suffix?: string;
   containerStyle?: ViewStyle;
   valueStyle?: TextStyle;
@@ -41,10 +41,14 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
+  const renderedIcon = typeof icon === 'string' ? (
+    <AtomicIcon name={icon} size="sm" customColor={finalAccentColor} />
+  ) : icon;
+
   return (
     <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
       <View style={[styles.iconContainer, { backgroundColor: withAlpha(finalAccentColor, 0.15) }]}>
-        {icon}
+        {renderedIcon}
       </View>
       <View style={styles.valueRow}>
         <AtomicText style={[styles.value, { color: finalTextColor }, valueStyle]}>

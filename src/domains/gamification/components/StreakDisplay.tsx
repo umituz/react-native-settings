@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha } from "@umituz/react-native-design-system";
 
 export interface StreakDisplayProps {
   current: number;
@@ -13,7 +13,7 @@ export interface StreakDisplayProps {
   currentLabel: string;
   bestLabel: string;
   daysLabel: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode | string;
   containerStyle?: ViewStyle;
   numberStyle?: TextStyle;
   labelStyle?: TextStyle;
@@ -45,10 +45,14 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
+  const renderedIcon = typeof icon === 'string' ? (
+    <AtomicIcon name={icon} size="md" customColor={finalPrimaryColor} />
+  ) : icon;
+
   return (
     <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
       <View style={styles.mainStreak}>
-        {icon && <View style={styles.iconContainer}>{icon}</View>}
+        {renderedIcon && <View style={styles.iconContainer}>{renderedIcon}</View>}
         <View style={styles.streakInfo}>
           <AtomicText style={[styles.number, { color: finalPrimaryColor }, numberStyle]}>
             {current}

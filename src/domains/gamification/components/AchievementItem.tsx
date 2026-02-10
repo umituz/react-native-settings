@@ -5,12 +5,12 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha } from "@umituz/react-native-design-system";
 
 export interface AchievementItemProps {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon: React.ReactNode | string;
   isUnlocked: boolean;
   progress: number;
   threshold: number;
@@ -51,6 +51,10 @@ export const AchievementItem: React.FC<AchievementItemProps> = ({
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
   const finalLockedOpacity = lockedOpacity !== undefined ? lockedOpacity : 0.5;
 
+  const renderedIcon = typeof icon === 'string' ? (
+    <AtomicIcon name={icon} size="md" customColor={finalAccentColor} />
+  ) : icon;
+
   const progressPercent = Math.min((progress / threshold) * 100, 100);
 
   return (
@@ -64,7 +68,7 @@ export const AchievementItem: React.FC<AchievementItemProps> = ({
       <View
         style={[styles.iconContainer, { backgroundColor: withAlpha(finalAccentColor, 0.2) }]}
       >
-        {icon}
+        {renderedIcon}
       </View>
 
       <View style={styles.content}>

@@ -3,7 +3,7 @@
  * Zustand store with persist middleware
  */
 
-import { createStore } from "@umituz/react-native-design-system";
+import { createStore, storageService } from "@umituz/react-native-design-system";
 import type {
   GamificationState,
   GamificationActions,
@@ -36,6 +36,7 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
   name: "gamification-storage",
   initialState: DEFAULT_STATE,
   persist: true,
+  storage: storageService,
   version: 1,
   partialize: (state) => ({
     points: state.points,

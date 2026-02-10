@@ -46,6 +46,8 @@ export interface StreakState {
 export interface GamificationTranslations {
   title: string;
   statsTitle: string;
+  pointsLabel: string;
+  totalCompletedLabel: string;
   achievementsTitle: string;
   streakTitle: string;
   bestStreak: string;

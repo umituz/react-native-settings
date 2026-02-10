@@ -19,6 +19,7 @@ export const GamificationScreenWithConfig: React.FC<GamificationConfigProps> = (
 
   const {
     points,
+    totalTasksCompleted,
     level,
     streak,
     achievements,
@@ -59,9 +60,14 @@ export const GamificationScreenWithConfig: React.FC<GamificationConfigProps> = (
     },
     stats: [
       {
-        label: config.translations.statsTitle,
+        label: config.translations.pointsLabel,
         value: points,
         icon: "star",
+      },
+      {
+        label: config.translations.totalCompletedLabel,
+        value: totalTasksCompleted,
+        icon: "checkmark-circle",
       },
     ],
     achievements: achievementItems,

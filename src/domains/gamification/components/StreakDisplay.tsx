@@ -47,12 +47,12 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
 
   const renderedIcon = typeof icon === 'string' ? (
     <AtomicIcon name={icon} size="md" customColor={finalPrimaryColor} />
-  ) : icon;
+  ) : icon || <AtomicIcon name="flame" size="md" customColor={finalPrimaryColor} />;
 
   return (
     <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
       <View style={styles.mainStreak}>
-        {renderedIcon && <View style={styles.iconContainer}>{renderedIcon}</View>}
+        <View style={styles.iconContainer}>{renderedIcon}</View>
         <View style={styles.streakInfo}>
           <AtomicText style={[styles.number, { color: finalPrimaryColor }, numberStyle]}>
             {current}

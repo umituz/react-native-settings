@@ -12,6 +12,7 @@ import type { FAQCategory } from "../../domains/faqs";
  */
 export interface AppInfo {
   name: string;
+  appName?: string;
   version: string;
   description?: string;
   developer?: string;

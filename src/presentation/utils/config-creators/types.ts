@@ -5,7 +5,7 @@
 /**
  * Translation function type
  */
-export type TranslationFunction = (key: string) => string;
+export type TranslationFunction = (key: string, options?: any) => string;
 
 /**
  * Feedback form data interface

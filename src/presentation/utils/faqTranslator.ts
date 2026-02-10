@@ -17,14 +17,16 @@ export const translateFAQData = (
 ): FAQData | undefined => {
   if (!faqData) return undefined;
 
+  const interpolationValues = { appName: _appInfo.appName || _appInfo.name };
+  
   return {
     categories: faqData.categories.map((category) => ({
       id: category.id,
-      title: t(category.title),
+      title: t(category.title, interpolationValues),
       items: category.items.map((item) => ({
         id: item.id,
-        question: t(item.question),
-        answer: t(item.answer),
+        question: t(item.question, interpolationValues),
+        answer: t(item.answer, interpolationValues),
       })),
     })),
   };

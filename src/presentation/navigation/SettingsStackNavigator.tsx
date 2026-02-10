@@ -6,6 +6,7 @@
  */
 
 import React from "react";
+import { View } from "react-native";
 import {
   StackNavigator,
   type StackNavigatorConfig,
@@ -57,5 +58,9 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
     screens,
   };
 
-  return <StackNavigator<SettingsStackParamList> config={navigatorConfig} />;
+  return (
+    <View style={{ flex: 1 }}>
+      <StackNavigator<SettingsStackParamList> config={navigatorConfig} />
+    </View>
+  );
 };

@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import { useLocalization } from "../../../domains/localization";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
 import { DevSettingsSection, DevSettingsProps } from "../../../domains/dev";
@@ -108,7 +107,12 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
   return (
     <View style={styles.container}>
-      {showUserProfile && <ProfileSectionLoader userProfile={userProfile} />}
+      {showUserProfile && (
+        <ProfileSectionLoader 
+          userProfile={userProfile} 
+          translations={translations?.profile}
+        />
+      )}
 
       <CustomSettingsList customSections={customSections} />
 
@@ -127,7 +131,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
       {(features.gamification || features.videoTutorial) && (
-        <SettingsSection title={translations?.sections?.progress || "Progress"}>
+        <SettingsSection title={translations?.sections?.progress}>
           {features.gamification && (
             <GamificationSettingsItem
               config={normalizedConfig.gamification.config || {}}
@@ -155,7 +159,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {!hasAnyFeatures && (
         <View style={styles.emptyContainer}>
-          <SettingsSection title={emptyStateText || translations?.noOptionsAvailable || "No options available"}>
+          <SettingsSection title={emptyStateText || translations?.noOptionsAvailable}>
             <View />
           </SettingsSection>
         </View>
@@ -167,7 +171,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <SettingsFooter
           versionText={footerText}
           appVersion={appVersion}
-          versionLabel={translations?.footer?.version || "Version"}
+          versionLabel={translations?.footer?.version}
         />
       )}
     </View>

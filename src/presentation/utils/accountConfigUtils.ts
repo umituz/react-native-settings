@@ -15,7 +15,6 @@ export interface CreateAccountConfigParams {
   onSignIn: () => void;
   onLogout: () => Promise<void>;
   onDeleteAccount: () => Promise<void>;
-  t: (key: string) => string;
 }
 
 /**
@@ -31,37 +30,30 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
     onSignIn,
     onLogout,
     onDeleteAccount,
-    t,
   } = params;
 
   const anonymous = isAnonymous ?? true;
 
   return {
     profile: {
-      displayName: displayName || t("settings.profile.anonymousName"),
+      displayName: displayName || "",
       userId: userId ?? undefined,
       isAnonymous: anonymous,
       avatarUrl: avatarUrl ?? photoURL ?? undefined,
-      benefits: anonymous ? [
-        t("settings.profile.benefits.saveHistory"),
-        t("settings.profile.benefits.syncDevices"),
-        t("settings.profile.benefits.cloudSync"),
-        t("settings.profile.benefits.secureBackup"),
-      ] : undefined,
     },
     isAnonymous: anonymous,
-    editProfileText: t("settings.account.editProfile"),
+    editProfileText: "",
     onSignIn,
     accountActions: {
       onLogout,
       onDeleteAccount,
-      logoutText: t("settings.account.logout"),
-      logoutConfirmTitle: t("settings.account.logoutConfirmTitle"),
-      logoutConfirmMessage: t("settings.account.logoutConfirmMessage"),
-      cancelText: t("common.cancel"),
-      deleteAccountText: t("settings.account.deleteAccount"),
-      deleteConfirmTitle: t("settings.account.deleteConfirmTitle"),
-      deleteConfirmMessage: t("settings.account.deleteConfirmMessage"),
+      logoutText: "",
+      logoutConfirmTitle: "",
+      logoutConfirmMessage: "",
+      cancelText: "",
+      deleteAccountText: "",
+      deleteConfirmTitle: "",
+      deleteConfirmMessage: "",
     },
   };
 }

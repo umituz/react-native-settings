@@ -7,14 +7,12 @@ import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoCom
 
 export interface VideoTutorialSettingsItemProps {
   config: VideoTutorialConfig;
-  t?: (key: string) => string;
   noBackground?: boolean;
   hideMargin?: boolean;
 }
 
 const VideoTutorialSettingsItemComponent: React.FC<VideoTutorialSettingsItemProps> = ({
   config,
-  t,
   noBackground,
   hideMargin,
 }) => {
@@ -30,8 +28,8 @@ const VideoTutorialSettingsItemComponent: React.FC<VideoTutorialSettingsItemProp
   }, [navigation, config.onPress, config.route]);
 
   const icon = (config.icon || "play-circle-outline") as IconName;
-  const title = config.title || t("settings.videoTutorial.title");
-  const description = config.description || t("settings.videoTutorial.description");
+  const title = config.title;
+  const description = config.description;
 
   return (
     <SettingsItemCard

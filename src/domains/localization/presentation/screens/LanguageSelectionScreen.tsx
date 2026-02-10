@@ -24,7 +24,7 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
   headerTitle,
   onBackPress,
   styles: customStyles,
-  searchPlaceholder = "settings.languageSelection.searchPlaceholder",
+  searchPlaceholder,
   testID = 'language-selection-screen',
 }) => {
   const tokens = useAppDesignTokens();

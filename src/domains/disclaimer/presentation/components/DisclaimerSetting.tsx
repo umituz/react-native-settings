@@ -21,40 +21,32 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'react-native';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
-import { useLocalization } from '../../../localization';
 import { DisclaimerCard } from './DisclaimerCard';
 import { DisclaimerModal } from './DisclaimerModal';
 
 export interface DisclaimerSettingProps {
-  /** Custom title translation key */
-  titleKey?: string;
-  /** Custom message translation key */
-  messageKey?: string;
-  /** Custom short message translation key */
-  shortMessageKey?: string;
+  /** Custom title */
+  title?: string;
+  /** Custom content */
+  content?: string;
+  /** Custom short message */
+  shortMessage?: string;
   /** Custom icon name */
   iconName?: string;
   /** Custom icon color */
   iconColor?: string;
   /** Custom background color */
   backgroundColor?: string;
-  /** Custom modal title */
-  modalTitle?: string;
-  /** Custom modal content */
-  modalContent?: string;
 }
 
 export const DisclaimerSetting: React.FC<DisclaimerSettingProps> = ({
-  titleKey = "settings.disclaimer.title",
-  messageKey = "settings.disclaimer.message",
-  shortMessageKey = "settings.disclaimer.shortMessage",
+  title = "",
+  content = "",
+  shortMessage = "",
   iconName = "alert-triangle",
   iconColor,
   backgroundColor,
-  modalTitle,
-  modalContent,
 }) => {
-  const { t } = useLocalization();
   const tokens = useAppDesignTokens();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -64,9 +56,6 @@ export const DisclaimerSetting: React.FC<DisclaimerSettingProps> = ({
     };
   }, []);
 
-  const title = modalTitle || t(titleKey);
-  const content = modalContent || t(messageKey);
-  const shortMessage = t(shortMessageKey);
   const finalIconColor = iconColor || tokens.colors.warning;
   const finalBackgroundColor = backgroundColor || withAlpha(finalIconColor, 0.1);
 

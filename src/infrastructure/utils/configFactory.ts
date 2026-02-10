@@ -3,7 +3,7 @@
  * Generic configuration creator to reduce duplication in base-configs
  */
 
-import type { TranslationFunction } from "../../presentation/utils/config-creators/types";
+
 
 /**
  * Feature visibility configuration
@@ -29,9 +29,6 @@ export interface BaseConfigType {
  * Configuration parameters for creating a settings item config
  */
 export interface ConfigCreatorParams {
-  t: TranslationFunction;
-  titleKey: string;
-  descriptionKey: string;
   icon: string;
   routeOrOnPress?: string | (() => void);
   defaultRoute?: string;
@@ -44,12 +41,10 @@ export interface ConfigCreatorParams {
 export const createBaseConfig = <T extends BaseConfigType = BaseConfigType>(
   params: ConfigCreatorParams
 ): T => {
-  const { t, titleKey, descriptionKey, icon, routeOrOnPress, defaultRoute } = params;
+  const { icon, routeOrOnPress, defaultRoute } = params;
 
   return {
     enabled: true,
-    title: t(titleKey),
-    description: t(descriptionKey),
     icon,
     route: typeof routeOrOnPress === "string" ? routeOrOnPress : defaultRoute,
     onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
@@ -82,18 +77,12 @@ export const createDisabledConfig = <T extends BaseConfigType>(
  */
 export const createBatchConfigs = <T extends BaseConfigType>(
   items: Array<{
-    titleKey: string;
-    descriptionKey: string;
     icon: string;
     routeOrOnPress?: string | (() => void);
-  }>,
-  t: TranslationFunction
+  }>
 ): T[] => {
   return items.map((item) =>
     createBaseConfig<T>({
-      t,
-      titleKey: item.titleKey,
-      descriptionKey: item.descriptionKey,
       icon: item.icon,
       routeOrOnPress: item.routeOrOnPress,
     })

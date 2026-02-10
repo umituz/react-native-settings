@@ -52,6 +52,7 @@ export interface AboutConfig {
   };
   /** Localized texts for section headers and labels */
   texts?: {
+    title?: string;
     contact?: string;
     more?: string;
     developer?: string;

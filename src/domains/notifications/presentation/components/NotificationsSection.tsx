@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { useAppNavigation } from '@umituz/react-native-design-system';
-import { useLocalization } from '../../../localization';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 
 export interface NotificationsSectionConfig {
@@ -26,7 +25,6 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
   hideMargin,
 }) => {
   const navigation = useAppNavigation();
-  const { t } = useLocalization();
 
   const handlePress = useCallback(() => {
     if (config?.onPress) {
@@ -37,8 +35,8 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
     }
   }, [config?.route, config?.onPress, navigation]);
 
-  const title = config?.title || t('settings.notifications.title');
-  const description = config?.description || t('settings.notifications.description');
+  const title = config?.title || "";
+  const description = config?.description || "";
 
   return (
     <SettingsItemCard

@@ -1,9 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { ProfileSection } from "@umituz/react-native-auth";
-import { useLocalization } from "../../../../domains/localization";
 import { useAppNavigation } from "@umituz/react-native-design-system";
-import { createSinglePropComparator } from "../../../../infrastructure/utils/memoComparisonUtils";
 
 export interface ProfileSectionLoaderProps {
     userProfile?: {
@@ -15,10 +13,14 @@ export interface ProfileSectionLoaderProps {
         onPress?: () => void;
         benefits?: string[];
     };
+    translations?: {
+        guest?: string;
+        anonymousName?: string;
+        signIn?: string;
+    };
 }
 
-export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = React.memo(({ userProfile }) => {
-    const { t } = useLocalization();
+export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = React.memo(({ userProfile, translations }) => {
     const navigation = useAppNavigation();
 
     const handlePress = React.useCallback(() => {
@@ -33,9 +35,9 @@ export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = React.m
     const anonymousDisplayName = React.useMemo(() => {
         if (!userProfile) return "";
         return userProfile.isAnonymous && userProfile.userId
-            ? `${t("profile.guest", "Guest")} ${userProfile.userId.substring(0, 8)}`
-            : t("settings.profile.anonymousName", "Anonymous User");
-    }, [userProfile, t]);
+            ? `${translations?.guest || ""} ${userProfile.userId.substring(0, 8)}`
+            : (translations?.anonymousName || "");
+    }, [userProfile, translations]);
 
     if (!userProfile) return null;
 
@@ -52,12 +54,12 @@ export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = React.m
                 }}
                 onPress={handlePress}
                 onSignIn={userProfile.onPress}
-                signInText={t("auth.signIn", "Sign In")}
+                signInText={translations?.signIn || ""}
                 anonymousText={anonymousDisplayName}
             />
         </View>
     );
-}, createSinglePropComparator("userProfile"));
+}, (prev, next) => prev.userProfile === next.userProfile && prev.translations === next.translations);
 
 ProfileSectionLoader.displayName = "ProfileSectionLoader";
 

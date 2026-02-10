@@ -4,7 +4,7 @@
  */
 
 import { useMemo } from "react";
-import type { TranslationFunction, FeedbackFormData } from "./config-creators/types";
+import type { FeedbackFormData } from "./config-creators/types";
 import type { SettingsConfig } from "../screens/types";
 import {
   createAppearanceConfig,
@@ -19,7 +19,6 @@ import {
 } from "./config-creators";
 
 export interface SettingsConfigFactoryParams {
-  t: TranslationFunction;
   onFeedbackSubmit: (data: FeedbackFormData) => Promise<void>;
   handleRatePress: () => void;
   appStoreUrl: string;
@@ -43,7 +42,6 @@ export const createSettingsConfig = (
   params: SettingsConfigFactoryParams
 ): SettingsConfig => {
   const {
-    t,
     onFeedbackSubmit,
     handleRatePress,
     appStoreUrl,
@@ -52,15 +50,15 @@ export const createSettingsConfig = (
   } = params;
 
   return {
-    appearance: features.appearance ? createAppearanceConfig(t) : false,
-    language: features.language ? createLanguageConfig(t) : false,
-    notifications: features.notifications ? createNotificationsConfig(t) : false,
-    feedback: features.feedback ? createFeedbackConfig(t, onFeedbackSubmit) : false,
-    about: features.about ? createAboutConfig(t) : false,
-    legal: features.legal ? createLegalConfig(t) : false,
-    faqs: features.faqs ? createFAQConfig(t) : false,
-    rating: features.rating ? createRatingConfig(t, handleRatePress, appStoreUrl) : false,
-    subscription: createSubscriptionConfig(t, isPremium, "SubscriptionDetail"),
+    appearance: features.appearance ? createAppearanceConfig() : false,
+    language: features.language ? createLanguageConfig() : false,
+    notifications: features.notifications ? createNotificationsConfig() : false,
+    feedback: features.feedback ? createFeedbackConfig(onFeedbackSubmit) : false,
+    about: features.about ? createAboutConfig() : false,
+    legal: features.legal ? createLegalConfig() : false,
+    faqs: features.faqs ? createFAQConfig() : false,
+    rating: features.rating ? createRatingConfig(handleRatePress, appStoreUrl) : false,
+    subscription: createSubscriptionConfig(isPremium, "SubscriptionDetail"),
     disclaimer: false,
   };
 };
@@ -72,7 +70,6 @@ export const useSettingsConfigFactory = (
   params: SettingsConfigFactoryParams
 ): SettingsConfig => {
   return useMemo(() => createSettingsConfig(params), [
-    params.t,
     params.onFeedbackSubmit,
     params.handleRatePress,
     params.appStoreUrl,

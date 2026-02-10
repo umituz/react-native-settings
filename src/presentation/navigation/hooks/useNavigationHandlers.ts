@@ -17,7 +17,8 @@ interface NavigationHandlersResult {
 
 export const useNavigationHandlers = (
   appInfo: AppInfo,
-  legalUrls: LegalUrls
+  legalUrls: LegalUrls,
+  aboutTranslations?: AboutConfig["texts"]
 ): NavigationHandlersResult => {
   const handlePrivacyPress = useCallback(() => {
     Linking.openURL(legalUrls.privacy);
@@ -45,8 +46,9 @@ export const useNavigationHandlers = (
         websiteDisplay: appInfo.websiteDisplay,
         moreAppsUrl: appInfo.moreAppsUrl,
       },
+      texts: aboutTranslations,
     }),
-    [appInfo]
+    [appInfo, aboutTranslations]
   );
 
   return {

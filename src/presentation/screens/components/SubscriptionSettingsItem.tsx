@@ -7,10 +7,9 @@ import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoCom
 
 export interface SubscriptionSettingsItemProps {
   config: SubscriptionConfig;
-  t?: (key: string) => string;
 }
 
-const SubscriptionSettingsItemComponent: React.FC<SubscriptionSettingsItemProps> = ({ config, t }) => {
+const SubscriptionSettingsItemComponent: React.FC<SubscriptionSettingsItemProps> = ({ config }) => {
   const navigation = useAppNavigation();
 
   const handlePress = React.useCallback(() => {
@@ -23,8 +22,8 @@ const SubscriptionSettingsItemComponent: React.FC<SubscriptionSettingsItemProps>
 
   return (
     <SettingsItemCard
-      title={config.title || t("settings.subscription.title")}
-      description={config.description || t("settings.subscription.description")}
+      title={config.title}
+      description={config.description}
       icon={(config.icon || "star") as IconName}
       onPress={handlePress}
       sectionTitle={config.sectionTitle}

@@ -41,11 +41,11 @@ export const AboutContent: React.FC<AboutContentProps> = ({
     <View style={styles.content}>
       {hasContactInfo && (
         <View style={styles.section}>
-          <AboutSectionHeader title={texts.contact || "Contact"} />
+          <AboutSectionHeader title={texts.contact || ""} />
 
           {appInfo.developer && (
             <AboutSettingItem
-              title={texts.developer || "Developer"}
+              title={texts.developer || ""}
               value={appInfo.developer}
               testID="developer-item"
             />
@@ -53,7 +53,7 @@ export const AboutContent: React.FC<AboutContentProps> = ({
 
           {appInfo.contactEmail && (
             <AboutSettingItem
-              title={texts.email || "Email"}
+              title={texts.email || ""}
               value={appInfo.contactEmail}
               onPress={config.actions?.onEmailPress}
               testID="email-item"
@@ -63,7 +63,7 @@ export const AboutContent: React.FC<AboutContentProps> = ({
 
           {appInfo.websiteUrl && (
             <AboutSettingItem
-              title={texts.website || "Website"}
+              title={texts.website || ""}
               value={appInfo.websiteDisplay || appInfo.websiteUrl}
               onPress={config.actions?.onWebsitePress}
               testID="website-item"
@@ -75,9 +75,9 @@ export const AboutContent: React.FC<AboutContentProps> = ({
 
       {hasMoreInfo && (
         <View style={styles.section}>
-          <AboutSectionHeader title={texts.more || "More"} />
+          <AboutSectionHeader title={texts.more || ""} />
           <AboutSettingItem
-            title={texts.moreApps || "More Apps"}
+            title={texts.moreApps || ""}
             onPress={config.actions?.onMoreAppsPress}
             testID="more-apps-item"
             showChevron={!!config.actions?.onMoreAppsPress}

@@ -59,6 +59,12 @@ import type {
  * Global Settings Translations
  */
 export interface SettingsTranslations {
+  title?: string;
+  profile?: {
+    guest?: string;
+    anonymousName?: string;
+    signIn?: string;
+  };
   sections?: {
     app?: string;
     progress?: string;
@@ -69,12 +75,56 @@ export interface SettingsTranslations {
   features?: {
     appearance?: { title?: string; description?: string };
     language?: { title?: string };
-    notifications?: { title?: string; description?: string };
+    notifications?: { 
+      title?: string; 
+      description?: string;
+      masterToggleTitle?: string;
+      masterToggleDescription?: string;
+      soundTitle?: string;
+      soundDescription?: string;
+      vibrationTitle?: string;
+      vibrationDescription?: string;
+      remindersTitle?: string;
+      remindersDescription?: string;
+      quietHoursTitle?: string;
+      quietHoursDescription?: string;
+      quietHours?: {
+        title?: string;
+        description?: string;
+        startTimeLabel?: string;
+        endTimeLabel?: string;
+        enabledLabel?: string;
+      };
+    };
     about?: { title?: string; description?: string };
-    legal?: { title?: string; description?: string };
+    legal?: { 
+      title?: string; 
+      description?: string;
+      documentsHeader?: string;
+      privacyTitle?: string;
+      privacyDescription?: string;
+      termsTitle?: string;
+      termsDescription?: string;
+      eulaTitle?: string;
+      eulaDescription?: string;
+    };
     feedback?: { title?: string; description?: string };
     rating?: { title?: string; description?: string };
-    faqs?: { title?: string; description?: string };
+    faqs?: { 
+      title?: string; 
+      description?: string; 
+      searchPlaceholder?: string;
+      emptySearchTitle?: string;
+      emptySearchMessage?: string;
+      headerTitle?: string;
+    };
+    languageSelection?: {
+      searchPlaceholder?: string;
+    };
+    videoTutorial?: {
+      title?: string;
+      description?: string;
+    };
   };
   feedbackModal?: {
     title?: string;
@@ -93,6 +143,14 @@ export interface SettingsTranslations {
   noOptionsAvailable?: string;
   footer?: {
     version?: string;
+  };
+  errors?: {
+    common?: string;
+    unknown?: string;
+    appStoreUrlNotConfigured?: string;
+    unableToOpenAppStore?: string;
+    failedToOpenAppStore?: string;
+    deleteAccountError?: string;
   };
 }
 

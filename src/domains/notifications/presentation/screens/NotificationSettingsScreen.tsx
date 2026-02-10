@@ -13,7 +13,6 @@ import {
   useAppDesignTokens,
   useAppNavigation
 } from '@umituz/react-native-design-system';
-import { useLocalization } from '../../../localization';
 import { QuietHoursCard } from '../../quietHours/presentation/components/QuietHoursCard';
 import { SettingRow } from '../components/SettingRow';
 import { RemindersNavRow } from '../components/RemindersNavRow';
@@ -38,7 +37,6 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
 }) => {
   const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
-  const { t } = useLocalization();
   const styles = createStyles(tokens);
   const reminders = useReminders();
   const { setStartTime, setEndTime } = useQuietHoursActions();
@@ -63,7 +61,7 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
     // Navigate to reminders screen when implemented
   };
 
-  const headerTitle = translations.screenTitle || t("settings.notifications.title");
+  const headerTitle = translations.screenTitle || "";
 
   if (isLoading) {
     return (

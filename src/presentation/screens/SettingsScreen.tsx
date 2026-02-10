@@ -86,7 +86,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
   });
 
   const header = showHeader ? (
-    <SettingsHeader showCloseButton={showCloseButton} onClose={handleClose} />
+    <SettingsHeader 
+      showCloseButton={showCloseButton} 
+      onClose={handleClose}
+      title={normalizedConfig.translations?.title}
+    />
   ) : undefined;
 
   return (

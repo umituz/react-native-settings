@@ -5,7 +5,6 @@
  * Optimized for performance and memory safety
  */
 import { ScreenLayout, NavigationHeader, useAppDesignTokens, useAppNavigation, AtomicText, AtomicSpinner } from '@umituz/react-native-design-system';
-import { useLocalization } from '../../../localization';
 import { useAboutInfo } from '../hooks/useAboutInfo';
 import { AboutScreenContent } from './AboutScreenContent';
 
@@ -34,7 +33,6 @@ export const AboutScreen: React.FC<AboutScreenProps> = (props) => {
   const { config, testID = 'about-screen' } = props;
   const tokens = useAppDesignTokens();
   const navigation = useAppNavigation();
-  const { t } = useLocalization();
 
   const { appInfo, loading, error } = useAboutInfo({
     autoInit: true,
@@ -43,7 +41,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = (props) => {
 
   const header = (
     <NavigationHeader 
-      title={t("settings.about.title")} 
+      title={config.texts?.title || ""} 
       onBackPress={() => navigation.goBack()} 
     />
   );
@@ -57,7 +55,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = (props) => {
   }
 
   if (error || !appInfo) {
-    const errorText = error ? `${config.texts?.errorPrefix || 'Error:'} ${error}` : (config.texts?.noInfo || 'No info available');
+    const errorText = error ? `${config.texts?.errorPrefix || ""} ${error}` : (config.texts?.noInfo || "");
     return (
       <ScreenLayout header={header} testID={testID}>
         <AtomicText type="bodyMedium" color="error" style={{ textAlign: 'center', marginTop: 20 }}>

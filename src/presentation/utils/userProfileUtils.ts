@@ -15,7 +15,6 @@ export interface UserProfileConfig {
 
 export interface CreateUserProfileParams {
   profileData?: UserProfileConfig;
-  t: (key: string, params?: Record<string, string | number>) => string;
   onSignIn?: () => void;
 }
 
@@ -23,29 +22,16 @@ export interface CreateUserProfileParams {
  * Create user profile display configuration
  */
 export function createUserProfileDisplay(params: CreateUserProfileParams): UserProfileDisplay {
-  const { profileData, t, onSignIn } = params;
+  const { profileData, onSignIn } = params;
 
   const isAnonymous = profileData?.isAnonymous ?? true;
-  const anonymousName = t("settings.profile.anonymousName");
 
   return {
-    displayName: profileData?.displayName || anonymousName,
+    displayName: profileData?.displayName,
     userId: profileData?.userId ?? undefined,
     isAnonymous,
     avatarUrl: profileData?.avatarUrl ?? undefined,
     onPress: isAnonymous ? onSignIn : undefined,
     accountSettingsRoute: isAnonymous ? undefined : "Account",
   };
-}
-
-/**
- * Create benefits list for anonymous users
- */
-export function createAnonymousBenefits(t: (key: string) => string): string[] {
-  return [
-    t("settings.profile.benefits.saveHistory"),
-    t("settings.profile.benefits.syncDevices"),
-    t("settings.profile.benefits.cloudSync"),
-    t("settings.profile.benefits.secureBackup"),
-  ];
 }

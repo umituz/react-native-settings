@@ -7,10 +7,9 @@ import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoCom
 
 export interface WalletSettingsItemProps {
   config: WalletConfig;
-  t?: (key: string) => string;
 }
 
-const WalletSettingsItemComponent: React.FC<WalletSettingsItemProps> = ({ config, t }) => {
+const WalletSettingsItemComponent: React.FC<WalletSettingsItemProps> = ({ config }) => {
   const navigation = useAppNavigation();
 
   const handlePress = React.useCallback(() => {
@@ -21,8 +20,8 @@ const WalletSettingsItemComponent: React.FC<WalletSettingsItemProps> = ({ config
 
   return (
     <SettingsItemCard
-      title={config.title || (t ? t("wallet.title") : "Wallet")}
-      description={config.description || (t ? t("wallet.description") : "View your wallet")}
+      title={config.title}
+      description={config.description}
       icon={(config.icon || "wallet") as IconName}
       onPress={handlePress}
       sectionTitle={config.sectionTitle}

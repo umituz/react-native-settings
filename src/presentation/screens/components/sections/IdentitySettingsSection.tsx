@@ -1,7 +1,6 @@
 import React from "react";
 import { AboutSection } from "../../../../domains/about/presentation/components/AboutSection";
 import { LegalSection } from "../../../../domains/legal/presentation/components/LegalSection";
-import { useLocalization } from "../../../../domains/localization";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
@@ -20,13 +19,13 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
     if (!features.about && !features.legal) return null;
 
     return (
-        <SettingsSection title={translations?.sections?.about || "About"}>
+        <SettingsSection title={translations?.sections?.about}>
             {features.about && (
                 <AboutSection
                     config={{
                         ...normalizedConfig.about.config,
-                        title: translations?.features?.about?.title || "About",
-                        description: translations?.features?.about?.description || "About the app",
+                        title: translations?.features?.about?.title,
+                        description: translations?.features?.about?.description,
                     }}
                     noBackground={true}
                     hideMargin={true}
@@ -37,8 +36,8 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
                 <LegalSection
                     config={{
                         ...normalizedConfig.legal.config,
-                        title: translations?.features?.legal?.title || "Legal",
-                        description: translations?.features?.legal?.description || "Privacy Policy & Terms",
+                        title: translations?.features?.legal?.title,
+                        description: translations?.features?.legal?.description,
                     }}
                     noBackground={true}
                     hideMargin={true}

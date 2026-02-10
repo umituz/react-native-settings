@@ -18,7 +18,6 @@ export interface GamificationSettingsItemProps {
 const GamificationSettingsItemComponent: React.FC<GamificationSettingsItemProps> = ({
   config,
   gamificationConfig,
-  t,
   noBackground,
   hideMargin,
 }) => {
@@ -31,12 +30,10 @@ const GamificationSettingsItemComponent: React.FC<GamificationSettingsItemProps>
   }, [navigation, config.route]);
 
   const icon = (config.icon || "trophy-outline") as IconName;
-  const title = config.title || t("settings.gamification.title");
+  const title = config.title;
 
-  const description = config.description ||
-    t("settings.gamification.description")
-      .replace("{level}", level.currentLevel.toString())
-      .replace("{points}", level.currentPoints.toString());
+  const description = config.description || 
+    `${level.currentLevel} • ${level.currentPoints}`;
 
   return (
     <SettingsItemCard

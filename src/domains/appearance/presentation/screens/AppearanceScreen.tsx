@@ -12,7 +12,6 @@ import {
   NavigationHeader,
   useAppNavigation
 } from "@umituz/react-native-design-system";
-import { useLocalization } from "../../../localization";
 import { useAppearance } from "../../hooks/useAppearance";
 import { useAppearanceActions } from "../../hooks/useAppearanceActions";
 import {
@@ -41,7 +40,6 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
 }) => {
   const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
-  const { t } = useLocalization();
   const { themeMode } = useAppearance();
   const {
     localCustomColors,
@@ -75,17 +73,17 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     const themes: ThemeOptionConfig[] = [
       {
         mode: "light",
-        title: texts?.lightMode?.title ?? t("settings.appearance.lightMode.title"),
-        subtitle: texts?.lightMode?.subtitle ?? t("settings.appearance.lightMode.subtitle"),
-        description: texts?.lightMode?.description ?? t("settings.appearance.lightMode.description"),
+        title: texts?.lightMode?.title ?? "",
+        subtitle: texts?.lightMode?.subtitle ?? "",
+        description: texts?.lightMode?.description ?? "",
         features: texts?.lightMode?.features,
         featuresTitle: texts?.featuresSectionTitle,
       },
       {
         mode: "dark",
-        title: texts?.darkMode?.title ?? t("settings.appearance.darkMode.title"),
-        subtitle: texts?.darkMode?.subtitle ?? t("settings.appearance.darkMode.subtitle"),
-        description: texts?.darkMode?.description ?? t("settings.appearance.darkMode.description"),
+        title: texts?.darkMode?.title ?? "",
+        subtitle: texts?.darkMode?.subtitle ?? "",
+        description: texts?.darkMode?.description ?? "",
         features: texts?.darkMode?.features,
         featuresTitle: texts?.featuresSectionTitle,
       },
@@ -96,8 +94,8 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
         tokens={tokens}
         themeMode={themeMode}
         onThemeSelect={handleThemeSelect}
-        title={texts?.themeSectionTitle ?? t("settings.appearance.themeSectionTitle")}
-        description={texts?.themeSectionDescription ?? t("settings.appearance.themeSectionDescription")}
+        title={texts?.themeSectionTitle ?? ""}
+        description={texts?.themeSectionDescription ?? ""}
         themes={themes}
       />
     );
@@ -111,7 +109,6 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     texts?.lightMode,
     texts?.darkMode,
     texts?.featuresSectionTitle,
-    t,
   ]);
 
   const colorsSectionMemo = useMemo(() => {
@@ -163,7 +160,7 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
       hideScrollIndicator
       header={
         <NavigationHeader 
-          title={t("settings.appearance.title")} 
+          title={texts?.title || ""} 
           onBackPress={() => navigation.goBack()} 
         />
       }

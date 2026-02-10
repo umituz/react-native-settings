@@ -11,7 +11,6 @@ import {
   StackNavigator,
   type StackNavigatorConfig,
 } from "@umituz/react-native-design-system";
-import { useLocalization } from "../../domains/localization";
 import { useNavigationHandlers, useSettingsScreens } from "./hooks";
 import {
   createNotificationTranslations,
@@ -24,10 +23,13 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
   const {
     appInfo,
     legalUrls,
+    config,
   } = props;
-  const { t } = useLocalization();
+  const translations = config?.translations?.features;
+  const aboutTranslations = translations?.about;
+
   const { handlePrivacyPress, handleTermsPress, handleEulaPress, aboutConfig } =
-    useNavigationHandlers(appInfo, legalUrls);
+    useNavigationHandlers(appInfo, legalUrls, aboutTranslations);
 
   const screenOptions = React.useMemo(
     () => ({
@@ -36,11 +38,11 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
     []
   );
 
-  const notificationTranslations = React.useMemo(() => createNotificationTranslations(t), [t]);
-  const quietHoursTranslations = React.useMemo(() => createQuietHoursTranslations(t), [t]);
+  const notificationTranslations = React.useMemo(() => createNotificationTranslations(translations), [translations]);
+  const quietHoursTranslations = React.useMemo(() => createQuietHoursTranslations(translations), [translations]);
   const legalScreenProps = React.useMemo(
-    () => createLegalScreenProps(t, handlePrivacyPress, handleTermsPress, handleEulaPress),
-    [t, handlePrivacyPress, handleTermsPress, handleEulaPress]
+    () => createLegalScreenProps(translations, handlePrivacyPress, handleTermsPress, handleEulaPress),
+    [translations, handlePrivacyPress, handleTermsPress, handleEulaPress]
   );
 
   const screens = useSettingsScreens({
@@ -49,7 +51,6 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
     legalProps: legalScreenProps,
     notificationTranslations,
     quietHoursTranslations,
-    t,
   });
 
   const navigatorConfig: StackNavigatorConfig<SettingsStackParamList> = {

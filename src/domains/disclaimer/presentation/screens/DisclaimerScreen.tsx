@@ -23,7 +23,6 @@ import {
 } from '@umituz/react-native-design-system';
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
 import type { IconName } from '@umituz/react-native-design-system';
-import { useLocalization } from '../../../localization';
 
 export interface DisclaimerScreenProps {
   /** Custom title (overrides translation) */
@@ -40,17 +39,14 @@ export interface DisclaimerScreenProps {
 
 export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({
   title,
-  titleKey = 'settings.disclaimer.title',
   content,
-  contentKey = 'settings.disclaimer.message',
   iconName = 'alert-triangle',
 }) => {
-  const { t } = useLocalization();
   const tokens = useAppDesignTokens();
   const styles = getStyles(tokens);
 
-  const displayTitle = title || t(titleKey);
-  const displayContent = content || t(contentKey);
+  const displayTitle = title || "";
+  const displayContent = content || "";
 
   const navigation = useAppNavigation();
 

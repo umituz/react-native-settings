@@ -23,7 +23,6 @@ export interface UseSettingsScreensProps extends SettingsStackNavigatorProps {
   legalProps: any;
   notificationTranslations: any;
   quietHoursTranslations: any;
-  t: (key: string) => string;
 }
 
 export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[] => {
@@ -46,8 +45,9 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     gamificationConfig,
     videoTutorialConfig,
     accountConfig,
-    t,
   } = props;
+
+  const translations = config?.translations?.features;
 
   return useMemo(() => {
     const settingsMainScreen = createScreenWithProps(
@@ -96,10 +96,10 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       !!(faqData && faqData.categories?.length > 0),
       () => createScreenWithProps("FAQ", FAQScreen, {
         categories: faqData!.categories,
-        searchPlaceholder: t("settings.faqs.searchPlaceholder"),
-        emptySearchTitle: t("settings.faqs.emptySearchTitle"),
-        emptySearchMessage: t("settings.faqs.emptySearchMessage"),
-        headerTitle: t("settings.faqs.headerTitle"),
+        searchPlaceholder: translations?.faqs?.searchPlaceholder || "",
+        emptySearchTitle: translations?.faqs?.emptySearchTitle || "",
+        emptySearchMessage: translations?.faqs?.emptySearchMessage || "",
+        headerTitle: translations?.faqs?.headerTitle || "",
       })
     );
 
@@ -108,8 +108,8 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     const gamificationScreen = createScreenWithProps("Gamification", GamificationScreen as any, { config: gamificationConfig });
 
     const languageScreen = createScreenWithProps("LanguageSelection", LanguageSelectionScreen, {
-      headerTitle: t("settings.language.title"),
-      searchPlaceholder: t("settings.languageSelection.searchPlaceholder"),
+      headerTitle: translations?.language?.title || "",
+      searchPlaceholder: translations?.languageSelection?.searchPlaceholder || "",
     });
 
     const accountScreen = createConditionalScreen(
@@ -119,7 +119,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
 
     const videoTutorialScreen = createScreenWithProps("VideoTutorial", VideoTutorialsScreen as any, {
       ...videoTutorialConfig,
-      title: videoTutorialConfig?.title || t("settings.videoTutorial.title"),
+      title: videoTutorialConfig?.title || translations?.videoTutorial?.title || "",
     });
 
     return combineScreens(
@@ -132,7 +132,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       videoTutorialScreen
     );
   }, [
-    t,
+    translations,
     showHeader,
     showCloseButton,
     onClose,

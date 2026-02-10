@@ -44,17 +44,17 @@ export interface StreakState {
 
 // Gamification Translations
 export interface GamificationTranslations {
-  title: string;
-  statsTitle: string;
-  pointsLabel: string;
-  totalCompletedLabel: string;
-  achievementsTitle: string;
-  streakTitle: string;
-  bestStreak: string;
-  currentStreak: string;
-  days: string;
-  levelTitle: string;
-  emptyAchievements: string;
+  title?: string;
+  statsTitle?: string;
+  pointsLabel?: string;
+  totalCompletedLabel?: string;
+  achievementsTitle?: string;
+  streakTitle?: string;
+  bestStreak?: string;
+  currentStreak?: string;
+  days?: string;
+  levelTitle?: string;
+  emptyAchievements?: string;
 }
 
 // Gamification Config (provided by app via props)
@@ -65,7 +65,7 @@ export interface GamificationConfig {
   pointsPerAction?: number;
   streakBonusMultiplier?: number;
   enabled?: boolean;
-  translations: GamificationTranslations;
+  translations?: GamificationTranslations;
 }
 
 export type GamificationSettingsConfig = GamificationConfig;

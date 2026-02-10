@@ -29,15 +29,15 @@ export const LanguageSection: React.FC<LanguageSectionProps> = ({
     sectionTitle,
 }) => {
     const tokens = useAppDesignTokens();
-    const { t, currentLanguage } = useLocalization();
+    const { currentLanguage } = useLocalization();
     const navigation = useAppNavigation();
 
     const route = config?.route || 'LanguageSelection';
-    const title = config?.title || t('settings.languageSelection.title') || 'Language';
+    const title = config?.title || "";
     const displaySectionTitle = sectionTitle || title;
 
     const currentLang = getLanguageByCode(currentLanguage);
-    const defaultLanguageDisplay = config?.defaultLanguageDisplay || 'English';
+    const defaultLanguageDisplay = config?.defaultLanguageDisplay || "";
     const languageDisplay = currentLang
         ? `${currentLang.flag} ${currentLang.nativeName}`
         : defaultLanguageDisplay;

@@ -1,20 +1,21 @@
 import React from "react";
 import { Pressable } from "react-native";
 import { useAppDesignTokens, AtomicIcon, useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system";
-import { useLocalization } from "../../../domains/localization";
+
 
 interface SettingsHeaderProps {
   showCloseButton?: boolean;
   onClose?: () => void;
+  title?: string;
 }
 
 export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
   showCloseButton = false,
   onClose,
+  title,
 }) => {
   const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
-  const { t } = useLocalization();
 
   const handleClose = () => {
     if (onClose) {
@@ -45,7 +46,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
 
   return (
     <NavigationHeader
-      title={t('settings.title')}
+      title={title}
       rightElement={rightElement}
       // If NOT showing close button, we might want a back button? 
       // But usually Settings is a root screen in a modal or stack.

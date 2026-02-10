@@ -45,6 +45,7 @@ export type SettingsStackParamList = {
   LanguageSelection: undefined;
   Gamification: undefined;
   Account: undefined;
+  VideoTutorial: undefined;
 };
 
 /**
@@ -105,4 +106,5 @@ export interface SettingsStackNavigatorProps {
   /** Custom close handler */
   onClose?: () => void;
   gamificationConfig?: import("../../domains/gamification").GamificationSettingsConfig;
+  videoTutorialConfig?: import("../../domains/video-tutorials").VideoTutorialsScreenProps;
 }

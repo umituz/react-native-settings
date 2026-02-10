@@ -9,6 +9,7 @@ import { FAQScreen } from "../../../domains/faqs";
 import { AboutScreen } from "../../../domains/about";
 import { LegalScreen } from "../../../domains/legal";
 import { GamificationScreen } from "../../../domains/gamification";
+import { VideoTutorialsScreen } from "../../../domains/video-tutorials";
 import {
   createScreenWithProps,
   convertAdditionalScreen,
@@ -43,6 +44,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     faqData,
     additionalScreens,
     gamificationConfig,
+    videoTutorialConfig,
     accountConfig,
     t,
   } = props;
@@ -103,10 +105,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
 
     const additionalStackScreens: StackScreen[] = (additionalScreens || []).map(convertAdditionalScreen);
 
-    const gamificationScreen = createConditionalScreen(
-      !!(gamificationConfig?.enabled),
-      () => createScreenWithProps("Gamification", GamificationScreen as any, { config: gamificationConfig })
-    );
+    const gamificationScreen = createScreenWithProps("Gamification", GamificationScreen as any, { config: gamificationConfig });
 
     const languageScreen = createScreenWithProps("LanguageSelection", LanguageSelectionScreen, {
       headerTitle: t("settings.language.title"),
@@ -118,13 +117,19 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       () => createScreenWithProps("Account", AccountScreen as any, { config: accountConfig })
     );
 
+    const videoTutorialScreen = createScreenWithProps("VideoTutorial", VideoTutorialsScreen as any, {
+      ...videoTutorialConfig,
+      title: videoTutorialConfig?.title || t("settings.videoTutorial.title"),
+    });
+
     return combineScreens(
       baseScreens,
       faqScreen,
       additionalStackScreens,
       gamificationScreen,
       languageScreen,
-      accountScreen
+      accountScreen,
+      videoTutorialScreen
     );
   }, [
     t,
@@ -144,6 +149,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     faqData,
     additionalScreens,
     gamificationConfig,
+    videoTutorialConfig,
     accountConfig,
   ]);
 };

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocalizationStore } from '../storage/LocalizationStore';
 import { useTranslationFunction } from './useTranslation';
 import type { Language } from '../../domain/repositories/ILocalizationRepository';
@@ -26,6 +26,12 @@ export const useLocalization = () => {
   const getSupportedLanguages = useCallback(() => {
     return store.getSupportedLanguages();
   }, [store]);
+
+  useEffect(() => {
+    if (!store.isInitialized) {
+      store.initialize();
+    }
+  }, [store.isInitialized, store]);
 
   return {
     t,

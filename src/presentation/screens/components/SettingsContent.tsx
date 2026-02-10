@@ -117,9 +117,11 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       <CustomSettingsList customSections={customSections} />
 
       {features.subscription && (normalizedConfig.subscription.config?.route || normalizedConfig.subscription.config?.onPress) && (
-        <SubscriptionSettingsItem 
-          config={normalizedConfig.subscription.config} 
-        />
+        <SettingsSection title={translations?.sections?.subscription}>
+          <SubscriptionSettingsItem 
+            config={normalizedConfig.subscription.config} 
+          />
+        </SettingsSection>
       )}
 
       {features.wallet && normalizedConfig.wallet.config?.route && (

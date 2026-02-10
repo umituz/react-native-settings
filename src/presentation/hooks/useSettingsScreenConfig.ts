@@ -118,6 +118,7 @@ export const useSettingsScreenConfig = (
     if (config.subscription && typeof config.subscription === 'object') {
       config.subscription = {
         ...config.subscription,
+        enabled: true,
         title: translations?.features?.subscription?.title || config.subscription.title || "Subscription",
         description: translations?.features?.subscription?.description || config.subscription.description,
       };
@@ -127,7 +128,7 @@ export const useSettingsScreenConfig = (
     if (config.gamification) {
       const existingConfig = typeof config.gamification === 'object' ? config.gamification : { enabled: true };
       config.gamification = {
-        ...existingConfig,
+        ...(existingConfig as any),
         enabled: true,
         title: translations?.features?.gamification?.title || (existingConfig as any).title || "Your Progress",
         description: translations?.features?.gamification?.description || (existingConfig as any).description,
@@ -138,7 +139,7 @@ export const useSettingsScreenConfig = (
     if (config.videoTutorial) {
       const existingConfig = typeof config.videoTutorial === 'object' ? config.videoTutorial : { enabled: true };
       config.videoTutorial = {
-        ...existingConfig,
+        ...(existingConfig as any),
         enabled: true,
         title: translations?.features?.videoTutorial?.title || (existingConfig as any).title || "Video Tutorials",
         description: translations?.features?.videoTutorial?.description || (existingConfig as any).description,

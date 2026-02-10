@@ -156,6 +156,10 @@ export interface SettingsTranslations {
       title?: string;
       description?: string;
     };
+    gamification?: {
+      title?: string;
+      description?: string;
+    };
   };
   feedbackModal?: {
     title?: string;

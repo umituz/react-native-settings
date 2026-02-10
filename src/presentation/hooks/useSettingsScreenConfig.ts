@@ -114,6 +114,26 @@ export const useSettingsScreenConfig = (
       };
     }
 
+    // Add gamification title and description
+    if ((config.gamification === true || (config.gamification && typeof config.gamification === 'object')) && translations?.features?.gamification) {
+      const existingConfig = typeof config.gamification === 'object' ? config.gamification : { enabled: true, storageKey: '' };
+      config.gamification = {
+        ...existingConfig,
+        title: translations.features.gamification.title,
+        description: translations.features.gamification.description,
+      };
+    }
+
+    // Add videoTutorial title and description
+    if ((config.videoTutorial === true || (config.videoTutorial && typeof config.videoTutorial === 'object')) && translations?.features?.videoTutorial) {
+      const existingConfig = typeof config.videoTutorial === 'object' ? config.videoTutorial : { enabled: true };
+      config.videoTutorial = {
+        ...existingConfig,
+        title: translations.features.videoTutorial.title,
+        description: translations.features.videoTutorial.description,
+      };
+    }
+
     return config;
   }, [baseSettingsConfig, translations]);
 

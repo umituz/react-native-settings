@@ -15,18 +15,18 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
     normalizedConfig,
     features,
 }) => {
-    const { t } = useLocalization();
+    const translations = normalizedConfig.translations;
 
     if (!features.about && !features.legal) return null;
 
     return (
-        <SettingsSection title={t("settings.about.title")}>
+        <SettingsSection title={translations?.sections?.about || "About"}>
             {features.about && (
                 <AboutSection
                     config={{
                         ...normalizedConfig.about.config,
-                        title: t("settings.about.title"),
-                        description: t("settings.about.description"),
+                        title: translations?.features?.about?.title || "About",
+                        description: translations?.features?.about?.description || "About the app",
                     }}
                     noBackground={true}
                     hideMargin={true}
@@ -37,8 +37,8 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
                 <LegalSection
                     config={{
                         ...normalizedConfig.legal.config,
-                        title: t("settings.legal.title"),
-                        description: t("settings.legal.description"),
+                        title: translations?.features?.legal?.title || "Legal",
+                        description: translations?.features?.legal?.description || "Privacy Policy & Terms",
                     }}
                     noBackground={true}
                     hideMargin={true}

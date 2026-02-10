@@ -15,13 +15,15 @@ interface FeatureSettingsSectionProps {
     language: boolean;
     notifications: boolean;
   };
+  currentLanguage?: string;
 }
 
 export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   normalizedConfig,
   features,
+  currentLanguage,
 }) => {
-  const { t, currentLanguage } = useLocalization();
+  const translations = normalizedConfig.translations;
   const navigation = useAppNavigation();
 
   const handleLanguagePress = React.useCallback(() => {
@@ -33,9 +35,13 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
     }
   }, [navigation, normalizedConfig.language.config]);
 
-  const currentLanguageData = React.useMemo(() => getLanguageByCode(currentLanguage), [currentLanguage]);
+  const currentLanguageData = React.useMemo(() => 
+    currentLanguage ? getLanguageByCode(currentLanguage) : null, 
+    [currentLanguage]
+  );
+  
   const languageDisplayName = React.useMemo(() => {
-    if (!currentLanguageData) return currentLanguage;
+    if (!currentLanguageData) return currentLanguage || "";
     return `${currentLanguageData.flag} ${currentLanguageData.nativeName}`;
   }, [currentLanguageData, currentLanguage]);
 
@@ -43,14 +49,14 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
 
   return (
     <SettingsSection
-      title={t("settings.sections.app.title") || t("settings.sections.app") || "App Settings"}
+      title={translations?.sections?.app || "App Settings"}
     >
       {features.appearance && (
         <AppearanceSection
           config={{
             ...normalizedConfig.appearance.config,
-            title: t("settings.appearance.title"),
-            description: t("settings.appearance.description"),
+            title: translations?.features?.appearance?.title || "Appearance",
+            description: translations?.features?.appearance?.description || "Theme settings",
           }}
           noBackground={true}
           hideMargin={true}
@@ -59,7 +65,7 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
 
       {features.language && (
         <SettingsItemCard
-          title={t("settings.languageSelection.title")}
+          title={translations?.features?.language?.title || "Language"}
           description={languageDisplayName}
           icon="globe-outline"
           onPress={handleLanguagePress}
@@ -72,8 +78,8 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
         <NotificationsSection
           config={{
             ...normalizedConfig.notifications.config,
-            title: t("settings.notifications.title"),
-            description: t("settings.notifications.description"),
+            title: translations?.features?.notifications?.title || "Notifications",
+            description: translations?.features?.notifications?.description || "Push notification settings",
           }}
           noBackground={true}
           hideMargin={true}

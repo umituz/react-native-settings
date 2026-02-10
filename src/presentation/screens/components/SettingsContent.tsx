@@ -70,7 +70,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   devSettings,
   gamificationConfig,
 }) => {
-  const { t } = useLocalization();
+  const translations = normalizedConfig.translations;
 
   // Optimize: Only track individual feature flags instead of entire object
   const hasAnyFeatures = useMemo(() =>
@@ -113,25 +113,25 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       <CustomSettingsList customSections={customSections} />
 
       {features.subscription && (normalizedConfig.subscription.config?.route || normalizedConfig.subscription.config?.onPress) && (
-        <SubscriptionSettingsItem config={normalizedConfig.subscription.config} t={t} />
+        <SubscriptionSettingsItem 
+          config={normalizedConfig.subscription.config} 
+        />
       )}
 
       {features.wallet && normalizedConfig.wallet.config?.route && (
         <WalletSettingsItem
           config={normalizedConfig.wallet.config}
-          t={t}
         />
       )}
 
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
       {(features.gamification || features.videoTutorial) && (
-        <SettingsSection title={t("settings.sections.progress")}>
+        <SettingsSection title={translations?.sections?.progress || "Progress"}>
           {features.gamification && (
             <GamificationSettingsItem
               config={normalizedConfig.gamification.config || {}}
               gamificationConfig={gamificationConfig}
-              t={t}
               noBackground={true}
               hideMargin={true}
             />
@@ -140,7 +140,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
           {features.videoTutorial && (
             <VideoTutorialSettingsItem
               config={normalizedConfig.videoTutorial.config || {}}
-              t={t}
               noBackground={true}
               hideMargin={true}
             />
@@ -156,7 +155,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {!hasAnyFeatures && (
         <View style={styles.emptyContainer}>
-          <SettingsSection title={emptyStateText || t("settings.noOptionsAvailable")}>
+          <SettingsSection title={emptyStateText || translations?.noOptionsAvailable || "No options available"}>
             <View />
           </SettingsSection>
         </View>
@@ -168,7 +167,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         <SettingsFooter
           versionText={footerText}
           appVersion={appVersion}
-          versionLabel={t("settings.footer.version")}
+          versionLabel={translations?.footer?.version || "Version"}
         />
       )}
     </View>

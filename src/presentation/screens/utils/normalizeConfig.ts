@@ -79,6 +79,7 @@ export interface NormalizedConfig {
     enabled: boolean;
     config?: VideoTutorialConfig;
   };
+  translations?: import("../types").SettingsTranslations;
 }
 
 /**
@@ -128,5 +129,6 @@ export function normalizeSettingsConfig(
     wallet: normalizeConfigValue(config?.wallet, false),
     gamification: normalizeConfigValue(config?.gamification, "auto"),
     videoTutorial: normalizeConfigValue(config?.videoTutorial, "auto"),
+    translations: config?.translations,
   };
 }

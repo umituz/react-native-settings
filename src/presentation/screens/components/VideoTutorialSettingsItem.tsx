@@ -7,7 +7,7 @@ import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoCom
 
 export interface VideoTutorialSettingsItemProps {
   config: VideoTutorialConfig;
-  t: (key: string) => string;
+  t?: (key: string) => string;
   noBackground?: boolean;
   hideMargin?: boolean;
 }

@@ -7,7 +7,7 @@ import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoCom
 
 export interface SubscriptionSettingsItemProps {
   config: SubscriptionConfig;
-  t: (key: string) => string;
+  t?: (key: string) => string;
 }
 
 const SubscriptionSettingsItemComponent: React.FC<SubscriptionSettingsItemProps> = ({ config, t }) => {

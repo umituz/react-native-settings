@@ -55,7 +55,53 @@ import type {
  *   },
  * };
  */
+/**
+ * Global Settings Translations
+ */
+export interface SettingsTranslations {
+  sections?: {
+    app?: string;
+    progress?: string;
+    about?: string;
+    support?: string;
+    subscription?: string;
+  };
+  features?: {
+    appearance?: { title?: string; description?: string };
+    language?: { title?: string };
+    notifications?: { title?: string; description?: string };
+    about?: { title?: string; description?: string };
+    legal?: { title?: string; description?: string };
+    feedback?: { title?: string; description?: string };
+    rating?: { title?: string; description?: string };
+    faqs?: { title?: string; description?: string };
+  };
+  feedbackModal?: {
+    title?: string;
+    ratingLabel?: string;
+    descriptionPlaceholder?: string;
+    submitButton?: string;
+    submittingButton?: string;
+    types?: {
+      general?: string;
+      bugReport?: string;
+      featureRequest?: string;
+      improvement?: string;
+      other?: string;
+    };
+  };
+  noOptionsAvailable?: string;
+  footer?: {
+    version?: string;
+  };
+}
+
 export interface SettingsConfig {
+  /**
+   * Application-wide translations
+   */
+  translations?: SettingsTranslations;
+
   /**
    * Appearance settings (Theme customization)
    * @default 'auto'

@@ -10,7 +10,7 @@ import { compareGamificationProps } from "../../../infrastructure/utils/memoComp
 export interface GamificationSettingsItemProps {
   config: GamificationItemConfig;
   gamificationConfig?: GamificationSettingsConfig;
-  t: (key: string) => string;
+  t?: (key: string) => string;
   noBackground?: boolean;
   hideMargin?: boolean;
 }

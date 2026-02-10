@@ -28,6 +28,9 @@ export interface SettingsFeatures {
   faqs?: boolean;
   about?: boolean;
   legal?: boolean;
+  gamification?: boolean;
+  videoTutorial?: boolean;
+  subscription?: boolean;
 }
 
 export interface UseSettingsScreenConfigParams {
@@ -63,6 +66,9 @@ export const useSettingsScreenConfig = (
     faqs: showFaqs = true,
     about: showAbout = true,
     legal: showLegal = true,
+    gamification: showGamification = true,
+    videoTutorial: showVideoTutorial = true,
+    subscription: showSubscription = true,
   } = features;
 
   const { user, loading, isAuthReady } = useAuth();
@@ -87,6 +93,9 @@ export const useSettingsScreenConfig = (
       faqs: showFaqs,
       about: showAbout,
       legal: showLegal,
+      gamification: showGamification,
+      videoTutorial: showVideoTutorial,
+      subscription: showSubscription,
     },
   });
 

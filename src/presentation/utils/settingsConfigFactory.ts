@@ -32,6 +32,9 @@ export interface SettingsConfigFactoryParams {
     faqs: boolean;
     about: boolean;
     legal: boolean;
+    gamification: boolean;
+    videoTutorial: boolean;
+    subscription: boolean;
   };
 }
 
@@ -58,7 +61,9 @@ export const createSettingsConfig = (
     legal: features.legal ? createLegalConfig() : false,
     faqs: features.faqs ? createFAQConfig() : false,
     rating: features.rating ? createRatingConfig(handleRatePress, appStoreUrl) : false,
-    subscription: createSubscriptionConfig(isPremium, "SubscriptionDetail"),
+    subscription: features.subscription ? createSubscriptionConfig(isPremium, "SubscriptionDetail") : false,
+    gamification: features.gamification ? true : false,
+    videoTutorial: features.videoTutorial ? true : false,
     disclaimer: false,
   };
 };
@@ -82,5 +87,8 @@ export const useSettingsConfigFactory = (
     params.features.legal,
     params.features.faqs,
     params.features.rating,
+    params.features.gamification,
+    params.features.videoTutorial,
+    params.features.subscription,
   ]);
 };

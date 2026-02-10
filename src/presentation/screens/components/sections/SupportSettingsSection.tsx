@@ -3,6 +3,7 @@ import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
+import { VideoTutorialSettingsItem } from "../VideoTutorialSettingsItem";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 
@@ -22,7 +23,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
         navigation.navigate("FAQ" as never);
     }, [navigation]);
 
-    if (!(features.feedback || features.rating || features.faqs)) return null;
+    if (!(features.feedback || features.rating || features.faqs || features.videoTutorial)) return null;
 
     return (
         <SettingsSection title={translations?.sections?.support}>
@@ -90,6 +91,14 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                     description={normalizedConfig.faqs.config?.description || translations?.features?.faqs?.description}
                     icon="help-circle-outline"
                     onPress={handleFAQPress}
+                    noBackground={true}
+                    hideMargin={true}
+                />
+            )}
+
+            {features.videoTutorial && (
+                <VideoTutorialSettingsItem
+                    config={normalizedConfig.videoTutorial.config || {}}
                     noBackground={true}
                     hideMargin={true}
                 />

@@ -6,29 +6,14 @@
  * Apps pass subscription config from subscription package.
  */
 
-import { useMemo, useCallback } from "react";
-import { Linking } from "react-native";
-import {
-  useAuth,
-  useAccountManagement,
-  useAuthModalStore,
-  useUserProfile,
-} from "@umituz/react-native-auth";
-import { AlertService } from "@umituz/react-native-design-system";
+import { useMemo } from "react";
+import { useAuth, useUserProfile } from "@umituz/react-native-auth";
 import { useLocalization } from "../../domains/localization";
-import {
-  createAppearanceConfig,
-  createLanguageConfig,
-  createNotificationsConfig,
-  createAboutConfig,
-  createLegalConfig,
-  createFeedbackConfig,
-  createRatingConfig,
-  createFAQConfig,
-  createSubscriptionConfig,
-} from "../utils/config-creators";
 import { createUserProfileDisplay } from "../utils/userProfileUtils";
 import { createAccountConfig } from "../utils/accountConfigUtils";
+import { useAuthHandlers } from "../utils/useAuthHandlers";
+import { translateFAQData } from "../utils/faqTranslator";
+import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
 import type { SettingsConfig } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
 import type { AppInfo, FAQData, UserProfileDisplay, AdditionalScreen } from "../navigation/types";
@@ -80,54 +65,31 @@ export const useSettingsScreenConfig = (
   } = features;
 
   const { t } = useLocalization();
-  const { user, loading, isAuthReady, signOut } = useAuth();
-  const { deleteAccount } = useAccountManagement();
+  const { user, loading, isAuthReady } = useAuth();
   const userProfileData = useUserProfile({});
-  const { showAuthModal } = useAuthModalStore();
 
-  const handleRatePress = useCallback(async () => {
-    const url = appInfo.appStoreUrl;
-    if (url && (await Linking.canOpenURL(url))) {
-      await Linking.openURL(url);
-    }
-  }, [appInfo.appStoreUrl]);
+  // Use centralized auth handlers
+  const { handleRatePress, handleSignOut, handleDeleteAccount, handleSignIn } =
+    useAuthHandlers(appInfo);
 
-  const handleSignOut = useCallback(async () => {
-    try {
-      await signOut();
-    } catch {
-      AlertService.createErrorAlert(t("common.error"), t("auth.errors.unknownError"));
-    }
-  }, [signOut, t]);
-
-  const handleDeleteAccount = useCallback(async () => {
-    try {
-      await deleteAccount();
-    } catch {
-      AlertService.createErrorAlert(t("common.error"), t("settings.account.deleteError"));
-    }
-  }, [deleteAccount, t]);
-
-  const handleSignIn = useCallback(() => {
-    showAuthModal(() => {}, "login");
-  }, [showAuthModal]);
-
-  const settingsConfig = useMemo((): SettingsConfig => ({
-    appearance: showAppearance ? createAppearanceConfig(t) : false,
-    language: showLanguage ? createLanguageConfig(t) : false,
-    notifications: showNotifications ? createNotificationsConfig(t) : false,
-    feedback: showFeedback ? createFeedbackConfig(t, onFeedbackSubmit) : false,
-    about: showAbout ? createAboutConfig(t) : false,
-    legal: showLegal ? createLegalConfig(t) : false,
-    faqs: showFaqs ? createFAQConfig(t) : false,
-    rating: showRating ? createRatingConfig(t, handleRatePress, appInfo.appStoreUrl || "") : false,
-    subscription: createSubscriptionConfig(t, isPremium, "SubscriptionDetail"),
-    disclaimer: false,
-  }), [
-    t, onFeedbackSubmit, handleRatePress, appInfo.appStoreUrl, isPremium,
-    showAppearance, showLanguage, showNotifications, showFeedback,
-    showAbout, showLegal, showFaqs, showRating,
-  ]);
+  // Use settings config factory
+  const settingsConfig = useSettingsConfigFactory({
+    t,
+    onFeedbackSubmit,
+    handleRatePress,
+    appStoreUrl: appInfo.appStoreUrl || "",
+    isPremium,
+    features: {
+      notifications: showNotifications,
+      appearance: showAppearance,
+      language: showLanguage,
+      feedback: showFeedback,
+      rating: showRating,
+      faqs: showFaqs,
+      about: showAbout,
+      legal: showLegal,
+    },
+  });
 
   const userProfile = useMemo(() => createUserProfileDisplay({
     profileData: userProfileData,
@@ -147,20 +109,11 @@ export const useSettingsScreenConfig = (
     t,
   }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, t]);
 
-  const translatedFaqData = useMemo((): FAQData | undefined => {
-    if (!faqData) return undefined;
-    return {
-      categories: faqData.categories.map((category) => ({
-        id: category.id,
-        title: t(category.title),
-        items: category.items.map((item) => ({
-          id: item.id,
-          question: t(item.question, { appName: appInfo.name }),
-          answer: t(item.answer, { appName: appInfo.name }),
-        })),
-      })),
-    };
-  }, [faqData, t, appInfo.name]);
+  // Use centralized FAQ translation
+  const translatedFaqData = useMemo(() =>
+    translateFAQData(faqData, t, appInfo),
+    [faqData, t, appInfo]
+  );
 
   return {
     settingsConfig,

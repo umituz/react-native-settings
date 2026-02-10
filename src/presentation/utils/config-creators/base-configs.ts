@@ -1,6 +1,7 @@
 /**
  * Base Settings Config Creators
  * Standard settings: appearance, language, notifications, about, legal
+ * Refactored to use configFactory pattern for consistency
  */
 
 import type {
@@ -11,6 +12,7 @@ import type {
   LegalConfig,
 } from "../../screens/types";
 import type { TranslationFunction } from "./types";
+import { createBaseConfig, createConfigWithExtensions } from "../../../infrastructure/utils/configFactory";
 
 /**
  * Create appearance configuration
@@ -18,14 +20,15 @@ import type { TranslationFunction } from "./types";
 export const createAppearanceConfig = (
   t: TranslationFunction,
   routeOrOnPress?: string | (() => void),
-): AppearanceConfig => ({
-  enabled: true,
-  title: t("settings.appearance.title"),
-  description: t("settings.appearance.description"),
-  icon: "color-palette-outline",
-  route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
-  onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
-});
+): AppearanceConfig => {
+  return createBaseConfig<AppearanceConfig>({
+    t,
+    titleKey: "settings.appearance.title",
+    descriptionKey: "settings.appearance.description",
+    icon: "color-palette-outline",
+    routeOrOnPress,
+  });
+};
 
 /**
  * Create language configuration
@@ -33,14 +36,15 @@ export const createAppearanceConfig = (
 export const createLanguageConfig = (
   t: TranslationFunction,
   routeOrOnPress?: string | (() => void),
-): LanguageConfig => ({
-  enabled: true,
-  title: t("settings.language.title"),
-  description: t("settings.language.description"),
-  icon: "globe-outline",
-  route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
-  onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
-});
+): LanguageConfig => {
+  return createBaseConfig<LanguageConfig>({
+    t,
+    titleKey: "settings.language.title",
+    descriptionKey: "settings.language.description",
+    icon: "globe-outline",
+    routeOrOnPress,
+  });
+};
 
 /**
  * Create notifications configuration
@@ -48,16 +52,22 @@ export const createLanguageConfig = (
 export const createNotificationsConfig = (
   t: TranslationFunction,
   routeOrOnPress?: string | (() => void),
-): NotificationsConfig => ({
-  enabled: true,
-  showToggle: false,
-  route: typeof routeOrOnPress === "string" ? routeOrOnPress : "Notifications",
-  onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
-  title: t("settings.notifications.title"),
-  description: t("settings.notifications.description"),
-  sectionTitle: t("settings.notifications.sectionTitle"),
-  icon: "notifications-outline",
-});
+): NotificationsConfig => {
+  return createConfigWithExtensions<NotificationsConfig>(
+    {
+      t,
+      titleKey: "settings.notifications.title",
+      descriptionKey: "settings.notifications.description",
+      icon: "notifications-outline",
+      routeOrOnPress,
+      defaultRoute: "Notifications",
+    },
+    {
+      showToggle: false,
+      sectionTitle: t("settings.notifications.sectionTitle"),
+    }
+  );
+};
 
 /**
  * Create about configuration
@@ -65,14 +75,15 @@ export const createNotificationsConfig = (
 export const createAboutConfig = (
   t: TranslationFunction,
   routeOrOnPress?: string | (() => void),
-): AboutConfig => ({
-  enabled: true,
-  title: t("settings.about.title"),
-  description: t("settings.about.description"),
-  icon: "information-circle-outline",
-  route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
-  onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
-});
+): AboutConfig => {
+  return createBaseConfig<AboutConfig>({
+    t,
+    titleKey: "settings.about.title",
+    descriptionKey: "settings.about.description",
+    icon: "information-circle-outline",
+    routeOrOnPress,
+  });
+};
 
 /**
  * Create legal configuration
@@ -80,11 +91,12 @@ export const createAboutConfig = (
 export const createLegalConfig = (
   t: TranslationFunction,
   routeOrOnPress?: string | (() => void),
-): LegalConfig => ({
-  enabled: true,
-  title: t("settings.legal.title"),
-  description: t("settings.legal.description"),
-  icon: "document-text-outline",
-  route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
-  onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
-});
+): LegalConfig => {
+  return createBaseConfig<LegalConfig>({
+    t,
+    titleKey: "settings.legal.title",
+    descriptionKey: "settings.legal.description",
+    icon: "document-text-outline",
+    routeOrOnPress,
+  });
+};

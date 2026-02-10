@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { useAppDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
+import { validateFeedbackForm } from "../../../../infrastructure/utils/validation";
 
 import { getFeedbackFormStyles as getStyles } from "./FeedbackForm.styles";
 
@@ -40,9 +41,15 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     const [isSubmittingLocal, setIsSubmittingLocal] = useState(false);
 
     const handleSubmit = async () => {
-        // Validate input
-        if (!description.trim()) {
-            setError("Please provide a description");
+        // Validate using centralized validation
+        const validationResult = validateFeedbackForm({
+            type: selectedType,
+            rating,
+            description,
+        });
+
+        if (!validationResult.isValid) {
+            setError(validationResult.error || "Validation failed");
             return;
         }
 

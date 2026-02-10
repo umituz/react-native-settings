@@ -78,16 +78,16 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
       const state = get();
       const pointsToAdd = currentConfig?.pointsPerAction ?? 15;
 
+      const newTotalTasks = state.totalTasksCompleted + 1;
+
       set({
-        totalTasksCompleted: state.totalTasksCompleted + 1,
+        totalTasksCompleted: newTotalTasks,
         points: state.points + pointsToAdd,
       });
 
-      // Update streak
-      get().updateStreak();
-
-      // Check achievements
-      get().checkAchievements();
+      const actions = get() as GamificationActions;
+      actions.updateStreak();
+      actions.checkAchievements();
     },
 
     updateStreak: () => {
@@ -121,7 +121,6 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
 
       const state = get();
 
-      // Safety check for achievements array
       if (!state.achievements || state.achievements.length === 0) {
         return [];
       }

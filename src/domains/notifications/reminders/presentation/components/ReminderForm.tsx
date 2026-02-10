@@ -11,15 +11,13 @@ import { TimePresetSelector } from './TimePresetSelector';
 import { FrequencySelector } from './FrequencySelector';
 import { WeekdaySelector } from './WeekdaySelector';
 import { FormButton } from './FormButton';
-import { 
-  DEFAULT_HOUR, 
-  DEFAULT_MINUTE, 
-  DEFAULT_WEEKDAY, 
-  MAX_TITLE_LENGTH, 
-  MAX_BODY_LENGTH, 
-  VALID_HOUR_RANGE, 
-  VALID_MINUTE_RANGE, 
-  VALID_WEEKDAY_RANGE,
+import { validateReminderForm } from '../../../../../infrastructure/utils/validation';
+import {
+  DEFAULT_HOUR,
+  DEFAULT_MINUTE,
+  DEFAULT_WEEKDAY,
+  MAX_TITLE_LENGTH,
+  MAX_BODY_LENGTH,
   type ReminderFormProps,
 } from './ReminderForm.constants';
 import { createReminderFormStyles as createStyles } from './ReminderForm.styles';
@@ -44,25 +42,16 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
   const [minute, setMinute] = useState(initialData?.minute ?? DEFAULT_MINUTE);
   const [weekday, setWeekday] = useState(initialData?.weekday ?? DEFAULT_WEEKDAY);
   const [isCustomTime, setIsCustomTime] = useState(!initialData?.timePresetId);
-
-  // Validation helper functions
-  const isValidHour = useCallback((h: number): boolean => {
-    return h >= VALID_HOUR_RANGE.min && h <= VALID_HOUR_RANGE.max;
-  }, []);
-
-  const isValidMinute = useCallback((m: number): boolean => {
-    return m >= VALID_MINUTE_RANGE.min && m <= VALID_MINUTE_RANGE.max;
-  }, []);
-
-  const isValidWeekday = useCallback((w: number): boolean => {
-    return w >= VALID_WEEKDAY_RANGE.min && w <= VALID_WEEKDAY_RANGE.max;
-  }, []);
+  // FIXED: Add error state for user feedback
+  const [error, setError] = useState<string | null>(null);
 
   const handlePresetSelect = useCallback((preset: TimePreset) => {
     setSelectedPresetId(preset.id);
     setHour(preset.hour);
     setMinute(preset.minute);
     setIsCustomTime(false);
+    // Clear error when user changes something
+    setError(null);
   }, []);
 
   const handleCustomSelect = useCallback(() => {
@@ -74,29 +63,26 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
     const trimmedTitle = title.trim();
     const trimmedBody = body.trim();
 
-    // Validate title
-    if (!trimmedTitle) {
+    // Validate using centralized validation
+    const validationResult = validateReminderForm({
+      title: trimmedTitle,
+      body: trimmedBody,
+      frequency,
+      hour,
+      minute,
+      weekday,
+      maxTitleLength: MAX_TITLE_LENGTH,
+      maxBodyLength: MAX_BODY_LENGTH,
+    });
+
+    if (!validationResult.isValid) {
+      // FIXED: Show error to user
+      setError(validationResult.error || "Validation failed");
       return;
     }
 
-    if (trimmedTitle.length > MAX_TITLE_LENGTH) {
-      return;
-    }
-
-    // Validate body length
-    if (trimmedBody.length > MAX_BODY_LENGTH) {
-      return;
-    }
-
-    // Validate time values
-    if (!isValidHour(hour) || !isValidMinute(minute)) {
-      return;
-    }
-
-    // Validate weekday if frequency is weekly
-    if (frequency === 'weekly' && !isValidWeekday(weekday)) {
-      return;
-    }
+    // Clear error and proceed
+    setError(null);
 
     // Sanitize input (React Native handles XSS, but we trim extra whitespace)
     const sanitizedTitle = trimmedTitle.replace(/\s+/g, ' ').trim();
@@ -112,7 +98,7 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
       weekday: frequency === 'weekly' ? weekday : undefined,
       dayOfMonth: frequency === 'monthly' ? 1 : undefined,
     });
-  }, [title, body, frequency, selectedPresetId, hour, minute, weekday, isCustomTime, onSave, isValidHour, isValidMinute, isValidWeekday]);
+  }, [title, body, frequency, selectedPresetId, hour, minute, weekday, isCustomTime, onSave]);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -121,7 +107,10 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
         <TextInput
           style={styles.input}
           value={title}
-          onChangeText={setTitle}
+          onChangeText={(text) => {
+            setTitle(text);
+            setError(null); // Clear error on input
+          }}
           placeholder={translations.titlePlaceholder}
           placeholderTextColor={tokens.colors.textSecondary}
         />
@@ -132,7 +121,10 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
         <TextInput
           style={[styles.input, styles.multilineInput]}
           value={body}
-          onChangeText={setBody}
+          onChangeText={(text) => {
+            setBody(text);
+            setError(null); // Clear error on input
+          }}
           placeholder={translations.bodyPlaceholder}
           placeholderTextColor={tokens.colors.textSecondary}
           multiline
@@ -171,9 +163,23 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
         </View>
       )}
 
+      {/* FIXED: Show error message to user */}
+      {error && (
+        <View style={styles.section}>
+          <AtomicText type="bodySmall" color="error">
+            {error}
+          </AtomicText>
+        </View>
+      )}
+
       <View style={styles.buttonRow}>
         <FormButton label={translations.cancelButton} onPress={onCancel} variant="secondary" />
-        <FormButton label={translations.saveButton} onPress={handleSave} disabled={!title.trim()} />
+        {/* FIXED: Disable button when form is invalid */}
+        <FormButton
+          label={translations.saveButton}
+          onPress={handleSave}
+          disabled={!title.trim() || !frequency}
+        />
       </View>
     </ScrollView>
   );

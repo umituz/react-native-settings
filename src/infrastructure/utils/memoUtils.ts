@@ -2,7 +2,7 @@
  * Memo Utilities
  * Centralized memoization helpers to reduce code duplication
  */
-import { useMemo, useCallback, useRef, DependencyList } from 'react';
+import { useMemo, useCallback, useRef, useEffect, DependencyList } from 'react';
 import type { DesignTokens } from '@umituz/react-native-design-system';
 
 /**
@@ -114,7 +114,7 @@ export function useMemoWithEquality<T>(
 }
 
 /**
- * Custom hook that creates a debounced callback
+ * Custom hook that creates a debounced callback with proper cleanup
  * @param callback Function to debounce
  * @param delay Delay in milliseconds
  * @returns Debounced callback
@@ -124,6 +124,14 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
   delay: number
 ): T {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return useCallback((...args: Parameters<T>) => {
     if (timeoutRef.current) {

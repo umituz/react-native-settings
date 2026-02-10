@@ -8,11 +8,15 @@ import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoCom
 export interface VideoTutorialSettingsItemProps {
   config: VideoTutorialConfig;
   t: (key: string) => string;
+  noBackground?: boolean;
+  hideMargin?: boolean;
 }
 
 const VideoTutorialSettingsItemComponent: React.FC<VideoTutorialSettingsItemProps> = ({
   config,
-  t
+  t,
+  noBackground,
+  hideMargin,
 }) => {
   const navigation = useAppNavigation();
 
@@ -36,6 +40,8 @@ const VideoTutorialSettingsItemComponent: React.FC<VideoTutorialSettingsItemProp
       icon={icon}
       onPress={handlePress}
       sectionTitle={config.sectionTitle}
+      noBackground={noBackground}
+      hideMargin={hideMargin}
     />
   );
 };

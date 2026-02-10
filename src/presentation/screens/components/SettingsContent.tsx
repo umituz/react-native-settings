@@ -123,22 +123,30 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         />
       )}
 
-      {features.gamification && (
-        <GamificationSettingsItem
-          config={normalizedConfig.gamification.config || {}}
-          gamificationConfig={gamificationConfig}
-          t={t}
-        />
-      )}
-
-      {features.videoTutorial && (
-        <VideoTutorialSettingsItem
-          config={normalizedConfig.videoTutorial.config || {}}
-          t={t}
-        />
-      )}
-
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
+
+      {(features.gamification || features.videoTutorial) && (
+        <SettingsSection title={t("settings.sections.progress")}>
+          {features.gamification && (
+            <GamificationSettingsItem
+              config={normalizedConfig.gamification.config || {}}
+              gamificationConfig={gamificationConfig}
+              t={t}
+              noBackground={true}
+              hideMargin={true}
+            />
+          )}
+
+          {features.videoTutorial && (
+            <VideoTutorialSettingsItem
+              config={normalizedConfig.videoTutorial.config || {}}
+              t={t}
+              noBackground={true}
+              hideMargin={true}
+            />
+          )}
+        </SettingsSection>
+      )}
 
       <IdentitySettingsSection normalizedConfig={normalizedConfig} features={features} />
 

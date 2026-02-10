@@ -11,12 +11,16 @@ export interface GamificationSettingsItemProps {
   config: GamificationItemConfig;
   gamificationConfig?: GamificationSettingsConfig;
   t: (key: string) => string;
+  noBackground?: boolean;
+  hideMargin?: boolean;
 }
 
 const GamificationSettingsItemComponent: React.FC<GamificationSettingsItemProps> = ({
   config,
   gamificationConfig,
-  t
+  t,
+  noBackground,
+  hideMargin,
 }) => {
   const navigation = useAppNavigation();
   const { level } = useGamification(gamificationConfig);
@@ -41,6 +45,8 @@ const GamificationSettingsItemComponent: React.FC<GamificationSettingsItemProps>
       icon={icon}
       onPress={handlePress}
       sectionTitle={config.sectionTitle}
+      noBackground={noBackground}
+      hideMargin={hideMargin}
     />
   );
 };

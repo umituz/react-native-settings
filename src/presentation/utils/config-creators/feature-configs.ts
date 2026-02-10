@@ -50,6 +50,8 @@ export const createGamificationConfig = (
   translations: {
     title: t("settings.gamification.title"),
     statsTitle: t("settings.gamification.stats.title"),
+    pointsLabel: t("settings.gamification.stats.points"),
+    totalCompletedLabel: t("settings.gamification.stats.totalCompleted"),
     achievementsTitle: t("settings.gamification.achievements.title"),
     streakTitle: t("settings.gamification.streak.title"),
     bestStreak: t("settings.gamification.streak.best"),

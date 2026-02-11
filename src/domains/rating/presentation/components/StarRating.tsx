@@ -44,7 +44,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
         <View style={[styles.container, style]}>
             {Array.from({ length: maxRating }).map((_, index) => (
                 <TouchableOpacity
-                    key={index}
+                    key={`star-${index}`}
                     onPress={() => handlePress(index)}
                     disabled={disabled}
                     activeOpacity={0.7}

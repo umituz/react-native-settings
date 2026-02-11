@@ -36,9 +36,9 @@ export const StatsGrid: React.FC<StatsGridProps> = ({
         {statsTitle}
       </AtomicText>
       <View style={styles.statsGrid}>
-        {stats.map((stat, index) => (
+        {stats.map((stat) => (
           <StatsCard
-            key={index}
+            key={`${stat.label}-${stat.value}`}
             {...stat}
             accentColor={accentColor}
             backgroundColor={cardBackgroundColor}

@@ -181,13 +181,12 @@ export const logError = (
     ...context?.additionalInfo,
   };
 
-  // In production, send to error tracking service
+  // Log errors in development mode
   if (typeof __DEV__ !== "undefined" && __DEV__) {
     console.error("[Error]", logData);
   }
 
-  // TODO: Send to error tracking service in production
-  // ErrorTracking.captureException(error, logData);
+  // Note: Apps can integrate error tracking services (e.g., Sentry) by wrapping this function
 };
 
 /**

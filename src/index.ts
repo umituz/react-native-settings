@@ -91,8 +91,6 @@ export type { SettingsSectionProps } from './presentation/components/SettingsSec
 export { SettingsFooter } from './presentation/components/SettingsFooter';
 export type { SettingsFooterProps } from './presentation/components/SettingsFooter';
 
-
-
 // =============================================================================
 // DOMAIN EXPORTS - Consolidated Features
 // =============================================================================

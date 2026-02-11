@@ -1,4 +1,4 @@
-import type { SettingsTranslations } from "../../screens/types/SettingsConfig";
+import type { SettingsTranslations } from "../../screens/types";
 
 export const createNotificationTranslations = (translations?: SettingsTranslations["features"]) => ({
   screenTitle: translations?.notifications?.title || "",

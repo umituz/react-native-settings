@@ -13,11 +13,10 @@ import { createAccountConfig } from "../utils/accountConfigUtils";
 import { useAuthHandlers } from "../utils/useAuthHandlers";
 import { translateFAQData } from "../utils/faqTranslator";
 import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
-import type { SettingsConfig } from "../screens/types";
+import type { SettingsConfig, SettingsTranslations } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
 import type { AppInfo, FAQData, UserProfileDisplay, AdditionalScreen } from "../navigation/types";
 import type { AccountScreenConfig } from "@umituz/react-native-auth";
-import type { SettingsTranslations } from "../screens/types/SettingsConfig";
 
 export interface SettingsFeatures {
   notifications?: boolean;

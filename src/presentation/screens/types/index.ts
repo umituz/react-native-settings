@@ -24,5 +24,6 @@ export type {
   VideoTutorialConfig,
 } from "./UserFeatureConfig";
 export type { GamificationSettingsConfig as GamificationConfig } from "../../../domains/gamification";
-export type { SettingsConfig, SettingsTranslations } from "./SettingsConfig";
+export type { SettingsConfig } from "./SettingsConfig";
+export type { SettingsTranslations } from "./SettingsTranslations";
 export type { CustomSettingsSection } from "./CustomSection";

@@ -2,59 +2,21 @@ import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
-import { DevSettingsSection, DevSettingsProps } from "../../../domains/dev";
+import { DevSettingsSection } from "../../../domains/dev";
 import { DisclaimerSetting } from "../../../domains/disclaimer";
 import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
 import { FeatureSettingsSection } from "./sections/FeatureSettingsSection";
 import { IdentitySettingsSection } from "./sections/IdentitySettingsSection";
 import { SupportSettingsSection } from "./sections/SupportSettingsSection";
 import { CustomSettingsList } from "./sections/CustomSettingsList";
-import type { NormalizedConfig } from "../utils/normalizeConfig";
-import type { CustomSettingsSection } from "../types";
+import { hasAnyFeaturesEnabled } from "./utils/featureChecker";
+import type { SettingsContentProps } from "./types/SettingsContentProps";
 
 // Extracted Item Components
 import { SubscriptionSettingsItem } from "./SubscriptionSettingsItem";
 import { WalletSettingsItem } from "./WalletSettingsItem";
 import { GamificationSettingsItem } from "./GamificationSettingsItem";
 import { VideoTutorialSettingsItem } from "./VideoTutorialSettingsItem";
-
-interface SettingsContentProps {
-  normalizedConfig: NormalizedConfig;
-  features: {
-    appearance: boolean;
-    language: boolean;
-    notifications: boolean;
-    about: boolean;
-    legal: boolean;
-    disclaimer: boolean;
-    userProfile: boolean;
-    feedback: boolean;
-    rating: boolean;
-    faqs: boolean;
-    subscription: boolean;
-    wallet: boolean;
-    gamification: boolean;
-    videoTutorial: boolean;
-  };
-  showUserProfile?: boolean;
-  userProfile?: {
-    displayName?: string;
-    userId?: string;
-    isAnonymous?: boolean;
-    avatarUrl?: string;
-    accountSettingsRoute?: string;
-    onPress?: () => void;
-    anonymousDisplayName?: string;
-    avatarServiceUrl?: string;
-  };
-  showFooter?: boolean;
-  footerText?: string;
-  appVersion?: string;
-  customSections?: CustomSettingsSection[];
-  emptyStateText?: string;
-  devSettings?: DevSettingsProps;
-  gamificationConfig?: import("../../../domains/gamification").GamificationSettingsConfig;
-}
 
 export const SettingsContent: React.FC<SettingsContentProps> = ({
   normalizedConfig,
@@ -70,39 +32,9 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   gamificationConfig,
 }) => {
   const translations = normalizedConfig.translations;
-
-  // Optimize: Only track individual feature flags instead of entire object
-  const hasAnyFeatures = useMemo(() =>
-    features.appearance ||
-    features.language ||
-    features.notifications ||
-    features.about ||
-    features.legal ||
-    features.disclaimer ||
-    features.feedback ||
-    features.rating ||
-    features.faqs ||
-    features.subscription ||
-    features.wallet ||
-    features.gamification ||
-    features.videoTutorial ||
-    customSections.length > 0,
-    [
-      features.appearance,
-      features.language,
-      features.notifications,
-      features.about,
-      features.legal,
-      features.disclaimer,
-      features.feedback,
-      features.rating,
-      features.faqs,
-      features.subscription,
-      features.wallet,
-      features.gamification,
-      features.videoTutorial,
-      customSections.length,
-    ]
+  const hasAnyFeatures = useMemo(
+    () => hasAnyFeaturesEnabled(features, customSections),
+    [features, customSections]
   );
 
   return (

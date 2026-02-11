@@ -13,7 +13,7 @@ import {
 } from "@umituz/react-native-auth";
 import { AlertService } from "@umituz/react-native-design-system";
 import type { AppInfo } from "../navigation/types";
-import type { SettingsTranslations } from "../screens/types/SettingsConfig";
+import type { SettingsTranslations } from "../screens/types";
 
 declare const __DEV__: boolean;
 

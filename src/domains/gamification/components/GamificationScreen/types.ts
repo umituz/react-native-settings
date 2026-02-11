@@ -6,7 +6,7 @@
 import type React from 'react';
 import type { LevelProgressProps } from "../LevelProgress";
 import type { StatsCardProps } from "../StatsCard";
-import type { AchievementItemProps } from "../AchievementItem";
+import type { AchievementItemProps } from "../types/AchievementItemProps";
 import type { StreakDisplayProps } from "../StreakDisplay";
 import type { ViewStyle, TextStyle } from "react-native";
 import type { GamificationConfig } from "../../types";

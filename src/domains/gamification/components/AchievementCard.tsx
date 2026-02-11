@@ -90,7 +90,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
 
       {isUnlocked && (
         <View style={[styles.checkmark, { backgroundColor: finalUnlockedColor }]}>
-          <AtomicText style={styles.checkmarkText}>✓</AtomicText>
+          <AtomicText style={[styles.checkmarkText, { color: tokens.colors.onPrimary }]}>✓</AtomicText>
         </View>
       )}
     </View>
@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   checkmarkText: {
-    color: "#FFFFFF",
     fontSize: 14,
     fontWeight: "bold",
   },

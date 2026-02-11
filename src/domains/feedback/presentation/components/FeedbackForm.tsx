@@ -8,22 +8,8 @@ import { View, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { useAppDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import { validateFeedbackForm } from "../../../../infrastructure/utils/validation";
-
+import type { FeedbackFormProps } from "./FeedbackFormProps";
 import { getFeedbackFormStyles as getStyles } from "./FeedbackForm.styles";
-
-export interface FeedbackFormProps {
-    onSubmit: (data: { type: FeedbackType; rating: FeedbackRating; description: string; title: string }) => Promise<void>;
-    texts: {
-        ratingLabel: string;
-        descriptionPlaceholder: string;
-        submitButton: string;
-        submittingButton: string;
-        feedbackTypes: Array<{ type: FeedbackType; label: string }>;
-        defaultTitle: (type: FeedbackType) => string;
-    };
-    initialType?: FeedbackType;
-    isSubmitting?: boolean;
-}
 
 export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     onSubmit,

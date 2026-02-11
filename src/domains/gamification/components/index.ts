@@ -9,6 +9,7 @@ export { AchievementCard, type AchievementCardProps } from "./AchievementCard";
 export { AchievementToast, type AchievementToastProps } from "./AchievementToast";
 export { StreakDisplay, type StreakDisplayProps } from "./StreakDisplay";
 export { StatsCard, type StatsCardProps } from "./StatsCard";
-export { AchievementItem, type AchievementItemProps } from "./AchievementItem";
+export { AchievementItem } from "./AchievementItem";
+export type { AchievementItemProps } from "./types/AchievementItemProps";
 export { GamificationScreen } from "./GamificationScreen/index";
 export type { GamificationScreenProps, GamificationConfigProps } from "./GamificationScreen/types";

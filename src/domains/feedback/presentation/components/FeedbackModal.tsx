@@ -8,7 +8,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal, ScreenLayout } from "@umituz/react-native-design-system";
 import { FeedbackForm } from "./FeedbackForm";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
-import type { FeedbackFormProps } from "./FeedbackForm";
+import type { FeedbackFormProps } from "./FeedbackFormProps";
 
 export interface FeedbackModalProps {
     visible: boolean;

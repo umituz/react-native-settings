@@ -25,9 +25,12 @@ export interface SettingsTranslations {
     logoutConfirmMessage?: string;
     deleteConfirmTitle?: string;
     deleteConfirmMessage?: string;
+    deleteAccountTitle?: string;
+    deleteAccountMessage?: string;
     deleteErrorTitle?: string;
     deleteErrorMessage?: string;
     cancel?: string;
+    delete?: string;
   };
   sections?: {
     app?: string;

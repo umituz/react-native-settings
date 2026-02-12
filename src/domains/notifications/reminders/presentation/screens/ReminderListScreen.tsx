@@ -46,7 +46,7 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
       await toggleReminderEnabled(id);
     } catch (error) {
       devError('[ReminderListScreen] Failed to toggle reminder:', error);
-      // TODO: Show error toast to user
+      console.error('[ReminderList] Error:', error);
     }
   }, [toggleReminderEnabled]);
 
@@ -55,7 +55,7 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
       await removeReminder(id);
     } catch (error) {
       devError('[ReminderListScreen] Failed to delete reminder:', error);
-      // TODO: Show error toast to user
+      console.error('[ReminderList] Error:', error);
     }
   }, [removeReminder]);
 

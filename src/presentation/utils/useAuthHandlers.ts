@@ -20,7 +20,7 @@ declare const __DEV__: boolean;
 /**
  * Hook that provides authentication-related handlers
  */
-export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTranslations["errors"]) => {
+export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTranslations["account"] & SettingsTranslations["errors"]) => {
   const { signOut } = useAuth();
   const { showAuthModal } = useAuthModalStore();
   const { deleteAccount: deleteAccountFromAuth } = useAccountManagement({

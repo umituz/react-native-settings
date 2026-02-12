@@ -1,15 +1,15 @@
 /**
  * Auth Handlers Hook
  * Centralized authentication-related handlers for settings screen
- * FIXED: Added proper error logging and user feedback
+ * Uses auth package for all auth operations - no duplication
  */
 
 import { useCallback } from "react";
 import { Linking, Alert } from "react-native";
 import {
   useAuth,
-  useAccountManagement,
   useAuthModalStore,
+  useAccountManagement,
 } from "@umituz/react-native-auth";
 import { AlertService } from "@umituz/react-native-design-system";
 import type { AppInfo } from "../navigation/types";
@@ -22,32 +22,13 @@ declare const __DEV__: boolean;
  */
 export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTranslations["errors"]) => {
   const { signOut } = useAuth();
-
-  const passwordPrompt = useCallback(async (): Promise<string | null> => {
-    return new Promise((resolve) => {
-      Alert.prompt(
-        "Password Required",
-        "Please enter your password to delete your account",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-            onPress: () => resolve(null),
-          },
-          {
-            text: "Confirm",
-            onPress: (password) => resolve(password || null),
-          },
-        ],
-        "secure-text"
-      );
-    });
-  }, []);
-
-  const { deleteAccount } = useAccountManagement({
-    onPasswordRequired: passwordPrompt,
-  });
   const { showAuthModal } = useAuthModalStore();
+  const { deleteAccount: deleteAccountFromAuth } = useAccountManagement({
+    passwordPromptTitle: translations?.deleteAccountTitle || "Confirm Account Deletion",
+    passwordPromptMessage: translations?.deleteAccountMessage || "Please enter your password to permanently delete your account. This action cannot be undone.",
+    passwordPromptCancel: translations?.cancel || "Cancel",
+    passwordPromptConfirm: translations?.delete || "Delete",
+  });
 
   const handleRatePress = useCallback(async () => {
     const url = appInfo.appStoreUrl;
@@ -90,7 +71,8 @@ export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTransla
 
   const handleDeleteAccount = useCallback(async () => {
     try {
-      await deleteAccount();
+      await deleteAccountFromAuth();
+      // Account deleted successfully - auth package handles everything
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
 
@@ -98,22 +80,12 @@ export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTransla
         console.error("[useAuthHandlers] Delete account failed:", error);
       }
 
-      // More specific error messages
-      if (errorMessage.includes("Password required") || errorMessage.includes("password")) {
-        Alert.alert(
-          "Password Required",
-          "Please enter your password when prompted to confirm account deletion.",
-          [{ text: "OK" }]
-        );
-        return;
-      }
-
       AlertService.createErrorAlert(
         translations?.common || "Error",
         errorMessage || translations?.deleteAccountError || "Failed to delete account"
       );
     }
-  }, [deleteAccount, translations]);
+  }, [deleteAccountFromAuth, translations]);
 
   const handleSignIn = useCallback(() => {
     showAuthModal(undefined, "login");

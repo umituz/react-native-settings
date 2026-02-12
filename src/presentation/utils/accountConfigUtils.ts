@@ -49,6 +49,21 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
 
   const anonymous = isAnonymous ?? true;
 
+  // Helper to check if translation value is valid (not empty or undefined)
+  const hasValidTranslation = (value: string | undefined): boolean => {
+    return Boolean(value && value.trim().length > 0);
+  };
+
+  // Only create accountActions if all required translations are present and non-empty
+  const hasValidAccountTranslations = translations &&
+    hasValidTranslation(translations.logout) &&
+    hasValidTranslation(translations.deleteAccount) &&
+    hasValidTranslation(translations.logoutConfirmTitle) &&
+    hasValidTranslation(translations.logoutConfirmMessage) &&
+    hasValidTranslation(translations.deleteConfirmTitle) &&
+    hasValidTranslation(translations.deleteConfirmMessage) &&
+    hasValidTranslation(translations.cancel);
+
   return {
     profile: {
       displayName: displayName || "",
@@ -59,7 +74,7 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
     isAnonymous: anonymous,
     editProfileText: translations?.editProfile || "",
     onSignIn,
-    accountActions: translations ? {
+    accountActions: hasValidAccountTranslations ? {
       onLogout,
       onDeleteAccount,
       logoutText: translations.logout,

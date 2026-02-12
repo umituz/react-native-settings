@@ -18,6 +18,18 @@ export interface SettingsTranslations {
       items?: string[];
     };
   };
+  account?: {
+    editProfile?: string;
+    logout?: string;
+    deleteAccount?: string;
+    logoutConfirmTitle?: string;
+    logoutConfirmMessage?: string;
+    deleteConfirmTitle?: string;
+    deleteConfirmMessage?: string;
+    deleteErrorTitle?: string;
+    deleteErrorMessage?: string;
+    cancel?: string;
+  };
   sections?: {
     app?: string;
     progress?: string;

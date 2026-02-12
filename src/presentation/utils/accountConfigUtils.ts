@@ -6,6 +6,19 @@
 
 import type { AccountScreenConfig } from "@umituz/react-native-auth";
 
+export interface AccountTranslations {
+  editProfile?: string;
+  logout: string;
+  deleteAccount: string;
+  logoutConfirmTitle: string;
+  logoutConfirmMessage: string;
+  deleteConfirmTitle: string;
+  deleteConfirmMessage: string;
+  deleteErrorTitle?: string;
+  deleteErrorMessage?: string;
+  cancel: string;
+}
+
 export interface CreateAccountConfigParams {
   displayName?: string;
   userId?: string;
@@ -15,6 +28,7 @@ export interface CreateAccountConfigParams {
   onSignIn: () => void;
   onLogout: () => Promise<void>;
   onDeleteAccount: () => Promise<void>;
+  translations?: AccountTranslations;
 }
 
 /**
@@ -30,6 +44,7 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
     onSignIn,
     onLogout,
     onDeleteAccount,
+    translations,
   } = params;
 
   const anonymous = isAnonymous ?? true;
@@ -42,18 +57,20 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
       avatarUrl: avatarUrl ?? photoURL ?? undefined,
     },
     isAnonymous: anonymous,
-    editProfileText: "",
+    editProfileText: translations?.editProfile || "",
     onSignIn,
-    accountActions: {
+    accountActions: translations ? {
       onLogout,
       onDeleteAccount,
-      logoutText: "",
-      logoutConfirmTitle: "",
-      logoutConfirmMessage: "",
-      cancelText: "",
-      deleteAccountText: "",
-      deleteConfirmTitle: "",
-      deleteConfirmMessage: "",
-    },
+      logoutText: translations.logout,
+      logoutConfirmTitle: translations.logoutConfirmTitle,
+      logoutConfirmMessage: translations.logoutConfirmMessage,
+      cancelText: translations.cancel,
+      deleteAccountText: translations.deleteAccount,
+      deleteConfirmTitle: translations.deleteConfirmTitle,
+      deleteConfirmMessage: translations.deleteConfirmMessage,
+      deleteErrorTitle: translations.deleteErrorTitle,
+      deleteErrorMessage: translations.deleteErrorMessage,
+    } : undefined,
   };
 }

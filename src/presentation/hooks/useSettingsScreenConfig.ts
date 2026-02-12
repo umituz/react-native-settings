@@ -162,7 +162,8 @@ export const useSettingsScreenConfig = (
     onSignIn: handleSignIn,
     onLogout: handleSignOut,
     onDeleteAccount: handleDeleteAccount,
-  }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount]);
+    translations: translations?.account,
+  }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations]);
 
   // Use centralized FAQ translation
   const translatedFaqData = useMemo(() =>

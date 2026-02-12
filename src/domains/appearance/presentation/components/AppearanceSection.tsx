@@ -1,8 +1,8 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import { useAppNavigation } from '@umituz/react-native-design-system';
 import { AppearanceSectionConfig } from '../../types';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
+import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';
 
 export interface AppearanceSectionProps {
     config?: AppearanceSectionConfig;
@@ -29,7 +29,7 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
     hideMargin,
 }) => {
 
-    const navigation = useAppNavigation();
+    const navigation = useSettingsNavigation();
 
     const route = config?.route || config?.defaultRoute || 'Appearance';
     const title = titleProp || config?.title;
@@ -41,7 +41,7 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
         } else if (config?.onPress) {
             config.onPress();
         } else {
-            navigation.navigate(route as never);
+            navigation.navigate(route as 'Appearance');
         }
     };
 

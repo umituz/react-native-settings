@@ -73,6 +73,7 @@ export function useAppRating(config: RatingConfig): UseAppRatingResult {
       }
     } catch (error) {
       if (typeof __DEV__ !== "undefined" && __DEV__) {
+        console.error('[useAppRating] Failed to request review:', error);
       }
     }
 

@@ -3,9 +3,14 @@
  */
 
 /**
+ * Translation options for i18n parameters
+ */
+export type TranslationOptions = Record<string, string | number | boolean>;
+
+/**
  * Translation function type
  */
-export type TranslationFunction = (key: string, options?: any) => string;
+export type TranslationFunction = (key: string, options?: TranslationOptions) => string;
 
 /**
  * Feedback form data interface

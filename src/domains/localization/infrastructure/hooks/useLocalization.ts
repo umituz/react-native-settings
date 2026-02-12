@@ -7,6 +7,9 @@ export const useLocalization = () => {
   const store = useLocalizationStore();
   const { t } = useTranslationFunction();
 
+  // Destructure to avoid recreating callbacks when store object changes
+  const { isInitialized, initialize } = store;
+
   const getCurrentLanguageObject = useCallback((): Language | undefined => {
     return store.getCurrentLanguage();
   }, [store]);
@@ -16,8 +19,8 @@ export const useLocalization = () => {
   }, [store]);
 
   const handleInitialize = useCallback(async () => {
-    await store.initialize();
-  }, [store]);
+    await initialize();
+  }, [initialize]);
 
   const isLanguageSupported = useCallback((code: string) => {
     return store.isLanguageSupported(code);
@@ -28,10 +31,10 @@ export const useLocalization = () => {
   }, [store]);
 
   useEffect(() => {
-    if (!store.isInitialized) {
-      store.initialize();
+    if (!isInitialized) {
+      initialize();
     }
-  }, [store.isInitialized, store]);
+  }, [isInitialized, initialize]);
 
   return {
     t,

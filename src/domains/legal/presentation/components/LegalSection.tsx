@@ -1,8 +1,8 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import { useAppNavigation } from '@umituz/react-native-design-system';
 import { LegalConfig } from '../../domain/entities/LegalConfig';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
+import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';
 
 export interface LegalSectionProps {
     config?: LegalConfig;
@@ -27,7 +27,7 @@ export const LegalSection: React.FC<LegalSectionProps> = ({
     hideMargin,
 }) => {
 
-    const navigation = useAppNavigation();
+    const navigation = useSettingsNavigation();
 
     const route = config?.route || config?.defaultRoute || 'Legal';
     const title = propsTitle || config?.title;
@@ -40,7 +40,7 @@ export const LegalSection: React.FC<LegalSectionProps> = ({
         } else if (config?.onPress) {
             config.onPress();
         } else {
-            navigation.navigate(route as never);
+            navigation.navigate(route as 'Legal');
         }
     };
 

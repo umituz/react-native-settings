@@ -2,7 +2,7 @@
  * Feedback Form Hook
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { FeedbackType, FeedbackRating } from '../../domain/entities/FeedbackEntity';
 
 export interface FeedbackFormState {
@@ -25,6 +25,14 @@ export function useFeedbackForm(defaultValues?: Partial<FeedbackFormState>) {
     ...defaultValues,
   });
 
+  // Use ref to avoid recreating reset callback when defaultValues changes
+  const defaultValuesRef = useRef(defaultValues);
+
+  // Keep ref in sync with latest defaultValues
+  useEffect(() => {
+    defaultValuesRef.current = defaultValues;
+  }, [defaultValues]);
+
   const setType = useCallback((type: FeedbackType) => {
     setFormState((prev) => ({ ...prev, type }));
   }, []);
@@ -42,8 +50,8 @@ export function useFeedbackForm(defaultValues?: Partial<FeedbackFormState>) {
   }, []);
 
   const reset = useCallback(() => {
-    setFormState({ ...initialState, ...defaultValues });
-  }, [defaultValues]);
+    setFormState({ ...initialState, ...defaultValuesRef.current });
+  }, []);
 
   const isValid = formState.title.trim().length > 0 && formState.description.trim().length > 0;
 

@@ -1,20 +1,20 @@
 import React from "react";
-import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import type { IconName } from "@umituz/react-native-design-system";
 import type { SubscriptionConfig } from "../types/UserFeatureConfig";
 import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoComparisonUtils";
+import { useSettingsNavigation } from "../../navigation/hooks/useSettingsNavigation";
 
 export interface SubscriptionSettingsItemProps {
   config: SubscriptionConfig;
 }
 
 const SubscriptionSettingsItemComponent: React.FC<SubscriptionSettingsItemProps> = ({ config }) => {
-  const navigation = useAppNavigation();
+  const navigation = useSettingsNavigation();
 
   const handlePress = React.useCallback(() => {
     if (config.route) {
-      navigation.navigate(config.route as never);
+      navigation.navigate(config.route as any);
     } else if (config.onPress) {
       config.onPress();
     }

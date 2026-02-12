@@ -9,7 +9,6 @@ import type {
   AchievementDefinition,
   LevelDefinition,
 } from "../../../domains/gamification/types";
-import type { TranslationFunction } from "./types";
 
 /**
  * Create subscription configuration

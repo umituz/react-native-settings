@@ -1,9 +1,9 @@
 import React from "react";
-import { useAppNavigation } from "@umituz/react-native-design-system";
 import type { IconName } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import type { VideoTutorialConfig } from "../types/UserFeatureConfig";
 import { compareConfigAndTranslate } from "../../../infrastructure/utils/memoComparisonUtils";
+import { useSettingsNavigation } from "../../navigation/hooks/useSettingsNavigation";
 
 export interface VideoTutorialSettingsItemProps {
   config: VideoTutorialConfig;
@@ -16,14 +16,14 @@ const VideoTutorialSettingsItemComponent: React.FC<VideoTutorialSettingsItemProp
   noBackground,
   hideMargin,
 }) => {
-  const navigation = useAppNavigation();
+  const navigation = useSettingsNavigation();
 
   const handlePress = React.useCallback(() => {
     if (config.onPress) {
       config.onPress();
     } else {
       const route = config.route || "VideoTutorial";
-      navigation.navigate(route as never);
+      navigation.navigate(route as 'VideoTutorial');
     }
   }, [navigation, config.onPress, config.route]);
 

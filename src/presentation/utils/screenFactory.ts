@@ -11,9 +11,9 @@ import type { AdditionalScreen } from "../navigation/types";
 /**
  * Create a basic stack screen configuration
  */
-export function createStackScreen(
+export function createStackScreen<P = unknown>(
   name: string,
-  componentOrChildren: React.ComponentType<any> | (() => React.ReactElement),
+  componentOrChildren: React.ComponentType<P> | (() => React.ReactElement),
   options: { headerShown?: boolean } = {}
 ): StackScreen {
   const isChildrenFunction = typeof componentOrChildren === "function" &&
@@ -28,7 +28,7 @@ export function createStackScreen(
   }
   return {
     name,
-    component: componentOrChildren as any,
+    component: componentOrChildren as React.ComponentType<P>,
     options: { headerShown: false, ...options },
   };
 }
@@ -53,7 +53,7 @@ export function createScreenWithProps<P>(
  * Convert additional screen to stack screen
  */
 export function convertAdditionalScreen(screen: AdditionalScreen): StackScreen {
-  const stackScreen: any = { name: screen.name };
+  const stackScreen: Partial<StackScreen> = { name: screen.name };
   if (screen.component) stackScreen.component = screen.component;
   if (screen.children) stackScreen.children = screen.children;
   if (screen.options) stackScreen.options = screen.options;

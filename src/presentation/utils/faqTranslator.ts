@@ -6,6 +6,7 @@
 
 import type { FAQData } from "../navigation/types";
 import type { AppInfo } from "../navigation/types";
+import type { TranslationOptions } from "./config-creators/types";
 
 /**
  * Utility for handling FAQ data
@@ -13,7 +14,7 @@ import type { AppInfo } from "../navigation/types";
  */
 export const translateFAQData = (
   faqData: FAQData | undefined,
-  _t: (key: string, params?: any) => string,
+  _t: (key: string, params?: TranslationOptions) => string,
   _appInfo: AppInfo
 ): FAQData | undefined => {
   return faqData;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-import { useAppNavigation } from '@umituz/react-native-design-system';
 import { AboutConfig } from '../../domain/entities/AppInfo';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
+import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';
 
 export interface AboutSectionProps {
     config?: AboutConfig;
@@ -27,7 +27,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     hideMargin,
 }) => {
 
-    const navigation = useAppNavigation();
+    const navigation = useSettingsNavigation();
 
     const route = config?.route || config?.defaultRoute || 'About';
     const title = propsTitle || config?.title;
@@ -40,7 +40,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
         } else if (config?.onPress) {
             config.onPress();
         } else {
-            navigation.navigate(route as never);
+            navigation.navigate(route as 'About');
         }
     };
 

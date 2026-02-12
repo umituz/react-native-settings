@@ -32,6 +32,9 @@ export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
           setIsI18nReady(true);
         }
       } catch (error) {
+        if (__DEV__) {
+          console.error('[LocalizationManager] Initialization failed:', error);
+        }
         if (isMounted) {
           setIsI18nReady(true); // Set ready even on error to prevent indefinite loading
         }

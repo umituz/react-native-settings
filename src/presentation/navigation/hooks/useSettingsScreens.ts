@@ -17,12 +17,18 @@ import {
   combineScreens,
 } from "../../utils/screenFactory";
 import type { SettingsStackNavigatorProps } from "../types";
+import type { AboutConfig } from "../../../domains/about/domain/entities/AppInfo";
+import type { LegalScreenProps } from "../../../domains/legal/presentation/screens/LegalScreen";
+import type {
+  NotificationSettingsTranslations,
+  QuietHoursTranslations
+} from "../../../domains/notifications/infrastructure/services/types";
 
 export interface UseSettingsScreensProps extends SettingsStackNavigatorProps {
-  aboutConfig: any;
-  legalProps: any;
-  notificationTranslations: any;
-  quietHoursTranslations: any;
+  aboutConfig: AboutConfig;
+  legalProps: LegalScreenProps;
+  notificationTranslations: NotificationSettingsTranslations;
+  quietHoursTranslations: QuietHoursTranslations;
 }
 
 export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[] => {

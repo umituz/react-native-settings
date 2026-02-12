@@ -1,11 +1,11 @@
 import React from "react";
-import { useAppNavigation } from "@umituz/react-native-design-system";
 import type { IconName } from "@umituz/react-native-design-system";
 import { SettingsItemCard } from "../../components/SettingsItemCard";
 import { useGamification } from "../../../domains/gamification";
 import type { GamificationItemConfig } from "../types/UserFeatureConfig";
 import type { GamificationSettingsConfig } from "../../../domains/gamification";
 import { compareGamificationProps } from "../../../infrastructure/utils/memoComparisonUtils";
+import { useSettingsNavigation } from "../../navigation/hooks/useSettingsNavigation";
 
 export interface GamificationSettingsItemProps {
   config: GamificationItemConfig;
@@ -21,12 +21,12 @@ const GamificationSettingsItemComponent: React.FC<GamificationSettingsItemProps>
   noBackground,
   hideMargin,
 }) => {
-  const navigation = useAppNavigation();
+  const navigation = useSettingsNavigation();
   const { level } = useGamification(gamificationConfig);
 
   const handlePress = React.useCallback(() => {
     const route = config.route || "Gamification";
-    navigation.navigate(route as never);
+    navigation.navigate(route as 'Gamification');
   }, [navigation, config.route]);
 
   const icon = (config.icon || "trophy-outline") as IconName;

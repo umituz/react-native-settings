@@ -1,5 +1,4 @@
 import React from "react";
-import { useAppNavigation } from "@umituz/react-native-design-system";
 import { AppearanceSection } from "../../../../domains/appearance/presentation/components/AppearanceSection";
 import { NotificationsSection } from "../../../../domains/notifications";
 import { getLanguageByCode } from "../../../../domains/localization";
@@ -7,6 +6,7 @@ import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
+import { useSettingsNavigation } from "../../../navigation/hooks/useSettingsNavigation";
 
 interface FeatureSettingsSectionProps {
   normalizedConfig: NormalizedConfig;
@@ -24,14 +24,14 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   currentLanguage,
 }) => {
   const translations = normalizedConfig.translations;
-  const navigation = useAppNavigation();
+  const navigation = useSettingsNavigation();
 
   const handleLanguagePress = React.useCallback(() => {
     if (normalizedConfig.language.config?.onPress) {
       normalizedConfig.language.config.onPress();
     } else {
       const route = normalizedConfig.language.config?.route || "LanguageSelection";
-      navigation.navigate(route as never);
+      navigation.navigate(route as 'LanguageSelection');
     }
   }, [navigation, normalizedConfig.language.config]);
 

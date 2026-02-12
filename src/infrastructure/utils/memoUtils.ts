@@ -26,7 +26,7 @@ export function useMemoizedStyles<T>(
  * @param deps Dependencies for memoization
  * @returns Memoized callback
  */
-export function useMemoizedCallback<T extends (...args: any[]) => any>(
+export function useMemoizedCallback<T extends (...args: never[]) => unknown>(
   callback: T,
   deps: DependencyList
 ): T {
@@ -52,7 +52,7 @@ export function useMemoizedValue<T>(
  * @param deps Dependencies for memoization
  * @returns Memoized styles
  */
-export function useStyledMemo<T extends Record<string, any>>(
+export function useStyledMemo<T extends Record<string, unknown>>(
   styleCreator: () => T,
   deps: DependencyList = []
 ): T {
@@ -119,7 +119,7 @@ export function useMemoWithEquality<T>(
  * @param delay Delay in milliseconds
  * @returns Debounced callback
  */
-export function useDebouncedCallback<T extends (...args: any[]) => any>(
+export function useDebouncedCallback<T extends (...args: never[]) => unknown>(
   callback: T,
   delay: number
 ): T {
@@ -150,7 +150,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
  * @param delay Delay in milliseconds
  * @returns Throttled callback
  */
-export function useThrottledCallback<T extends (...args: any[]) => any>(
+export function useThrottledCallback<T extends (...args: never[]) => unknown>(
   callback: T,
   delay: number
 ): T {

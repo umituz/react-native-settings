@@ -16,7 +16,6 @@ import type { SettingsContentProps } from "./types/SettingsContentProps";
 import { SubscriptionSettingsItem } from "./SubscriptionSettingsItem";
 import { WalletSettingsItem } from "./WalletSettingsItem";
 import { GamificationSettingsItem } from "./GamificationSettingsItem";
-import { VideoTutorialSettingsItem } from "./VideoTutorialSettingsItem";
 
 export const SettingsContent: React.FC<SettingsContentProps> = ({
   normalizedConfig,

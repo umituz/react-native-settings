@@ -5,12 +5,12 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { 
-  AtomicText, 
-  AtomicIcon, 
-  AtomicSpinner, 
-  ScreenLayout, 
-  NavigationHeader, 
+import {
+  AtomicText,
+  AtomicIcon,
+  AtomicSpinner,
+  ScreenLayout,
+  NavigationHeader,
   useAppNavigation,
   useAppDesignTokens
 } from '@umituz/react-native-design-system';
@@ -18,6 +18,7 @@ import { ReminderItem } from '../components/ReminderItem';
 import { useReminders, useRemindersLoading } from '../../infrastructure/storage/RemindersStore';
 import { useReminderActions } from '../../infrastructure/hooks/useReminderActions';
 import type { Reminder, ReminderTranslations } from '../../../infrastructure/services/types';
+import { devError } from '../../../../../utils/devUtils';
 
 export interface ReminderListScreenProps {
   translations: ReminderTranslations;
@@ -41,11 +42,21 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
   const { toggleReminderEnabled, removeReminder } = useReminderActions();
 
   const handleToggle = useCallback(async (id: string) => {
-    await toggleReminderEnabled(id);
+    try {
+      await toggleReminderEnabled(id);
+    } catch (error) {
+      devError('[ReminderListScreen] Failed to toggle reminder:', error);
+      // TODO: Show error toast to user
+    }
   }, [toggleReminderEnabled]);
 
   const handleDelete = useCallback(async (id: string) => {
-    await removeReminder(id);
+    try {
+      await removeReminder(id);
+    } catch (error) {
+      devError('[ReminderListScreen] Failed to delete reminder:', error);
+      // TODO: Show error toast to user
+    }
   }, [removeReminder]);
 
   const canAddMore = reminders.length < maxReminders;

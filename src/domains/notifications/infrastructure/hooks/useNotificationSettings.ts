@@ -2,7 +2,7 @@
  * Simple notification settings hook
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createStore } from '@umituz/react-native-design-system';
 
 interface NotificationSettingsState {
@@ -34,10 +34,17 @@ export const useNotificationSettings = () => {
   const store = useNotificationSettingsStore();
   const { notificationsEnabled, isLoading, setNotificationsEnabled, initialize } = store;
 
-  // Initialize on first mount
+  // Use ref to call initialize only once on mount
+  const initializeRef = useRef(initialize);
+
   useEffect(() => {
-    initialize();
+    initializeRef.current = initialize;
   }, [initialize]);
+
+  // Initialize only once on mount
+  useEffect(() => {
+    initializeRef.current();
+  }, []);
 
   return {
     notificationsEnabled,

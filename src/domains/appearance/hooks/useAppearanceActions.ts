@@ -29,15 +29,14 @@ export const useAppearanceActions = () => {
   }, [setThemeMode]);
 
   const handleColorChange = useCallback((key: keyof CustomThemeColors, color: string) => {
-    // Update local state immediately for UI responsiveness
-    const newColors = { ...localCustomColors, [key]: color };
-
-    // Batch state updates to prevent race conditions
-    setLocalCustomColors(newColors);
-
-    // Update global state separately
-    setCustomColors(newColors);
-  }, [localCustomColors, setCustomColors]);
+    // Use functional update to avoid stale closure
+    setLocalCustomColors(prev => {
+      const newColors = { ...prev, [key]: color };
+      // Update global state with new colors
+      setCustomColors(newColors);
+      return newColors;
+    });
+  }, [setCustomColors]);
 
   const handleResetColors = useCallback(() => {
     reset();

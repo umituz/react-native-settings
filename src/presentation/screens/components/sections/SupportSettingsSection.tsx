@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
-import { useAppNavigation } from "@umituz/react-native-design-system";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import { VideoTutorialSettingsItem } from "../VideoTutorialSettingsItem";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
+import { useSettingsNavigation } from "../../../navigation/hooks/useSettingsNavigation";
 
 interface SupportSettingsSectionProps {
     features: { feedback: boolean; rating: boolean; faqs: boolean; [key: string]: boolean };
@@ -17,10 +17,10 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
     normalizedConfig,
 }) => {
     const translations = normalizedConfig.translations;
-    const navigation = useAppNavigation();
+    const navigation = useSettingsNavigation();
 
     const handleFAQPress = useCallback(() => {
-        navigation.navigate("FAQ" as never);
+        navigation.navigate("FAQ");
     }, [navigation]);
 
     if (!(features.feedback || features.rating || features.faqs || features.videoTutorial)) return null;

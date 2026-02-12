@@ -76,6 +76,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
             } catch (error) {
                 // If the passed onSubmit throws, we log it.
                 if (__DEV__) {
+                    console.error('[SupportSection] Failed to submit feedback:', error);
                 }
                 // Optionally keep modal open? Or close it?
                 // If we keep it open, user can retry.

@@ -2,7 +2,7 @@
  * GamificationScreen AchievementsList Component
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, type TextStyle } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system";
 import { AchievementItem } from "../AchievementItem";
@@ -39,8 +39,20 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
   subtextColor,
   sectionTitleStyle,
 }) => {
-  const unlockedAchievements = achievements.filter((a) => a.isUnlocked);
-  const lockedAchievements = achievements.filter((a) => !a.isUnlocked);
+  // Optimize: Single pass through achievements array instead of two filter operations
+  const { unlocked, locked } = useMemo(() => {
+    return achievements.reduce<{ unlocked: typeof achievements; locked: typeof achievements }>(
+      (acc, achievement) => {
+        if (achievement.isUnlocked) {
+          acc.unlocked.push(achievement);
+        } else {
+          acc.locked.push(achievement);
+        }
+        return acc;
+      },
+      { unlocked: [], locked: [] }
+    );
+  }, [achievements]);
 
   return (
     <View style={styles.section}>
@@ -55,9 +67,9 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
       ) : (
         <>
           {/* Unlocked achievements first */}
-          {unlockedAchievements.map((achievement, index) => (
+          {unlocked.map((achievement, index) => (
             <AchievementItem
-              key={`unlocked-${index}`}
+              key={`unlocked-${achievement.title}-${index}`}
               {...achievement}
               accentColor={accentColor}
               backgroundColor={cardBackgroundColor}
@@ -67,9 +79,9 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
           ))}
 
           {/* Locked achievements */}
-          {lockedAchievements.map((achievement, index) => (
+          {locked.map((achievement, index) => (
             <AchievementItem
-              key={`locked-${index}`}
+              key={`locked-${achievement.title}-${index}`}
               {...achievement}
               accentColor={accentColor}
               backgroundColor={cardBackgroundColor}

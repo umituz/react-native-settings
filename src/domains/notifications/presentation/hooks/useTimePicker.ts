@@ -3,7 +3,7 @@
  * Encapsulates DateTimePicker logic for notification settings
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { QuietHoursConfig } from '../../infrastructure/services/types';
 
 export type PickerMode = 'start' | 'end' | null;
@@ -29,6 +29,14 @@ export const useTimePicker = ({
 }: UseTimePickerParams): TimePickerHandlers => {
   const [pickerMode, setPickerMode] = useState<PickerMode>(null);
 
+  // Use ref to avoid stale closure in handleTimeChange
+  const pickerModeRef = useRef<PickerMode>(null);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    pickerModeRef.current = pickerMode;
+  }, [pickerMode]);
+
   const handleStartTimePress = useCallback(() => {
     setPickerMode('start');
   }, []);
@@ -42,14 +50,16 @@ export const useTimePicker = ({
       const hours = selectedDate.getHours();
       const minutes = selectedDate.getMinutes();
 
-      if (pickerMode === 'start') {
+      // Use ref to get current mode without recreating callback
+      if (pickerModeRef.current === 'start') {
         onStartTimeChange(hours, minutes);
-      } else if (pickerMode === 'end') {
+      } else if (pickerModeRef.current === 'end') {
         onEndTimeChange(hours, minutes);
       }
     }
     setPickerMode(null);
-  }, [pickerMode, onStartTimeChange, onEndTimeChange]);
+    pickerModeRef.current = null;
+  }, [onStartTimeChange, onEndTimeChange]);
 
   const getPickerDate = useCallback((): Date => {
     const date = new Date();

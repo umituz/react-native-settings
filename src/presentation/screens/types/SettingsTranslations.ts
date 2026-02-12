@@ -9,7 +9,6 @@
 export interface SettingsTranslations {
   title?: string;
   profile?: {
-    guest?: string;
     anonymousName?: string;
     signIn?: string;
     signInDescription?: string;

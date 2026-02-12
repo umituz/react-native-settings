@@ -14,7 +14,6 @@ export interface ProfileSectionLoaderProps {
         benefits?: string[];
     };
     translations?: {
-        guest?: string;
         anonymousName?: string;
         signIn?: string;
     };
@@ -34,10 +33,8 @@ export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = React.m
 
     const anonymousDisplayName = React.useMemo(() => {
         if (!userProfile) return "";
-        return userProfile.isAnonymous && userProfile.userId
-            ? `${translations?.guest || ""} ${userProfile.userId.substring(0, 8)}`
-            : (translations?.anonymousName || "");
-    }, [userProfile, translations]);
+        return translations?.anonymousName || "";
+    }, [translations]);
 
     if (!userProfile) return null;
 

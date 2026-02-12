@@ -22,7 +22,31 @@ declare const __DEV__: boolean;
  */
 export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTranslations["errors"]) => {
   const { signOut } = useAuth();
-  const { deleteAccount } = useAccountManagement();
+
+  const passwordPrompt = useCallback(async (): Promise<string | null> => {
+    return new Promise((resolve) => {
+      Alert.prompt(
+        "Password Required",
+        "Please enter your password to delete your account",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => resolve(null),
+          },
+          {
+            text: "Confirm",
+            onPress: (password) => resolve(password || null),
+          },
+        ],
+        "secure-text"
+      );
+    });
+  }, []);
+
+  const { deleteAccount } = useAccountManagement({
+    onPasswordRequired: passwordPrompt,
+  });
   const { showAuthModal } = useAuthModalStore();
 
   const handleRatePress = useCallback(async () => {
@@ -68,12 +92,25 @@ export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTransla
     try {
       await deleteAccount();
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+
       if (typeof __DEV__ !== "undefined" && __DEV__) {
         console.error("[useAuthHandlers] Delete account failed:", error);
       }
+
+      // More specific error messages
+      if (errorMessage.includes("Password required") || errorMessage.includes("password")) {
+        Alert.alert(
+          "Password Required",
+          "Please enter your password when prompted to confirm account deletion.",
+          [{ text: "OK" }]
+        );
+        return;
+      }
+
       AlertService.createErrorAlert(
-        translations?.common || "",
-        translations?.deleteAccountError || ""
+        translations?.common || "Error",
+        errorMessage || translations?.deleteAccountError || "Failed to delete account"
       );
     }
   }, [deleteAccount, translations]);

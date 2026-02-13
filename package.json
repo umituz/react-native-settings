@@ -74,7 +74,7 @@
     "@types/react": "~19.1.10",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "@umituz/react-native-auth": "^4.1.0",
+    "@umituz/react-native-auth": "^4.1.1",
     "@umituz/react-native-design-system": "latest",
     "@umituz/react-native-firebase": "latest",
     "@umituz/react-native-sentry": "latest",

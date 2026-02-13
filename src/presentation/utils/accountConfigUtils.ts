@@ -29,6 +29,7 @@ export interface CreateAccountConfigParams {
   onLogout: () => Promise<void>;
   onDeleteAccount: () => Promise<void>;
   translations?: AccountTranslations;
+  PasswordPromptComponent?: React.ReactNode;
 }
 
 /**
@@ -45,6 +46,7 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
     onLogout,
     onDeleteAccount,
     translations,
+    PasswordPromptComponent,
   } = params;
 
   const anonymous = isAnonymous ?? true;
@@ -74,6 +76,7 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
     isAnonymous: anonymous,
     editProfileText: translations?.editProfile || "",
     onSignIn,
+    PasswordPromptComponent,
     accountActions: hasValidAccountTranslations ? {
       onLogout,
       onDeleteAccount,

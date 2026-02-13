@@ -1,16 +1,15 @@
 /**
- * StreakDisplay Component
- * Displays streak information - all text via props
+ * StreakDisplay Component - Modern Design
+ * Clean card-based design with emoji icons
  */
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha, useResponsive } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, withAlpha, useResponsive } from "@umituz/react-native-design-system";
 
 export interface StreakDisplayProps {
   current: number;
   longest: number;
-  currentLabel: string;
   bestLabel: string;
   daysLabel: string;
   icon?: React.ReactNode | string;
@@ -26,113 +25,99 @@ export interface StreakDisplayProps {
 export const StreakDisplay: React.FC<StreakDisplayProps> = ({
   current,
   longest,
-  currentLabel,
   bestLabel,
   daysLabel,
-  icon,
   containerStyle,
   numberStyle,
   labelStyle,
   primaryColor,
   backgroundColor,
-  textColor,
+  textColor: _textColor,
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  const { getFontSize, iconContainerSize } = useResponsive();
+  const { getFontSize } = useResponsive();
 
   const finalPrimaryColor = primaryColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
-  const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
-  const renderedIcon = typeof icon === 'string' ? (
-    <AtomicIcon name={icon} size="lg" customColor={finalPrimaryColor} />
-  ) : icon || <AtomicIcon name="trending-up" size="lg" customColor={finalPrimaryColor} />;
-
-  const numberFontSize = getFontSize(36);
-  const labelFontSize = getFontSize(11);
-  const currentLabelFontSize = getFontSize(15);
-  const bestNumberFontSize = getFontSize(24);
-  const bestLabelFontSize = getFontSize(10);
+  const streakNumberSize = getFontSize(48);
+  const streakLabelSize = getFontSize(13);
+  const bestNumberSize = getFontSize(20);
+  const bestLabelSize = getFontSize(11);
 
   return (
     <View style={[
       styles.container,
       {
         backgroundColor: finalBackgroundColor,
-        borderRadius: tokens.borders.radius.lg,
-        padding: tokens.spacing.lg,
+        borderRadius: tokens.borders.radius.xl,
+        padding: tokens.spacing.xl,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 3,
       },
       containerStyle
     ]}>
-      <View style={styles.mainStreak}>
-        <View style={[styles.iconContainer, { width: iconContainerSize, height: iconContainerSize }]}>
-          {renderedIcon}
+      {/* Main Streak Section */}
+      <View style={styles.mainSection}>
+        <AtomicText style={styles.emoji}>🔥</AtomicText>
+        <View style={styles.streakNumbers}>
+          <View style={styles.currentStreak}>
+            <AtomicText style={[
+              styles.streakNumber,
+              {
+                color: finalPrimaryColor,
+                fontSize: streakNumberSize,
+                lineHeight: streakNumberSize + 8,
+              },
+              numberStyle
+            ]}>
+              {current}
+            </AtomicText>
+            <AtomicText style={[
+              styles.streakLabel,
+              {
+                color: finalSubtextColor,
+                fontSize: streakLabelSize,
+                marginTop: tokens.spacing.xs,
+              },
+              labelStyle
+            ]}>
+              {daysLabel.toUpperCase()}
+            </AtomicText>
+          </View>
         </View>
-        <View style={[styles.streakInfo, { minWidth: iconContainerSize + 12 }]}>
-          <AtomicText style={[
-            styles.number,
-            {
-              color: finalPrimaryColor,
-              fontSize: numberFontSize,
-              lineHeight: numberFontSize + 4,
-              minHeight: numberFontSize + 4,
-            },
-            numberStyle
-          ]}>
-            {current}
-          </AtomicText>
-          <AtomicText style={[
-            styles.label,
-            {
-              color: finalSubtextColor,
-              fontSize: labelFontSize,
-              marginTop: tokens.spacing.xs,
-            },
-            labelStyle
-          ]}>
-            {daysLabel}
-          </AtomicText>
-        </View>
-        <AtomicText style={[
-          styles.currentLabel,
-          {
-            color: finalTextColor,
-            fontSize: currentLabelFontSize,
-          }
-        ]}>
-          {currentLabel}
-        </AtomicText>
       </View>
 
+      {/* Best Streak Badge */}
       <View style={[
-        styles.bestStreak,
+        styles.bestBadge,
         {
-          backgroundColor: withAlpha(finalPrimaryColor, 0.2),
+          backgroundColor: withAlpha(finalPrimaryColor, 0.12),
+          borderRadius: tokens.borders.radius.lg,
           paddingHorizontal: tokens.spacing.md,
-          paddingVertical: tokens.spacing.sm,
-          borderRadius: tokens.borders.radius.md,
-          minWidth: 80,
+          paddingVertical: tokens.spacing.md,
         }
       ]}>
         <AtomicText style={[
           styles.bestLabel,
           {
             color: finalSubtextColor,
-            fontSize: bestLabelFontSize,
+            fontSize: bestLabelSize,
           }
         ]}>
-          {bestLabel}
+          {bestLabel.toUpperCase()}
         </AtomicText>
         <AtomicText style={[
           styles.bestNumber,
           {
             color: finalPrimaryColor,
-            fontSize: bestNumberFontSize,
-            lineHeight: bestNumberFontSize + 4,
-            minHeight: bestNumberFontSize + 4,
-            marginTop: tokens.spacing.xs,
+            fontSize: bestNumberSize,
+            marginTop: tokens.spacing.xs / 2,
           }
         ]}>
           {longest}
@@ -148,36 +133,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  mainStreak: {
+  mainSection: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 16,
     flex: 1,
   },
-  iconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+  emoji: {
+    fontSize: 40,
   },
-  streakInfo: {
-    alignItems: "center",
+  streakNumbers: {
+    flex: 1,
   },
-  number: {
-    fontWeight: "bold",
+  currentStreak: {
+    alignItems: "flex-start",
   },
-  label: {
-    textTransform: "uppercase",
+  streakNumber: {
+    fontWeight: "800",
+    letterSpacing: -1,
   },
-  currentLabel: {
+  streakLabel: {
     fontWeight: "600",
+    letterSpacing: 0.5,
   },
-  bestStreak: {
+  bestBadge: {
     alignItems: "center",
+    minWidth: 70,
   },
   bestLabel: {
-    textTransform: "uppercase",
-    fontWeight: "600",
+    fontWeight: "700",
+    letterSpacing: 0.5,
   },
   bestNumber: {
-    fontWeight: "bold",
+    fontWeight: "800",
   },
 });

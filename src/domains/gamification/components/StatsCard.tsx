@@ -1,16 +1,16 @@
 /**
- * StatsCard Component
- * Displays a stat with icon - all text via props
+ * StatsCard Component - Modern Design
+ * Clean card-based stat display with emoji icons
  */
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha, useResponsive } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, useResponsive } from "@umituz/react-native-design-system";
 
 export interface StatsCardProps {
   value: number;
   label: string;
-  icon: React.ReactNode | string;
+  icon?: React.ReactNode | string;
   suffix?: string;
   containerStyle?: ViewStyle;
   valueStyle?: TextStyle;
@@ -31,55 +31,57 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   labelStyle,
   accentColor,
   backgroundColor,
-  textColor,
+  textColor: _textColor,
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  const { getFontSize, getIconSize } = useResponsive();
+  const { getFontSize } = useResponsive();
 
   const finalAccentColor = accentColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
-  const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
-  const renderedIcon = typeof icon === 'string' ? (
-    <AtomicIcon name={icon} size="md" customColor={finalAccentColor} />
-  ) : icon;
-
-  const valueFontSize = getFontSize(32);
-  const suffixFontSize = getFontSize(14);
-  const labelFontSize = getFontSize(13);
-  const iconSize = getIconSize(44);
+  const valueFontSize = getFontSize(48);
+  const suffixFontSize = getFontSize(16);
+  const labelFontSize = getFontSize(12);
+  const emojiSize = getFontSize(32);
 
   return (
     <View style={[
       styles.container,
       {
         backgroundColor: finalBackgroundColor,
-        borderRadius: tokens.borders.radius.lg,
-        padding: tokens.spacing.lg,
+        borderRadius: tokens.borders.radius.xl,
+        padding: tokens.spacing.xl,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 3,
       },
       containerStyle
     ]}>
-      <View style={[
-        styles.iconContainer,
-        {
-          backgroundColor: withAlpha(finalAccentColor, 0.15),
-          width: iconSize,
-          height: iconSize,
-          borderRadius: iconSize / 2,
-          marginBottom: tokens.spacing.md,
-        }
-      ]}>
-        {renderedIcon}
-      </View>
-      <View style={[styles.valueRow, { minHeight: valueFontSize + 4 }]}>
+      {/* Emoji Icon at Top */}
+      {icon && (
+        <AtomicText style={[
+          styles.emoji,
+          {
+            fontSize: emojiSize,
+            marginBottom: tokens.spacing.sm,
+          }
+        ]}>
+          {icon}
+        </AtomicText>
+      )}
+
+      {/* Large Value in Center */}
+      <View style={styles.valueRow}>
         <AtomicText style={[
           styles.value,
           {
-            color: finalTextColor,
+            color: finalAccentColor,
             fontSize: valueFontSize,
-            lineHeight: valueFontSize + 4,
+            lineHeight: valueFontSize + 8,
           },
           valueStyle
         ]}>
@@ -97,6 +99,8 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           </AtomicText>
         )}
       </View>
+
+      {/* Small Label Below */}
       <AtomicText style={[
         styles.label,
         {
@@ -106,7 +110,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         },
         labelStyle
       ]}>
-        {label}
+        {label.toUpperCase()}
       </AtomicText>
     </View>
   );
@@ -116,10 +120,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minWidth: "45%",
-  },
-  iconContainer: {
     alignItems: "center",
-    justifyContent: "center",
+  },
+  emoji: {
+    textAlign: "center",
   },
   valueRow: {
     flexDirection: "row",
@@ -127,12 +131,16 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   value: {
-    fontWeight: "bold",
+    fontWeight: "800",
+    letterSpacing: -1,
+    textAlign: "center",
   },
   suffix: {
-    fontWeight: "500",
+    fontWeight: "600",
   },
   label: {
-    fontWeight: "500",
+    fontWeight: "600",
+    letterSpacing: 0.5,
+    textAlign: "center",
   },
 });

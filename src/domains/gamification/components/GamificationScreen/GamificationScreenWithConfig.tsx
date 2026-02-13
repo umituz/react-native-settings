@@ -54,7 +54,6 @@ export const GamificationScreenWithConfig: React.FC<GamificationConfigProps> = (
     streakProps: {
       current: streak.current,
       longest: streak.longest,
-      currentLabel: config.translations.currentStreak,
       bestLabel: config.translations.bestStreak,
       daysLabel: config.translations.days,
     },
@@ -62,12 +61,12 @@ export const GamificationScreenWithConfig: React.FC<GamificationConfigProps> = (
       {
         label: config.translations.pointsLabel,
         value: points,
-        icon: "star",
+        icon: "⭐",
       },
       {
         label: config.translations.totalCompletedLabel,
         value: totalTasksCompleted,
-        icon: "checkmark-circle",
+        icon: "✅",
       },
     ],
     achievements: achievementItems,

@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha, useResponsive } from "@umituz/react-native-design-system";
 
 export interface StatsCardProps {
   value: number;
@@ -35,30 +35,77 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  
+  const { getFontSize, getIconSize } = useResponsive();
+
   const finalAccentColor = accentColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
   const renderedIcon = typeof icon === 'string' ? (
-    <AtomicIcon name={icon} size="sm" customColor={finalAccentColor} />
+    <AtomicIcon name={icon} size="md" customColor={finalAccentColor} />
   ) : icon;
 
+  const valueFontSize = getFontSize(32);
+  const suffixFontSize = getFontSize(14);
+  const labelFontSize = getFontSize(13);
+  const iconSize = getIconSize(44);
+
   return (
-    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
-      <View style={[styles.iconContainer, { backgroundColor: withAlpha(finalAccentColor, 0.15) }]}>
+    <View style={[
+      styles.container,
+      {
+        backgroundColor: finalBackgroundColor,
+        borderRadius: tokens.borders.radius.lg,
+        padding: tokens.spacing.lg,
+      },
+      containerStyle
+    ]}>
+      <View style={[
+        styles.iconContainer,
+        {
+          backgroundColor: withAlpha(finalAccentColor, 0.15),
+          width: iconSize,
+          height: iconSize,
+          borderRadius: iconSize / 2,
+          marginBottom: tokens.spacing.md,
+        }
+      ]}>
         {renderedIcon}
       </View>
-      <View style={styles.valueRow}>
-        <AtomicText style={[styles.value, { color: finalTextColor }, valueStyle]}>
+      <View style={[styles.valueRow, { minHeight: valueFontSize + 4 }]}>
+        <AtomicText style={[
+          styles.value,
+          {
+            color: finalTextColor,
+            fontSize: valueFontSize,
+            lineHeight: valueFontSize + 4,
+          },
+          valueStyle
+        ]}>
           {value}
         </AtomicText>
         {suffix && (
-          <AtomicText style={[styles.suffix, { color: finalSubtextColor }]}>{suffix}</AtomicText>
+          <AtomicText style={[
+            styles.suffix,
+            {
+              color: finalSubtextColor,
+              fontSize: suffixFontSize,
+            }
+          ]}>
+            {suffix}
+          </AtomicText>
         )}
       </View>
-      <AtomicText style={[styles.label, { color: finalSubtextColor }, labelStyle]}>
+      <AtomicText style={[
+        styles.label,
+        {
+          color: finalSubtextColor,
+          fontSize: labelFontSize,
+          marginTop: tokens.spacing.xs,
+        },
+        labelStyle
+      ]}>
         {label}
       </AtomicText>
     </View>
@@ -69,16 +116,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minWidth: "45%",
-    borderRadius: 12,
-    padding: 12,
   },
   iconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 8,
   },
   valueRow: {
     flexDirection: "row",
@@ -86,14 +127,12 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   value: {
-    fontSize: 24,
     fontWeight: "bold",
   },
   suffix: {
-    fontSize: 12,
+    fontWeight: "500",
   },
   label: {
-    fontSize: 12,
-    marginTop: 2,
+    fontWeight: "500",
   },
 });

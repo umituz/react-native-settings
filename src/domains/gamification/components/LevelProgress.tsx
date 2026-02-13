@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, withAlpha, useResponsive } from "@umituz/react-native-design-system";
 
 export interface LevelProgressProps {
   level: number;
@@ -49,39 +49,99 @@ export const LevelProgress: React.FC<LevelProgressProps> = ({
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  
+  const { getFontSize, getIconSize } = useResponsive();
+
   const finalPrimaryColor = primaryColor || tokens.colors.primary;
   const finalSecondaryColor = secondaryColor || tokens.colors.surfaceSecondary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
+  const titleFontSize = getFontSize(18);
+  const subtitleFontSize = getFontSize(14);
+  const badgeSize = getIconSize(52);
+  const badgeFontSize = getFontSize(20);
+  const progressBarHeight = getFontSize(10);
+
   return (
-    <View style={[styles.container, { backgroundColor: finalBackgroundColor }, containerStyle]}>
-      <View style={styles.header}>
+    <View style={[
+      styles.container,
+      {
+        backgroundColor: finalBackgroundColor,
+        borderRadius: tokens.borders.radius.lg,
+        padding: tokens.spacing.lg,
+      },
+      containerStyle
+    ]}>
+      <View style={[styles.header, { marginBottom: tokens.spacing.md }]}>
         <View style={styles.titleSection}>
-          <AtomicText style={[styles.levelTitle, { color: finalTextColor }, titleStyle]}>
+          <AtomicText style={[
+            styles.levelTitle,
+            {
+              color: finalTextColor,
+              fontSize: titleFontSize,
+            },
+            titleStyle
+          ]}>
             {levelTitle}
           </AtomicText>
           {showPoints && (
-            <AtomicText style={[styles.subtitle, { color: finalSubtextColor }, subtitleStyle]}>
+            <AtomicText style={[
+              styles.subtitle,
+              {
+                color: finalSubtextColor,
+                fontSize: subtitleFontSize,
+                marginTop: tokens.spacing.xs,
+              },
+              subtitleStyle
+            ]}>
               {points} / {points + pointsToNext}
             </AtomicText>
           )}
         </View>
 
-        <View style={[styles.badge, { backgroundColor: withAlpha(finalPrimaryColor, 0.2), borderColor: withAlpha(finalPrimaryColor, 0.4) }, badgeStyle]}>
-          <AtomicText style={[styles.badgeText, { color: finalPrimaryColor }, badgeTextStyle]}>
+        <View style={[
+          styles.badge,
+          {
+            backgroundColor: withAlpha(finalPrimaryColor, 0.2),
+            borderColor: withAlpha(finalPrimaryColor, 0.4),
+            width: badgeSize,
+            height: badgeSize,
+            borderRadius: badgeSize / 2,
+            borderWidth: 2,
+          },
+          badgeStyle
+        ]}>
+          <AtomicText style={[
+            styles.badgeText,
+            {
+              color: finalPrimaryColor,
+              fontSize: badgeFontSize,
+            },
+            badgeTextStyle
+          ]}>
             {level}
           </AtomicText>
         </View>
       </View>
 
-      <View style={[styles.progressBar, { backgroundColor: finalSecondaryColor }, progressBarStyle]}>
+      <View style={[
+        styles.progressBar,
+        {
+          backgroundColor: finalSecondaryColor,
+          height: progressBarHeight,
+          borderRadius: tokens.borders.radius.sm,
+        },
+        progressBarStyle
+      ]}>
         <View
           style={[
             styles.progressFill,
-            { width: `${Math.min(100, progress)}%`, backgroundColor: finalPrimaryColor },
+            {
+              width: `${Math.min(100, progress)}%`,
+              backgroundColor: finalPrimaryColor,
+              borderRadius: tokens.borders.radius.sm,
+            },
             progressFillStyle,
           ]}
         />
@@ -91,46 +151,30 @@ export const LevelProgress: React.FC<LevelProgressProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    padding: 16,
-  },
+  container: {},
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
   },
   titleSection: {
     flex: 1,
   },
   levelTitle: {
-    fontSize: 18,
     fontWeight: "700",
   },
-  subtitle: {
-    fontSize: 14,
-    marginTop: 2,
-  },
+  subtitle: {},
   badge: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 2,
   },
   badgeText: {
-    fontSize: 18,
     fontWeight: "bold",
   },
   progressBar: {
-    height: 8,
-    borderRadius: 4,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    borderRadius: 4,
   },
 });

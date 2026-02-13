@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, withAlpha, useResponsive } from "@umituz/react-native-design-system";
 
 export interface AchievementCardProps {
   title: string;
@@ -41,24 +41,44 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  
+  const { getFontSize, getIconSize } = useResponsive();
+
   const finalUnlockedColor = unlockedColor || tokens.colors.success;
   const finalLockedColor = lockedColor || tokens.colors.textDisabled;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
-  
+
   const accentColor = isUnlocked ? finalUnlockedColor : finalLockedColor;
+  const titleFontSize = getFontSize(16);
+  const descriptionFontSize = getFontSize(13);
+  const checkmarkFontSize = getFontSize(14);
+  const iconSize = getIconSize(48);
+  const checkmarkSize = getIconSize(24);
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: finalBackgroundColor, borderColor: withAlpha(accentColor, 0.4) },
+        {
+          backgroundColor: finalBackgroundColor,
+          borderColor: withAlpha(accentColor, 0.4),
+          padding: tokens.spacing.md,
+          borderRadius: tokens.borders.radius.md,
+          gap: tokens.spacing.md,
+        },
         containerStyle,
       ]}
     >
-      <View style={[styles.iconContainer, { backgroundColor: withAlpha(accentColor, 0.2) }]}>
+      <View style={[
+        styles.iconContainer,
+        {
+          backgroundColor: withAlpha(accentColor, 0.2),
+          width: iconSize,
+          height: iconSize,
+          borderRadius: iconSize / 2,
+        }
+      ]}>
         {icon}
       </View>
 
@@ -66,22 +86,45 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
         <AtomicText
           style={[
             styles.title,
-            { color: isUnlocked ? finalTextColor : finalSubtextColor },
+            {
+              color: isUnlocked ? finalTextColor : finalSubtextColor,
+              fontSize: titleFontSize,
+            },
             titleStyle,
           ]}
         >
           {title}
         </AtomicText>
-        <AtomicText style={[styles.description, { color: finalSubtextColor }, descriptionStyle]}>
+        <AtomicText style={[
+          styles.description,
+          {
+            color: finalSubtextColor,
+            fontSize: descriptionFontSize,
+            marginTop: tokens.spacing.xs,
+          },
+          descriptionStyle
+        ]}>
           {description}
         </AtomicText>
 
         {!isUnlocked && (
-          <View style={[styles.progressBar, { backgroundColor: withAlpha(finalLockedColor, 0.4) }, progressBarStyle]}>
+          <View style={[
+            styles.progressBar,
+            {
+              backgroundColor: withAlpha(finalLockedColor, 0.4),
+              marginTop: tokens.spacing.sm,
+              borderRadius: tokens.borders.radius.xs,
+            },
+            progressBarStyle
+          ]}>
             <View
               style={[
                 styles.progressFill,
-                { width: `${progress}%`, backgroundColor: accentColor },
+                {
+                  width: `${progress}%`,
+                  backgroundColor: accentColor,
+                  borderRadius: tokens.borders.radius.xs,
+                },
               ]}
             />
           </View>
@@ -89,8 +132,24 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
       </View>
 
       {isUnlocked && (
-        <View style={[styles.checkmark, { backgroundColor: finalUnlockedColor }]}>
-          <AtomicText style={[styles.checkmarkText, { color: tokens.colors.onPrimary }]}>✓</AtomicText>
+        <View style={[
+          styles.checkmark,
+          {
+            backgroundColor: finalUnlockedColor,
+            width: checkmarkSize,
+            height: checkmarkSize,
+            borderRadius: checkmarkSize / 2,
+          }
+        ]}>
+          <AtomicText style={[
+            styles.checkmarkText,
+            {
+              color: tokens.colors.onPrimary,
+              fontSize: checkmarkFontSize,
+            }
+          ]}>
+            ✓
+          </AtomicText>
         </View>
       )}
     </View>
@@ -101,15 +160,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 12,
-    borderRadius: 12,
     borderWidth: 1,
-    gap: 12,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -117,32 +170,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 16,
     fontWeight: "600",
   },
-  description: {
-    fontSize: 13,
-    marginTop: 2,
-  },
+  description: {},
   progressBar: {
     height: 4,
-    borderRadius: 2,
-    marginTop: 8,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    borderRadius: 2,
   },
   checkmark: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
   },
   checkmarkText: {
-    fontSize: 14,
     fontWeight: "bold",
   },
 });

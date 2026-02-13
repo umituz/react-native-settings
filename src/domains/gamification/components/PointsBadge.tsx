@@ -5,7 +5,7 @@
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, withAlpha, useResponsive } from "@umituz/react-native-design-system";
 
 export interface PointsBadgeProps {
   points: number;
@@ -27,20 +27,28 @@ export const PointsBadge: React.FC<PointsBadgeProps> = ({
   borderColor,
 }) => {
   const tokens = useAppDesignTokens();
+  const { getFontSize } = useResponsive();
   const finalTextColor = textColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || withAlpha(finalTextColor, 0.1);
   const finalBorderColor = borderColor || withAlpha(finalTextColor, 0.2);
+  const fontSize = getFontSize(16);
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: finalBackgroundColor, borderColor: finalBorderColor },
+        {
+          backgroundColor: finalBackgroundColor,
+          borderColor: finalBorderColor,
+          paddingHorizontal: tokens.spacing.md,
+          paddingVertical: tokens.spacing.xs,
+          borderRadius: tokens.borders.radius.full,
+        },
         containerStyle,
       ]}
     >
       {icon}
-      <AtomicText style={[styles.text, { color: finalTextColor }, textStyle]}>
+      <AtomicText style={[styles.text, { color: finalTextColor, fontSize }, textStyle]}>
         {points}
       </AtomicText>
     </View>
@@ -52,13 +60,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
     borderWidth: 1,
   },
   text: {
-    fontSize: 16,
     fontWeight: "bold",
   },
 });

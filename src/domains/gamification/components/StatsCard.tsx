@@ -1,11 +1,11 @@
 /**
  * StatsCard Component - Modern Design
- * Clean card-based stat display with emoji icons
+ * Clean card-based stat display with large emoji icons
  */
 
 import React from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, useResponsive } from "@umituz/react-native-design-system";
+import { useAppDesignTokens, AtomicText, useResponsive, withAlpha } from "@umituz/react-native-design-system";
 
 export interface StatsCardProps {
   value: number;
@@ -35,7 +35,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  const { getFontSize } = useResponsive();
+  const { getFontSize, getIconSize } = useResponsive();
 
   const finalAccentColor = accentColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
@@ -44,7 +44,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   const valueFontSize = getFontSize(48);
   const suffixFontSize = getFontSize(16);
   const labelFontSize = getFontSize(12);
-  const emojiSize = getFontSize(32);
+  const iconSize = getIconSize(56);
 
   return (
     <View style={[
@@ -61,17 +61,27 @@ export const StatsCard: React.FC<StatsCardProps> = ({
       },
       containerStyle
     ]}>
-      {/* Emoji Icon at Top */}
+      {/* Emoji Icon in Circle */}
       {icon && (
-        <AtomicText style={[
-          styles.emoji,
+        <View style={[
+          styles.iconContainer,
           {
-            fontSize: emojiSize,
-            marginBottom: tokens.spacing.sm,
+            width: iconSize,
+            height: iconSize,
+            backgroundColor: withAlpha(finalAccentColor, 0.15),
+            borderRadius: iconSize / 2,
+            marginBottom: tokens.spacing.md,
           }
         ]}>
-          {icon}
-        </AtomicText>
+          <AtomicText style={[
+            styles.emoji,
+            {
+              fontSize: iconSize * 0.55,
+            }
+          ]}>
+            {icon}
+          </AtomicText>
+        </View>
       )}
 
       {/* Large Value in Center */}
@@ -120,6 +130,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minWidth: "45%",
+    alignItems: "center",
+  },
+  iconContainer: {
+    justifyContent: "center",
     alignItems: "center",
   },
   emoji: {

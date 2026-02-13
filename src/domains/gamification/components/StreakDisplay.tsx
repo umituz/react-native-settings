@@ -1,6 +1,6 @@
 /**
  * StreakDisplay Component - Modern Design
- * Clean card-based design with emoji icons
+ * Clean card-based design with gradient fire icon
  */
 
 import React from "react";
@@ -36,7 +36,7 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
   subtextColor,
 }) => {
   const tokens = useAppDesignTokens();
-  const { getFontSize } = useResponsive();
+  const { getFontSize, getIconSize } = useResponsive();
 
   const finalPrimaryColor = primaryColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
@@ -46,6 +46,7 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
   const streakLabelSize = getFontSize(13);
   const bestNumberSize = getFontSize(20);
   const bestLabelSize = getFontSize(11);
+  const iconSize = getIconSize(48);
 
   return (
     <View style={[
@@ -64,7 +65,24 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
     ]}>
       {/* Main Streak Section */}
       <View style={styles.mainSection}>
-        <AtomicText style={styles.emoji}>🔥</AtomicText>
+        {/* Fire Icon */}
+        <View style={[
+          styles.fireIcon,
+          {
+            width: iconSize,
+            height: iconSize,
+            backgroundColor: withAlpha(finalPrimaryColor, 0.15),
+            borderRadius: iconSize / 2,
+          }
+        ]}>
+          <AtomicText style={[
+            styles.fireEmoji,
+            { fontSize: iconSize * 0.6 }
+          ]}>
+            🔥
+          </AtomicText>
+        </View>
+
         <View style={styles.streakNumbers}>
           <View style={styles.currentStreak}>
             <AtomicText style={[
@@ -139,8 +157,12 @@ const styles = StyleSheet.create({
     gap: 16,
     flex: 1,
   },
-  emoji: {
-    fontSize: 40,
+  fireIcon: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  fireEmoji: {
+    textAlign: "center",
   },
   streakNumbers: {
     flex: 1,

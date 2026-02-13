@@ -18,6 +18,7 @@ import {
   createLegalScreenProps,
 } from "./utils";
 import type { SettingsStackParamList, SettingsStackNavigatorProps } from "./types";
+import { useAuthHandlers } from "../utils/useAuthHandlers";
 
 export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (props) => {
   const {
@@ -30,6 +31,8 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
 
   const { handlePrivacyPress, handleTermsPress, handleEulaPress, aboutConfig } =
     useNavigationHandlers(appInfo, legalUrls, aboutTranslations);
+
+  const { PasswordPromptComponent } = useAuthHandlers(appInfo, config?.translations?.errors);
 
   const screenOptions = React.useMemo(
     () => ({
@@ -60,8 +63,11 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <StackNavigator<SettingsStackParamList> config={navigatorConfig} />
-    </View>
+    <>
+      <View style={{ flex: 1 }}>
+        <StackNavigator<SettingsStackParamList> config={navigatorConfig} />
+      </View>
+      {PasswordPromptComponent}
+    </>
   );
 };

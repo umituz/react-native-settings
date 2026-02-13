@@ -49,6 +49,7 @@ export interface SettingsScreenConfigResult {
   translatedFaqData: FAQData | undefined;
   isLoading: boolean;
   isAuthReady: boolean;
+  PasswordPromptComponent: React.ReactNode;
 }
 
 export const useSettingsScreenConfig = (
@@ -74,7 +75,7 @@ export const useSettingsScreenConfig = (
   const userProfileData = useUserProfile({});
 
   // Use centralized auth handlers
-  const { handleRatePress, handleSignOut, handleDeleteAccount, handleSignIn } =
+  const { handleRatePress, handleSignOut, handleDeleteAccount, handleSignIn, PasswordPromptComponent } =
     useAuthHandlers(appInfo, translations?.errors);
 
   // Use settings config factory
@@ -178,5 +179,6 @@ export const useSettingsScreenConfig = (
     translatedFaqData,
     isLoading: loading,
     isAuthReady,
+    PasswordPromptComponent,
   };
 };

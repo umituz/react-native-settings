@@ -24,7 +24,7 @@ export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTransla
   const { signOut } = useAuth();
   const { showAuthModal } = useAuthModalStore();
 
-  const { deleteAccount: deleteAccountFromAuth } = useAccountManagement({
+  const { deleteAccount: deleteAccountFromAuth, PasswordPromptComponent } = useAccountManagement({
     passwordPromptTitle: translations?.deleteAccountTitle || "Confirm Account Deletion",
     passwordPromptMessage: translations?.deleteAccountMessage || "Please enter your password to permanently delete your account. This action cannot be undone.",
     passwordPromptCancel: translations?.cancel || "Cancel",
@@ -97,5 +97,6 @@ export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTransla
     handleSignOut,
     handleDeleteAccount,
     handleSignIn,
+    PasswordPromptComponent,
   };
 };

@@ -51,6 +51,8 @@ export interface SettingsScreenProps {
   gamificationConfig?: import("../../domains/gamification").GamificationSettingsConfig;
   /** Show header (default: true) */
   showHeader?: boolean;
+  /** Password prompt modal component */
+  PasswordPromptComponent?: React.ReactNode;
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
@@ -69,6 +71,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
     featureOptions,
     devSettings,
     gamificationConfig,
+    PasswordPromptComponent,
   } = props;
 
   const {
@@ -94,21 +97,24 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
   ) : undefined;
 
   return (
-    <ScreenLayout header={header}>
-      {children ?? (
-        <SettingsContent
-          normalizedConfig={normalizedConfig}
-          features={features}
-          showUserProfile={shouldShowUserProfile}
-          userProfile={userProfile}
-          showFooter={showFooter}
-          footerText={footerText}
-          appVersion={appVersion}
-          customSections={customSections}
-          devSettings={devSettings}
-          gamificationConfig={gamificationConfig}
-        />
-      )}
-    </ScreenLayout>
+    <>
+      <ScreenLayout header={header}>
+        {children ?? (
+          <SettingsContent
+            normalizedConfig={normalizedConfig}
+            features={features}
+            showUserProfile={shouldShowUserProfile}
+            userProfile={userProfile}
+            showFooter={showFooter}
+            footerText={footerText}
+            appVersion={appVersion}
+            customSections={customSections}
+            devSettings={devSettings}
+            gamificationConfig={gamificationConfig}
+          />
+        )}
+      </ScreenLayout>
+      {PasswordPromptComponent}
+    </>
   );
 };

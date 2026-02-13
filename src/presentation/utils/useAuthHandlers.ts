@@ -71,15 +71,16 @@ export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTransla
   }, [signOut, translations]);
 
   const handleDeleteAccount = useCallback(async () => {
+    console.log("[useAuthHandlers] handleDeleteAccount called");
     try {
+      console.log("[useAuthHandlers] Calling deleteAccountFromAuth...");
       await deleteAccountFromAuth();
+      console.log("[useAuthHandlers] Delete account successful");
       // Account deleted successfully - auth package handles everything
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
 
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-        console.error("[useAuthHandlers] Delete account failed:", error);
-      }
+      console.error("[useAuthHandlers] Delete account failed:", error);
 
       AlertService.createErrorAlert(
         translations?.common || "Error",

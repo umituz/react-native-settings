@@ -23,6 +23,7 @@ declare const __DEV__: boolean;
 export const useAuthHandlers = (appInfo: AppInfo, translations?: SettingsTranslations["account"] & SettingsTranslations["errors"]) => {
   const { signOut } = useAuth();
   const { showAuthModal } = useAuthModalStore();
+
   const { deleteAccount: deleteAccountFromAuth } = useAccountManagement({
     passwordPromptTitle: translations?.deleteAccountTitle || "Confirm Account Deletion",
     passwordPromptMessage: translations?.deleteAccountMessage || "Please enter your password to permanently delete your account. This action cannot be undone.",

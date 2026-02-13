@@ -49,12 +49,20 @@ function needsTranslation(value, enValue) {
     return !isSingleWord;
   }
 
+  // Detect outdated template patterns (e.g., {{appName}}, {{variable}})
+  if (value && typeof value === 'string') {
+    const hasTemplatePattern = value.includes('{{') && value.includes('}}');
+    if (hasTemplatePattern && !enValue.includes('{{')) {
+      return true;
+    }
+  }
+
   return false;
 }
 
 export async function translateObject(enObj, targetObj, targetLang, path = '', stats = { count: 0, checked: 0, translatedKeys: [] }) {
   const keys = Object.keys(enObj);
-  
+
   if (!stats.translatedKeys) stats.translatedKeys = [];
 
   for (const key of keys) {
@@ -70,7 +78,7 @@ export async function translateObject(enObj, targetObj, targetLang, path = '', s
       if (needsTranslation(targetValue, enValue)) {
         // Show progress for translations
         process.stdout.write(`   \r      Progress: ${stats.checked} keys checked, ${stats.count} translated...`);
-        
+
         const translated = await translateText(enValue, targetLang);
         if (translated !== enValue) {
           targetObj[key] = translated;

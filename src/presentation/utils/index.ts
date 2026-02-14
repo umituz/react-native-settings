@@ -7,4 +7,3 @@ export * from "./userProfileUtils";
 export * from "./accountConfigUtils";
 export * from "./faqTranslator";
 export * from "./settingsConfigFactory";
-export * from "./useAuthHandlers";

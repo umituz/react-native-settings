@@ -7,10 +7,9 @@
  */
 
 import { useMemo } from "react";
-import { useAuth, useUserProfile } from "@umituz/react-native-auth";
+import { useAuth, useUserProfile, useAuthHandlers } from "@umituz/react-native-auth";
 import { createUserProfileDisplay } from "../utils/userProfileUtils";
 import { createAccountConfig } from "../utils/accountConfigUtils";
-import { useAuthHandlers } from "../utils/useAuthHandlers";
 import { translateFAQData } from "../utils/faqTranslator";
 import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
 import type { SettingsConfig, SettingsTranslations } from "../screens/types";
@@ -49,7 +48,6 @@ export interface SettingsScreenConfigResult {
   translatedFaqData: FAQData | undefined;
   isLoading: boolean;
   isAuthReady: boolean;
-  PasswordPromptComponent: React.ReactNode;
 }
 
 export const useSettingsScreenConfig = (
@@ -75,7 +73,7 @@ export const useSettingsScreenConfig = (
   const userProfileData = useUserProfile({});
 
   // Use centralized auth handlers
-  const { handleRatePress, handleSignOut, handleDeleteAccount, handleSignIn, PasswordPromptComponent } =
+  const { handleRatePress, handleSignOut, handleDeleteAccount, handleSignIn } =
     useAuthHandlers(appInfo, translations?.errors);
 
   // Use settings config factory
@@ -105,16 +103,6 @@ export const useSettingsScreenConfig = (
       translations,
     };
 
-    // Add subscription title and description from translations if available
-    if (config.subscription && typeof config.subscription === 'object' && translations?.features?.subscription) {
-      config.subscription = {
-        ...config.subscription,
-        title: translations.features.subscription.title,
-        description: translations.features.subscription.description,
-      };
-    }
-
-    // Add subscription title and description from translations if available
     if (config.subscription && typeof config.subscription === 'object') {
       config.subscription = {
         ...config.subscription,
@@ -124,25 +112,23 @@ export const useSettingsScreenConfig = (
       };
     }
 
-    // Add gamification title and description
     if (config.gamification) {
       const existingConfig = typeof config.gamification === 'object' ? config.gamification : { enabled: true };
       config.gamification = {
-        ...(existingConfig as any),
+        ...existingConfig,
         enabled: true,
-        title: translations?.features?.gamification?.title || (existingConfig as any).title || "Your Progress",
-        description: translations?.features?.gamification?.description || (existingConfig as any).description,
+        title: translations?.features?.gamification?.title || existingConfig.title || "Your Progress",
+        description: translations?.features?.gamification?.description || existingConfig.description,
       };
     }
 
-    // Add videoTutorial title and description
     if (config.videoTutorial) {
       const existingConfig = typeof config.videoTutorial === 'object' ? config.videoTutorial : { enabled: true };
       config.videoTutorial = {
-        ...(existingConfig as any),
+        ...existingConfig,
         enabled: true,
-        title: translations?.features?.videoTutorial?.title || (existingConfig as any).title || "Video Tutorials",
-        description: translations?.features?.videoTutorial?.description || (existingConfig as any).description,
+        title: translations?.features?.videoTutorial?.title || existingConfig.title || "Video Tutorials",
+        description: translations?.features?.videoTutorial?.description || existingConfig.description,
       };
     }
 
@@ -155,17 +141,16 @@ export const useSettingsScreenConfig = (
   }), [userProfileData, handleSignIn]);
 
   const accountConfig = useMemo(() => createAccountConfig({
-    displayName: userProfileData?.displayName || user?.displayName || undefined,
-    userId: userProfileData?.userId ?? user?.uid ?? undefined,
-    photoURL: user?.photoURL ?? undefined,
+    displayName: userProfileData?.displayName || user?.displayName,
+    userId: userProfileData?.userId ?? user?.uid,
+    photoURL: user?.photoURL,
     isAnonymous: user?.isAnonymous,
-    avatarUrl: userProfileData?.avatarUrl ?? undefined,
+    avatarUrl: userProfileData?.avatarUrl,
     onSignIn: handleSignIn,
     onLogout: handleSignOut,
     onDeleteAccount: handleDeleteAccount,
     translations: translations?.account as any,
-    PasswordPromptComponent,
-  }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations, PasswordPromptComponent]);
+  }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations]);
 
   // Use centralized FAQ translation
   const translatedFaqData = useMemo(() =>
@@ -180,6 +165,5 @@ export const useSettingsScreenConfig = (
     translatedFaqData,
     isLoading: loading,
     isAuthReady,
-    PasswordPromptComponent,
   };
 };

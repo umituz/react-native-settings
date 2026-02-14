@@ -47,6 +47,13 @@ export type SettingsStackParamList = {
   Gamification: undefined;
   Account: undefined;
   VideoTutorial: undefined;
+  PasswordPrompt: {
+    onComplete: (password: string | null) => void;
+    title?: string;
+    message?: string;
+    confirmText?: string;
+    cancelText?: string;
+  };
 };
 
 /**

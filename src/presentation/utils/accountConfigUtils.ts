@@ -69,9 +69,9 @@ export function createAccountConfig(params: CreateAccountConfigParams): AccountS
   return {
     profile: {
       displayName: displayName || "",
-      userId: userId ?? undefined,
+      userId,
       isAnonymous: anonymous,
-      avatarUrl: avatarUrl ?? photoURL ?? undefined,
+      avatarUrl: avatarUrl ?? photoURL,
     },
     isAnonymous: anonymous,
     editProfileText: translations?.editProfile || "",

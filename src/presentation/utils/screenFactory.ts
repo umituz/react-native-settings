@@ -55,7 +55,7 @@ export function createScreenWithProps<P>(
 export function convertAdditionalScreen(screen: AdditionalScreen): StackScreen {
   const stackScreen: Partial<StackScreen> = { name: screen.name };
   if (screen.component) stackScreen.component = screen.component;
-  if (screen.children) stackScreen.children = screen.children;
+  if (screen.children) stackScreen.children = screen.children as any;
   if (screen.options) stackScreen.options = screen.options;
   return stackScreen as StackScreen;
 }

@@ -35,7 +35,7 @@ export const useGamification = (
     if (config && !store.isInitialized) {
       store.initialize(config);
     }
-  }, [config, store.isInitialized]);
+  }, [config, store.isInitialized, store.initialize]);
 
   // Calculate level from config
   const level = useMemo((): LevelState => {

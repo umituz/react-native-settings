@@ -26,7 +26,7 @@ export interface FAQItemProps {
     styles?: FAQItemStyles;
 }
 
-export const FAQItemComponent: React.FC<FAQItemProps> = ({
+export const FAQItemComponent: React.FC<FAQItemProps> = React.memo(({
     item,
     isExpanded,
     onToggle,
@@ -115,4 +115,4 @@ export const FAQItemComponent: React.FC<FAQItemProps> = ({
             )}
         </View>
     );
-};
+});

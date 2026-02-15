@@ -35,8 +35,8 @@ export async function getEventCount(eventType: string): Promise<number> {
 export async function setEventCount(eventType: string, count: number): Promise<void> {
   try {
     await storageRepository.setString(KEYS.eventCount(eventType), count.toString());
-  } catch {
-    // Silent error handling
+  } catch (error) {
+    console.error('[RatingStorage] Failed to set event count:', eventType, count, error);
   }
 }
 
@@ -67,8 +67,8 @@ export async function getLastPromptDate(eventType: string): Promise<string | nul
 export async function setLastPromptDate(eventType: string, date: string): Promise<void> {
   try {
     await storageRepository.setString(KEYS.lastPrompt(eventType), date);
-  } catch {
-    // Silent error handling
+  } catch (error) {
+    console.error('[RatingStorage] Failed to set last prompt date:', eventType, date, error);
   }
 }
 
@@ -90,8 +90,8 @@ export async function getHasRated(): Promise<boolean> {
 export async function setHasRated(value: boolean): Promise<void> {
   try {
     await storageRepository.setString(KEYS.hasRated, value.toString());
-  } catch {
-    // Silent error handling
+  } catch (error) {
+    console.error('[RatingStorage] Failed to set has rated:', value, error);
   }
 }
 
@@ -113,8 +113,8 @@ export async function getDismissed(): Promise<boolean> {
 export async function setDismissed(value: boolean): Promise<void> {
   try {
     await storageRepository.setString(KEYS.dismissed, value.toString());
-  } catch {
-    // Silent error handling
+  } catch (error) {
+    console.error('[RatingStorage] Failed to set dismissed:', value, error);
   }
 }
 
@@ -154,7 +154,7 @@ export async function reset(eventType?: string): Promise<void> {
         ratingKeys.map((key) => storageRepository.removeItem(key))
       );
     }
-  } catch {
-    // Silent error handling
+  } catch (error) {
+    console.error('[RatingStorage] Failed to reset rating data:', eventType, error);
   }
 }

@@ -6,6 +6,7 @@
 
 import { storageRepository, StorageKey, createUserKey } from '@umituz/react-native-design-system';
 import type { ISettingsRepository, UserSettings, SettingsResult } from '../../application/ports/ISettingsRepository';
+import { TEXT_LENGTH_LIMITS } from '../utils/constants/textLimits';
 
 /**
  * Validates userId to prevent key injection attacks
@@ -19,7 +20,7 @@ const validateUserId = (userId: string): void => {
         throw new Error('Invalid userId: contains invalid characters');
     }
     // Limit length to prevent DoS attacks
-    if (userId.length > 128) {
+    if (userId.length > TEXT_LENGTH_LIMITS.USER_ID) {
         throw new Error('Invalid userId: exceeds maximum length');
     }
 };

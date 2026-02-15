@@ -40,7 +40,7 @@ export async function trackEvent(eventType: string): Promise<void> {
   try {
     await incrementEventCount(eventType);
   } catch (error) {
-    // Silent error handling
+    console.error('[RatingService] Failed to track event:', eventType, error);
   }
 }
 
@@ -90,7 +90,7 @@ export async function markPromptShown(eventType: string): Promise<void> {
   try {
     await setLastPromptDate(eventType, toISOString());
   } catch (error) {
-    // Silent error handling
+    console.error('[RatingService] Failed to mark prompt shown:', eventType, error);
   }
 }
 
@@ -101,7 +101,7 @@ export async function markRated(): Promise<void> {
   try {
     await setHasRated(true);
   } catch (error) {
-    // Silent error handling
+    console.error('[RatingService] Failed to mark as rated:', error);
   }
 }
 
@@ -112,7 +112,7 @@ export async function markDismissed(): Promise<void> {
   try {
     await setDismissed(true);
   } catch (error) {
-    // Silent error handling
+    console.error('[RatingService] Failed to mark as dismissed:', error);
   }
 }
 
@@ -130,6 +130,6 @@ export async function reset(eventType?: string): Promise<void> {
   try {
     await resetStorage(eventType);
   } catch (error) {
-    // Silent error handling
+    console.error('[RatingService] Failed to reset:', eventType, error);
   }
 }

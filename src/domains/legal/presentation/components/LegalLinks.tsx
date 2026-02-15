@@ -75,10 +75,10 @@ export const LegalLinks: React.FC<LegalLinksProps> = React.memo(
       }
     }, [onTermsPress, termsOfServiceUrl]);
 
-    // Memoize conditional rendering to prevent unnecessary re-renders
-    const showPrivacy = React.useMemo(() => !!(onPrivacyPress || privacyPolicyUrl), [onPrivacyPress, privacyPolicyUrl]);
-    const showTerms = React.useMemo(() => !!(onTermsPress || termsOfServiceUrl), [onTermsPress, termsOfServiceUrl]);
-    const showSeparator = React.useMemo(() => showPrivacy && showTerms, [showPrivacy, showTerms]);
+    // Direct boolean calculations - no need for useMemo overhead
+    const showPrivacy = !!(onPrivacyPress || privacyPolicyUrl);
+    const showTerms = !!(onTermsPress || termsOfServiceUrl);
+    const showSeparator = showPrivacy && showTerms;
 
     return (
       <View style={[styles.container, style]}>

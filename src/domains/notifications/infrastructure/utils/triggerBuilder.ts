@@ -10,10 +10,12 @@ export const buildTrigger = (reminder: Reminder): NotificationTrigger => {
 
   switch (frequency) {
     case 'once': {
+      const now = new Date();
       const date = new Date();
       date.setHours(hour, minute, 0, 0);
 
-      if (date <= new Date()) {
+      // If scheduled time has passed today, schedule for tomorrow
+      if (date <= now) {
         date.setDate(date.getDate() + 1);
       }
 

@@ -4,8 +4,8 @@
  * Uses design system tokens for theming
  */
 
-import React, { useMemo } from 'react';
-import { View, ScrollView, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
+import React, { useMemo, useCallback } from 'react';
+import { View, FlatList, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
 import { useAppDesignTokens, ScreenLayout, getContentMaxWidth, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system';
 import { FAQCategory } from '../../domain/entities/FAQEntity';
 import { useFAQSearch } from '../hooks/useFAQSearch';
@@ -83,7 +83,29 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     />
   );
 
-  const renderContent = () => {
+  const renderCategory = useCallback(({ item }: { item: FAQCategory }) => (
+    <FAQCategoryComponent
+      category={item}
+      isExpanded={isExpanded}
+      onToggleItem={toggleExpansion}
+      styles={customStyles?.category}
+    />
+  ), [isExpanded, toggleExpansion, customStyles?.category]);
+
+  const keyExtractor = useCallback((item: FAQCategory) => item.id, []);
+
+  const renderListHeader = useCallback(() => (
+    <View style={[styles.header, customStyles?.header]}>
+      <FAQSearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder={searchPlaceholder}
+        styles={customStyles?.searchBar}
+      />
+    </View>
+  ), [searchQuery, setSearchQuery, searchPlaceholder, customStyles?.searchBar, customStyles?.header, styles.header]);
+
+  const renderListEmpty = useCallback(() => {
     if (searchQuery && !hasResults) {
       return (
         <FAQEmptyState
@@ -93,34 +115,31 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
         />
       );
     }
+    return null;
+  }, [searchQuery, hasResults, emptySearchTitle, emptySearchMessage, customStyles?.emptyState]);
 
+  const renderListFooter = useCallback(() => (
+    <View style={{ height: tokens.spacing.xl * 2 }} />
+  ), [tokens.spacing.xl]);
+
+  const renderContent = () => {
     return (
       <View style={{ flex: 1 }}>
-        <View style={[styles.header, customStyles?.header]}>
-          <FAQSearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder={searchPlaceholder}
-            styles={customStyles?.searchBar}
-          />
-        </View>
-
-        <ScrollView
+        <FlatList
+          data={filteredCategories}
+          renderItem={renderCategory}
+          keyExtractor={keyExtractor}
+          ListHeaderComponent={renderListHeader}
+          ListEmptyComponent={renderListEmpty}
+          ListFooterComponent={renderListFooter}
           style={[styles.content, customStyles?.content]}
           contentContainerStyle={{ paddingVertical: tokens.spacing.md }}
           showsVerticalScrollIndicator={false}
-        >
-          {filteredCategories.map((category) => (
-            <FAQCategoryComponent
-              key={category.id}
-              category={category}
-              isExpanded={isExpanded}
-              onToggleItem={toggleExpansion}
-              styles={customStyles?.category}
-            />
-          ))}
-          <View style={{ height: tokens.spacing.xl * 2 }} />
-        </ScrollView>
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          windowSize={10}
+          removeClippedSubviews={true}
+        />
       </View>
     );
   };

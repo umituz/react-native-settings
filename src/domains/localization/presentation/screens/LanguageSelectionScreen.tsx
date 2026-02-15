@@ -12,6 +12,7 @@ import {
   NavigationHeader,
   useAppNavigation,
 } from '@umituz/react-native-design-system';
+import { isDev } from '../../../../utils/devUtils';
 import { useLanguageSelection } from '../../infrastructure/hooks/useLanguageSelection';
 import { LanguageItem } from '../components/LanguageItem';
 import type { Language } from '../../infrastructure/storage/types/Language';
@@ -38,14 +39,14 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
   } = useLanguageSelection();
 
   const onSelect = async (code: string) => {
-    if (__DEV__) {
+    if (isDev()) {
     }
     await handleLanguageSelect(code, () => {
-      if (__DEV__) {
+      if (isDev()) {
       }
       navigation.goBack();
     });
-    if (__DEV__) {
+    if (isDev()) {
     }
   };
 
@@ -113,12 +114,21 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
         renderItem={renderItem}
         keyExtractor={item => item.code}
         contentContainerStyle={[
-          styles.listContent, 
+          styles.listContent,
           { paddingBottom: tokens.spacing.xl },
           customStyles?.listContent
         ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        initialNumToRender={15}
+        maxToRenderPerBatch={10}
+        windowSize={10}
+        removeClippedSubviews={true}
+        getItemLayout={(data, index) => ({
+          length: 64,
+          offset: 64 * index,
+          index,
+        })}
       />
     </ScreenLayout>
   );

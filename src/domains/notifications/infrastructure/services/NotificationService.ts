@@ -31,6 +31,7 @@ export class NotificationService {
         NotificationManager.configure();
         this.isConfigured = true;
       } catch (error) {
+        console.error('[NotificationService] Failed to configure NotificationManager:', error);
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { useAppDesignTokens, AtomicIcon } from "@umituz/react-native-design-system";
 
@@ -26,6 +26,11 @@ export const StarRating: React.FC<StarRatingProps> = ({
     const tokens = useAppDesignTokens();
     const styles = getStyles(tokens);
     const [internalRating, setInternalRating] = useState(rating);
+
+    // Sync internal state with rating prop changes
+    useEffect(() => {
+        setInternalRating(rating);
+    }, [rating]);
 
     const filledColor = activeColor || tokens.colors.warning;
     const emptyColor = inactiveColor || tokens.colors.borderLight;

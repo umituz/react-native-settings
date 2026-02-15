@@ -20,17 +20,44 @@ export const useNavigationHandlers = (
   legalUrls: LegalUrls,
   aboutTranslations?: AboutConfig["texts"]
 ): NavigationHandlersResult => {
-  const handlePrivacyPress = useCallback(() => {
-    Linking.openURL(legalUrls.privacy);
+  const handlePrivacyPress = useCallback(async () => {
+    try {
+      const canOpen = await Linking.canOpenURL(legalUrls.privacy);
+      if (canOpen) {
+        await Linking.openURL(legalUrls.privacy);
+      } else {
+        console.warn('Cannot open privacy policy URL:', legalUrls.privacy);
+      }
+    } catch (error) {
+      console.error('Failed to open privacy policy:', error);
+    }
   }, [legalUrls.privacy]);
 
-  const handleTermsPress = useCallback(() => {
-    Linking.openURL(legalUrls.terms);
+  const handleTermsPress = useCallback(async () => {
+    try {
+      const canOpen = await Linking.canOpenURL(legalUrls.terms);
+      if (canOpen) {
+        await Linking.openURL(legalUrls.terms);
+      } else {
+        console.warn('Cannot open terms of service URL:', legalUrls.terms);
+      }
+    } catch (error) {
+      console.error('Failed to open terms of service:', error);
+    }
   }, [legalUrls.terms]);
 
-  const handleEulaPress = useCallback(() => {
+  const handleEulaPress = useCallback(async () => {
     if (legalUrls.eula) {
-      Linking.openURL(legalUrls.eula);
+      try {
+        const canOpen = await Linking.canOpenURL(legalUrls.eula);
+        if (canOpen) {
+          await Linking.openURL(legalUrls.eula);
+        } else {
+          console.warn('Cannot open EULA URL:', legalUrls.eula);
+        }
+      } catch (error) {
+        console.error('Failed to open EULA:', error);
+      }
     }
   }, [legalUrls.eula]);
 

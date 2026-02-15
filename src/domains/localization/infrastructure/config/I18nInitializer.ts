@@ -51,8 +51,8 @@ export class I18nInitializer {
         returnEmptyString: false,
         returnNull: false,
       });
-    } catch {
-      // Silent error handling
+    } catch (error) {
+      console.error('[I18nInitializer] Failed to initialize i18n:', languageCode, error);
     }
   }
 

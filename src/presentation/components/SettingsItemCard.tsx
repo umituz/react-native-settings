@@ -7,6 +7,7 @@ import {
 } from "@umituz/react-native-design-system";
 import { validateTitle, validateDescription, validateSwitchProps } from "../../infrastructure/utils/validators";
 import { sanitizeTitle, sanitizeDescription } from "../../infrastructure/utils/sanitizers";
+import { TEXT_LENGTH_LIMITS } from "../../infrastructure/utils/constants/textLimits";
 import { SettingsItemCardRightElement } from "./settings/SettingsItemCardRightElement";
 import { SettingsItemCardContent } from "./settings/SettingsItemCardContent";
 import { SettingsItemCardSection } from "./settings/SettingsItemCardSection";
@@ -54,7 +55,7 @@ export const SettingsItemCard: React.FC<SettingsItemCardProps> = ({
   // Sanitize props (before hooks)
   const sanitizedTitle = sanitizeTitle(title);
   const sanitizedDescription = sanitizeDescription(description);
-  const sanitizedSectionTitle = sectionTitle?.trim().slice(0, 100);
+  const sanitizedSectionTitle = sectionTitle?.trim().slice(0, TEXT_LENGTH_LIMITS.TITLE_SHORT);
 
   const defaultIconBg = iconBgColor || withAlpha(colors.primary, 0.15);
   const defaultIconColor = iconColor || colors.primary;

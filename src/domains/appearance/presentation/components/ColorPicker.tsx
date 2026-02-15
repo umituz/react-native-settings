@@ -12,6 +12,7 @@ import {
   AtomicText,
   useAppDesignTokens,
 } from "@umituz/react-native-design-system";
+import { isDev } from "../../../../utils/devUtils";
 
 interface ColorPickerProps {
   label: string;
@@ -31,9 +32,6 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   // Memoize styles to prevent unnecessary re-creation
   const styles = useMemo(() => getStyles(tokens), [tokens]);
 
-  // Memoize colors array to prevent unnecessary re-renders
-  const colorsMemo = useMemo(() => colors, [colors]);
-
   // Stable callback for color change to prevent infinite re-renders
   const handleColorChange = useCallback((color: string) => {
     try {
@@ -41,7 +39,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
       if (value === color) return;
       onValueChange(color);
     } catch (error) {
-      if (__DEV__) {
+      if (isDev()) {
         console.error('[ColorPicker] Failed to change color:', error);
       }
       // Optionally: Show user feedback about the error
@@ -50,7 +48,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 
   // Memoize color options to prevent unnecessary re-renders
   const colorOptions = useMemo(() => {
-    return colorsMemo.map((color) => {
+    return colors.map((color) => {
       const isSelected = value === color;
 
       return (
@@ -74,7 +72,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         </TouchableOpacity>
       );
     });
-  }, [colorsMemo, value, handleColorChange, styles, tokens.colors.textInverse]);
+  }, [colors, value, handleColorChange, styles, tokens.colors.textInverse]);
 
   return (
     <View style={styles.container}>

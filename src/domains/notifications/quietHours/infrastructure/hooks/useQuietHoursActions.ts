@@ -12,28 +12,37 @@ export const useQuietHoursActions = () => {
   const { updateQuietHours } = usePreferencesStore();
 
   const setQuietHoursEnabled = useCallback(async (enabled: boolean): Promise<void> => {
-    await updateQuietHours({ ...quietHours, enabled });
-  }, [quietHours, updateQuietHours]);
+    // Use getState() to avoid stale closure and race conditions
+    const currentQuietHours = usePreferencesStore.getState().quietHours;
+    await updateQuietHours({ ...currentQuietHours, enabled });
+  }, [updateQuietHours]);
 
   const setStartTime = useCallback(async (hour: number, minute: number): Promise<void> => {
-    await updateQuietHours({ ...quietHours, startHour: hour, startMinute: minute });
-  }, [quietHours, updateQuietHours]);
+    // Use getState() to avoid stale closure and race conditions
+    const currentQuietHours = usePreferencesStore.getState().quietHours;
+    await updateQuietHours({ ...currentQuietHours, startHour: hour, startMinute: minute });
+  }, [updateQuietHours]);
 
   const setEndTime = useCallback(async (hour: number, minute: number): Promise<void> => {
-    await updateQuietHours({ ...quietHours, endHour: hour, endMinute: minute });
-  }, [quietHours, updateQuietHours]);
+    // Use getState() to avoid stale closure and race conditions
+    const currentQuietHours = usePreferencesStore.getState().quietHours;
+    await updateQuietHours({ ...currentQuietHours, endHour: hour, endMinute: minute });
+  }, [updateQuietHours]);
 
   const setQuietHours = useCallback(async (config: QuietHoursConfig): Promise<void> => {
     await updateQuietHours(config);
   }, [updateQuietHours]);
 
   const isInQuietHours = useCallback((): boolean => {
-    if (!quietHours.enabled) return false;
+    // Use getState() to get current quietHours for consistency
+    const currentQuietHours = usePreferencesStore.getState().quietHours;
+
+    if (!currentQuietHours.enabled) return false;
 
     const now = new Date();
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
-    const startMinutes = quietHours.startHour * 60 + quietHours.startMinute;
-    const endMinutes = quietHours.endHour * 60 + quietHours.endMinute;
+    const startMinutes = currentQuietHours.startHour * 60 + currentQuietHours.startMinute;
+    const endMinutes = currentQuietHours.endHour * 60 + currentQuietHours.endMinute;
 
     // Validate time values
     if (startMinutes < 0 || startMinutes >= 1440 || endMinutes < 0 || endMinutes >= 1440) {
@@ -49,7 +58,7 @@ export const useQuietHoursActions = () => {
       // Current time is after start OR before end
       return currentMinutes >= startMinutes || currentMinutes < endMinutes;
     }
-  }, [quietHours]);
+  }, []);
 
   return {
     quietHours,

@@ -1,58 +1,71 @@
 /**
- * Localization Store Factory
- * Creates and manages localization state with proper separation of concerns
+ * Localization Store
+ * Manages localization state using createStore pattern for consistency
  */
 
-import { create } from "zustand";
+import { createStore, storageService } from "@umituz/react-native-design-system";
 import type { LocalizationState, LocalizationActions, LocalizationGetters } from "./types/LocalizationState";
 import { languageRepository } from "../repository/LanguageRepository";
 import { InitializationManager, LanguageSwitchManager, localizationGetters } from "./localizationStoreUtils";
-
-type LocalizationStoreType = LocalizationState & LocalizationActions & LocalizationGetters;
 
 // Instance-level managers
 const initManager = new InitializationManager();
 const switchManager = new LanguageSwitchManager();
 
-export const useLocalizationStore = create<LocalizationStoreType>((set, get) => ({
-  // State
+const DEFAULT_STATE: LocalizationState = {
   currentLanguage: "en-US",
   isRTL: false,
   isInitialized: false,
   supportedLanguages: languageRepository.getLanguages(),
+};
 
-  // Actions
-  initialize: async () => {
-    const { isInitialized } = get();
-    await initManager.initialize(isInitialized, set);
-  },
+type LocalizationStoreActions = LocalizationActions & LocalizationGetters;
 
-  setLanguage: async (languageCode: string) => {
-    await switchManager.setLanguage(languageCode, set);
-  },
+export const useLocalizationStore = createStore<LocalizationState, LocalizationStoreActions>({
+  name: "localization-storage",
+  initialState: DEFAULT_STATE,
+  persist: true,
+  storage: storageService,
+  version: 1,
+  partialize: (state) => ({
+    currentLanguage: state.currentLanguage,
+    isRTL: state.isRTL,
+    isInitialized: false, // Don't persist initialization state
+    supportedLanguages: state.supportedLanguages,
+  }),
+  actions: (set, get) => ({
+    initialize: async () => {
+      const { isInitialized } = get();
+      await initManager.initialize(isInitialized, set);
+    },
 
-  reset: () => {
-    initManager.reset();
-    switchManager.reset();
+    setLanguage: async (languageCode: string) => {
+      await switchManager.setLanguage(languageCode, set);
+    },
 
-    set({
-      currentLanguage: "en-US",
-      isRTL: false,
-      isInitialized: false,
-    });
-  },
+    reset: () => {
+      initManager.reset();
+      switchManager.reset();
 
-  // Getters
-  getCurrentLanguage: () => {
-    const { currentLanguage } = get();
-    return localizationGetters.getCurrentLanguage(currentLanguage);
-  },
+      set({
+        currentLanguage: "en-US",
+        isRTL: false,
+        isInitialized: false,
+      });
+    },
 
-  isLanguageSupported: (code: string) => {
-    return localizationGetters.isLanguageSupported(code);
-  },
+    // Getters
+    getCurrentLanguage: () => {
+      const { currentLanguage } = get();
+      return localizationGetters.getCurrentLanguage(currentLanguage);
+    },
 
-  getSupportedLanguages: () => {
-    return localizationGetters.getSupportedLanguages();
-  },
-}));
+    isLanguageSupported: (code: string) => {
+      return localizationGetters.isLanguageSupported(code);
+    },
+
+    getSupportedLanguages: () => {
+      return localizationGetters.getSupportedLanguages();
+    },
+  }),
+});

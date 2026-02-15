@@ -56,6 +56,19 @@ export const OPACITY = {
 } as const;
 
 /**
+ * Alpha/Transparency values for withAlpha() usage
+ * Used with design system's withAlpha(color, alpha) function
+ */
+export const ALPHA_VALUES = {
+  subtle: 0.1,      // Very subtle tint
+  light: 0.15,      // Light background tint
+  medium: 0.2,      // Medium background
+  strong: 0.3,      // Strong background
+  visible: 0.5,     // Clearly visible
+  prominent: 0.8,   // Almost opaque
+} as const;
+
+/**
  * Icon size tokens
  */
 export const ICON_SIZE = {

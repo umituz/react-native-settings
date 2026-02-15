@@ -112,6 +112,15 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={10}
+        maxToRenderPerBatch={5}
+        windowSize={10}
+        removeClippedSubviews={true}
+        getItemLayout={(data, index) => ({
+          length: 88,
+          offset: 88 * index,
+          index,
+        })}
       />
 
       {canAddMore && (

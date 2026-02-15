@@ -110,6 +110,10 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.horizontalList}
+              initialNumToRender={3}
+              maxToRenderPerBatch={2}
+              windowSize={5}
+              removeClippedSubviews={true}
             />
           </View>
         )}
@@ -128,6 +132,10 @@ export const VideoTutorialsScreen: React.FC<VideoTutorialsScreenProps> = React.m
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.verticalList}
           ListHeaderComponent={ListHeader}
+          initialNumToRender={8}
+          maxToRenderPerBatch={5}
+          windowSize={10}
+          removeClippedSubviews={true}
         />
       </ScreenLayout>
     );

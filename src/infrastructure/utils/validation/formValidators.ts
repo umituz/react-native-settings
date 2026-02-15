@@ -5,6 +5,7 @@
 
 import type { ValidationResult } from "./core";
 import { validateRating } from "./numericValidators";
+import { TEXT_LENGTH_LIMITS } from "../constants/textLimits";
 
 /**
  * Feedback form validation
@@ -30,8 +31,8 @@ export const validateFeedbackForm = (data: {
     return { isValid: false, error: "Description must be at least 10 characters" };
   }
 
-  if (data.description.length > 1000) {
-    return { isValid: false, error: "Description must be less than 1000 characters" };
+  if (data.description.length > TEXT_LENGTH_LIMITS.BODY) {
+    return { isValid: false, error: `Description must be less than ${TEXT_LENGTH_LIMITS.BODY} characters` };
   }
 
   return { isValid: true };

@@ -67,9 +67,9 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
       ) : (
         <>
           {/* Unlocked achievements first */}
-          {unlocked.map((achievement, index) => (
+          {unlocked.map((achievement) => (
             <AchievementItem
-              key={`unlocked-${achievement.title}-${index}`}
+              key={`achievement-unlocked-${achievement.id || achievement.title}`}
               {...achievement}
               accentColor={accentColor}
               backgroundColor={cardBackgroundColor}
@@ -79,9 +79,9 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
           ))}
 
           {/* Locked achievements */}
-          {locked.map((achievement, index) => (
+          {locked.map((achievement) => (
             <AchievementItem
-              key={`locked-${achievement.title}-${index}`}
+              key={`achievement-locked-${achievement.id || achievement.title}`}
               {...achievement}
               accentColor={accentColor}
               backgroundColor={cardBackgroundColor}

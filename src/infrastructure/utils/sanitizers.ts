@@ -4,6 +4,8 @@
  * Provides sanitization functions for user input and props.
  */
 
+import { TEXT_LENGTH_LIMITS } from './constants/textLimits';
+
 /**
  * Sanitize string by trimming and limiting length
  */
@@ -16,14 +18,14 @@ export function sanitizeString(str: string | undefined, maxLength: number): stri
  * Sanitize title prop
  */
 export function sanitizeTitle(title: string): string {
-  return sanitizeString(title, 200) || "";
+  return sanitizeString(title, TEXT_LENGTH_LIMITS.TITLE) || "";
 }
 
 /**
  * Sanitize description prop
  */
 export function sanitizeDescription(description: string | undefined): string | undefined {
-  return sanitizeString(description || "", 500);
+  return sanitizeString(description || "", TEXT_LENGTH_LIMITS.DESCRIPTION);
 }
 
 /**

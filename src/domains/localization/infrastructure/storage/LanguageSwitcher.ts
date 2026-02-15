@@ -6,11 +6,10 @@
  * - Persistence
  */
 
-declare const __DEV__: boolean;
-
 import { storageRepository } from '@umituz/react-native-design-system';
 import i18n from '../config/i18n';
 import { languageRepository } from '../repository/LanguageRepository';
+import { isDev } from '../../../../utils/devUtils';
 
 const LANGUAGE_STORAGE_KEY = '@localization:language';
 
@@ -22,27 +21,32 @@ export class LanguageSwitcher {
     languageCode: string;
     isRTL: boolean;
   }> {
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
+    try {
+      if (isDev()) {
+      }
+
+      const language = languageRepository.getLanguageByCode(languageCode);
+
+      if (isDev()) {
+      }
+
+      await i18n.changeLanguage(languageCode);
+
+      if (isDev()) {
+      }
+
+      await storageRepository.setString(LANGUAGE_STORAGE_KEY, languageCode);
+
+      if (isDev()) {
+      }
+
+      return {
+        languageCode,
+        isRTL: language?.isRTL ?? false,
+      };
+    } catch (error) {
+      console.error('[LanguageSwitcher] Failed to switch language:', languageCode, error);
+      throw error;
     }
-
-    const language = languageRepository.getLanguageByCode(languageCode);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-    }
-
-    await i18n.changeLanguage(languageCode);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-    }
-
-    await storageRepository.setString(LANGUAGE_STORAGE_KEY, languageCode);
-
-    if (typeof __DEV__ !== "undefined" && __DEV__) {
-    }
-
-    return {
-      languageCode,
-      isRTL: language?.isRTL ?? false,
-    };
   }
 }

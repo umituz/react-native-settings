@@ -6,8 +6,7 @@
 import { LanguageInitializer } from "./LanguageInitializer";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { languageRepository } from "../repository/LanguageRepository";
-
-declare const __DEV__: boolean;
+import { isDev } from "../../../../utils/devUtils";
 
 export const LANGUAGE_SWITCH_DEBOUNCE_MS = 300;
 
@@ -45,7 +44,7 @@ export class InitializationManager {
         });
       } catch (error) {
         // Log and set fallback state
-        if (typeof __DEV__ !== "undefined" && __DEV__) {
+        if (isDev()) {
           console.error("Localization initialization failed:", error);
         }
 
@@ -103,14 +102,14 @@ export class LanguageSwitchManager {
       this.pendingResolvers.push(pendingItem);
 
       this.timer = setTimeout(async () => {
-        if (typeof __DEV__ !== "undefined" && __DEV__) {
+        if (isDev()) {
           console.log("[Localization] Switching language to:", languageCode);
         }
 
         try {
           const result = await LanguageSwitcher.switchLanguage(languageCode);
 
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
+          if (isDev()) {
             console.log("[Localization] Language switched successfully");
           }
 
@@ -121,7 +120,7 @@ export class LanguageSwitchManager {
 
           setState(stateUpdate);
 
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
+          if (isDev()) {
             console.log("[Localization] State updated:", stateUpdate);
           }
 
@@ -133,7 +132,7 @@ export class LanguageSwitchManager {
           const errorMessage =
             error instanceof Error ? error : new Error(String(error));
 
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
+          if (isDev()) {
             console.error("[Localization] Language switch failed:", errorMessage);
           }
 

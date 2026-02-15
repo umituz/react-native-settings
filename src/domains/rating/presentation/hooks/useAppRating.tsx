@@ -13,6 +13,7 @@ import type {
 import { DEFAULT_RATING_CONFIG } from "../../domain/entities/RatingConfig";
 import * as RatingService from "../../application/services/RatingService";
 import { RatingPromptModal } from "../components/RatingPromptModal";
+import { isDev } from "../../../../utils/devUtils";
 
 /**
  * App rating hook with 2-step prompt flow
@@ -72,7 +73,7 @@ export function useAppRating(config: RatingConfig): UseAppRatingResult {
         await StoreReview.requestReview();
       }
     } catch (error) {
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
+      if (isDev()) {
         console.error('[useAppRating] Failed to request review:', error);
       }
     }

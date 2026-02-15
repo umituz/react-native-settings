@@ -7,8 +7,6 @@
  * - i18n setup
  */
 
-declare const __DEV__: boolean;
-
 import { storageRepository } from '@umituz/react-native-design-system';
 import i18n from '../config/i18n';
 import { languageRepository } from '../repository/LanguageRepository';
@@ -33,8 +31,6 @@ export class LanguageInitializer {
 
       return finalLanguage;
     } catch {
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
-      }
       return await this.setupFallbackLanguage();
     }
   }

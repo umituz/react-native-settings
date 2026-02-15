@@ -6,6 +6,7 @@
 import { useMemo } from "react";
 import type { FeedbackFormData } from "./config-creators/types";
 import type { SettingsConfig } from "../screens/types";
+import type { SettingsStackParamList } from "../navigation/types";
 import {
   createAppearanceConfig,
   createLanguageConfig,
@@ -61,7 +62,7 @@ export const createSettingsConfig = (
     legal: features.legal ? createLegalConfig() : false,
     faqs: features.faqs ? createFAQConfig() : false,
     rating: features.rating ? createRatingConfig(handleRatePress, appStoreUrl) : false,
-    subscription: features.subscription ? createSubscriptionConfig(isPremium, "SubscriptionDetail") : false,
+    subscription: features.subscription ? createSubscriptionConfig(isPremium, "SubscriptionDetail" as keyof SettingsStackParamList) : false,
     gamification: features.gamification ? true : false,
     videoTutorial: features.videoTutorial ? true : false,
     disclaimer: false,

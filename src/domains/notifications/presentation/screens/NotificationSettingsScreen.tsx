@@ -18,7 +18,7 @@ import { SettingRow } from '../components/SettingRow';
 import { RemindersNavRow } from '../components/RemindersNavRow';
 import { useNotificationSettingsUI } from '../hooks/useNotificationSettingsUI';
 import { useTimePicker } from '../hooks/useTimePicker';
-import { useReminders } from '../../reminders/infrastructure/storage/RemindersStore';
+import { useReminders } from '../../infrastructure/storage/UnifiedNotificationStore';
 import { useQuietHoursActions } from '../../quietHours/infrastructure/hooks/useQuietHoursActions';
 import type { NotificationSettingsTranslations, QuietHoursTranslations } from '../../infrastructure/services/types';
 import { createStyles } from './NotificationSettingsScreen.styles';

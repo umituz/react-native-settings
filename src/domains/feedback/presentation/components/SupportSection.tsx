@@ -8,6 +8,7 @@ import React, { useState, useCallback } from "react";
 import { Linking } from "react-native";
 import { FeedbackModal } from "./FeedbackModal";
 import type { FeedbackType } from "../../domain/entities/FeedbackEntity";
+import { isDev } from "../../../../utils/devUtils";
 
 export interface FeedbackConfig {
     enabled?: boolean;
@@ -75,7 +76,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                 setModalVisible(false);
             } catch (error) {
                 // If the passed onSubmit throws, we log it.
-                if (__DEV__) {
+                if (isDev()) {
                     console.error('[SupportSection] Failed to submit feedback:', error);
                 }
                 // Optionally keep modal open? Or close it?

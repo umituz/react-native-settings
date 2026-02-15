@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { SupportSection } from "../../../../domains/feedback/presentation/components/SupportSection";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
-import { VideoTutorialSettingsItem } from "../VideoTutorialSettingsItem";
+import { SettingsNavigationItem } from "../../../components/SettingsNavigationItem";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 import { useSettingsNavigation } from "../../../navigation/hooks/useSettingsNavigation";
@@ -97,8 +97,10 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
             )}
 
             {features.videoTutorial && (
-                <VideoTutorialSettingsItem
+                <SettingsNavigationItem
                     config={normalizedConfig.videoTutorial.config || {}}
+                    defaultIcon="play-circle-outline"
+                    defaultRoute="VideoTutorial"
                     noBackground={true}
                     hideMargin={true}
                 />

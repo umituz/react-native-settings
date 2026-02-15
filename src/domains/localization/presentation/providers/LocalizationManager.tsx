@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { I18nInitializer } from "../../infrastructure/config/I18nInitializer";
 import { useLocalizationStore } from "../../infrastructure/storage/LocalizationStore";
+import { isDev } from "../../../../utils/devUtils";
 
 interface LocalizationProviderProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
           setIsI18nReady(true);
         }
       } catch (error) {
-        if (__DEV__) {
+        if (isDev()) {
           console.error('[LocalizationManager] Initialization failed:', error);
         }
         if (isMounted) {

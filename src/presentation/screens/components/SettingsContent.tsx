@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import { SettingsFooter } from "../../components/SettingsFooter";
 import { SettingsSection } from "../../components/SettingsSection";
+import { SettingsNavigationItem } from "../../components/SettingsNavigationItem";
 import { DevSettingsSection } from "../../../domains/dev";
 import { DisclaimerSetting } from "../../../domains/disclaimer";
 import { ProfileSectionLoader } from "./sections/ProfileSectionLoader";
@@ -10,12 +11,8 @@ import { IdentitySettingsSection } from "./sections/IdentitySettingsSection";
 import { SupportSettingsSection } from "./sections/SupportSettingsSection";
 import { CustomSettingsList } from "./sections/CustomSettingsList";
 import { hasAnyFeaturesEnabled } from "./utils/featureChecker";
+import { useGamification } from "../../../domains/gamification";
 import type { SettingsContentProps } from "./types/SettingsContentProps";
-
-// Extracted Item Components
-import { SubscriptionSettingsItem } from "./SubscriptionSettingsItem";
-import { WalletSettingsItem } from "./WalletSettingsItem";
-import { GamificationSettingsItem } from "./GamificationSettingsItem";
 
 export const SettingsContent: React.FC<SettingsContentProps> = ({
   normalizedConfig,
@@ -31,9 +28,18 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   gamificationConfig,
 }) => {
   const translations = normalizedConfig.translations;
+  const { level } = useGamification(gamificationConfig);
+
   const hasAnyFeatures = useMemo(
     () => hasAnyFeaturesEnabled(features, customSections),
     [features, customSections]
+  );
+
+  const renderGamificationDescription = useCallback(
+    (cfg: typeof normalizedConfig.gamification.config) => {
+      return cfg?.description || `${level.currentLevel} • ${level.currentPoints}`;
+    },
+    [level.currentLevel, level.currentPoints]
   );
 
   return (
@@ -49,15 +55,17 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {features.subscription && (normalizedConfig.subscription.config?.route || normalizedConfig.subscription.config?.onPress) && (
         <SettingsSection title={translations?.sections?.subscription}>
-          <SubscriptionSettingsItem 
-            config={normalizedConfig.subscription.config} 
+          <SettingsNavigationItem
+            config={normalizedConfig.subscription.config}
+            defaultIcon="star"
           />
         </SettingsSection>
       )}
 
       {features.wallet && normalizedConfig.wallet.config?.route && (
-        <WalletSettingsItem
+        <SettingsNavigationItem
           config={normalizedConfig.wallet.config}
+          defaultIcon="wallet"
         />
       )}
 
@@ -65,9 +73,11 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {features.gamification && (
         <SettingsSection title={translations?.sections?.progress}>
-          <GamificationSettingsItem
+          <SettingsNavigationItem
             config={normalizedConfig.gamification.config || {}}
-            gamificationConfig={gamificationConfig}
+            defaultIcon="trophy-outline"
+            defaultRoute="Gamification"
+            renderDescription={renderGamificationDescription}
             noBackground={true}
             hideMargin={true}
           />

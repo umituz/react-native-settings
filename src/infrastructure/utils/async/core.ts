@@ -4,6 +4,7 @@
  */
 
 import type { ValidationResult } from "../validation";
+import { isDev } from '../../../utils/devUtils';
 
 /**
  * Result type for async operations
@@ -58,7 +59,7 @@ export const createAsyncHandler = <T extends unknown[], R>(
         onSuccess?.(result);
       } catch (callbackError) {
         // Log callback error but don't treat it as handler error
-        if (typeof __DEV__ !== "undefined" && __DEV__) {
+        if (isDev()) {
           console.error("[createAsyncHandler] onSuccess callback error:", callbackError);
         }
       }
@@ -72,7 +73,7 @@ export const createAsyncHandler = <T extends unknown[], R>(
           onLoadingEnd?.();
         } catch (callbackError) {
           // Log callback error but don't throw
-          if (typeof __DEV__ !== "undefined" && __DEV__) {
+          if (isDev()) {
             console.error("[createAsyncHandler] onLoadingEnd callback error:", callbackError);
           }
         }

@@ -55,18 +55,19 @@ export { NotificationManager } from './infrastructure/services/NotificationManag
 // STORES
 // ============================================================================
 
-export { useNotificationsStore, useNotifications } from './infrastructure/storage/NotificationsStore';
 export {
-  useRemindersStore,
-  usePreferencesStore,
+  useNotificationStore,
+  useNotificationPermissions,
+  useNotificationInitialized,
+  useNotificationPreferences,
+  useQuietHours,
   useReminders,
   useEnabledReminders,
   useReminderById,
-  useNotificationPreferences,
-  useQuietHours,
   useRemindersLoading,
   useRemindersInitialized,
-} from './reminders/infrastructure/storage/RemindersStore';
+  useNotifications, // Legacy compatibility
+} from './infrastructure/storage/UnifiedNotificationStore';
 
 // ============================================================================
 // HOOKS

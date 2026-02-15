@@ -4,13 +4,13 @@
  */
 
 import { useEffect, useCallback } from 'react';
-import { useNotificationPreferences, useQuietHours, usePreferencesStore, useRemindersLoading } from '../../reminders/infrastructure/storage/RemindersStore';
+import { useNotificationPreferences, useQuietHours, useNotificationStore, useRemindersLoading } from '../../infrastructure/storage/UnifiedNotificationStore';
 import { notificationService } from '../../infrastructure/services/NotificationService';
 
 export const useNotificationSettingsUI = () => {
     const preferences = useNotificationPreferences();
     const quietHours = useQuietHours();
-    const { initialize, updatePreferences, updateQuietHours } = usePreferencesStore();
+    const { initialize, updatePreferences, updateQuietHours } = useNotificationStore();
     const isLoading = useRemindersLoading();
 
     useEffect(() => {

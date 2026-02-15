@@ -15,7 +15,7 @@ import {
   useAppDesignTokens
 } from '@umituz/react-native-design-system';
 import { ReminderItem } from '../components/ReminderItem';
-import { useReminders, useRemindersLoading } from '../../infrastructure/storage/RemindersStore';
+import { useReminders, useRemindersLoading } from '../../../infrastructure/storage/UnifiedNotificationStore';
 import { useReminderActions } from '../../infrastructure/hooks/useReminderActions';
 import type { Reminder, ReminderTranslations } from '../../../infrastructure/services/types';
 import { devError } from '../../../../../utils/devUtils';

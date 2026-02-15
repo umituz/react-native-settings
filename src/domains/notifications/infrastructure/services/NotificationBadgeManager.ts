@@ -1,6 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { devError } from '../utils/dev';
+import { devError } from '../../../../utils/devUtils';
 
 export class NotificationBadgeManager {
   async getBadgeCount(): Promise<number> {

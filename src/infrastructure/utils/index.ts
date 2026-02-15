@@ -3,7 +3,7 @@
  * Centralized utility functions for common operations
  */
 
-export * from './styleUtils';
+export * from './styles';
 export * from './memoUtils';
 export * from './styleTokens';
 export * from './configFactory';

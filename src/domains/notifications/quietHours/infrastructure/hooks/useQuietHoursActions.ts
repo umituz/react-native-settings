@@ -4,28 +4,28 @@
  */
 
 import { useCallback } from 'react';
-import { usePreferencesStore, useQuietHours } from '../../../reminders/infrastructure/storage/RemindersStore';
+import { useNotificationStore, useQuietHours } from '../../../infrastructure/storage/UnifiedNotificationStore';
 import type { QuietHoursConfig } from '../../../infrastructure/services/types';
 
 export const useQuietHoursActions = () => {
   const quietHours = useQuietHours();
-  const { updateQuietHours } = usePreferencesStore();
+  const { updateQuietHours } = useNotificationStore();
 
   const setQuietHoursEnabled = useCallback(async (enabled: boolean): Promise<void> => {
     // Use getState() to avoid stale closure and race conditions
-    const currentQuietHours = usePreferencesStore.getState().preferences.quietHours;
+    const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
     await updateQuietHours({ ...currentQuietHours, enabled });
   }, [updateQuietHours]);
 
   const setStartTime = useCallback(async (hour: number, minute: number): Promise<void> => {
     // Use getState() to avoid stale closure and race conditions
-    const currentQuietHours = usePreferencesStore.getState().preferences.quietHours;
+    const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
     await updateQuietHours({ ...currentQuietHours, startHour: hour, startMinute: minute });
   }, [updateQuietHours]);
 
   const setEndTime = useCallback(async (hour: number, minute: number): Promise<void> => {
     // Use getState() to avoid stale closure and race conditions
-    const currentQuietHours = usePreferencesStore.getState().preferences.quietHours;
+    const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
     await updateQuietHours({ ...currentQuietHours, endHour: hour, endMinute: minute });
   }, [updateQuietHours]);
 
@@ -35,7 +35,7 @@ export const useQuietHoursActions = () => {
 
   const isInQuietHours = useCallback((): boolean => {
     // Use getState() to get current quietHours for consistency
-    const currentQuietHours = usePreferencesStore.getState().preferences.quietHours;
+    const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
 
     if (!currentQuietHours.enabled) return false;
 

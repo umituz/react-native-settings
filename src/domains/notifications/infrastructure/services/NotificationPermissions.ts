@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import { devWarn, devError, devLog } from '../utils/dev';
+import { devWarn, devError, devLog } from '../../../../utils/devUtils';
 
 export class NotificationPermissions {
   async requestPermissions(): Promise<boolean> {

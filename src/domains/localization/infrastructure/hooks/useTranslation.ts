@@ -81,9 +81,6 @@ export const useTranslationFunction = () => {
       }
     }
 
-    if (__DEV__ && !translationFound) {
-    }
-
     return finalResult;
   }, [i18nextT, ready]);
 

@@ -9,6 +9,7 @@ import type {
   AchievementDefinition,
   LevelDefinition,
 } from "../../../domains/gamification/types";
+import type { SettingsStackParamList } from "../../navigation/types";
 
 /**
  * Create subscription configuration
@@ -17,11 +18,11 @@ import type {
  */
 export const createSubscriptionConfig = (
   isPremium: boolean,
-  routeOrOnPress: string | (() => void),
+  routeOrOnPress: keyof SettingsStackParamList | (() => void),
 ): SubscriptionConfig => ({
   enabled: true,
   icon: "diamond",
-  route: typeof routeOrOnPress === "string" ? routeOrOnPress : undefined,
+  route: typeof routeOrOnPress === "function" ? undefined : routeOrOnPress,
   onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
   isPremium,
 });

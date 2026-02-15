@@ -4,6 +4,8 @@
  * FIXED: Added safety checks for showToast and proper error handling
  */
 
+import { isDev } from '../../utils/devUtils';
+
 /**
  * Error types for better error classification
  */
@@ -182,7 +184,7 @@ export const logError = (
   };
 
   // Log errors in development mode
-  if (typeof __DEV__ !== "undefined" && __DEV__) {
+  if (isDev()) {
     console.error("[Error]", logData);
   }
 
@@ -216,7 +218,7 @@ export const handleError = (
       }
     } catch (toastError) {
       // Log toast error but don't crash error handling
-      if (typeof __DEV__ !== "undefined" && __DEV__) {
+      if (isDev()) {
         console.error("[ErrorHandlers] showToast failed:", toastError);
       }
     }

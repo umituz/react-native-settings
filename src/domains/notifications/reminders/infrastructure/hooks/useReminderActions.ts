@@ -4,14 +4,14 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useRemindersStore } from '../storage/RemindersStore';
+import { useNotificationStore } from '../../../infrastructure/storage/UnifiedNotificationStore';
 import { NotificationScheduler } from '../../../infrastructure/services/NotificationScheduler';
 import { generateReminderId } from '../../../infrastructure/utils/idGenerator';
 import { buildTrigger } from '../../../infrastructure/utils/triggerBuilder';
 import type { Reminder, CreateReminderInput, UpdateReminderInput } from '../../../infrastructure/services/types';
 
 export const useReminderActions = () => {
-  const { addReminder, updateReminder, deleteReminder, toggleReminder: _toggleReminder } = useRemindersStore();
+  const { addReminder, updateReminder, deleteReminder, toggleReminder: _toggleReminder } = useNotificationStore();
 
   // Lazy initialization of scheduler
   const scheduler = useMemo(() => new NotificationScheduler(), []);
@@ -47,7 +47,7 @@ export const useReminderActions = () => {
 
   const editReminder = useCallback(async (id: string, input: UpdateReminderInput): Promise<void> => {
     // Get current state BEFORE async operations to prevent race condition
-    const existing = useRemindersStore.getState().reminders.find(r => r.id === id);
+    const existing = useNotificationStore.getState().reminders.find(r => r.id === id);
 
     if (!existing) {
       throw new Error(`Reminder with id ${id} not found`);
@@ -86,7 +86,7 @@ export const useReminderActions = () => {
 
   const removeReminder = useCallback(async (id: string): Promise<void> => {
     // Get current state BEFORE async operations to prevent race condition
-    const reminder = useRemindersStore.getState().reminders.find(r => r.id === id);
+    const reminder = useNotificationStore.getState().reminders.find(r => r.id === id);
 
     if (!reminder) {
       throw new Error(`Reminder with id ${id} not found`);
@@ -105,7 +105,7 @@ export const useReminderActions = () => {
 
   const toggleReminderEnabled = useCallback(async (id: string): Promise<void> => {
     // Get current state BEFORE async operations to prevent race condition
-    const reminder = useRemindersStore.getState().reminders.find(r => r.id === id);
+    const reminder = useNotificationStore.getState().reminders.find(r => r.id === id);
 
     if (!reminder) {
       throw new Error(`Reminder with id ${id} not found`);

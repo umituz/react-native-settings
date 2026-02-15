@@ -35,9 +35,3 @@ export function validatePlatform(): "ios" | "android" {
   return platform;
 }
 
-/**
- * Checks if the app is currently in development mode
- */
-export function isDev(): boolean {
-  return __DEV__;
-}

@@ -70,8 +70,6 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
         customStyles?.languageItem,
       ]}
       onPress={() => {
-        if (__DEV__) {
-        }
         onSelect(item.code);
       }}
       activeOpacity={0.7}

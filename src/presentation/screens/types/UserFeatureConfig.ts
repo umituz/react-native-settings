@@ -6,6 +6,7 @@
 import type { FeatureVisibility } from "./BaseTypes";
 import type { FeedbackType } from "../../../domains/feedback/domain/entities/FeedbackEntity";
 import type { FAQCategory } from "../../../domains/faqs/domain/entities/FAQEntity";
+import type { SettingsStackParamList } from "../../navigation/types";
 
 /**
  * User Profile Settings Configuration
@@ -114,7 +115,7 @@ export interface SubscriptionConfig {
   /** Custom section title for grouping */
   sectionTitle?: string;
   /** Navigation route for subscription screen (preferred over onPress) */
-  route?: string;
+  route?: keyof SettingsStackParamList;
   /** Handler to open subscription screen (use route instead for stack navigation) */
   onPress?: () => void;
   /** Whether user is premium (to show active status) */
@@ -136,7 +137,7 @@ export interface WalletConfig {
   /** Custom section title for grouping */
   sectionTitle?: string;
   /** Navigation route for wallet screen */
-  route?: string;
+  route?: keyof SettingsStackParamList;
   /** Current balance to display */
   balance?: number;
 }
@@ -156,7 +157,7 @@ export interface GamificationItemConfig {
   /** Custom section title for grouping */
   sectionTitle?: string;
   /** Navigation route for gamification screen */
-  route?: string;
+  route?: keyof SettingsStackParamList;
   /** Achievements to display */
   achievementsCount?: number;
 }
@@ -178,6 +179,6 @@ export interface VideoTutorialConfig {
   /** Handler to open video tutorial screen */
   onPress?: () => void;
   /** Navigation route for video tutorial screen */
-  route?: string;
+  route?: keyof SettingsStackParamList;
 }
 

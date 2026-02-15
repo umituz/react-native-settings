@@ -5,6 +5,7 @@
 import type { ViewStyle, TextStyle } from 'react-native';
 
 export interface AchievementItemProps {
+  id?: string;
   title: string;
   description: string;
   icon: React.ReactNode | string;

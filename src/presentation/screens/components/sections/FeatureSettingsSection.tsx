@@ -47,7 +47,7 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
 
   return (
     <SettingsSection
-      title={translations?.sections?.app}
+      title={translations?.sections?.app || ''}
     >
       {features.appearance && (
         <AppearanceSection
@@ -63,7 +63,7 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
 
       {features.language && (
         <SettingsItemCard
-          title={translations?.features?.language?.title}
+          title={translations?.features?.language?.title || ''}
           description={languageDisplayName}
           icon="globe-outline"
           onPress={handleLanguagePress}

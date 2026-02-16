@@ -69,7 +69,7 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
 
   const renderSearchComponent = () => {
     if (renderSearchInput) {
-      return renderSearchInput(searchQuery, setSearchQuery, searchPlaceholder);
+      return renderSearchInput(searchQuery, setSearchQuery, searchPlaceholder || '');
     }
 
     return (

@@ -19,7 +19,7 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
     if (!features.about && !features.legal) return null;
 
     return (
-        <SettingsSection title={translations?.sections?.about}>
+        <SettingsSection title={translations?.sections?.about || ''}>
             {features.about && (
                 <AboutSection
                     config={{

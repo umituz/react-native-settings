@@ -87,7 +87,7 @@ const SettingsNavigationItemComponent = <T extends SettingsNavigationItemConfig>
 
   return (
     <SettingsItemCard
-      title={config.title}
+      title={config.title || ''}
       description={description}
       icon={icon}
       onPress={handlePress}

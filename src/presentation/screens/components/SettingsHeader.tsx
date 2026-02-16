@@ -46,7 +46,7 @@ export const SettingsHeader: React.FC<SettingsHeaderProps> = ({
 
   return (
     <NavigationHeader
-      title={title}
+      title={title || ''}
       rightElement={rightElement}
       // If NOT showing close button, we might want a back button? 
       // But usually Settings is a root screen in a modal or stack.

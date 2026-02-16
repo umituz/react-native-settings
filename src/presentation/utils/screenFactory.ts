@@ -45,7 +45,7 @@ export function createScreenWithProps<P>(
   return {
     name,
     options: { headerShown: false, ...options },
-    children: (() => React.createElement(component, props)) as () => React.ReactElement,
+    children: (() => React.createElement(component as React.ComponentType, props as any)) as () => React.ReactElement,
   };
 }
 

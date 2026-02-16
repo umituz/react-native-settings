@@ -54,7 +54,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       <CustomSettingsList customSections={customSections} />
 
       {features.subscription && (normalizedConfig.subscription.config?.route || normalizedConfig.subscription.config?.onPress) && (
-        <SettingsSection title={translations?.sections?.subscription}>
+        <SettingsSection title={translations?.sections?.subscription || ''}>
           <SettingsNavigationItem
             config={normalizedConfig.subscription.config}
             defaultIcon="star"
@@ -72,7 +72,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
       <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
 
       {features.gamification && (
-        <SettingsSection title={translations?.sections?.progress}>
+        <SettingsSection title={translations?.sections?.progress || ''}>
           <SettingsNavigationItem
             config={normalizedConfig.gamification.config || {}}
             defaultIcon="trophy-outline"
@@ -92,7 +92,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
       {!hasAnyFeatures && (
         <View style={styles.emptyContainer}>
-          <SettingsSection title={emptyStateText || translations?.noOptionsAvailable}>
+          <SettingsSection title={emptyStateText || translations?.noOptionsAvailable || ''}>
             <View />
           </SettingsSection>
         </View>

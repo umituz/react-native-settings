@@ -141,9 +141,9 @@ export const useSettingsScreenConfig = (
   }), [userProfileData, handleSignIn]);
 
   const accountConfig = useMemo(() => createAccountConfig({
-    displayName: userProfileData?.displayName || user?.displayName,
-    userId: userProfileData?.userId ?? user?.uid,
-    photoURL: user?.photoURL,
+    displayName: userProfileData?.displayName || user?.displayName || undefined,
+    userId: userProfileData?.userId || user?.uid || undefined,
+    photoURL: user?.photoURL || undefined,
     isAnonymous: user?.isAnonymous,
     avatarUrl: userProfileData?.avatarUrl,
     onSignIn: handleSignIn,

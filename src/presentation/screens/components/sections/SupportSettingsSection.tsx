@@ -26,7 +26,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
     if (!(features.feedback || features.rating || features.faqs || features.videoTutorial)) return null;
 
     return (
-        <SettingsSection title={translations?.sections?.support}>
+        <SettingsSection title={translations?.sections?.support || ''}>
             {(features.feedback || features.rating) && (
                 <SupportSection
                     renderSection={(props: { title: string; children: React.ReactNode }) => <>{props.children}</>}
@@ -42,7 +42,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                     feedbackConfig={{
                         enabled: features.feedback,
                         config: {
-                            title: normalizedConfig.feedback.config?.title || translations?.features?.feedback?.title,
+                            title: normalizedConfig.feedback.config?.title || translations?.features?.feedback?.title || '',
                             description: normalizedConfig.feedback.config?.description || translations?.features?.feedback?.description,
                             initialType: normalizedConfig.feedback.config?.initialType,
                             onSubmit: normalizedConfig.feedback.config?.onSubmit,
@@ -52,24 +52,24 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                     ratingConfig={{
                         enabled: features.rating,
                         config: {
-                            title: normalizedConfig.rating.config?.title || translations?.features?.rating?.title,
+                            title: normalizedConfig.rating.config?.title || translations?.features?.rating?.title || '',
                             description: normalizedConfig.rating.config?.description || translations?.features?.rating?.description,
                             storeUrl: normalizedConfig.rating.config?.storeUrl,
                             onRate: normalizedConfig.rating.config?.onRate,
                         }
                     }}
                     feedbackModalTexts={{
-                        title: translations?.feedbackModal?.title,
-                        ratingLabel: translations?.feedbackModal?.ratingLabel,
-                        descriptionPlaceholder: translations?.feedbackModal?.descriptionPlaceholder,
-                        submitButton: translations?.feedbackModal?.submitButton,
-                        submittingButton: translations?.feedbackModal?.submittingButton,
+                        title: translations?.feedbackModal?.title || '',
+                        ratingLabel: translations?.feedbackModal?.ratingLabel || '',
+                        descriptionPlaceholder: translations?.feedbackModal?.descriptionPlaceholder || '',
+                        submitButton: translations?.feedbackModal?.submitButton || '',
+                        submittingButton: translations?.feedbackModal?.submittingButton || '',
                         feedbackTypes: [
-                            { type: 'general', label: translations?.feedbackModal?.types?.general },
-                            { type: 'bug_report', label: translations?.feedbackModal?.types?.bugReport },
-                            { type: 'feature_request', label: translations?.feedbackModal?.types?.featureRequest },
-                            { type: 'improvement', label: translations?.feedbackModal?.types?.improvement },
-                            { type: 'other', label: translations?.feedbackModal?.types?.other },
+                            { type: 'general', label: translations?.feedbackModal?.types?.general || '' },
+                            { type: 'bug_report', label: translations?.feedbackModal?.types?.bugReport || '' },
+                            { type: 'feature_request', label: translations?.feedbackModal?.types?.featureRequest || '' },
+                            { type: 'improvement', label: translations?.feedbackModal?.types?.improvement || '' },
+                            { type: 'other', label: translations?.feedbackModal?.types?.other || '' },
                         ],
                         defaultTitle: (type) => {
                             const titles: Record<string, string> = {
@@ -87,7 +87,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
 
             {features.faqs && (
                 <SettingsItemCard
-                    title={normalizedConfig.faqs.config?.title || translations?.features?.faqs?.title}
+                    title={normalizedConfig.faqs.config?.title || translations?.features?.faqs?.title || ''}
                     description={normalizedConfig.faqs.config?.description || translations?.features?.faqs?.description}
                     icon="help-circle-outline"
                     onPress={handleFAQPress}

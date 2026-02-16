@@ -200,24 +200,3 @@ export const useEnabledReminders = () => {
 export const useReminderById = (id: string) =>
   useNotificationStore(state => state.reminders.find(r => r.id === id));
 
-// ============================================================================
-// LEGACY COMPATIBILITY HOOK (for smooth migration)
-// ============================================================================
-
-/**
- * @deprecated Use useNotificationStore directly or specific selectors
- * Kept temporarily for backward compatibility during migration
- */
-export const useNotifications = () => {
-  const hasPermissions = useNotificationPermissions();
-  const isInitialized = useNotificationInitialized();
-  const setPermissions = useNotificationStore(state => state.setPermissions);
-  const setInitialized = useNotificationStore(state => state.setInitialized);
-
-  return {
-    hasPermissions,
-    isInitialized,
-    setPermissions,
-    setInitialized,
-  };
-};

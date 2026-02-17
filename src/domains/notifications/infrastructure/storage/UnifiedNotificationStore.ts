@@ -11,7 +11,6 @@
 
 import { useMemo } from 'react';
 import { createStore, storageService } from '@umituz/react-native-design-system';
-import { excludeTransientState } from '../../../../infrastructure/storage/storeConfig';
 import type { Reminder, QuietHoursConfig, NotificationPreferences } from '../services/types';
 
 // ============================================================================

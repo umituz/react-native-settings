@@ -1,15 +1,15 @@
 /**
  * Translation Hook
  *
- * Provides translation function with proper language change reactivity
- * - React i18next integration for automatic language change detection
- * - Auto-namespace detection from dot notation
- * - Type-safe translation function
+ * Provides translation function with proper language change reactivity.
+ * Keys use dot notation only: "namespace.key.subkey"
+ * The first segment before the dot is the i18next namespace.
  */
 
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../config/i18n';
+import { devWarn } from '../../../../utils/devUtils';
 
 export interface TranslationOptions {
   count?: number;
@@ -19,12 +19,11 @@ export interface TranslationOptions {
 }
 
 /**
- * Hook for translation functionality
- * Uses react-i18next for automatic language change reactivity
+ * Hook for translation functionality.
+ * Uses react-i18next for automatic language change reactivity.
  *
- * Supports both formats:
- * - t('namespace:key.subkey') - explicit namespace
- * - t('namespace.key.subkey') - auto-detected namespace (first segment before dot)
+ * Keys must use dot notation: t('namespace.key.subkey')
+ * The first segment is the i18next namespace: t('common.ok'), t('settings.title')
  */
 export const useTranslationFunction = () => {
   const { t: i18nextT, ready } = useTranslation(undefined, { i18n });
@@ -38,50 +37,20 @@ export const useTranslationFunction = () => {
       return options.defaultValue || key;
     }
 
-    let finalResult: string;
-    let translationFound = false;
+    // Convert dot notation to i18next namespace:key format
+    // "namespace.key.subkey" → i18next "namespace:key.subkey"
+    const firstDotIndex = key.indexOf('.');
+    const i18nextKey = firstDotIndex > 0
+      ? `${key.substring(0, firstDotIndex)}:${key.substring(firstDotIndex + 1)}`
+      : key;
 
-    // If key already has namespace separator (:), use as-is
-    if (key.includes(':')) {
-      const result = i18nextT(key, options);
-      finalResult = typeof result === 'string' ? result : key;
-      translationFound = finalResult !== key && finalResult !== options.defaultValue;
-    } else {
-      // Auto-detect namespace from first dot segment
-      const firstDotIndex = key.indexOf('.');
-      if (firstDotIndex > 0) {
-        const potentialNamespace = key.substring(0, firstDotIndex);
-        const restOfKey = key.substring(firstDotIndex + 1);
-        const hasNamespace = i18n.hasResourceBundle(i18n.language, potentialNamespace);
-
-        if (hasNamespace) {
-          const namespacedKey = `${potentialNamespace}:${restOfKey}`;
-          const namespacedResult = i18nextT(namespacedKey, options);
-
-          if (namespacedResult !== namespacedKey && namespacedResult !== restOfKey) {
-            finalResult = typeof namespacedResult === 'string' ? namespacedResult : key;
-            translationFound = true;
-          } else {
-            // Fallback to original key
-            const result = i18nextT(key, options);
-            finalResult = typeof result === 'string' ? result : key;
-            translationFound = finalResult !== key && finalResult !== options.defaultValue;
-          }
-        } else {
-          // Fallback to original key
-          const result = i18nextT(key, options);
-          finalResult = typeof result === 'string' ? result : key;
-          translationFound = finalResult !== key && finalResult !== options.defaultValue;
-        }
-      } else {
-        // Fallback to original key
-        const result = i18nextT(key, options);
-        finalResult = typeof result === 'string' ? result : key;
-        translationFound = finalResult !== key && finalResult !== options.defaultValue;
-      }
+    // Missing translation is a critical issue — warn in development
+    if (!i18n.exists(i18nextKey)) {
+      devWarn(`[i18n] Missing translation: "${key}"`);
     }
 
-    return finalResult;
+    const result = i18nextT(i18nextKey, options);
+    return typeof result === 'string' ? result : (options.defaultValue ?? key);
   }, [i18nextT, ready]);
 
   return {

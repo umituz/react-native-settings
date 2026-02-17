@@ -86,7 +86,7 @@ export interface BaseStoreState {
 export const excludeTransientState = <T extends BaseStoreState>(
   state: T
 ): Partial<T> => {
-  const { isLoading, isInitialized, ...persistedState } = state;
+  const { isLoading: _isLoading, isInitialized: _isInitialized, ...persistedState } = state;
   return persistedState as Partial<T>;
 };
 

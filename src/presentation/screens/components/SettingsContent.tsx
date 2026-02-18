@@ -13,6 +13,9 @@ import { CustomSettingsList } from "./sections/CustomSettingsList";
 import { hasAnyFeaturesEnabled } from "./utils/featureChecker";
 import { useGamification } from "../../../domains/gamification";
 import type { SettingsContentProps } from "./types/SettingsContentProps";
+import type { CustomSettingsSection } from "../types";
+
+const EMPTY_CUSTOM_SECTIONS: CustomSettingsSection[] = [];
 
 export const SettingsContent: React.FC<SettingsContentProps> = ({
   normalizedConfig,
@@ -22,7 +25,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   showFooter = true,
   footerText,
   appVersion,
-  customSections = [],
+  customSections = EMPTY_CUSTOM_SECTIONS,
   emptyStateText,
   devSettings,
   gamificationConfig,
@@ -110,24 +113,6 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
     </View>
   );
 };
-
-export const MemoizedSettingsContent = React.memo(SettingsContent, (prevProps, nextProps) => {
-  return (
-    prevProps.normalizedConfig === nextProps.normalizedConfig &&
-    prevProps.features === nextProps.features &&
-    prevProps.showUserProfile === nextProps.showUserProfile &&
-    prevProps.userProfile === nextProps.userProfile &&
-    prevProps.showFooter === nextProps.showFooter &&
-    prevProps.footerText === nextProps.footerText &&
-    prevProps.appVersion === nextProps.appVersion &&
-    prevProps.customSections === nextProps.customSections &&
-    prevProps.emptyStateText === nextProps.emptyStateText &&
-    prevProps.devSettings === nextProps.devSettings &&
-    prevProps.gamificationConfig === nextProps.gamificationConfig
-  );
-});
-
-MemoizedSettingsContent.displayName = "MemoizedSettingsContent";
 
 const styles = StyleSheet.create({
   container: {

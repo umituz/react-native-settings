@@ -5,7 +5,6 @@ import { getLanguageByCode } from "../../../../domains/localization";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { SettingsSection } from "../../../components/SettingsSection";
-import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 import { useSettingsNavigation } from "../../../navigation/hooks/useSettingsNavigation";
 
 interface FeatureSettingsSectionProps {
@@ -87,6 +86,3 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
     </SettingsSection>
   );
 };
-
-export const MemoizedFeatureSettingsSection = React.memo(FeatureSettingsSection, compareConfigAndFeatures);
-MemoizedFeatureSettingsSection.displayName = "MemoizedFeatureSettingsSection";

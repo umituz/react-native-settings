@@ -81,8 +81,6 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
   // Memoize styles to prevent unnecessary re-creation
   const styles = useMemo(() => getStyles(tokens), [tokens]);
 
-  // Memoize color fields to prevent unnecessary re-renders
-  const colorFieldsMemo = useMemo(() => colorFields, [colorFields]);
 
   // Stable callback for color change to prevent infinite re-renders
   const handleColorChange = useCallback((key: keyof CustomThemeColors, color: string) => {
@@ -104,7 +102,7 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
 
   // Memoize color pickers to prevent unnecessary re-renders
   const colorPickers = useMemo(() => {
-    return colorFieldsMemo.map((field) => (
+    return colorFields.map((field) => (
       <ColorPicker
         key={field.key}
         label={field.label}
@@ -113,7 +111,7 @@ export const CustomColorsSection: React.FC<CustomColorsSectionProps> = ({
         colors={field.colorPalette}
       />
     ));
-  }, [colorFieldsMemo, localCustomColors, handleColorChange]);
+  }, [colorFields, localCustomColors, handleColorChange]);
 
   // Memoize reset button to prevent unnecessary re-renders
   const resetButton = useMemo(() => {

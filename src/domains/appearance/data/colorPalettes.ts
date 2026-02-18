@@ -64,26 +64,3 @@ export const DEFAULT_ACCENT_COLORS: ColorPalette = {
   ],
 };
 
-/**
- * Generate custom color palette
- * @param baseColor - Base color to generate variations from
- * @param count - Number of variations to generate
- * @returns Color palette with variations
- */
-export const generateColorPalette = (
-  baseColor: string, 
-  count: number = 8
-): ColorPalette => {
-  const colors: string[] = [];
-  
-  for (let i = 0; i < count; i++) {
-    // Simple color variation logic - in real implementation, 
-    // this would use HSL/HSV color space manipulation
-    colors.push(baseColor);
-  }
-  
-  return {
-    name: "custom",
-    colors,
-  };
-};

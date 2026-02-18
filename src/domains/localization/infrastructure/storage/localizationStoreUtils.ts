@@ -8,7 +8,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { languageRepository } from "../repository/LanguageRepository";
 import { isDev } from "../../../../utils/devUtils";
 
-export const LANGUAGE_SWITCH_DEBOUNCE_MS = 300;
+const LANGUAGE_SWITCH_DEBOUNCE_MS = 300;
 
 /**
  * Manages localization initialization state

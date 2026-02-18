@@ -51,9 +51,3 @@ export function validateSwitchProps(
   return null;
 }
 
-/**
- * Return validation result (no logging)
- */
-export function getValidationResult(warning: ValidationWarning | null): ValidationWarning | null {
-  return warning;
-}

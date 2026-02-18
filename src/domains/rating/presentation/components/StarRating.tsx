@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { useAppDesignTokens, AtomicIcon } from "@umituz/react-native-design-system";
 
@@ -25,23 +25,17 @@ export const StarRating: React.FC<StarRatingProps> = ({
 }) => {
     const tokens = useAppDesignTokens();
     const styles = getStyles(tokens);
-    const [internalRating, setInternalRating] = useState(rating);
+    const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
-    // Sync internal state with rating prop changes
-    useEffect(() => {
-        setInternalRating(rating);
-    }, [rating]);
+    const displayRating = selectedRating ?? rating;
 
     const filledColor = activeColor || tokens.colors.warning;
     const emptyColor = inactiveColor || tokens.colors.borderLight;
-    
-    // Scale the size
-    const responsiveSize = size;
 
     const handlePress = (index: number) => {
         if (disabled) return;
         const newRating = index + 1;
-        setInternalRating(newRating);
+        setSelectedRating(newRating);
         onRatingChange?.(newRating);
     };
 
@@ -56,9 +50,9 @@ export const StarRating: React.FC<StarRatingProps> = ({
                     style={styles.starContainer}
                 >
                     <AtomicIcon
-                        name={index < (onRatingChange ? internalRating : rating) ? "star" : "star-outline"}
-                        customSize={responsiveSize}
-                        customColor={index < (onRatingChange ? internalRating : rating) ? filledColor : emptyColor}
+                        name={index < (onRatingChange ? displayRating : rating) ? "star" : "star-outline"}
+                        customSize={size}
+                        customColor={index < (onRatingChange ? displayRating : rating) ? filledColor : emptyColor}
                     />
                 </TouchableOpacity>
             ))}

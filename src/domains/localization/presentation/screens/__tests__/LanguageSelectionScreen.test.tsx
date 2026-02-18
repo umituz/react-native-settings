@@ -121,21 +121,6 @@ describe('LanguageSelectionScreen', () => {
     );
   });
 
-  it('should use custom container when provided', () => {
-    const CustomContainer = ({ children }: { children: React.ReactNode }) => (
-      <div testID="custom-container">{children}</div>
-    );
-
-    const { getByTestId } = render(
-      <LanguageSelectionScreen
-        searchPlaceholder="Search languages..."
-        containerComponent={CustomContainer}
-      />
-    );
-
-    expect(getByTestId('custom-container')).toBeTruthy();
-  });
-
   it('should apply custom styles', () => {
     const customStyles = {
       container: { backgroundColor: 'red' },

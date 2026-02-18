@@ -3,7 +3,7 @@
  * Pure presentational component for About screen
  * No business logic, only rendering
  */
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -15,13 +15,79 @@ import type { DesignTokens } from '@umituz/react-native-design-system';
 import type { AboutScreenProps } from './AboutScreen';
 
 export interface AboutScreenContentProps extends Omit<AboutScreenProps, 'config'> {
-  /** App info data */
   appInfo: AppInfo;
-  /** Configuration for the about screen */
   config: AboutConfig;
-  /** Design tokens */
   _tokens: DesignTokens;
 }
+
+interface AboutHeaderSectionProps {
+  appInfo: AppInfo;
+  config: AboutConfig;
+  showHeader: boolean;
+  headerComponent?: React.ReactNode;
+  headerStyle?: AboutScreenContentProps['headerStyle'];
+  titleStyle?: AboutScreenContentProps['titleStyle'];
+  versionStyle?: AboutScreenContentProps['versionStyle'];
+}
+
+const AboutHeaderSection: React.FC<AboutHeaderSectionProps> = ({
+  appInfo,
+  config,
+  showHeader,
+  headerComponent,
+  headerStyle,
+  titleStyle,
+  versionStyle,
+}) => {
+  if (headerComponent) {
+    return <>{headerComponent}</>;
+  }
+  if (!showHeader || !appInfo) {
+    return null;
+  }
+  return (
+    <AboutHeader
+      appInfo={appInfo}
+      containerStyle={headerStyle}
+      titleStyle={titleStyle}
+      versionStyle={versionStyle}
+      versionPrefix={config.texts?.versionPrefix}
+    />
+  );
+};
+
+interface AboutFooterSectionProps {
+  footerComponent?: React.ReactNode;
+  borderColor: string;
+  footerStyle: ReturnType<typeof getStyles>['footer'];
+}
+
+const AboutFooterSection: React.FC<AboutFooterSectionProps> = ({
+  footerComponent,
+  borderColor,
+  footerStyle,
+}) => {
+  if (!footerComponent) {
+    return null;
+  }
+  return (
+    <View style={[footerStyle, { borderTopColor: borderColor }]}>
+      {footerComponent}
+    </View>
+  );
+};
+
+interface AboutContentSectionProps {
+  appInfo: AppInfo;
+  config: AboutConfig;
+}
+
+const AboutContentSection: React.FC<AboutContentSectionProps> = ({ appInfo, config }) => {
+  if (!appInfo) {
+    return null;
+  }
+  return <AboutContent appInfo={appInfo} config={config} />;
+};
 
 export const AboutScreenContent: React.FC<AboutScreenContentProps> = ({
   appInfo,
@@ -39,71 +105,29 @@ export const AboutScreenContent: React.FC<AboutScreenContentProps> = ({
   const styles = getStyles(_tokens);
   const colors = _tokens.colors;
 
-  // Memoize header rendering to prevent unnecessary re-renders
-  const renderHeader = useCallback(() => {
-    if (headerComponent) {
-      return headerComponent;
-    }
-
-    if (!showHeader || !appInfo) {
-      return null;
-    }
-
-    return (
-      <AboutHeader
-        appInfo={appInfo}
-        containerStyle={headerStyle}
-        titleStyle={titleStyle}
-        versionStyle={versionStyle}
-        versionPrefix={config.texts?.versionPrefix}
-      />
-    );
-  }, [headerComponent, showHeader, appInfo, headerStyle, titleStyle, versionStyle, config.texts?.versionPrefix]);
-
-  // Memoize footer rendering
-  const renderFooter = useCallback(() => {
-    if (!footerComponent) {
-      return null;
-    }
-
-    return (
-      <View style={[styles.footer, { borderTopColor: colors.border }]}>
-        {footerComponent}
-      </View>
-    );
-  }, [footerComponent, colors.border, styles]);
-
-  // Memoize content rendering
-  const renderContent = useCallback(() => {
-    if (!appInfo) {
-      return null;
-    }
-
-    return (
-      <AboutContent
-        appInfo={appInfo}
-        config={config}
-      />
-    );
-  }, [appInfo, config]);
-
-  // Memoize container style to prevent unnecessary re-renders
-  const containerStyles = useMemo(() => {
-    return [
-      styles.container,
-      { backgroundColor: colors.backgroundPrimary },
-      containerStyle
-    ];
-  }, [containerStyle, colors.backgroundPrimary, styles]);
+  const containerStyles = useMemo(() => [
+    styles.container,
+    { backgroundColor: colors.backgroundPrimary },
+    containerStyle
+  ], [containerStyle, colors.backgroundPrimary, styles]);
 
   return (
-    <View
-      style={containerStyles}
-      testID={testID}
-    >
-      {renderHeader()}
-      {renderContent()}
-      {renderFooter()}
+    <View style={containerStyles} testID={testID}>
+      <AboutHeaderSection
+        appInfo={appInfo}
+        config={config}
+        showHeader={showHeader}
+        headerComponent={headerComponent}
+        headerStyle={headerStyle}
+        titleStyle={titleStyle}
+        versionStyle={versionStyle}
+      />
+      <AboutContentSection appInfo={appInfo} config={config} />
+      <AboutFooterSection
+        footerComponent={footerComponent}
+        borderColor={colors.border}
+        footerStyle={styles.footer}
+      />
     </View>
   );
 };

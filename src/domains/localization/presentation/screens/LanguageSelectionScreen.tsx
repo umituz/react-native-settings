@@ -12,12 +12,77 @@ import {
   NavigationHeader,
   useAppNavigation,
 } from '@umituz/react-native-design-system';
-import { isDev } from '../../../../utils/devUtils';
 import { useLanguageSelection } from '../../infrastructure/hooks/useLanguageSelection';
 import { LanguageItem } from '../components/LanguageItem';
 import type { Language } from '../../infrastructure/storage/types/Language';
 import type { LanguageSelectionScreenProps } from './LanguageSelectionScreen.types';
 import { styles } from './LanguageSelectionScreen.styles';
+
+interface LanguageListItemProps {
+  item: Language;
+  selectedCode: string;
+  onSelect: (code: string) => void;
+  renderLanguageItem?: LanguageSelectionScreenProps['renderLanguageItem'];
+  customStyles?: LanguageSelectionScreenProps['styles'];
+}
+
+const LanguageListItem: React.FC<LanguageListItemProps> = ({
+  item,
+  selectedCode,
+  onSelect,
+  renderLanguageItem,
+  customStyles,
+}) => {
+  const isSelected = selectedCode === item.code;
+
+  if (renderLanguageItem) {
+    return <>{renderLanguageItem(item, isSelected, onSelect)}</>;
+  }
+
+  return (
+    <LanguageItem
+      item={item}
+      isSelected={isSelected}
+      onSelect={onSelect}
+      customStyles={customStyles}
+    />
+  );
+};
+
+interface LanguageSearchComponentProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  searchPlaceholder?: string;
+  renderSearchInput?: LanguageSelectionScreenProps['renderSearchInput'];
+  customStyles?: LanguageSelectionScreenProps['styles'];
+}
+
+const LanguageSearchComponent: React.FC<LanguageSearchComponentProps> = ({
+  searchQuery,
+  setSearchQuery,
+  searchPlaceholder,
+  renderSearchInput,
+  customStyles,
+}) => {
+  const tokens = useAppDesignTokens();
+
+  if (renderSearchInput) {
+    return renderSearchInput(searchQuery, setSearchQuery, searchPlaceholder || '');
+  }
+
+  return (
+    <SearchBar
+      value={searchQuery}
+      onChangeText={setSearchQuery}
+      placeholder={searchPlaceholder}
+      containerStyle={[
+        { marginBottom: tokens.spacing.md },
+        customStyles?.searchContainer
+      ]}
+      inputStyle={customStyles?.searchInput}
+    />
+  );
+};
 
 export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = ({
   renderLanguageItem,
@@ -39,52 +104,20 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
   } = useLanguageSelection();
 
   const onSelect = async (code: string) => {
-    if (isDev()) {
-    }
     await handleLanguageSelect(code, () => {
-      if (isDev()) {
-      }
       navigation.goBack();
     });
-    if (isDev()) {
-    }
   };
 
-  const renderItem = ({ item }: { item: Language }) => {
-    const isSelected = selectedCode === item.code;
-
-    if (renderLanguageItem) {
-      return <>{renderLanguageItem(item, isSelected, onSelect)}</>;
-    }
-
-    return (
-      <LanguageItem
-        item={item}
-        isSelected={isSelected}
-        onSelect={onSelect}
-        customStyles={customStyles}
-      />
-    );
-  };
-
-  const renderSearchComponent = () => {
-    if (renderSearchInput) {
-      return renderSearchInput(searchQuery, setSearchQuery, searchPlaceholder || '');
-    }
-
-    return (
-      <SearchBar
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        placeholder={searchPlaceholder}
-        containerStyle={[
-          { marginBottom: tokens.spacing.md },
-          customStyles?.searchContainer
-        ]}
-        inputStyle={customStyles?.searchInput}
-      />
-    );
-  };
+  const renderItem = ({ item }: { item: Language }) => (
+    <LanguageListItem
+      item={item}
+      selectedCode={selectedCode}
+      onSelect={onSelect}
+      renderLanguageItem={renderLanguageItem}
+      customStyles={customStyles}
+    />
+  );
 
   const handleBack = () => {
     if (onBackPress) {
@@ -101,14 +134,20 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
       edges={['top', 'bottom', 'left', 'right']}
       backgroundColor={tokens.colors.backgroundPrimary}
       header={
-        <NavigationHeader 
-          title={headerTitle || ""} 
-          onBackPress={handleBack} 
+        <NavigationHeader
+          title={headerTitle || ""}
+          onBackPress={handleBack}
         />
       }
       containerStyle={customStyles?.container}
     >
-      {renderSearchComponent()}
+      <LanguageSearchComponent
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        searchPlaceholder={searchPlaceholder}
+        renderSearchInput={renderSearchInput}
+        customStyles={customStyles}
+      />
       <FlatList
         data={filteredLanguages}
         renderItem={renderItem}
@@ -133,6 +172,4 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
     </ScreenLayout>
   );
 };
-
-export default LanguageSelectionScreen;
 

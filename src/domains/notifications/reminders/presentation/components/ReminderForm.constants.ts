@@ -6,10 +6,6 @@ export const DEFAULT_WEEKDAY = 2; // Tuesday
 export const MAX_TITLE_LENGTH = 100;
 export const MAX_BODY_LENGTH = 500;
 
-export const VALID_HOUR_RANGE = { min: 0, max: 23 } as const;
-export const VALID_MINUTE_RANGE = { min: 0, max: 59 } as const;
-export const VALID_WEEKDAY_RANGE = { min: 0, max: 6 } as const;
-
 export interface ReminderFormTranslations {
   titleLabel: string;
   titlePlaceholder: string;

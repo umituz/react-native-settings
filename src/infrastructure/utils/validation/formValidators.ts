@@ -4,8 +4,14 @@
  */
 
 import type { ValidationResult } from "./core";
-import { validateRating } from "./numericValidators";
 import { TEXT_LENGTH_LIMITS } from "../constants/textLimits";
+
+const validateRating = (rating: number): ValidationResult => {
+  if (rating < 1 || rating > 5) {
+    return { isValid: false, error: "Rating must be between 1 and 5" };
+  }
+  return { isValid: true };
+};
 
 /**
  * Feedback form validation

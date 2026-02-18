@@ -19,5 +19,3 @@ export const TEXT_LENGTH_LIMITS = {
   /** User ID maximum length (128 characters) */
   USER_ID: 128,
 } as const;
-
-export type TextLengthLimit = typeof TEXT_LENGTH_LIMITS[keyof typeof TEXT_LENGTH_LIMITS];

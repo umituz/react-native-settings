@@ -3,7 +3,6 @@ import { AboutSection } from "../../../../domains/about/presentation/components/
 import { LegalSection } from "../../../../domains/legal/presentation/components/LegalSection";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { SettingsSection } from "../../../components/SettingsSection";
-import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 
 interface IdentitySettingsSectionProps {
     normalizedConfig: NormalizedConfig;
@@ -48,6 +47,3 @@ export const IdentitySettingsSection: React.FC<IdentitySettingsSectionProps> = (
 };
 
 IdentitySettingsSection.displayName = "IdentitySettingsSection";
-
-export const MemoizedIdentitySettingsSection = React.memo(IdentitySettingsSection, compareConfigAndFeatures);
-MemoizedIdentitySettingsSection.displayName = "MemoizedIdentitySettingsSection";

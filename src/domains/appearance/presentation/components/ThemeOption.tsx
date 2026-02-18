@@ -113,9 +113,9 @@ export const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({
               {featuresTitle}
             </AtomicText>
           ) : null}
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <AtomicText
-              key={`feature-${index}-${feature.slice(0, 10)}`}
+              key={feature}
               type="bodySmall"
               color="secondary"
               style={styles.feature}

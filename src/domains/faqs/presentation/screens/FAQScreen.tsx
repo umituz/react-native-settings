@@ -122,37 +122,31 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     <View style={{ height: tokens.spacing.xl * 2 }} />
   ), [tokens.spacing.xl]);
 
-  const renderContent = () => {
-    return (
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={filteredCategories}
-          renderItem={renderCategory}
-          keyExtractor={keyExtractor}
-          ListHeaderComponent={renderListHeader}
-          ListEmptyComponent={renderListEmpty}
-          ListFooterComponent={renderListFooter}
-          style={[styles.content, customStyles?.content]}
-          contentContainerStyle={{ paddingVertical: tokens.spacing.md }}
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          windowSize={10}
-          removeClippedSubviews={true}
-        />
-      </View>
-    );
-  };
-
   return (
-    <ScreenLayout 
-      edges={['bottom']} 
+    <ScreenLayout
+      edges={['bottom']}
       scrollable={false}
       header={header}
     >
       <View style={[styles.container, customStyles?.container]}>
         <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth, flex: 1 }}>
-          {renderContent()}
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={filteredCategories}
+              renderItem={renderCategory}
+              keyExtractor={keyExtractor}
+              ListHeaderComponent={renderListHeader}
+              ListEmptyComponent={renderListEmpty}
+              ListFooterComponent={renderListFooter}
+              style={[styles.content, customStyles?.content]}
+              contentContainerStyle={{ paddingVertical: tokens.spacing.md }}
+              showsVerticalScrollIndicator={false}
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+              windowSize={10}
+              removeClippedSubviews={true}
+            />
+          </View>
         </View>
       </View>
     </ScreenLayout>

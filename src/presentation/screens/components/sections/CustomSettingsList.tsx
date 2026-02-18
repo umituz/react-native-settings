@@ -2,13 +2,14 @@ import React, { useMemo } from "react";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { CustomSettingsSection } from "../../types";
-import { createSinglePropComparator } from "../../../../infrastructure/utils/memoComparisonUtils";
 
 interface CustomSettingsListProps {
     customSections?: CustomSettingsSection[];
 }
 
-export const CustomSettingsList: React.FC<CustomSettingsListProps> = ({ customSections = [] }) => {
+const EMPTY_SECTIONS: CustomSettingsSection[] = [];
+
+export const CustomSettingsList: React.FC<CustomSettingsListProps> = ({ customSections = EMPTY_SECTIONS }) => {
     const sortedSections = useMemo(() => {
         return Array.from(customSections)
             .sort((a: CustomSettingsSection, b: CustomSettingsSection) => (a.order ?? 999) - (b.order ?? 999));
@@ -43,9 +44,3 @@ export const CustomSettingsList: React.FC<CustomSettingsListProps> = ({ customSe
 };
 
 CustomSettingsList.displayName = "CustomSettingsList";
-
-export const MemoizedCustomSettingsList = React.memo(
-    CustomSettingsList,
-    createSinglePropComparator("customSections")
-);
-MemoizedCustomSettingsList.displayName = "MemoizedCustomSettingsList";

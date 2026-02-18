@@ -130,5 +130,3 @@ const getStyles = (tokens: DesignTokens) => StyleSheet.create({
     marginRight: BASE_TOKENS.spacing.md,
   },
 });
-
-export default NotificationsScreen;

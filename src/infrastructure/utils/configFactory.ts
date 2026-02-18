@@ -62,29 +62,3 @@ export const createConfigWithExtensions = <T extends BaseConfigType>(
   return { ...baseConfig, ...extensions };
 };
 
-/**
- * Create a disabled configuration
- */
-export const createDisabledConfig = <T extends BaseConfigType>(
-  params: Omit<ConfigCreatorParams, "routeOrOnPress" | "defaultRoute">
-): T => {
-  const baseConfig = createBaseConfig<T>(params);
-  return { ...baseConfig, enabled: false } as T;
-};
-
-/**
- * Batch create configurations
- */
-export const createBatchConfigs = <T extends BaseConfigType>(
-  items: Array<{
-    icon: string;
-    routeOrOnPress?: string | (() => void);
-  }>
-): T[] => {
-  return items.map((item) =>
-    createBaseConfig<T>({
-      icon: item.icon,
-      routeOrOnPress: item.routeOrOnPress,
-    })
-  );
-};

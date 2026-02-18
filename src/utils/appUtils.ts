@@ -1,7 +1,6 @@
 /**
  * App and Platform Utilities
  */
-import { Platform } from "react-native";
 import Constants from "expo-constants";
 
 /**
@@ -16,22 +15,5 @@ export function getAppVersion(): string {
   return version;
 }
 
-/**
- * Gets the current build number from Expo constants
- */
-export function getBuildNumber(): string | undefined {
-  return Constants.expoConfig?.ios?.buildNumber ?? Constants.expoConfig?.android?.versionCode?.toString();
-}
 
-/**
- * Validates if the current platform is supported
- */
-export function validatePlatform(): "ios" | "android" {
-  const platform = Platform.OS;
-  if (platform !== "ios" && platform !== "android") {
-     // Default to android for consistency if something goes wrong in detection
-     return "android";
-  }
-  return platform;
-}
 

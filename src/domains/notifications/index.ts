@@ -66,7 +66,6 @@ export {
   useReminderById,
   useRemindersLoading,
   useRemindersInitialized,
-  useNotifications, // Legacy compatibility
 } from './infrastructure/storage/UnifiedNotificationStore';
 
 // ============================================================================

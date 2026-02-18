@@ -5,9 +5,10 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { 
-  AtomicCard, 
-  ScreenLayout, 
+import {
+  AtomicCard,
+  AtomicDatePicker,
+  ScreenLayout,
   AtomicSpinner,
   NavigationHeader,
   useAppDesignTokens,
@@ -22,7 +23,6 @@ import { useReminders } from '../../infrastructure/storage/UnifiedNotificationSt
 import { useQuietHoursActions } from '../../quietHours/infrastructure/hooks/useQuietHoursActions';
 import type { NotificationSettingsTranslations, QuietHoursTranslations } from '../../infrastructure/services/types';
 import { createStyles } from './NotificationSettingsScreen.styles';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 export interface NotificationSettingsScreenProps {
   translations: NotificationSettingsTranslations;
@@ -67,9 +67,9 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
     return (
       <ScreenLayout
         header={
-          <NavigationHeader 
-            title={headerTitle} 
-            onBackPress={() => navigation.goBack()} 
+          <NavigationHeader
+            title={headerTitle}
+            onBackPress={() => navigation.goBack()}
           />
         }
       >
@@ -79,12 +79,12 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
   }
 
   return (
-    <ScreenLayout 
+    <ScreenLayout
       hideScrollIndicator
       header={
-        <NavigationHeader 
-          title={headerTitle} 
-          onBackPress={() => navigation.goBack()} 
+        <NavigationHeader
+          title={headerTitle}
+          onBackPress={() => navigation.goBack()}
         />
       }
     >
@@ -142,11 +142,12 @@ export const NotificationSettingsScreen: React.FC<NotificationSettingsScreenProp
         )}
       </View>
       {timePicker.pickerMode && (
-        <DateTimePicker
+        <AtomicDatePicker
           value={timePicker.getPickerDate()}
           mode="time"
-          is24Hour={true}
-          onChange={timePicker.handleTimeChange}
+          onChange={(date) => {
+            timePicker.handleTimeChange({ type: 'set' }, date);
+          }}
         />
       )}
     </ScreenLayout>

@@ -4,7 +4,6 @@ import { SettingsSection } from "../../../components/SettingsSection";
 import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import { SettingsNavigationItem } from "../../../components/SettingsNavigationItem";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
-import { compareConfigAndFeatures } from "../../../../infrastructure/utils/memoComparisonUtils";
 import { useSettingsNavigation } from "../../../navigation/hooks/useSettingsNavigation";
 
 interface SupportSettingsSectionProps {
@@ -110,6 +109,3 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
 };
 
 SupportSettingsSection.displayName = "SupportSettingsSection";
-
-export const MemoizedSupportSettingsSection = React.memo(SupportSettingsSection, compareConfigAndFeatures);
-MemoizedSupportSettingsSection.displayName = "MemoizedSupportSettingsSection";

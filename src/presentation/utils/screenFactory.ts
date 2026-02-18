@@ -9,31 +9,6 @@ import type { StackScreen } from "@umituz/react-native-design-system";
 import type { AdditionalScreen } from "../navigation/types";
 
 /**
- * Create a basic stack screen configuration
- */
-export function createStackScreen<P = unknown>(
-  name: string,
-  componentOrChildren: React.ComponentType<P> | (() => React.ReactElement),
-  options: { headerShown?: boolean } = {}
-): StackScreen {
-  const isChildrenFunction = typeof componentOrChildren === "function" &&
-    !(componentOrChildren.prototype && componentOrChildren.prototype.isReactComponent);
-
-  if (isChildrenFunction) {
-    return {
-      name,
-      options: { headerShown: false, ...options },
-      children: componentOrChildren as () => React.ReactElement,
-    };
-  }
-  return {
-    name,
-    component: componentOrChildren as React.ComponentType<P>,
-    options: { headerShown: false, ...options },
-  };
-}
-
-/**
  * Create a screen with props
  */
 export function createScreenWithProps<P>(

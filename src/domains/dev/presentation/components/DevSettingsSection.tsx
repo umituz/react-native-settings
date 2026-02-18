@@ -39,11 +39,14 @@ export interface DevSettingsProps {
   customDevComponents?: React.ReactNode[];
 }
 
+const EMPTY_TEXTS: Partial<typeof DEFAULT_TEXTS> = {};
+const EMPTY_DEV_COMPONENTS: React.ReactNode[] = [];
+
 export const DevSettingsSection: React.FC<DevSettingsProps> = ({
   enabled = true,
   onAfterClear,
-  texts = {},
-  customDevComponents = [],
+  texts = EMPTY_TEXTS,
+  customDevComponents = EMPTY_DEV_COMPONENTS,
 }) => {
   const tokens = useAppDesignTokens();
 

@@ -30,25 +30,3 @@ export const formatErrorMessage = (error: unknown): string => {
   return 'Unknown error';
 };
 
-/**
- * Format error for logging with optional context
- * Useful for debugging and error tracking
- *
- * @param error - The error to format
- * @param context - Optional context string (e.g., function name, operation)
- * @returns Formatted error string with context
- *
- * @example
- * ```typescript
- * try {
- *   await fetchUserData();
- * } catch (err) {
- *   console.error(formatErrorForLogging(err, 'fetchUserData'));
- *   // Output: "[fetchUserData] Network timeout"
- * }
- * ```
- */
-export const formatErrorForLogging = (error: unknown, context?: string): string => {
-  const message = formatErrorMessage(error);
-  return context ? `[${context}] ${message}` : message;
-};

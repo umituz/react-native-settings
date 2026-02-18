@@ -48,13 +48,3 @@ export const devError = (...args: unknown[]): void => {
   }
 };
 
-/**
- * Execute callback only in development mode
- *
- * @param callback - Callback to execute in dev mode
- */
-export const devOnly = (callback: () => void): void => {
-  if (isDev()) {
-    callback();
-  }
-};

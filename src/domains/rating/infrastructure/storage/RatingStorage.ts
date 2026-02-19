@@ -40,12 +40,22 @@ export async function setEventCount(eventType: string, count: number): Promise<v
   }
 }
 
+// Per-eventType locks to prevent concurrent read-modify-write races in incrementEventCount
+const incrementLocks = new Map<string, Promise<void>>();
+
 /**
- * Increment event count for specific event type
+ * Increment event count for specific event type.
+ * Chains operations per-key to prevent concurrent read-modify-write races.
  */
 export async function incrementEventCount(eventType: string): Promise<void> {
-  const currentCount = await getEventCount(eventType);
-  await setEventCount(eventType, currentCount + 1);
+  const prevLock = incrementLocks.get(eventType) ?? Promise.resolve();
+  const nextLock = prevLock.then(async () => {
+    const currentCount = await getEventCount(eventType);
+    await setEventCount(eventType, currentCount + 1);
+  });
+  // Store the lock that absorbs errors so the chain stays alive for future calls
+  incrementLocks.set(eventType, nextLock.catch(() => {}));
+  return nextLock;
 }
 
 /**

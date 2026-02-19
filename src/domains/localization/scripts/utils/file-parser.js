@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { getLangDisplayName } from './translation-config.js';
 
 /**
@@ -8,7 +9,9 @@ import { getLangDisplayName } from './translation-config.js';
 
 export function parseTypeScriptFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
-  const match = content.match(/export\s+default\s+(\{[\s\S]*\});?\s*$/);
+
+  // Match: export default { ... } OR export const NAME = { ... }
+  const match = content.match(/export\s+(?:default|const\s+\w+\s*=)\s*(\{[\s\S]*\});?\s*$/);
 
   if (!match) {
     throw new Error(`Could not parse TypeScript file: ${filePath}`);
@@ -17,12 +20,35 @@ export function parseTypeScriptFile(filePath) {
   const objectStr = match[1].replace(/;$/, '');
 
   try {
-    // Basic evaluation for simple objects
+    // Basic evaluation for simple objects (works for generated language files like tr-TR.ts
+    // and sub-module files like common.ts, home.ts, etc.)
     // eslint-disable-next-line no-eval
     return eval(`(${objectStr})`);
   } catch (error) {
+    // File might be a barrel file with named imports (e.g., en-US.ts that imports sub-modules)
+    // Try to resolve each import and merge into a single object
+    const dir = path.dirname(filePath);
+    const importMatches = [...content.matchAll(/import\s*\{\s*(\w+)\s*\}\s*from\s*["']\.\/(\w+)["']/g)];
+
+    if (importMatches.length > 0) {
+      const result = {};
+      for (const [, varName, moduleName] of importMatches) {
+        const subFilePath = path.join(dir, `${moduleName}.ts`);
+        if (fs.existsSync(subFilePath)) {
+          try {
+            result[varName] = parseTypeScriptFile(subFilePath);
+          } catch {
+            // ignore individual sub-file parse errors
+          }
+        }
+      }
+      if (Object.keys(result).length > 0) {
+        return result;
+      }
+    }
+
     console.warn(`\n⚠️  Warning: Could not fully parse ${filePath}. Files with complex imports/spreads are currently limited.`);
-    return {}; // Return empty to avoid breaking the whole process
+    return {};
   }
 }
 

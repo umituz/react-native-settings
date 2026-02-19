@@ -38,40 +38,40 @@ export const GamificationScreenWithConfig: React.FC<GamificationConfigProps> = (
     type: a.type
   }));
 
-  const translations = config.translations || {};
+  const t = config.translations ?? {};
   const screenProps: GamificationScreenProps = {
-    title: translations.title || 'Gamification',
-    statsTitle: translations.statsTitle || 'Stats',
-    achievementsTitle: translations.achievementsTitle || 'Achievements',
-    streakTitle: translations.streakTitle || 'Streak',
+    title: t.title ?? 'Gamification',
+    statsTitle: t.statsTitle ?? 'Stats',
+    achievementsTitle: t.achievementsTitle ?? 'Achievements',
+    streakTitle: t.streakTitle ?? 'Streak',
     levelProps: {
       level: level.currentLevel,
       points: level.currentPoints,
       pointsToNext: level.pointsToNext,
       progress: level.progress,
-      levelTitle: translations.levelTitle || 'Level',
+      levelTitle: t.levelTitle ?? 'Level',
       showPoints: true,
     },
     streakProps: {
       current: streak.current,
       longest: streak.longest,
-      bestLabel: translations.bestStreak || 'Best',
-      daysLabel: translations.days || 'days',
+      bestLabel: t.bestStreak ?? 'Best',
+      daysLabel: t.days ?? 'days',
     },
     stats: [
       {
-        label: translations.pointsLabel || 'Points',
+        label: t.pointsLabel ?? 'Points',
         value: points,
         icon: "⭐",
       },
       {
-        label: translations.totalCompletedLabel || 'Completed',
+        label: t.totalCompletedLabel ?? 'Completed',
         value: totalTasksCompleted,
         icon: "✅",
       },
     ],
     achievements: achievementItems,
-    emptyAchievementsText: translations.emptyAchievements || 'No achievements yet',
+    emptyAchievementsText: t.emptyAchievements ?? 'No achievements yet',
   };
 
   return <GamificationScreenInner {...screenProps} />;

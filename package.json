@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "5.2.35",
+  "version": "5.2.37",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, localization, about, legal, appearance, feedback, FAQs, rating, and gamification",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -37,10 +37,8 @@
     "type": "git",
     "url": "https://github.com/umituz/react-native-settings"
   },
-  "dependencies": {
-    "firebase": "^12.7.0"
-  },
   "peerDependencies": {
+    "firebase": ">=10.0.0",
     "@expo/vector-icons": ">=14.0.0",
     "@react-navigation/native": ">=6.0.0",
     "@react-navigation/stack": ">=6.0.0",

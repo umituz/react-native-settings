@@ -152,7 +152,6 @@ export const useSettingsScreenConfig = (
     translations: translations?.account as any,
   }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations]);
 
-  // FAQ data passed through as-is (app sends pre-translated data)
   const translatedFaqData = useMemo(() =>
     translateFAQData(faqData, appInfo),
     [faqData, appInfo]

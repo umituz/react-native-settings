@@ -2,12 +2,14 @@
 
 /**
  * Setup Languages Script
- * Generates index.ts with all available translation files
+ * Creates stub files for all supported languages (if not exist),
+ * then generates index.ts from all available translation files.
  * Usage: node setup-languages.js [locales-dir]
  */
 
 import fs from 'fs';
 import path from 'path';
+import { LANGUAGE_MAP, getLangDisplayName } from './utils/translation-config.js';
 
 export function setupLanguages(targetDir) {
   const localesDir = path.resolve(process.cwd(), targetDir);
@@ -17,6 +19,29 @@ export function setupLanguages(targetDir) {
     return false;
   }
 
+  // Create stub files for all supported languages that don't exist yet
+  let created = 0;
+  for (const langCode of Object.keys(LANGUAGE_MAP)) {
+    // Skip English variants — en-US is the base, others (en-AU, en-GB) are redundant
+    if (langCode.startsWith('en-') && langCode !== 'en-US') continue;
+
+    const filePath = path.join(localesDir, `${langCode}.ts`);
+    if (!fs.existsSync(filePath)) {
+      const langName = getLangDisplayName(langCode);
+      fs.writeFileSync(
+        filePath,
+        `/**\n * ${langName} Translations\n * Auto-synced from en-US.ts\n */\n\nexport default {};\n`,
+      );
+      console.log(`   ✅ Created ${langCode}.ts (${langName})`);
+      created++;
+    }
+  }
+
+  if (created > 0) {
+    console.log(`\n📦 Created ${created} new language stubs.\n`);
+  }
+
+  // Generate index.ts from all language files
   const files = fs.readdirSync(localesDir)
     .filter(f => f.match(/^[a-z]{2}-[A-Z]{2}\.ts$/))
     .sort();

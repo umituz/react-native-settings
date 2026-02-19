@@ -1,20 +1,17 @@
 /**
  * FAQ Translation Utility
- * Handles translation of FAQ data
+ * App sends pre-translated FAQ data - this function passes it through unchanged.
  */
-
 
 import type { FAQData } from "../navigation/types";
 import type { AppInfo } from "../navigation/types";
-import type { TranslationOptions } from "./config-creators/types";
 
 /**
- * Utility for handling FAQ data
- * Ensures data is in consistent format
+ * Passes FAQ data through unchanged.
+ * The main app is responsible for translating FAQ keys before passing them here.
  */
 export const translateFAQData = (
   faqData: FAQData | undefined,
-  _t: (key: string, params?: TranslationOptions) => string,
   _appInfo: AppInfo
 ): FAQData | undefined => {
   return faqData;

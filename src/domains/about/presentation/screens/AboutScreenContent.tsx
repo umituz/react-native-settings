@@ -11,7 +11,7 @@ import {
 import { AboutHeader } from '../components/AboutHeader';
 import { AboutContent } from '../components/AboutContent';
 import { AboutConfig, AppInfo } from '../../domain/entities/AppInfo';
-import type { DesignTokens } from '@umituz/react-native-design-system';
+import type { DesignTokens } from '@umituz/react-native-design-system/theme';
 import type { AboutScreenProps } from './AboutScreen';
 
 export interface AboutScreenContentProps extends Omit<AboutScreenProps, 'config'> {

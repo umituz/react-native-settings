@@ -3,7 +3,7 @@
  * Storage layer for rating system using design system storageRepository
  */
 
-import { storageRepository, unwrap } from "@umituz/react-native-design-system";
+import { storageRepository, unwrap } from "@umituz/react-native-design-system/storage";
 import type { RatingState } from "../../domain/entities/RatingConfig";
 
 /**

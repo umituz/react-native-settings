@@ -4,7 +4,8 @@
  */
 import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { useAppDesignTokens, AtomicText, type DesignTokens } from '@umituz/react-native-design-system';
+import { AtomicText } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system/theme';
 import { AppInfo } from '../../domain/entities/AppInfo';
 
 export interface AboutHeaderProps {

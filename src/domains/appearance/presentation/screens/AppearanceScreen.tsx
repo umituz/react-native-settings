@@ -6,12 +6,9 @@
  */
 
 import React, { useMemo, useCallback } from "react";
-import { 
-  ScreenLayout, 
-  useAppDesignTokens,
-  NavigationHeader,
-  useAppNavigation
-} from "@umituz/react-native-design-system";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useAppearance } from "../../hooks/useAppearance";
 import { useAppearanceActions } from "../../hooks/useAppearanceActions";
 import {

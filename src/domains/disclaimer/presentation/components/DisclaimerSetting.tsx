@@ -20,7 +20,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'react-native';
 
-import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
+import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system/theme';
 import { DisclaimerCard } from './DisclaimerCard';
 import { DisclaimerModal } from './DisclaimerModal';
 

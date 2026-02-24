@@ -5,7 +5,10 @@
 
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal, ScreenLayout } from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { BaseModal } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { FeedbackForm } from "./FeedbackForm";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import type { FeedbackFormProps } from "./FeedbackFormProps";

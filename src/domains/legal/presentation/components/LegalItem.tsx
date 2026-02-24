@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { ListItem } from "@umituz/react-native-design-system";
+import { ListItem } from "@umituz/react-native-design-system/molecules";
 
 export interface LegalItemProps {
   /**

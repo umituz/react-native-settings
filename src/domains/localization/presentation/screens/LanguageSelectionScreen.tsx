@@ -5,13 +5,9 @@
 
 import React from 'react';
 import { FlatList } from 'react-native';
-import {
-  useAppDesignTokens,
-  SearchBar,
-  ScreenLayout,
-  NavigationHeader,
-  useAppNavigation,
-} from '@umituz/react-native-design-system';
+import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
+import { SearchBar, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { useLanguageSelection } from '../../infrastructure/hooks/useLanguageSelection';
 import { LanguageItem } from '../components/LanguageItem';
 import type { Language } from '../../infrastructure/storage/types/Language';

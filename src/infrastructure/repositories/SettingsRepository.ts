@@ -4,7 +4,7 @@
  * Handles data access for user settings using @umituz/react-native-design-system
  */
 
-import { storageRepository, StorageKey, createUserKey } from '@umituz/react-native-design-system';
+import { storageRepository, StorageKey, createUserKey } from '@umituz/react-native-design-system/storage';
 import type { ISettingsRepository, UserSettings, SettingsResult } from '../../application/ports/ISettingsRepository';
 import { TEXT_LENGTH_LIMITS } from '../utils/constants/textLimits';
 

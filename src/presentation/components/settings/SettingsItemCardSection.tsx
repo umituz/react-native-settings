@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { AtomicText } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
 
 export interface SettingsItemCardSectionProps {
   sectionTitle?: string;

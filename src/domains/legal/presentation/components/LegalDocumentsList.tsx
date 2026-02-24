@@ -6,7 +6,8 @@
 
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { AtomicText, useAppDesignTokens } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { LegalItem } from "./LegalItem";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 

@@ -6,7 +6,8 @@
  */
 
 import React from "react";
-import { ScreenLayout, NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { LegalScreenHeader } from "../components/LegalScreenHeader";
 import { LegalDocumentsList } from "../components/LegalDocumentsList";
 

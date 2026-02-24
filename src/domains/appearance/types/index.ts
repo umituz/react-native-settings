@@ -4,10 +4,7 @@
  * Types for appearance settings including theme mode and custom colors
  */
 
-import type {
-  ThemeMode as BaseThemeMode,
-  CustomThemeColors,
-} from "@umituz/react-native-design-system";
+import type { ThemeMode as BaseThemeMode, CustomThemeColors } from "@umituz/react-native-design-system/theme";
 
 // Extended theme mode to support 'auto' option
 export type ThemeMode = BaseThemeMode | 'auto';

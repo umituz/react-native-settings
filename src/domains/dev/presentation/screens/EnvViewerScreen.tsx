@@ -6,16 +6,10 @@
 
 import React, { useState, useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import {
-  AtomicText,
-  AtomicIcon,
-  AtomicTouchable,
-  useAppDesignTokens,
-  useAppNavigation,
-  AlertService,
-  ScreenLayout,
-  NavigationHeader,
-} from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon, AtomicTouchable } from "@umituz/react-native-design-system/atoms";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { useAppNavigation, AlertService, NavigationHeader } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import * as Clipboard from "expo-clipboard";
 import type { EnvConfig } from "../../types";
 

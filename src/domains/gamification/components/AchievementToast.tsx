@@ -5,7 +5,8 @@
 
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
-import { useAppDesignTokens, AtomicText, withAlpha } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens, withAlpha } from "@umituz/react-native-design-system/theme";
 
 export interface AchievementToastProps {
   visible: boolean;

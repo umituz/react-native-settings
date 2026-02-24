@@ -5,8 +5,8 @@
 
 import React, { useReducer, useMemo, useCallback } from 'react';
 import { View, TextInput, ScrollView } from 'react-native';
-import { AtomicText } from '@umituz/react-native-design-system';
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
+import { AtomicText } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { TimePresetSelector } from './TimePresetSelector';
 import { FrequencySelector } from './FrequencySelector';
 import { WeekdaySelector } from './WeekdaySelector';

@@ -11,9 +11,8 @@ import {
   type TextStyle,
 } from 'react-native';
 
-import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system';
-import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
-import type { IconName } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon, type IconName } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system/theme';
 
 export interface DisclaimerCardProps {
   title: string;

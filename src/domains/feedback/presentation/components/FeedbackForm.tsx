@@ -5,12 +5,12 @@
 
 import React, { useReducer } from "react";
 import { View, TouchableOpacity, ScrollView, TextInput } from "react-native";
-import { useAppDesignTokens, AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system";
+import { AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens, type DesignTokens } from "@umituz/react-native-design-system/theme";
 import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import { validateFeedbackForm } from "../../../../infrastructure/utils/validation";
 import type { FeedbackFormProps } from "./FeedbackFormProps";
 import { getFeedbackFormStyles as getStyles } from "./FeedbackForm.styles";
-import type { DesignTokens } from "@umituz/react-native-design-system";
 
 interface FeedbackFormState {
     selectedType: FeedbackType;

@@ -1,5 +1,5 @@
 import React from "react";
-import { AtomicIcon, AtomicSwitch, type IconName } from "@umituz/react-native-design-system";
+import { AtomicIcon, AtomicSwitch, type IconName } from "@umituz/react-native-design-system/atoms";
 
 export interface SettingsItemCardRightElementProps {
   showSwitch: boolean;

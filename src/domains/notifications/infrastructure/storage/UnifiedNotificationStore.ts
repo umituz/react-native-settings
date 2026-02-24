@@ -10,7 +10,7 @@
  */
 
 import { useMemo } from 'react';
-import { createStore, storageService } from '@umituz/react-native-design-system';
+import { createStore, storageService } from '@umituz/react-native-design-system/storage';
 import type { Reminder, QuietHoursConfig, NotificationPreferences } from '../services/types';
 
 // ============================================================================

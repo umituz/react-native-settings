@@ -4,7 +4,7 @@
  * Mutations for updating and resetting user settings
  */
 
-import { useMutation, useQueryClient } from '@umituz/react-native-design-system';
+import { useMutation, useQueryClient } from '@umituz/react-native-design-system/tanstack';
 import { getSettingsService } from '../../../infrastructure/services/SettingsService';
 import { SETTINGS_QUERY_KEY } from '../queries/useSettingsQuery';
 import type { UserSettings } from '../../../application/ports/ISettingsRepository';

@@ -13,7 +13,8 @@ import {
   type ViewStyle,
   type TextStyle,
 } from 'react-native';
-import { useAppDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import type { Language } from '../../infrastructure/storage/types/Language';
 import { styles } from './LanguageItem.styles';
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { StackScreen } from "@umituz/react-native-design-system";
+import type { StackScreen } from "@umituz/react-native-design-system/molecules";
 import { LanguageSelectionScreen } from "../../../domains/localization";
 import { NotificationSettingsScreen } from "../../../domains/notifications";
 import { AccountScreen } from "@umituz/react-native-auth";

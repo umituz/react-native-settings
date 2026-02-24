@@ -1,4 +1,4 @@
-import { useTheme, type ThemeMode as BaseThemeMode, type CustomThemeColors } from "@umituz/react-native-design-system";
+import { useTheme, type ThemeMode as BaseThemeMode, type CustomThemeColors } from "@umituz/react-native-design-system/theme";
 import type { ThemeMode } from "../types";
 
 export const useAppearance = () => {

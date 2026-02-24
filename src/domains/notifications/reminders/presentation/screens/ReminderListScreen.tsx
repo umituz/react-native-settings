@@ -5,15 +5,10 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import {
-  AtomicText,
-  AtomicIcon,
-  AtomicSpinner,
-  ScreenLayout,
-  NavigationHeader,
-  useAppNavigation,
-  useAppDesignTokens
-} from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon, AtomicSpinner } from '@umituz/react-native-design-system/atoms';
+import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
+import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { ReminderItem } from '../components/ReminderItem';
 import { useReminders, useRemindersLoading } from '../../../infrastructure/storage/UnifiedNotificationStore';
 import { useReminderActions } from '../../infrastructure/hooks/useReminderActions';

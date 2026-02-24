@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { IconName } from "@umituz/react-native-design-system";
+import type { IconName } from "@umituz/react-native-design-system/atoms";
 
 /**
  * Custom Settings Item

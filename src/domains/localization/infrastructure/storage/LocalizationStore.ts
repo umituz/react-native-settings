@@ -3,7 +3,7 @@
  * Manages localization state using createStore pattern for consistency
  */
 
-import { createStore, storageService } from "@umituz/react-native-design-system";
+import { createStore, storageService } from "@umituz/react-native-design-system/storage";
 import type { LocalizationState, LocalizationActions, LocalizationGetters } from "./types/LocalizationState";
 import { languageRepository } from "../repository/LanguageRepository";
 import { InitializationManager, LanguageSwitchManager, localizationGetters } from "./localizationStoreUtils";

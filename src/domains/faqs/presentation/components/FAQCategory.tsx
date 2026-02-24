@@ -6,7 +6,8 @@
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { useAppDesignTokens, AtomicText } from '@umituz/react-native-design-system';
+import { AtomicText } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { FAQCategory as FAQCategoryType } from '../../domain/entities/FAQEntity';
 import { FAQItemComponent, FAQItemStyles } from './FAQItem';
 

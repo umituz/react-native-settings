@@ -7,11 +7,8 @@
 
 import React, { useMemo, useCallback } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import {
-  AtomicIcon,
-  AtomicText,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system";
+import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { isDev } from "../../../../utils/devUtils";
 
 interface ColorPickerProps {

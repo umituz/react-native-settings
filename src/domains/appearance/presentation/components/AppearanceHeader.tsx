@@ -5,8 +5,8 @@
 
 import React from "react";
 import { View, StyleSheet, type StyleProp, type ViewStyle } from "react-native";
-import { AtomicText } from "@umituz/react-native-design-system";
-import type { DesignTokens } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import type { DesignTokens } from "@umituz/react-native-design-system/theme";
 
 export interface AppearanceHeaderProps {
   tokens: DesignTokens;

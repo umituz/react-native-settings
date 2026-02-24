@@ -5,14 +5,14 @@
 
 import React, { useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
-import { AtomicText, AtomicButton } from "@umituz/react-native-design-system";
+import { AtomicText, AtomicButton } from "@umituz/react-native-design-system/atoms";
+import type { DesignTokens } from "@umituz/react-native-design-system/theme";
 import { ColorPicker } from "./ColorPicker";
 import {
   DEFAULT_PRIMARY_COLORS,
   DEFAULT_SECONDARY_COLORS,
   DEFAULT_ACCENT_COLORS,
 } from "../../data/colorPalettes";
-import type { DesignTokens } from "@umituz/react-native-design-system";
 import type { CustomThemeColors } from "../../types";
 
 export interface ColorFieldConfig {

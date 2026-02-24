@@ -4,9 +4,7 @@
  */
 
 import React from "react";
-import {
-  ScreenLayout,
-} from "@umituz/react-native-design-system";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { useSettingsScreen } from "./hooks/useSettingsScreen";
 import { SettingsHeader } from "./components/SettingsHeader";
 import { SettingsContent } from "./components/SettingsContent";

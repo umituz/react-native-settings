@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import type { StackScreen } from "@umituz/react-native-design-system";
+import type { StackScreen } from "@umituz/react-native-design-system/molecules";
 import type { AdditionalScreen } from "../navigation/types";
 
 /**

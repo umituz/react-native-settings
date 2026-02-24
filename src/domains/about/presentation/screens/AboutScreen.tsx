@@ -4,7 +4,10 @@
  * Fully configurable and generic
  * Optimized for performance and memory safety
  */
-import { ScreenLayout, NavigationHeader, useAppDesignTokens, useAppNavigation, AtomicText, AtomicSpinner } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicSpinner } from '@umituz/react-native-design-system/atoms';
+import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
+import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { useAboutInfo } from '../hooks/useAboutInfo';
 import { AboutScreenContent } from './AboutScreenContent';
 

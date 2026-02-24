@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { createStore } from '@umituz/react-native-design-system';
+import { createStore } from '@umituz/react-native-design-system/storage';
 
 interface NotificationSettingsState {
   notificationsEnabled: boolean;

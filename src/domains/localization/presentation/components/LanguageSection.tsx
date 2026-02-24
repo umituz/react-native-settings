@@ -1,10 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
-import {
-    useAppDesignTokens,
-    AtomicText,
-    ListItem,
-} from '@umituz/react-native-design-system';
+import { AtomicText } from '@umituz/react-native-design-system/atoms';
+import { ListItem } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { useLocalization } from '../../infrastructure/hooks/useLocalization';
 import { getLanguageByCode } from '../../infrastructure/config/languages';
 import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';

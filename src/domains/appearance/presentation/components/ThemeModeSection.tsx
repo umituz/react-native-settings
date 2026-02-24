@@ -5,9 +5,9 @@
 
 import React, { useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
-import { AtomicText } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import type { DesignTokens } from "@umituz/react-native-design-system/theme";
 import { ThemeOption } from "./ThemeOption";
-import type { DesignTokens } from "@umituz/react-native-design-system";
 import type { ThemeMode } from "../../types";
 
 export interface ThemeOptionConfig {

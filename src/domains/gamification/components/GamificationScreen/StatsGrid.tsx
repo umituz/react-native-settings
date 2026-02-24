@@ -4,7 +4,7 @@
 
 import React from "react";
 import { View, type TextStyle } from "react-native";
-import { AtomicText } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { StatsCard } from "../StatsCard";
 import { styles } from "./styles";
 import type { StatsCardProps } from "../StatsCard";

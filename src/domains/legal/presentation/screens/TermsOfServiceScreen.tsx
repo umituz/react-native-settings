@@ -4,7 +4,7 @@
  */
 import React from "react";
 import { StyleSheet } from "react-native";
-import type { DesignTokens } from "@umituz/react-native-design-system";
+import type { DesignTokens } from "@umituz/react-native-design-system/theme";
 import { LegalContentScreen } from "./LegalContentScreen";
 
 export interface TermsOfServiceScreenProps {

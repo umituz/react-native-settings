@@ -6,10 +6,7 @@
  */
 
 import React from "react";
-import {
-  StackNavigator,
-  type StackNavigatorConfig,
-} from "@umituz/react-native-design-system";
+import { StackNavigator, type StackNavigatorConfig } from "@umituz/react-native-design-system/molecules";
 import { useNavigationHandlers, useSettingsScreens } from "./hooks";
 import {
   createNotificationTranslations,

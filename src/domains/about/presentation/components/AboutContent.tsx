@@ -7,7 +7,8 @@ import { View, StyleSheet } from 'react-native';
 import { AboutSettingItem } from './AboutSettingItem';
 import { AppInfo } from '../../domain/entities/AppInfo';
 import { AboutConfig } from '../../domain/entities/AppInfo';
-import { useAppDesignTokens, AtomicText, type DesignTokens } from '@umituz/react-native-design-system';
+import { AtomicText } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system/theme';
 
 export interface AboutContentProps {
   /** App information to display */

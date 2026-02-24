@@ -6,7 +6,10 @@
 
 import React from "react";
 import { View } from "react-native";
-import { useAppDesignTokens, AtomicText, ScreenLayout, NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system";
+import { AtomicText } from "@umituz/react-native-design-system/atoms";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";
 import { StatsGrid } from "./StatsGrid";

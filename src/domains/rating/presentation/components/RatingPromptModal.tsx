@@ -5,13 +5,9 @@
 
 import React from "react";
 import { Modal, View, StyleSheet } from "react-native";
-import {
-  AtomicText,
-  AtomicButton,
-  AtomicIcon,
-  useAppDesignTokens,
-  useResponsive,
-} from "@umituz/react-native-design-system";
+import { AtomicText, AtomicButton, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useResponsive } from "@umituz/react-native-design-system/responsive";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { RatingTranslations } from "../../domain/entities/RatingConfig";
 
 export interface RatingPromptModalProps {

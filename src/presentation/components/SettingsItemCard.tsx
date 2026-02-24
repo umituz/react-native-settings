@@ -1,10 +1,7 @@
 import React from "react";
 import { View, Pressable, StyleSheet, type StyleProp, type ViewStyle } from "react-native";
-import {
-  useAppDesignTokens,
-  type IconName,
-  withAlpha,
-} from "@umituz/react-native-design-system";
+import type { IconName } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens, withAlpha } from "@umituz/react-native-design-system/theme";
 import { validateTitle, validateDescription, validateSwitchProps } from "../../infrastructure/utils/validators";
 import { sanitizeTitle, sanitizeDescription } from "../../infrastructure/utils/sanitizers";
 import { TEXT_LENGTH_LIMITS } from "../../infrastructure/utils/constants/textLimits";

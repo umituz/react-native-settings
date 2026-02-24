@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { useAppDesignTokens, AtomicIcon, AtomicText, type IconName } from "@umituz/react-native-design-system";
+import { AtomicIcon, AtomicText, type IconName } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 export interface SettingsItemCardContentProps {
   icon: IconName;

@@ -6,7 +6,10 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { View, FlatList, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
-import { useAppDesignTokens, ScreenLayout, getContentMaxWidth, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system';
+import { getContentMaxWidth } from '@umituz/react-native-design-system/device';
+import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
+import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { FAQCategory } from '../../domain/entities/FAQEntity';
 import { useFAQSearch } from '../hooks/useFAQSearch';
 import { useFAQExpansion } from '../hooks/useFAQExpansion';

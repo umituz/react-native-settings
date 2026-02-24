@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
-import { useAppDesignTokens, AtomicIcon } from "@umituz/react-native-design-system";
+import { AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 export interface StarRatingProps {
     rating: number;

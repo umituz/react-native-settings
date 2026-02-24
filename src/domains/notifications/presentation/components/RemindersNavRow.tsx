@@ -5,9 +5,9 @@
 
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { createStyles } from './RemindersNavRow.styles';
-import { useAppDesignTokens } from '@umituz/react-native-design-system';
 
 export interface RemindersNavRowProps {
   title: string;

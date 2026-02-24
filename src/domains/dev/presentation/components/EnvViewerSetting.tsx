@@ -5,7 +5,8 @@
  */
 
 import React from "react";
-import { useAppDesignTokens, useAppNavigation } from "@umituz/react-native-design-system";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 import type { EnvConfig } from "../../types";
 

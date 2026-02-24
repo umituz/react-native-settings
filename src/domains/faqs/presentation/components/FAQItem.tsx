@@ -6,7 +6,8 @@
 
 import React, { useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import { useAppDesignTokens, AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { FAQItem as FAQItemType } from '../../domain/entities/FAQEntity';
 
 export interface FAQItemStyles {

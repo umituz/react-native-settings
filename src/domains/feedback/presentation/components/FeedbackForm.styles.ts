@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import type { useAppDesignTokens } from "@umituz/react-native-design-system";
+import type { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 export const getFeedbackFormStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({

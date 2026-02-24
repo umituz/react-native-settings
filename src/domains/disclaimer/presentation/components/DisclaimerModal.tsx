@@ -11,7 +11,9 @@ import {
   ScrollView,
 } from 'react-native';
 
-import { useAppDesignTokens, AtomicText, AtomicIcon, BaseModal } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms';
+import { BaseModal } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 
 export interface DisclaimerModalProps {
   visible: boolean;

@@ -4,7 +4,7 @@
  */
 
 import { useMemo, useCallback } from "react";
-import { useAppNavigation } from "@umituz/react-native-design-system";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { normalizeSettingsConfig } from "../utils/normalizeConfig";
 import { useFeatureDetection } from "./useFeatureDetection";
 import { getAppVersion } from "../../../utils/appUtils";

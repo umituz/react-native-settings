@@ -5,7 +5,8 @@
 
 import React from "react";
 import { View } from "react-native";
-import { useAppDesignTokens, AtomicText, AtomicIcon, withAlpha } from "@umituz/react-native-design-system";
+import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppDesignTokens, withAlpha } from "@umituz/react-native-design-system/theme";
 import type { AchievementItemProps } from "./types/AchievementItemProps";
 import { achievementItemStyles as styles } from "./styles/achievementItemStyles";
 

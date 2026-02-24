@@ -12,7 +12,8 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { useAppDesignTokens, AtomicText, AtomicIcon, type DesignTokens } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system/theme';
 
 export interface AboutSettingItemProps {
   /** Icon component (any React component) */

@@ -7,19 +7,10 @@
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { 
-  AtomicIcon, 
-  AtomicCard, 
-  AtomicText, 
-  ScreenLayout, 
-  BASE_TOKENS, 
-  AtomicSpinner, 
-  type IconColor, 
-  NavigationHeader, 
-  useAppNavigation,
-  useAppDesignTokens,
-  type DesignTokens
-} from '@umituz/react-native-design-system';
+import { AtomicIcon, AtomicCard, AtomicText, AtomicSpinner, type IconColor } from '@umituz/react-native-design-system/atoms';
+import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
+import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
+import { BASE_TOKENS, useAppDesignTokens, type DesignTokens } from '@umituz/react-native-design-system/theme';
 import { Switch } from 'react-native';
 import { useNotificationSettings } from '../../infrastructure/hooks/useNotificationSettings';
 

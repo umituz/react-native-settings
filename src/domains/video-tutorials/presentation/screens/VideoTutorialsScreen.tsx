@@ -13,15 +13,10 @@
 
 import React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
-import {
-  useAppDesignTokens,
-  ScreenLayout,
-  AtomicSpinner,
-  AtomicText,
-  useAppNavigation,
-  NavigationHeader,
-} from "@umituz/react-native-design-system";
-import type { DesignTokens } from "@umituz/react-native-design-system";
+import { AtomicSpinner, AtomicText } from "@umituz/react-native-design-system/atoms";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens, type DesignTokens } from "@umituz/react-native-design-system/theme";
 import type { VideoTutorial } from "../../types";
 import { VideoTutorialCard } from "../components/VideoTutorialCard";
 

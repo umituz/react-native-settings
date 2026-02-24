@@ -6,7 +6,8 @@
 
 import React, { useMemo } from 'react';
 import { View, TextInput, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { useAppDesignTokens, AtomicIcon } from '@umituz/react-native-design-system';
+import { AtomicIcon } from '@umituz/react-native-design-system/atoms';
+import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 
 export interface FAQSearchBarStyles {
     container?: ViewStyle;

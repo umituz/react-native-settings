@@ -4,12 +4,13 @@
  */
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { useAppDesignTokens, type DesignTokens, ScreenLayout } from "@umituz/react-native-design-system";
-import { AtomicText, AtomicButton } from "@umituz/react-native-design-system";
+import { AtomicText, AtomicButton } from "@umituz/react-native-design-system/atoms";
+import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
+import { useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens, type DesignTokens } from "@umituz/react-native-design-system/theme";
 import { UrlHandlerService } from "../../domain/services/UrlHandlerService";
 import { ContentValidationService } from "../../domain/services/ContentValidationService";
 import { StyleCacheService } from "../../domain/services/StyleCacheService";
-import { useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system";
 
 export interface LegalContentScreenProps {
   content?: string;

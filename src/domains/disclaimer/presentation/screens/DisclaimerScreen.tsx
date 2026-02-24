@@ -14,15 +14,10 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { 
-  useAppDesignTokens, 
-  withAlpha, 
-  ScreenLayout, 
-  useAppNavigation, 
-  NavigationHeader 
-} from '@umituz/react-native-design-system';
-import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system';
-import type { IconName } from '@umituz/react-native-design-system';
+import { AtomicText, AtomicIcon, type IconName } from '@umituz/react-native-design-system/atoms';
+import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
+import { useAppNavigation, NavigationHeader } from '@umituz/react-native-design-system/molecules';
+import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system/theme';
 
 export interface DisclaimerScreenProps {
   /** Custom title (overrides translation) */

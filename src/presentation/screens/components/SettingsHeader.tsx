@@ -1,6 +1,8 @@
 import React from "react";
 import { Pressable } from "react-native";
-import { useAppDesignTokens, AtomicIcon, useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system";
+import { AtomicIcon } from "@umituz/react-native-design-system/atoms";
+import { useAppNavigation, NavigationHeader } from "@umituz/react-native-design-system/molecules";
+import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 
 interface SettingsHeaderProps {

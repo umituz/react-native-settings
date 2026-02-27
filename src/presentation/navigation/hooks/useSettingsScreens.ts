@@ -1,8 +1,11 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import type { StackScreen } from "@umituz/react-native-design-system/molecules";
 import { LanguageSelectionScreen } from "../../../domains/localization";
 import { NotificationSettingsScreen } from "../../../domains/notifications";
-import { AccountScreen } from "@umituz/react-native-auth";
+// AccountScreen is an optional peer — lazy require so the package works without @umituz/react-native-auth
+const AccountScreen: React.ComponentType<any> | null = (() => {
+  try { return require("@umituz/react-native-auth").AccountScreen ?? null; } catch { return null; }
+})();
 import { SettingsScreen } from "../../screens/SettingsScreen";
 import { AppearanceScreen } from "../../screens/AppearanceScreen";
 import { FAQScreen } from "../../../domains/faqs";
@@ -119,7 +122,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     });
 
     const accountScreen = createConditionalScreen(
-      !!accountConfig,
+      !!accountConfig && !!AccountScreen,
       () => createScreenWithProps("Account", AccountScreen as any, { config: accountConfig })
     );
 

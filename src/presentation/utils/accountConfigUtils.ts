@@ -4,7 +4,7 @@
  * Helper functions for creating account screen configurations.
  */
 
-import type { AccountScreenConfig } from "@umituz/react-native-auth";
+import type { AccountConfig } from "../navigation/types";
 
 export interface AccountTranslations {
   editProfile?: string;
@@ -35,7 +35,7 @@ export interface CreateAccountConfigParams {
 /**
  * Create account screen configuration
  */
-export function createAccountConfig(params: CreateAccountConfigParams): AccountScreenConfig {
+export function createAccountConfig(params: CreateAccountConfigParams): AccountConfig {
   const {
     displayName,
     userId,

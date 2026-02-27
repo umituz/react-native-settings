@@ -88,11 +88,36 @@ export interface FAQData {
 }
 
 /**
- * Import AccountScreenConfig from auth package
+ * Account configuration — auth is an optional peer dependency.
+ * Defined locally so the main package does not require @umituz/react-native-auth.
  */
-import type { AccountScreenConfig } from "@umituz/react-native-auth";
-
-export type AccountConfig = AccountScreenConfig;
+export interface AccountConfig {
+  profile?: {
+    displayName?: string;
+    userId?: string;
+    isAnonymous?: boolean;
+    avatarUrl?: string;
+    accountSettingsRoute?: string;
+    benefits?: string[];
+  };
+  isAnonymous?: boolean;
+  editProfileText?: string;
+  onSignIn?: () => void;
+  PasswordPromptComponent?: React.ReactNode;
+  accountActions?: {
+    onLogout?: () => Promise<void>;
+    onDeleteAccount?: () => Promise<void>;
+    logoutText?: string;
+    logoutConfirmTitle?: string;
+    logoutConfirmMessage?: string;
+    cancelText?: string;
+    deleteAccountText?: string;
+    deleteConfirmTitle?: string;
+    deleteConfirmMessage?: string;
+    deleteErrorTitle?: string;
+    deleteErrorMessage?: string;
+  };
+}
 
 /**
  * Settings Stack Navigator Props

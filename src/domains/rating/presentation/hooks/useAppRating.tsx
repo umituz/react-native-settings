@@ -3,7 +3,7 @@
  * React hook for app rating system
  */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import * as StoreReview from "expo-store-review";
 import type {
   RatingConfig,
@@ -21,10 +21,10 @@ import { isDev } from "../../../../utils/devUtils";
 export function useAppRating(config: RatingConfig): UseAppRatingResult {
   const [isVisible, setIsVisible] = useState(false);
 
-  const mergedConfig: RatingConfig = {
+  const mergedConfig = useMemo<RatingConfig>(() => ({
     ...DEFAULT_RATING_CONFIG,
     ...config,
-  };
+  }), [config]);
 
   const trackEvent = useCallback(async (): Promise<void> => {
     await RatingService.trackEvent(mergedConfig.eventType);

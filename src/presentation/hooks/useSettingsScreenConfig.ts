@@ -14,8 +14,7 @@ import { translateFAQData } from "../utils/faqTranslator";
 import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
 import type { SettingsConfig, SettingsTranslations } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
-import type { AppInfo, FAQData, UserProfileDisplay, AdditionalScreen } from "../navigation/types";
-import type { AccountScreenConfig } from "@umituz/react-native-auth";
+import type { AppInfo, FAQData, UserProfileDisplay, AdditionalScreen, AccountConfig } from "../navigation/types";
 
 export interface SettingsFeatures {
   notifications?: boolean;
@@ -44,7 +43,7 @@ export interface UseSettingsScreenConfigParams {
 export interface SettingsScreenConfigResult {
   settingsConfig: SettingsConfig;
   userProfile: UserProfileDisplay;
-  accountConfig: AccountScreenConfig;
+  accountConfig: AccountConfig;
   translatedFaqData: FAQData | undefined;
   isLoading: boolean;
   isAuthReady: boolean;

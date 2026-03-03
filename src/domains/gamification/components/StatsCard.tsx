@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, Text, type ViewStyle, type TextStyle } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useResponsive } from "@umituz/react-native-design-system/responsive";
 import { useAppDesignTokens, withAlpha } from "@umituz/react-native-design-system/theme";
@@ -75,14 +75,14 @@ export const StatsCard: React.FC<StatsCardProps> = ({
             marginBottom: tokens.spacing.md,
           }
         ]}>
-          <AtomicText style={[
+          <Text style={[
             styles.emoji,
             {
               fontSize: iconSize * 0.55,
             }
           ]}>
             {icon}
-          </AtomicText>
+          </Text>
         </View>
       )}
 

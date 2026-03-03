@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { View, StyleSheet, type ViewStyle, type TextStyle } from "react-native";
+import { View, StyleSheet, Text, type ViewStyle, type TextStyle } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useResponsive } from "@umituz/react-native-design-system/responsive";
 import { useAppDesignTokens, withAlpha } from "@umituz/react-native-design-system/theme";
@@ -77,12 +77,12 @@ export const StreakDisplay: React.FC<StreakDisplayProps> = ({
             borderRadius: iconSize / 2,
           }
         ]}>
-          <AtomicText style={[
+          <Text style={[
             styles.fireEmoji,
             { fontSize: iconSize * 0.6 }
           ]}>
             🔥
-          </AtomicText>
+          </Text>
         </View>
 
         <View style={styles.streakNumbers}>

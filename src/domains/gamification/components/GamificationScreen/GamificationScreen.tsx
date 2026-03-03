@@ -8,7 +8,7 @@ import React from "react";
 import { View } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
-import { NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system/molecules";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";
@@ -37,7 +37,7 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
   subtextColor,
   headerComponent,
 }) => {
-  const navigation = useAppNavigation();
+  const _navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
 
   // Use tokens for fallbacks
@@ -46,16 +46,8 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
   const finalTextColor = textColor || tokens.colors.textPrimary;
   const finalSubtextColor = subtextColor || tokens.colors.textSecondary;
 
-  const header = (
-    <NavigationHeader
-      title={title}
-      onBackPress={() => navigation.goBack()}
-    />
-  );
-
   return (
     <ScreenLayout
-      header={header}
       contentContainerStyle={styles.scrollContent}
       hideScrollIndicator={false}
     >

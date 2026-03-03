@@ -4,10 +4,9 @@
  */
 
 import React, { useMemo, useCallback } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { AtomicText, AtomicIcon, AtomicSpinner } from '@umituz/react-native-design-system/atoms';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
-import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { ReminderItem } from '../components/ReminderItem';
 import { useReminders, useRemindersLoading } from '../../../infrastructure/storage/UnifiedNotificationStore';
@@ -28,7 +27,6 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
   onEditPress,
   maxReminders = 20,
 }) => {
-  const navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
   const styles = useMemo(() => createStyles(tokens), [tokens]);
 
@@ -41,7 +39,6 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
       await toggleReminderEnabled(id);
     } catch (error) {
       devError('[ReminderListScreen] Failed to toggle reminder:', error);
-      console.error('[ReminderList] Error:', error);
     }
   }, [toggleReminderEnabled]);
 
@@ -50,79 +47,52 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
       await removeReminder(id);
     } catch (error) {
       devError('[ReminderListScreen] Failed to delete reminder:', error);
-      console.error('[ReminderList] Error:', error);
     }
   }, [removeReminder]);
 
   const canAddMore = reminders.length < maxReminders;
 
-  const renderItem = useCallback(({ item }: { item: Reminder }) => (
-    <ReminderItem
-      reminder={item}
-      translations={{
-        frequencyOnce: translations.frequencyOnce,
-        frequencyDaily: translations.frequencyDaily,
-        frequencyWeekly: translations.frequencyWeekly,
-        frequencyMonthly: translations.frequencyMonthly,
-      }}
-      onToggle={handleToggle}
-      onEdit={onEditPress}
-      onDelete={handleDelete}
-    />
-  ), [translations, handleToggle, onEditPress, handleDelete]);
-
-  const renderEmpty = useCallback(() => (
-    <View style={styles.emptyContainer}>
-      <View style={styles.emptyIconContainer}>
-        <AtomicIcon name="notifications-off" size="xl" color="secondary" />
-      </View>
-      <AtomicText type="bodyLarge" style={styles.emptyTitle}>{translations.emptyTitle}</AtomicText>
-      <AtomicText type="bodySmall" style={styles.emptyDescription}>{translations.emptyDescription}</AtomicText>
-    </View>
-  ), [translations, styles]);
-
-  const keyExtractor = useCallback((item: Reminder) => item.id, []);
-
-  const header = (
-    <NavigationHeader
-      title={translations.screenTitle}
-      onBackPress={() => navigation.goBack()}
-    />
-  );
+  const fab = canAddMore ? (
+    <TouchableOpacity style={styles.fab} onPress={onAddPress} activeOpacity={0.8}>
+      <AtomicIcon name="add" size="md" color="onPrimary" />
+      <AtomicText type="bodyMedium" style={styles.fabText}>{translations.addButtonLabel}</AtomicText>
+    </TouchableOpacity>
+  ) : undefined;
 
   if (isLoading) {
     return (
-      <ScreenLayout header={header}>
+      <ScreenLayout footer={fab}>
         <AtomicSpinner size="lg" color="primary" fullContainer />
       </ScreenLayout>
     );
   }
 
   return (
-    <ScreenLayout header={header}>
-      <FlatList
-        data={reminders}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        ListEmptyComponent={renderEmpty}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        initialNumToRender={10}
-        maxToRenderPerBatch={5}
-        windowSize={10}
-        removeClippedSubviews={true}
-        getItemLayout={(data, index) => ({
-          length: 88,
-          offset: 88 * index,
-          index,
-        })}
-      />
-
-      {canAddMore && (
-        <TouchableOpacity style={styles.fab} onPress={onAddPress} activeOpacity={0.8}>
-          <AtomicIcon name="add" size="md" color="onPrimary" />
-          <AtomicText type="bodyMedium" style={styles.fabText}>{translations.addButtonLabel}</AtomicText>
-        </TouchableOpacity>
+    <ScreenLayout footer={fab} contentContainerStyle={styles.listContent}>
+      {reminders.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <View style={styles.emptyIconContainer}>
+            <AtomicIcon name="notifications-off" size="xl" color="secondary" />
+          </View>
+          <AtomicText type="bodyLarge" style={styles.emptyTitle}>{translations.emptyTitle}</AtomicText>
+          <AtomicText type="bodySmall" style={styles.emptyDescription}>{translations.emptyDescription}</AtomicText>
+        </View>
+      ) : (
+        reminders.map((reminder) => (
+          <ReminderItem
+            key={reminder.id}
+            reminder={reminder}
+            translations={{
+              frequencyOnce: translations.frequencyOnce,
+              frequencyDaily: translations.frequencyDaily,
+              frequencyWeekly: translations.frequencyWeekly,
+              frequencyMonthly: translations.frequencyMonthly,
+            }}
+            onToggle={handleToggle}
+            onEdit={onEditPress}
+            onDelete={handleDelete}
+          />
+        ))
       )}
     </ScreenLayout>
   );
@@ -130,8 +100,7 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
 
 const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
-    loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
+    listContent: { padding: 16, flexGrow: 1 },
     emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 32, paddingTop: 100 },
     emptyIconContainer: {
       width: 80,
@@ -145,13 +114,10 @@ const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
     emptyTitle: { color: tokens.colors.textPrimary, textAlign: 'center', marginBottom: 8 },
     emptyDescription: { color: tokens.colors.textSecondary, textAlign: 'center' },
     fab: {
-      position: 'absolute',
-      bottom: 24,
-      left: 16,
-      right: 16,
       backgroundColor: tokens.colors.primary,
       borderRadius: 12,
       paddingVertical: 14,
+      marginHorizontal: 16,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',

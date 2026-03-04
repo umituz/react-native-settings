@@ -116,8 +116,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingVertical: 16,
+    paddingVertical: 8,
   },
   emptyContainer: { paddingVertical: 24 },
 });

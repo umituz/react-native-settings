@@ -96,7 +96,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
 
   return (
     <>
-      <ScreenLayout header={header}>
+      <ScreenLayout header={header} scrollable={true}>
         {children ?? (
           <SettingsContent
             normalizedConfig={normalizedConfig}

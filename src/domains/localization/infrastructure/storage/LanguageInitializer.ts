@@ -13,6 +13,7 @@ import { languageRepository } from '../repository/LanguageRepository';
 import { getDeviceLocale } from '../config/languages';
 
 const LANGUAGE_STORAGE_KEY = '@localization:language';
+const USER_SET_KEY = '@localization:user-set';
 const DEFAULT_LANGUAGE = 'en-US';
 
 export class LanguageInitializer {
@@ -36,10 +37,15 @@ export class LanguageInitializer {
   }
 
   private static async determineLanguageCode(savedLanguage: string): Promise<string> {
-    if (savedLanguage && savedLanguage !== DEFAULT_LANGUAGE) {
+    // If user explicitly selected a language (even en-US), respect their choice
+    const userSetResult = await storageRepository.getString(USER_SET_KEY, '');
+    const userHasSetLanguage = userSetResult.success && userSetResult.data === 'true';
+
+    if (userHasSetLanguage && savedLanguage) {
       return savedLanguage;
     }
 
+    // First launch or no explicit user selection — detect from device
     const deviceLocale = getDeviceLocale();
     await storageRepository.setString(LANGUAGE_STORAGE_KEY, deviceLocale);
     return deviceLocale;

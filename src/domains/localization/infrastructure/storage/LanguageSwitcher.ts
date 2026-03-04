@@ -12,6 +12,7 @@ import { languageRepository } from '../repository/LanguageRepository';
 import { isDev } from '../../../../utils/devUtils';
 
 const LANGUAGE_STORAGE_KEY = '@localization:language';
+const USER_SET_KEY = '@localization:user-set';
 
 export class LanguageSwitcher {
   /**
@@ -36,6 +37,7 @@ export class LanguageSwitcher {
       }
 
       await storageRepository.setString(LANGUAGE_STORAGE_KEY, languageCode);
+      await storageRepository.setString(USER_SET_KEY, 'true');
 
       if (isDev()) {
       }

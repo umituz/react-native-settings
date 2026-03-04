@@ -32,6 +32,7 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { code: 'ro-RO', name: 'Romanian', nativeName: 'Română', flag: '🇷🇴', isRTL: false },
   { code: 'ru-RU', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺', isRTL: false },
   { code: 'sk-SK', name: 'Slovak', nativeName: 'Slovenčina', flag: '🇸🇰', isRTL: false },
+  { code: 'sl-SI', name: 'Slovenian', nativeName: 'Slovenščina', flag: '🇸🇮', isRTL: false },
   { code: 'sv-SE', name: 'Swedish', nativeName: 'Svenska', flag: '🇸🇪', isRTL: false },
   { code: 'th-TH', name: 'Thai', nativeName: 'ไทย', flag: '🇹🇭', isRTL: false },
   { code: 'tl-PH', name: 'Filipino', nativeName: 'Filipino', flag: '🇵🇭', isRTL: false },

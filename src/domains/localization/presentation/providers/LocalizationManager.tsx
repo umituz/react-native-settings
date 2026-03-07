@@ -14,6 +14,8 @@ interface LocalizationProviderProps {
   defaultLanguage?: string;
 }
 
+const INIT_TIMEOUT_MS = 5000;
+
 export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
   children,
   translations,
@@ -25,11 +27,30 @@ export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
   useEffect(() => {
     let isMounted = true;
 
+    // Safety timeout: proceed even if initialization hangs
+    const safetyTimer = setTimeout(() => {
+      if (isMounted && !isI18nReady) {
+        if (isDev()) {
+          console.warn('[LocalizationManager] Initialization timed out, proceeding with defaults');
+        }
+        // Initialize i18n synchronously with defaults as fallback
+        try {
+          if (!require('i18next').default?.isInitialized) {
+            I18nInitializer.initialize(translations, defaultLanguage);
+          }
+        } catch {
+          // Best effort
+        }
+        setIsI18nReady(true);
+      }
+    }, INIT_TIMEOUT_MS);
+
     const initializeLocalization = async () => {
       try {
         I18nInitializer.initialize(translations, defaultLanguage);
         await initialize();
         if (isMounted) {
+          clearTimeout(safetyTimer);
           setIsI18nReady(true);
         }
       } catch (error) {
@@ -37,7 +58,8 @@ export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
           console.error('[LocalizationManager] Initialization failed:', error);
         }
         if (isMounted) {
-          setIsI18nReady(true); // Set ready even on error to prevent indefinite loading
+          clearTimeout(safetyTimer);
+          setIsI18nReady(true);
         }
       }
     };
@@ -46,6 +68,7 @@ export const LocalizationManager: React.FC<LocalizationProviderProps> = ({
 
     return () => {
       isMounted = false;
+      clearTimeout(safetyTimer);
     };
   }, [translations, defaultLanguage, initialize]);
 

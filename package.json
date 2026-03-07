@@ -1,84 +1,84 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "5.3.31",
+  "version": "5.3.34",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, localization, about, legal, appearance, feedback, FAQs, rating, and gamification",
   "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "react-native": "./src/index.ts",
-      "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
     "./localization": {
+      "types": "./dist/domains/localization/index.d.ts",
       "react-native": "./src/domains/localization/index.ts",
-      "types": "./src/domains/localization/index.ts",
       "default": "./src/domains/localization/index.ts"
     },
     "./appearance": {
+      "types": "./dist/domains/appearance/index.d.ts",
       "react-native": "./src/domains/appearance/index.ts",
-      "types": "./src/domains/appearance/index.ts",
       "default": "./src/domains/appearance/index.ts"
     },
     "./feedback": {
+      "types": "./dist/domains/feedback/index.d.ts",
       "react-native": "./src/domains/feedback/index.ts",
-      "types": "./src/domains/feedback/index.ts",
       "default": "./src/domains/feedback/index.ts"
     },
     "./rating": {
+      "types": "./dist/domains/rating/index.d.ts",
       "react-native": "./src/domains/rating/index.ts",
-      "types": "./src/domains/rating/index.ts",
       "default": "./src/domains/rating/index.ts"
     },
     "./gamification": {
+      "types": "./dist/domains/gamification/index.d.ts",
       "react-native": "./src/domains/gamification/index.ts",
-      "types": "./src/domains/gamification/index.ts",
       "default": "./src/domains/gamification/index.ts"
     },
     "./notifications": {
+      "types": "./dist/domains/notifications/index.d.ts",
       "react-native": "./src/domains/notifications/index.ts",
-      "types": "./src/domains/notifications/index.ts",
       "default": "./src/domains/notifications/index.ts"
     },
     "./about": {
+      "types": "./dist/domains/about/index.d.ts",
       "react-native": "./src/domains/about/index.ts",
-      "types": "./src/domains/about/index.ts",
       "default": "./src/domains/about/index.ts"
     },
     "./legal": {
+      "types": "./dist/domains/legal/index.d.ts",
       "react-native": "./src/domains/legal/index.ts",
-      "types": "./src/domains/legal/index.ts",
       "default": "./src/domains/legal/index.ts"
     },
     "./faqs": {
+      "types": "./dist/domains/faqs/index.d.ts",
       "react-native": "./src/domains/faqs/index.ts",
-      "types": "./src/domains/faqs/index.ts",
       "default": "./src/domains/faqs/index.ts"
     },
     "./disclaimer": {
+      "types": "./dist/domains/disclaimer/index.d.ts",
       "react-native": "./src/domains/disclaimer/index.ts",
-      "types": "./src/domains/disclaimer/index.ts",
       "default": "./src/domains/disclaimer/index.ts"
     },
     "./cloud-sync": {
+      "types": "./dist/domains/cloud-sync/index.d.ts",
       "react-native": "./src/domains/cloud-sync/index.ts",
-      "types": "./src/domains/cloud-sync/index.ts",
       "default": "./src/domains/cloud-sync/index.ts"
     },
     "./dev": {
+      "types": "./dist/domains/dev/index.d.ts",
       "react-native": "./src/domains/dev/index.ts",
-      "types": "./src/domains/dev/index.ts",
       "default": "./src/domains/dev/index.ts"
     },
     "./video-tutorials": {
+      "types": "./dist/domains/video-tutorials/index.d.ts",
       "react-native": "./src/domains/video-tutorials/index.ts",
-      "types": "./src/domains/video-tutorials/index.ts",
       "default": "./src/domains/video-tutorials/index.ts"
     },
     "./account": {
+      "types": "./dist/account.d.ts",
       "react-native": "./src/account.ts",
-      "types": "./src/account.ts",
       "default": "./src/account.ts"
     },
     "./package.json": "./package.json"
@@ -87,7 +87,8 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "vp": "npm version patch && npm publish && git push"
+    "vp": "npm version patch && npm publish && git push",
+    "build": "tsc --project tsconfig.build.json"
   },
   "keywords": [
     "react-native",
@@ -201,6 +202,7 @@
     "access": "public"
   },
   "files": [
+    "dist",
     "src",
     "README.md"
   ]

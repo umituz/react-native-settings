@@ -13,6 +13,7 @@ import { AboutScreen } from "../../../domains/about";
 import { LegalScreen } from "../../../domains/legal";
 import { GamificationScreen } from "../../../domains/gamification";
 import { VideoTutorialsScreen } from "../../../domains/video-tutorials";
+import { FeatureRequestScreen } from "../../../domains/feedback/presentation/screens/FeatureRequestScreen";
 import {
   createScreenWithProps,
   convertAdditionalScreen,
@@ -56,7 +57,8 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     accountConfig,
   } = props;
 
-  const translations = config?.translations?.features;
+  const translations = config?.translations;
+  const featureTranslations = translations?.features;
 
   return useMemo(() => {
     const settingsMainScreen = createScreenWithProps(
@@ -105,10 +107,10 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       !!(faqData && faqData.categories?.length > 0),
       () => createScreenWithProps("FAQ", FAQScreen, {
         categories: faqData!.categories,
-        searchPlaceholder: translations?.faqs?.searchPlaceholder || "",
-        emptySearchTitle: translations?.faqs?.emptySearchTitle || "",
-        emptySearchMessage: translations?.faqs?.emptySearchMessage || "",
-        headerTitle: translations?.faqs?.headerTitle || "",
+        searchPlaceholder: featureTranslations?.faqs?.searchPlaceholder || "",
+        emptySearchTitle: featureTranslations?.faqs?.emptySearchTitle || "",
+        emptySearchMessage: featureTranslations?.faqs?.emptySearchMessage || "",
+        headerTitle: featureTranslations?.faqs?.headerTitle || "",
       })
     );
 
@@ -117,8 +119,8 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     const gamificationScreen = createScreenWithProps("Gamification", GamificationScreen as any, { config: gamificationConfig });
 
     const languageScreen = createScreenWithProps("LanguageSelection", LanguageSelectionScreen, {
-      headerTitle: translations?.language?.title || "",
-      searchPlaceholder: translations?.languageSelection?.searchPlaceholder || "",
+      headerTitle: featureTranslations?.language?.title || "",
+      searchPlaceholder: featureTranslations?.languageSelection?.searchPlaceholder || "",
     });
 
     const accountScreen = createConditionalScreen(
@@ -128,7 +130,24 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
 
     const videoTutorialScreen = createScreenWithProps("VideoTutorial", VideoTutorialsScreen as any, {
       ...videoTutorialConfig,
-      title: videoTutorialConfig?.title || translations?.videoTutorial?.title || "",
+      title: videoTutorialConfig?.title || featureTranslations?.videoTutorial?.title || "",
+    });
+
+    const featureRequestScreen = createScreenWithProps("FeatureRequest", FeatureRequestScreen, {
+      config: config?.feedback,
+      texts: {
+        feedbackTypes: [
+          { type: 'general', label: translations?.feedbackModal?.types?.general || 'General' },
+          { type: 'bug_report', label: translations?.feedbackModal?.types?.bugReport || 'Bug Report' },
+          { type: 'feature_request', label: translations?.feedbackModal?.types?.featureRequest || 'Feature Request' },
+          { type: 'improvement', label: translations?.feedbackModal?.types?.improvement || 'Improvement' },
+          { type: 'other', label: translations?.feedbackModal?.types?.other || 'Other' },
+        ],
+        ratingLabel: translations?.feedbackModal?.ratingLabel || 'How would you rate your experience?',
+        descriptionPlaceholder: translations?.feedbackModal?.descriptionPlaceholder || 'Tell us more...',
+        submitButton: translations?.feedbackModal?.submitButton || 'Submit',
+        submittingButton: translations?.feedbackModal?.submittingButton || 'Submitting...',
+      }
     });
 
     return combineScreens(
@@ -138,7 +157,8 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       gamificationScreen,
       languageScreen,
       accountScreen,
-      videoTutorialScreen
+      videoTutorialScreen,
+      featureRequestScreen
     );
   }, [
     translations,

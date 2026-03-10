@@ -45,7 +45,7 @@ export const SupportSettingsSection: React.FC<SupportSettingsSectionProps> = ({
                             description: normalizedConfig.feedback.config?.description || translations?.features?.feedback?.description,
                             initialType: normalizedConfig.feedback.config?.initialType,
                             onSubmit: normalizedConfig.feedback.config?.onSubmit,
-                            onPress: normalizedConfig.feedback.config?.onPress,
+                            onPress: () => navigation.navigate("FeatureRequest"),
                         }
                     }}
                     ratingConfig={{

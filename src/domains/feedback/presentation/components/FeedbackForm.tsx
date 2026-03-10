@@ -67,7 +67,7 @@ const FeedbackRatingSection: React.FC<FeedbackRatingSectionProps> = ({
     tokens,
 }) => (
     <View style={styles.ratingContainer}>
-        <AtomicText type="bodyMedium" style={{ marginBottom: 8, color: tokens.colors.textSecondary }}>
+        <AtomicText style={[styles.ratingLabel, { color: tokens.colors.textSecondary }]}>
             {ratingLabel}
         </AtomicText>
         <View style={styles.stars}>

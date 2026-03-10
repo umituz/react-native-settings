@@ -132,7 +132,7 @@ export const FeatureRequestScreen: React.FC<any> = ({ config, texts }) => {
       <View style={styles.voteColumn}>
         <TouchableOpacity onPress={() => handleVote(item.id, 'up')}>
           <AtomicIcon 
-            name="expand-less" 
+            name="chevron-up" 
             size="md" 
             color={item.voted === 'up' ? "primary" : "textSecondary" as any} 
           />
@@ -142,7 +142,7 @@ export const FeatureRequestScreen: React.FC<any> = ({ config, texts }) => {
         </AtomicText>
         <TouchableOpacity onPress={() => handleVote(item.id, 'down')}>
           <AtomicIcon 
-            name="expand-more" 
+            name="chevron-down" 
             size="md" 
             color={item.voted === 'down' ? "primary" : "textSecondary" as any} 
           />
@@ -239,6 +239,7 @@ export const FeatureRequestScreen: React.FC<any> = ({ config, texts }) => {
         <FeedbackModal
           visible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
+          title={texts.title}
           onSubmit={async (data: any) => {
             console.log("Submitted:", data);
             setIsModalVisible(false);

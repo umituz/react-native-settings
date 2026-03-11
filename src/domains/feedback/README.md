@@ -16,7 +16,7 @@ Provides components and utilities for collecting user feedback including feedbac
 
 **Domain:**
 - `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/domain/entities/FeedbackEntity.ts`
-- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/domain/repositories/IFeedbackRepository.ts`
+- `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/domain/entities/FeatureRequestEntity.ts`
 
 **Index:**
 - `/Users/umituz/Desktop/github/umituz/apps/artificial_intelligence/npm-packages/react-native-settings/src/domains/feedback/index.ts`
@@ -26,14 +26,12 @@ Provides components and utilities for collecting user feedback including feedbac
 1. **Form State Management**: Use useFeedbackForm hook for centralized form state and validation
 2. **Type Categorization**: Categorize feedback by type (bug, feature, general, etc.) for better routing
 3. **Star Rating Integration**: Integrate with Rating domain for 1-5 star ratings
-4. **Repository Pattern**: Use IFeedbackRepository interface for abstracted feedback submission
-5. **Validation First**: Always validate form state before submission to prevent invalid data
+4. **Validation First**: Always validate form state before submission to prevent invalid data
 
 ## Restrictions (Forbidden)
 
 ### DO NOT
 - ❌ DO NOT submit feedback without validating required fields (type, title)
-- ❌ DO NOT bypass the repository pattern when submitting feedback
 - ❌ DO NOT use FeedbackForm without providing texts configuration
 - ❌ DO NOT handle feedback submission manually when the hook provides everything needed
 

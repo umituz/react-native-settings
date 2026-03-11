@@ -65,23 +65,12 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
         if (feedbackConfig.config?.onSubmit) {
             setIsSubmitting(true);
             try {
-                // Add a small delay for better UX if needed, or remove it if instant response is preferred
-                // await new Promise(resolve => setTimeout(resolve, 300)); 
                 await feedbackConfig.config.onSubmit(data);
-                
-                // Only close on success - or let the parent handle it? 
-                // Since onSubmit in config returns Promise<void> and usually handles errors via callbacks (onError),
-                // we can assume if it resolves, we should close.
-                // If the App's onSubmit logic catches errors and resolves, we still close.
                 setModalVisible(false);
             } catch (error) {
-                // If the passed onSubmit throws, we log it.
                 if (isDev()) {
                     console.error('[SupportSection] Failed to submit feedback:', error);
                 }
-                // Optionally keep modal open? Or close it?
-                // If we keep it open, user can retry.
-                // But usually we close it.
                 setModalVisible(false);
             } finally {
                 setIsSubmitting(false);
@@ -100,16 +89,12 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
 
         if (config?.storeUrl) {
             try {
-                // Safely handle URL for App Store - itunes.apple.com is more reliable for deep links
                 let url = config.storeUrl;
                 if (url.includes('apps.apple.com')) {
                     url = url.replace('apps.apple.com', 'itunes.apple.com');
                 }
-                
-                // Try opening the modified URL
                 await Linking.openURL(url);
-            } catch (error) {
-                // Final fallback to original URL
+            } catch {
                 if (config.storeUrl) {
                     Linking.openURL(config.storeUrl).catch(() => {});
                 }

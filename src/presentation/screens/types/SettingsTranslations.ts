@@ -123,6 +123,31 @@ export interface SettingsTranslations {
       description?: string;
     };
   };
+  /** Feature Request Screen translations */
+  feedback?: {
+    screen_title?: string;
+    tabs?: {
+      all?: string;
+      my?: string;
+      roadmap?: string;
+    };
+    banner?: {
+      title?: string;
+      subtitle?: string;
+    };
+    trending?: string;
+    voter_count?: string;
+    comment_count?: string;
+    new_idea?: string;
+    empty?: string;
+    status?: {
+      planned?: string;
+      review?: string;
+      completed?: string;
+      pending?: string;
+      dismissed?: string;
+    };
+  };
   feedbackModal?: {
     title?: string;
     ratingLabel?: string;

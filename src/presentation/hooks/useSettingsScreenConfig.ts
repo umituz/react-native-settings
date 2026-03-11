@@ -10,7 +10,6 @@ import { useMemo } from "react";
 import { useAuth, useUserProfile, useAuthHandlers } from "@umituz/react-native-auth";
 import { createUserProfileDisplay } from "../utils/userProfileUtils";
 import { createAccountConfig } from "../utils/accountConfigUtils";
-import { translateFAQData } from "../utils/faqTranslator";
 import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
 import type { SettingsConfig, SettingsTranslations } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
@@ -151,16 +150,11 @@ export const useSettingsScreenConfig = (
     translations: translations?.account as any,
   }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations]);
 
-  const translatedFaqData = useMemo(() =>
-    translateFAQData(faqData, appInfo),
-    [faqData, appInfo]
-  );
-
   return {
     settingsConfig,
     userProfile,
     accountConfig,
-    translatedFaqData,
+    translatedFaqData: faqData,
     isLoading: loading,
     isAuthReady,
   };

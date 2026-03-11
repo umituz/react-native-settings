@@ -6,7 +6,7 @@
  *
  * Usage:
  *   import {
- *     useSettingsScreenConfigWithAuth,
+ *     useSettingsScreenConfig,
  *     AccountScreen,
  *     ProfileSection,
  *   } from '@umituz/react-native-settings/account';
@@ -30,9 +30,6 @@ export type { AccountScreenConfig } from "@umituz/react-native-auth";
 
 // Base hook (already handles auth internally via useAuth/useUserProfile/useAuthHandlers)
 export { useSettingsScreenConfig } from './presentation/hooks/useSettingsScreenConfig';
-
-// Alias for clarity - useSettingsScreenConfig already includes auth
-export { useSettingsScreenConfig as useSettingsScreenConfigWithAuth } from './presentation/hooks/useSettingsScreenConfig';
 
 // Re-export types
 export type {

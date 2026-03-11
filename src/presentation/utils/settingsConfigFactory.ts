@@ -63,8 +63,8 @@ export const createSettingsConfig = (
     faqs: features.faqs ? createFAQConfig() : false,
     rating: features.rating ? createRatingConfig(handleRatePress, appStoreUrl) : false,
     subscription: features.subscription ? createSubscriptionConfig(isPremium, "SubscriptionDetail" as keyof SettingsStackParamList) : false,
-    gamification: features.gamification ? true : false,
-    videoTutorial: features.videoTutorial ? true : false,
+    gamification: !!features.gamification,
+    videoTutorial: !!features.videoTutorial,
     disclaimer: false,
   };
 };

@@ -1,191 +1,146 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  FlatList,
-  Image,
+  ActivityIndicator,
 } from "react-native";
 import {
   AtomicText,
   AtomicIcon,
-  AtomicButton,
 } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { FeedbackModal } from "../components/FeedbackModal";
-import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
+import { useFeatureRequests } from "../../infrastructure/useFeatureRequests";
+import type { FeedbackRating } from "../../domain/entities/FeedbackEntity";
+import type { FeatureRequestItem, VoteType } from "../../domain/entities/FeatureRequestEntity";
+import type { FeedbackFormTexts } from "../components/FeedbackFormProps";
 
-interface FeatureRequest {
-  id: string;
-  title: string;
-  description: string;
-  votes: number;
-  status: 'planned' | 'review' | 'completed';
-  comments: number;
-  userAvatars: string[];
-  voted: 'up' | 'down' | null;
+interface FeatureRequestScreenProps {
+  config?: {
+    translations?: Record<string, any>;
+  };
+  texts?: FeedbackFormTexts & { title?: string };
 }
 
-const MOCK_REQUESTS: FeatureRequest[] = [
-  {
-    id: "1",
-    title: "AI Music Generation",
-    description: "Add the ability to generate background tracks for videos using simple text prompts or mood selectors.",
-    votes: 1250,
-    status: 'planned',
-    comments: 24,
-    userAvatars: ["https://i.pravatar.cc/100?u=1", "https://i.pravatar.cc/100?u=2"],
-    voted: null,
-  },
-  {
-    id: "2",
-    title: "Couple Video Templates",
-    description: "Specific cinematic transition templates designed for couples' vlogs and anniversary montages.",
-    votes: 842,
-    status: 'review',
-    comments: 8,
-    userAvatars: ["https://i.pravatar.cc/100?u=3"],
-    voted: null,
-  },
-  {
-    id: "3",
-    title: "4K Export Support",
-    description: "Allow users to export generated AI videos in high-quality 4K resolution.",
-    votes: 2100,
-    status: 'completed',
-    comments: 42,
-    userAvatars: ["https://i.pravatar.cc/100?u=4", "https://i.pravatar.cc/100?u=5"],
-    voted: null,
-  },
-  {
-    id: "4",
-    title: "Dark Mode Editor",
-    description: "Make the entire editing interface dark for better focus during late-night creative sessions.",
-    votes: 156,
-    status: 'planned',
-    comments: 5,
-    userAvatars: ["https://i.pravatar.cc/100?u=6"],
-    voted: null,
-  }
-];
-
-export const FeatureRequestScreen: React.FC<any> = ({ config, texts }) => {
+export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ config, texts }) => {
   const tokens = useAppDesignTokens();
-  const [requests, setRequests] = useState(MOCK_REQUESTS);
+  const { requests, userVotes, isLoading, vote, submitRequest, userId } = useFeatureRequests();
+
   const [activeTab, setActiveTab] = useState<'all' | 'my' | 'roadmap'>('all');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Use passed translations if available
   const t = config?.translations || {};
   const screenTitle = t.screen_title || "Feedback & Features";
   const trendingTitle = t.trending || "Trending Requests";
   const bannerTitle = t.banner?.title || "Community Active";
-  const bannerSub = t.banner?.subtitle || "1.2k users voting right now";
+  const bannerSub = t.banner?.subtitle || `${requests.length} feature requests`;
   const newIdeaLabel = t.new_idea || "NEW IDEA?";
-  
+
   const tabLabels = {
     all: t.tabs?.all || "All Requests",
     my: t.tabs?.my || "My Feedback",
     roadmap: t.tabs?.roadmap || "Roadmap",
   };
 
-  const statusLabels = {
+  const statusLabels: Record<string, string> = {
     planned: t.status?.planned || "Planned",
     review: t.status?.review || "Under Review",
     completed: t.status?.completed || "Completed",
+    pending: t.status?.pending || "Pending",
+    dismissed: t.status?.dismissed || "Dismissed",
   };
 
-  const handleVote = (id: string, type: 'up' | 'down') => {
-    setRequests(prev => prev.map(req => {
-      if (req.id === id) {
-        // Simplified voting logic for mock
-        let newVotes = req.votes;
-        if (req.voted === type) {
-          newVotes -= type === 'up' ? 1 : -1;
-          return { ...req, votes: newVotes, voted: null };
-        } else {
-          if (req.voted !== null) {
-            newVotes += type === 'up' ? 2 : -2;
-          } else {
-            newVotes += type === 'up' ? 1 : -1;
-          }
-          return { ...req, votes: newVotes, voted: type };
-        }
-      }
-      return req;
-    }));
-  };
+  const handleSubmit = useCallback(async (data: { title?: string; description: string; type?: string; rating?: FeedbackRating }) => {
+    setIsSubmitting(true);
+    try {
+      await submitRequest({
+        title: data.title || "New Request",
+        description: data.description,
+        type: data.type || "feature_request",
+        rating: data.rating,
+      });
+      setIsModalVisible(false);
+    } catch (error) {
+      if (__DEV__) console.warn("[FeatureRequestScreen] Submit failed:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [submitRequest]);
 
-  const getStatusColor = (status: FeatureRequest['status']) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'planned': return '#3b82f6';
       case 'review': return '#f59e0b';
       case 'completed': return '#10b981';
+      case 'pending': return '#8b5cf6';
+      case 'dismissed': return '#ef4444';
       default: return tokens.colors.textSecondary;
     }
   };
 
-  const renderRequestItem = ({ item }: { item: FeatureRequest }) => (
-    <View style={[styles.card, { backgroundColor: tokens.colors.surfaceSecondary, borderColor: tokens.colors.borderLight }]}>
-      <View style={styles.voteColumn}>
-        <TouchableOpacity onPress={() => handleVote(item.id, 'up')}>
-          <AtomicIcon 
-            name="chevron-up" 
-            size="md" 
-            color={item.voted === 'up' ? "primary" : "textSecondary" as any} 
-          />
-        </TouchableOpacity>
-        <AtomicText style={[styles.voteCount, { color: item.voted === 'up' ? tokens.colors.primary : tokens.colors.textPrimary }]}>
-          {item.votes}
-        </AtomicText>
-        <TouchableOpacity onPress={() => handleVote(item.id, 'down')}>
-          <AtomicIcon 
-            name="chevron-down" 
-            size="md" 
-            color={item.voted === 'down' ? "primary" : "textSecondary" as any} 
-          />
-        </TouchableOpacity>
-      </View>
+  const filteredRequests = (() => {
+    switch (activeTab) {
+      case 'my':
+        return requests.filter(r => r.createdBy === userId);
+      case 'roadmap':
+        return requests.filter(r => ['planned', 'completed', 'review'].includes(r.status));
+      default:
+        return requests;
+    }
+  })();
 
-      <View style={styles.cardContent}>
-        <View style={styles.cardHeader}>
-          <AtomicText style={styles.cardTitle}>{item.title}</AtomicText>
-          <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + '20', borderColor: getStatusColor(item.status) + '40' }]}>
-            <AtomicText style={[styles.statusText, { color: getStatusColor(item.status) }]}>
-              {(statusLabels[item.status] || item.status).toUpperCase()}
+  const renderRequestCard = (item: FeatureRequestItem) => {
+    const voted = userVotes[item.id] || null;
+
+    return (
+      <View key={item.id} style={[styles.card, { backgroundColor: tokens.colors.surfaceSecondary, borderColor: tokens.colors.borderLight }]}>
+        <View style={styles.voteColumn}>
+          <TouchableOpacity onPress={() => vote(item.id, 'up')}>
+            <AtomicIcon name="chevron-up" size="md" color={voted === 'up' ? "primary" : "textSecondary"} />
+          </TouchableOpacity>
+          <AtomicText style={[styles.voteCount, { color: voted === 'up' ? tokens.colors.primary : tokens.colors.textPrimary }]}>
+            {item.votes}
+          </AtomicText>
+          <TouchableOpacity onPress={() => vote(item.id, 'down')}>
+            <AtomicIcon name="chevron-down" size="md" color={voted === 'down' ? "primary" : "textSecondary"} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.cardContent}>
+          <View style={styles.cardHeader}>
+            <AtomicText style={styles.cardTitle}>{item.title}</AtomicText>
+            <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + '20', borderColor: getStatusColor(item.status) + '40' }]}>
+              <AtomicText style={[styles.statusText, { color: getStatusColor(item.status) }]}>
+                {(statusLabels[item.status] || item.status).toUpperCase()}
+              </AtomicText>
+            </View>
+          </View>
+
+          <AtomicText style={[styles.cardDescription, { color: tokens.colors.textSecondary }]}>
+            {item.description}
+          </AtomicText>
+
+          <View style={styles.cardFooter}>
+            <AtomicText style={[styles.platformText, { color: tokens.colors.textTertiary }]}>
+              {item.platform.toUpperCase()}
+            </AtomicText>
+            <AtomicText style={[styles.commentCount, { color: tokens.colors.textTertiary }]}>
+              {item.commentCount} {t.comment_count?.replace('{{count}}', '') || 'comments'}
             </AtomicText>
           </View>
         </View>
-        
-        <AtomicText style={[styles.cardDescription, { color: tokens.colors.textSecondary }]}>
-          {item.description}
-        </AtomicText>
-
-        <View style={styles.cardFooter}>
-          <View style={styles.avatarGroup}>
-            {item.userAvatars.map((url, i) => (
-              <Image key={i} source={{ uri: url }} style={[styles.avatar, { borderColor: tokens.colors.surfaceSecondary }]} />
-            ))}
-            {item.comments > 5 && (
-              <View style={[styles.avatarMore, { backgroundColor: tokens.colors.surfaceVariant }]}>
-                <AtomicText style={styles.avatarMoreText}>+{item.comments}</AtomicText>
-              </View>
-            )}
-          </View>
-          <AtomicText style={[styles.commentCount, { color: tokens.colors.textTertiary }]}>
-            {item.comments} {t.comment_count?.replace('{{count}}', '') || 'comments'}
-          </AtomicText>
-        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const header = (
     <View style={styles.header}>
       <AtomicText style={styles.headerTitle}>{screenTitle}</AtomicText>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[styles.addButton, { backgroundColor: tokens.colors.primary }]}
         onPress={() => setIsModalVisible(true)}
       >
@@ -194,11 +149,21 @@ export const FeatureRequestScreen: React.FC<any> = ({ config, texts }) => {
     </View>
   );
 
+  if (isLoading) {
+    return (
+      <ScreenLayout header={header} edges={['top', 'bottom']}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={tokens.colors.primary} />
+        </View>
+      </ScreenLayout>
+    );
+  }
+
   return (
     <ScreenLayout header={header} edges={['top', 'bottom']}>
       <View style={styles.tabsContainer}>
         {(['all', 'my', 'roadmap'] as const).map((tab) => (
-          <TouchableOpacity 
+          <TouchableOpacity
             key={tab}
             onPress={() => setActiveTab(tab)}
             style={[styles.tab, activeTab === tab && { borderBottomColor: tokens.colors.primary }]}
@@ -226,225 +191,75 @@ export const FeatureRequestScreen: React.FC<any> = ({ config, texts }) => {
 
         <AtomicText style={styles.sectionTitle}>{trendingTitle}</AtomicText>
 
-        <FlatList
-          data={requests}
-          renderItem={renderRequestItem}
-          keyExtractor={item => item.id}
-          scrollEnabled={false}
-          contentContainerStyle={styles.listContent}
-        />
+        {filteredRequests.length === 0 ? (
+          <View style={styles.emptyState}>
+            <AtomicIcon name="chatbubble-outline" size="xl" color="textTertiary" />
+            <AtomicText style={[styles.emptyText, { color: tokens.colors.textTertiary }]}>
+              {t.empty || "No requests yet. Be the first!"}
+            </AtomicText>
+          </View>
+        ) : (
+          <View style={styles.listContent}>
+            {filteredRequests.map(renderRequestCard)}
+          </View>
+        )}
       </ScrollView>
 
       {isModalVisible && (
         <FeedbackModal
           visible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
-          title={texts.title}
-          onSubmit={async (data: any) => {
-            console.log("Submitted:", data);
-            setIsModalVisible(false);
-            // Add to mock list for "live" feel
-            const newReq: FeatureRequest = {
-              id: Date.now().toString(),
-              title: data.title || "New Request",
-              description: data.description,
-              votes: 1,
-              status: 'review',
-              comments: 0,
-              userAvatars: ["https://i.pravatar.cc/100?u=me"],
-              voted: 'up',
-            };
-            setRequests(prev => [newReq, ...prev]);
-          }}
+          title={texts?.title}
+          onSubmit={handleSubmit}
           texts={texts}
           initialType="feature_request"
+          isSubmitting={isSubmitting}
         />
       )}
 
       <View style={styles.floatingHint}>
-        <View style={[styles.hintBadge, { backgroundColor: tokens.colors.primary }]}>
+        <TouchableOpacity
+          style={[styles.hintBadge, { backgroundColor: tokens.colors.primary }]}
+          onPress={() => setIsModalVisible(true)}
+        >
           <AtomicText style={styles.hintText}>{newIdeaLabel}</AtomicText>
-        </View>
+        </TouchableOpacity>
       </View>
     </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '800',
-  },
-  addButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabsContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.05)',
-  },
-  tab: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-  },
-  tabLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.5)',
-  },
-  banner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    gap: 12,
-    marginBottom: 20,
-  },
-  bannerIconContainer: {
-    position: 'relative',
-  },
-  pulseDot: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#10b981',
-  },
-  bannerTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  bannerSub: {
-    fontSize: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 16,
-  },
-  listContent: {
-    gap: 12,
-    paddingBottom: 40,
-  },
-  card: {
-    flexDirection: 'row',
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    gap: 12,
-  },
-  voteColumn: {
-    alignItems: 'center',
-    gap: 4,
-    width: 40,
-  },
-  voteCount: {
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  cardContent: {
-    flex: 1,
-    gap: 8,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 8,
-  },
-  cardTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    flex: 1,
-  },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  statusText: {
-    fontSize: 9,
-    fontWeight: '900',
-  },
-  cardDescription: {
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  cardFooter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 4,
-  },
-  avatarGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    marginLeft: -8,
-  },
-  avatarMore: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: -8,
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  avatarMoreText: {
-    fontSize: 8,
-    fontWeight: '800',
-  },
-  commentCount: {
-    fontSize: 11,
-  },
-  floatingHint: {
-    position: 'absolute',
-    bottom: 40,
-    right: 16,
-    zIndex: 100,
-  },
-  hintBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 8,
-  },
-  hintText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: '900',
-    textTransform: 'uppercase',
-  }
+  container: { padding: 16 },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 },
+  headerTitle: { fontSize: 20, fontWeight: '800' },
+  addButton: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  tabsContainer: { flexDirection: 'row', paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
+  tab: { paddingVertical: 12, paddingHorizontal: 16, borderBottomWidth: 2, borderBottomColor: 'transparent' },
+  tabLabel: { fontSize: 14, fontWeight: '600', color: 'rgba(255,255,255,0.5)' },
+  banner: { flexDirection: 'row', alignItems: 'center', padding: 16, borderRadius: 16, borderWidth: 1, gap: 12, marginBottom: 20 },
+  bannerIconContainer: { position: 'relative' },
+  pulseDot: { position: 'absolute', top: 0, right: 0, width: 8, height: 8, borderRadius: 4, backgroundColor: '#10b981' },
+  bannerTitle: { fontSize: 14, fontWeight: '700' },
+  bannerSub: { fontSize: 12 },
+  sectionTitle: { fontSize: 18, fontWeight: '700', marginBottom: 16 },
+  listContent: { gap: 12, paddingBottom: 40 },
+  card: { flexDirection: 'row', padding: 16, borderRadius: 16, borderWidth: 1, gap: 12 },
+  voteColumn: { alignItems: 'center', gap: 4, width: 40 },
+  voteCount: { fontSize: 13, fontWeight: '800' },
+  cardContent: { flex: 1, gap: 8 },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 },
+  cardTitle: { fontSize: 15, fontWeight: '700', flex: 1 },
+  statusBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, borderWidth: 1 },
+  statusText: { fontSize: 9, fontWeight: '900' },
+  cardDescription: { fontSize: 13, lineHeight: 18 },
+  cardFooter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 },
+  platformText: { fontSize: 10, fontWeight: '600' },
+  commentCount: { fontSize: 11 },
+  floatingHint: { position: 'absolute', bottom: 40, right: 16, zIndex: 100 },
+  hintBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 8 },
+  hintText: { color: '#fff', fontSize: 10, fontWeight: '900', textTransform: 'uppercase' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 100 },
+  emptyState: { alignItems: 'center', justifyContent: 'center', paddingVertical: 60, gap: 12 },
+  emptyText: { fontSize: 14, fontWeight: '500' },
 });

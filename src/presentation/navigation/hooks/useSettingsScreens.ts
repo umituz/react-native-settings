@@ -4,7 +4,12 @@ import { LanguageSelectionScreen } from "../../../domains/localization";
 import { NotificationSettingsScreen } from "../../../domains/notifications";
 // AccountScreen is an optional peer — lazy require so the package works without @umituz/react-native-auth
 const AccountScreen: React.ComponentType<any> | null = (() => {
-  try { return require("@umituz/react-native-auth").AccountScreen ?? null; } catch { return null; }
+  try {
+    return require("@umituz/react-native-auth").AccountScreen ?? null;
+  } catch (error) {
+    if (__DEV__) console.warn("[useSettingsScreens] @umituz/react-native-auth not available:", error);
+    return null;
+  }
 })();
 import { SettingsScreen } from "../../screens/SettingsScreen";
 import { AppearanceScreen } from "../../screens/AppearanceScreen";
@@ -134,7 +139,9 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     });
 
     const featureRequestScreen = createScreenWithProps("FeatureRequest", FeatureRequestScreen, {
-      config: config?.feedback,
+      config: {
+        translations: translations?.feedback,
+      },
       texts: {
         feedbackTypes: [
           { type: 'general', label: translations?.feedbackModal?.types?.general || 'General' },
@@ -147,6 +154,17 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
         descriptionPlaceholder: translations?.feedbackModal?.descriptionPlaceholder || 'Tell us more...',
         submitButton: translations?.feedbackModal?.submitButton || 'Submit',
         submittingButton: translations?.feedbackModal?.submittingButton || 'Submitting...',
+        title: translations?.feedbackModal?.title || 'Submit Feedback',
+        defaultTitle: (type: string) => {
+          const titles: Record<string, string> = {
+            general: translations?.feedbackModal?.types?.general || type,
+            bug_report: translations?.feedbackModal?.types?.bugReport || type,
+            feature_request: translations?.feedbackModal?.types?.featureRequest || type,
+            improvement: translations?.feedbackModal?.types?.improvement || type,
+            other: translations?.feedbackModal?.types?.other || type,
+          };
+          return titles[type] || type;
+        },
       }
     });
 

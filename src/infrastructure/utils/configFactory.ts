@@ -3,15 +3,7 @@
  * Generic configuration creator to reduce duplication in base-configs
  */
 
-
-
-/**
- * Feature visibility configuration
- * - true: Always show (if navigation screen exists)
- * - false: Never show
- * - 'auto': Automatically detect (check if navigation screen exists and package is available)
- */
-export type FeatureVisibility = boolean | "auto";
+import type { FeatureVisibility } from "../../presentation/screens/types/BaseTypes";
 
 /**
  * Base configuration type for all settings items

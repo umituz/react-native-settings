@@ -8,6 +8,7 @@
  */
 
 import { NotificationManager } from './NotificationManager';
+import { isDev } from '../../../../utils/devUtils';
 
 export * from './types';
 
@@ -31,7 +32,9 @@ export class NotificationService {
         NotificationManager.configure();
         this.isConfigured = true;
       } catch (error) {
-        console.error('[NotificationService] Failed to configure NotificationManager:', error);
+        if (isDev()) {
+          console.error('[NotificationService] Failed to configure NotificationManager:', error);
+        }
       }
     }
   }

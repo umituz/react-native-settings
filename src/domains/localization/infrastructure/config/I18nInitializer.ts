@@ -10,6 +10,7 @@ import { initReactI18next } from 'react-i18next';
 import { DEFAULT_LANGUAGE } from './languages';
 import { ResourceBuilder } from './ResourceBuilder';
 import { NamespaceResolver } from './NamespaceResolver';
+import { isDev } from '../../../../utils/devUtils';
 
 export class I18nInitializer {
   private static reactI18nextInitialized = false;
@@ -52,7 +53,9 @@ export class I18nInitializer {
         returnNull: false,
       });
     } catch (error) {
-      console.error('[I18nInitializer] Failed to initialize i18n:', languageCode, error);
+      if (isDev()) {
+        console.error('[I18nInitializer] Failed to initialize i18n:', languageCode, error);
+      }
     }
   }
 

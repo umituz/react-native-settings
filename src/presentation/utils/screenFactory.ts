@@ -20,7 +20,7 @@ export function createScreenWithProps<P>(
   return {
     name,
     options: { headerShown: false, ...options },
-    children: (() => React.createElement(component as React.ComponentType, props as any)) as () => React.ReactElement,
+    children: (() => React.createElement(component, props)) as () => React.ReactElement,
   };
 }
 
@@ -28,11 +28,13 @@ export function createScreenWithProps<P>(
  * Convert additional screen to stack screen
  */
 export function convertAdditionalScreen(screen: AdditionalScreen): StackScreen {
-  const stackScreen: Partial<StackScreen> = { name: screen.name };
-  if (screen.component) stackScreen.component = screen.component;
-  if (screen.children) stackScreen.children = screen.children as any;
-  if (screen.options) stackScreen.options = screen.options;
-  return stackScreen as StackScreen;
+  const stackScreen: StackScreen = {
+    name: screen.name,
+    component: screen.component,
+    children: screen.children,
+    options: screen.options,
+  };
+  return stackScreen;
 }
 
 /**

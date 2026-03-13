@@ -24,6 +24,7 @@ export const useAboutInfo = (
 
   /**
    * Initialize app info with config
+   * FIXED: Set isInitializedRef BEFORE async operation to prevent race condition
    */
   const initialize = useCallback(
     async (config: AboutConfig) => {
@@ -31,10 +32,12 @@ export const useAboutInfo = (
         return;
       }
 
+      // FIX: Set ref immediately to prevent race condition from concurrent calls
+      isInitializedRef.current = true;
+
       await execute(async () => {
         const defaultAppInfo = createDefaultAppInfo(config);
         await repository.saveAppInfo(defaultAppInfo);
-        isInitializedRef.current = true;
         return defaultAppInfo;
       });
     },

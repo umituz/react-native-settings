@@ -9,7 +9,7 @@
 import { useMemo } from "react";
 import { useAuth, useUserProfile, useAuthHandlers } from "@umituz/react-native-auth";
 import { createUserProfileDisplay } from "../utils/userProfileUtils";
-import { createAccountConfig } from "../utils/accountConfigUtils";
+import { createAccountConfig, type AccountTranslations } from "../utils/accountConfigUtils";
 import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
 import type { SettingsConfig, SettingsTranslations } from "../screens/types";
 import type { FeedbackFormData } from "../utils/config-creators";
@@ -147,7 +147,15 @@ export const useSettingsScreenConfig = (
     onSignIn: handleSignIn,
     onLogout: handleSignOut,
     onDeleteAccount: handleDeleteAccount,
-    translations: translations?.account as any,
+    translations: (translations?.account?.logout &&
+      translations?.account?.deleteAccount &&
+      translations?.account?.logoutConfirmTitle &&
+      translations?.account?.logoutConfirmMessage &&
+      translations?.account?.deleteConfirmTitle &&
+      translations?.account?.deleteConfirmMessage &&
+      translations?.account?.cancel)
+      ? translations.account as AccountTranslations
+      : undefined,
   }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations]);
 
   return {

@@ -21,7 +21,7 @@ import type { GamificationScreenProps } from "./types";
  * Internal component that renders the screen with all props
  */
 export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
-  title,
+  title: _title,
   statsTitle,
   achievementsTitle,
   streakTitle,

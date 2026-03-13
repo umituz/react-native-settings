@@ -4,6 +4,7 @@
  */
 
 import { storageRepository, unwrap } from "@umituz/react-native-design-system/storage";
+import { isDev } from "../../../../utils/devUtils";
 import type { RatingState } from "../../domain/entities/RatingConfig";
 
 /**
@@ -36,7 +37,9 @@ export async function setEventCount(eventType: string, count: number): Promise<v
   try {
     await storageRepository.setString(KEYS.eventCount(eventType), count.toString());
   } catch (error) {
-    console.error('[RatingStorage] Failed to set event count:', eventType, count, error);
+    if (isDev()) {
+      console.error('[RatingStorage] Failed to set event count:', eventType, count, error);
+    }
   }
 }
 
@@ -78,7 +81,9 @@ export async function setLastPromptDate(eventType: string, date: string): Promis
   try {
     await storageRepository.setString(KEYS.lastPrompt(eventType), date);
   } catch (error) {
-    console.error('[RatingStorage] Failed to set last prompt date:', eventType, date, error);
+    if (isDev()) {
+      console.error('[RatingStorage] Failed to set last prompt date:', eventType, date, error);
+    }
   }
 }
 
@@ -101,7 +106,9 @@ export async function setHasRated(value: boolean): Promise<void> {
   try {
     await storageRepository.setString(KEYS.hasRated, value.toString());
   } catch (error) {
-    console.error('[RatingStorage] Failed to set has rated:', value, error);
+    if (isDev()) {
+      console.error('[RatingStorage] Failed to set has rated:', value, error);
+    }
   }
 }
 
@@ -124,7 +131,9 @@ export async function setDismissed(value: boolean): Promise<void> {
   try {
     await storageRepository.setString(KEYS.dismissed, value.toString());
   } catch (error) {
-    console.error('[RatingStorage] Failed to set dismissed:', value, error);
+    if (isDev()) {
+      console.error('[RatingStorage] Failed to set dismissed:', value, error);
+    }
   }
 }
 
@@ -165,6 +174,8 @@ export async function reset(eventType?: string): Promise<void> {
       );
     }
   } catch (error) {
-    console.error('[RatingStorage] Failed to reset rating data:', eventType, error);
+    if (isDev()) {
+      console.error('[RatingStorage] Failed to reset rating data:', eventType, error);
+    }
   }
 }

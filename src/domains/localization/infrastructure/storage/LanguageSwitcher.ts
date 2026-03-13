@@ -47,7 +47,9 @@ export class LanguageSwitcher {
         isRTL: language?.isRTL ?? false,
       };
     } catch (error) {
-      console.error('[LanguageSwitcher] Failed to switch language:', languageCode, error);
+      if (isDev()) {
+        console.error('[LanguageSwitcher] Failed to switch language:', languageCode, error);
+      }
       throw error;
     }
   }

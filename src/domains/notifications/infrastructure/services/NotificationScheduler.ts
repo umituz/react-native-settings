@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { isDev } from "../../../../utils/devUtils";
 import type { ScheduleNotificationOptions, ScheduledNotification } from './types';
 
 export class NotificationScheduler {
@@ -54,7 +55,9 @@ export class NotificationScheduler {
 
       return notificationId;
     } catch (error) {
-      console.error('Failed to schedule notification:', error);
+      if (isDev()) {
+        console.error('Failed to schedule notification:', error);
+      }
       throw new Error(`Notification scheduling failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -63,7 +66,9 @@ export class NotificationScheduler {
     try {
       await Notifications.cancelScheduledNotificationAsync(notificationId);
     } catch (error) {
-      console.error('Failed to cancel notification:', notificationId, error);
+      if (isDev()) {
+        console.error('Failed to cancel notification:', notificationId, error);
+      }
       // Don't throw - canceling a non-existent notification is not critical
     }
   }
@@ -72,7 +77,9 @@ export class NotificationScheduler {
     try {
       await Notifications.cancelAllScheduledNotificationsAsync();
     } catch (error) {
-      console.error('Failed to cancel all notifications:', error);
+      if (isDev()) {
+        console.error('Failed to cancel all notifications:', error);
+      }
       throw new Error(`Failed to cancel notifications: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -90,7 +97,9 @@ export class NotificationScheduler {
         trigger: notification.trigger,
       }));
     } catch (error) {
-      console.error('Failed to get scheduled notifications:', error);
+      if (isDev()) {
+        console.error('Failed to get scheduled notifications:', error);
+      }
       return []; // Return empty array as fallback
     }
   }

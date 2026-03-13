@@ -5,6 +5,7 @@
 
 import { useCallback, useMemo } from "react";
 import { Linking } from "react-native";
+import { isDev } from "../../../utils/devUtils";
 import type { AppInfo, LegalUrls } from "../types";
 import type { AboutConfig } from "../../../domains/about";
 
@@ -26,10 +27,14 @@ export const useNavigationHandlers = (
       if (canOpen) {
         await Linking.openURL(legalUrls.privacy);
       } else {
-        console.warn('Cannot open privacy policy URL:', legalUrls.privacy);
+        if (isDev()) {
+          console.warn('Cannot open privacy policy URL:', legalUrls.privacy);
+        }
       }
     } catch (error) {
-      console.error('Failed to open privacy policy:', error);
+      if (isDev()) {
+        console.error('Failed to open privacy policy:', error);
+      }
     }
   }, [legalUrls.privacy]);
 
@@ -39,10 +44,14 @@ export const useNavigationHandlers = (
       if (canOpen) {
         await Linking.openURL(legalUrls.terms);
       } else {
-        console.warn('Cannot open terms of service URL:', legalUrls.terms);
+        if (isDev()) {
+          console.warn('Cannot open terms of service URL:', legalUrls.terms);
+        }
       }
     } catch (error) {
-      console.error('Failed to open terms of service:', error);
+      if (isDev()) {
+        console.error('Failed to open terms of service:', error);
+      }
     }
   }, [legalUrls.terms]);
 
@@ -53,10 +62,14 @@ export const useNavigationHandlers = (
         if (canOpen) {
           await Linking.openURL(legalUrls.eula);
         } else {
-          console.warn('Cannot open EULA URL:', legalUrls.eula);
+          if (isDev()) {
+            console.warn('Cannot open EULA URL:', legalUrls.eula);
+          }
         }
       } catch (error) {
-        console.error('Failed to open EULA:', error);
+        if (isDev()) {
+          console.error('Failed to open EULA:', error);
+        }
       }
     }
   }, [legalUrls.eula]);

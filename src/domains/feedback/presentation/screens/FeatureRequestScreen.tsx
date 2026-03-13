@@ -15,7 +15,7 @@ import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { FeedbackModal } from "../components/FeedbackModal";
 import { useFeatureRequests } from "../../infrastructure/useFeatureRequests";
 import type { FeedbackRating } from "../../domain/entities/FeedbackEntity";
-import type { FeatureRequestItem, VoteType } from "../../domain/entities/FeatureRequestEntity";
+import type { FeatureRequestItem } from "../../domain/entities/FeatureRequestEntity";
 import type { FeedbackFormTexts } from "../components/FeedbackFormProps";
 
 interface FeatureRequestScreenProps {

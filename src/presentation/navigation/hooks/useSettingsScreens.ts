@@ -84,7 +84,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
 
     const appearanceScreen = {
       name: "Appearance",
-      component: AppearanceScreen as any,
+      component: AppearanceScreen,
       options: { headerShown: false },
     };
 
@@ -121,7 +121,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
 
     const additionalStackScreens: StackScreen[] = (additionalScreens || []).map(convertAdditionalScreen);
 
-    const gamificationScreen = createScreenWithProps("Gamification", GamificationScreen as any, { config: gamificationConfig });
+    const gamificationScreen = createScreenWithProps("Gamification", GamificationScreen, { config: gamificationConfig });
 
     const languageScreen = createScreenWithProps("LanguageSelection", LanguageSelectionScreen, {
       headerTitle: featureTranslations?.language?.title || "",
@@ -130,10 +130,10 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
 
     const accountScreen = createConditionalScreen(
       !!accountConfig && !!AccountScreen,
-      () => createScreenWithProps("Account", AccountScreen as any, { config: accountConfig })
+      () => createScreenWithProps("Account", AccountScreen, { config: accountConfig })
     );
 
-    const videoTutorialScreen = createScreenWithProps("VideoTutorial", VideoTutorialsScreen as any, {
+    const videoTutorialScreen = createScreenWithProps("VideoTutorial", VideoTutorialsScreen, {
       ...videoTutorialConfig,
       title: videoTutorialConfig?.title || featureTranslations?.videoTutorial?.title || "",
     });

@@ -4,6 +4,7 @@
  */
 
 import type { RatingConfig, RatingState } from "../../domain/entities/RatingConfig";
+import { isDev } from "../../../../utils/devUtils";
 import {
   getEventCount,
   incrementEventCount,
@@ -40,7 +41,9 @@ export async function trackEvent(eventType: string): Promise<void> {
   try {
     await incrementEventCount(eventType);
   } catch (error) {
-    console.error('[RatingService] Failed to track event:', eventType, error);
+    if (isDev()) {
+      console.error('[RatingService] Failed to track event:', eventType, error);
+    }
   }
 }
 
@@ -90,7 +93,9 @@ export async function markPromptShown(eventType: string): Promise<void> {
   try {
     await setLastPromptDate(eventType, toISOString());
   } catch (error) {
-    console.error('[RatingService] Failed to mark prompt shown:', eventType, error);
+    if (isDev()) {
+      console.error('[RatingService] Failed to mark prompt shown:', eventType, error);
+    }
   }
 }
 
@@ -101,7 +106,9 @@ export async function markRated(): Promise<void> {
   try {
     await setHasRated(true);
   } catch (error) {
-    console.error('[RatingService] Failed to mark as rated:', error);
+    if (isDev()) {
+      console.error('[RatingService] Failed to mark as rated:', error);
+    }
   }
 }
 
@@ -112,7 +119,9 @@ export async function markDismissed(): Promise<void> {
   try {
     await setDismissed(true);
   } catch (error) {
-    console.error('[RatingService] Failed to mark as dismissed:', error);
+    if (isDev()) {
+      console.error('[RatingService] Failed to mark as dismissed:', error);
+    }
   }
 }
 
@@ -130,6 +139,8 @@ export async function reset(eventType?: string): Promise<void> {
   try {
     await resetStorage(eventType);
   } catch (error) {
-    console.error('[RatingService] Failed to reset:', eventType, error);
+    if (isDev()) {
+      console.error('[RatingService] Failed to reset:', eventType, error);
+    }
   }
 }

@@ -63,16 +63,25 @@ export const updateAchievementProgress = (
   return Math.min(100, (value / definition.threshold) * 100);
 };
 
+/**
+ * Check if streak is active based on last activity date
+ * Returns true if last activity was today or yesterday
+ * FIXED: Now uses date comparison instead of hour-based calculation to avoid timezone issues
+ */
 export const isStreakActive = (lastActivityDate: string | null): boolean => {
   if (!lastActivityDate) return false;
 
   const last = new Date(lastActivityDate);
   const now = new Date();
-  const diffDays = Math.floor(
-    (now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24)
-  );
 
-  return diffDays <= 1;
+  // Normalize to midnight to compare days, not hours
+  const lastMidnight = new Date(last.getFullYear(), last.getMonth(), last.getDate());
+  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterdayMidnight = new Date(nowMidnight);
+  yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
+
+  // Active if last activity was today or yesterday
+  return lastMidnight.getTime() >= yesterdayMidnight.getTime();
 };
 
 export const isSameDay = (date1: Date, date2: Date): boolean => {

@@ -119,8 +119,11 @@ export const useReminderActions = () => {
         throw error; // Re-throw to allow caller to handle
       }
     } else if (!reminder.enabled) {
+      // FIX: Create temporary updated reminder for trigger building
+      // This prevents state inconsistency where trigger is built with old state
+      const tempEnabledReminder = { ...reminder, enabled: true };
       try {
-        const trigger = buildTrigger(reminder);
+        const trigger = buildTrigger(tempEnabledReminder);
         const notificationId = await scheduler.scheduleNotification({
           title: reminder.title,
           body: reminder.body,

@@ -3,9 +3,15 @@ import { View, StyleSheet } from "react-native";
 import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 
 // ProfileSection is an optional peer — lazy require so the package works without @umituz/react-native-auth
-const ProfileSection: React.ComponentType<any> | null = (() => {
-  try { return require("@umituz/react-native-auth").ProfileSection ?? null; } catch { return null; }
-})();
+// Returns null if @umituz/react-native-auth is not installed
+const getProfileSection = (): React.ComponentType<any> | null => {
+  try {
+    return require("@umituz/react-native-auth").ProfileSection ?? null;
+  } catch {
+    // Auth package not available, silently return null
+    return null;
+  }
+};
 
 export interface ProfileSectionLoaderProps {
     userProfile?: {
@@ -25,6 +31,7 @@ export interface ProfileSectionLoaderProps {
 
 export const ProfileSectionLoader: React.FC<ProfileSectionLoaderProps> = React.memo(({ userProfile, translations }) => {
     const navigation = useAppNavigation();
+    const ProfileSection = getProfileSection();
 
     const handlePress = React.useCallback(() => {
         if (!userProfile) return;

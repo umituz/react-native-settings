@@ -2,26 +2,16 @@
  * useFeatureRequests Hook
  * Internal hook — fetches, votes, submits feature requests via Firestore
  * Works with both authenticated and anonymous users
+ *
+ * FIREBASE LAZY LOADING:
+ * Firebase is lazy-loaded to avoid hard dependency.
+ * If @umituz/react-native-firebase is not installed, features are disabled gracefully.
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Platform } from "react-native";
-import { useAuth } from "@umituz/react-native-auth";
-import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  setDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  increment,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
-import { getFirestore } from "@umituz/react-native-firebase";
+import * as Crypto from "expo-crypto";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import type {
   FeatureRequestItem,
   FeatureRequestStatus,
@@ -29,6 +19,84 @@ import type {
 } from "../domain/entities/FeatureRequestEntity";
 
 const COLLECTION = "feature_requests";
+const ANONYMOUS_USER_ID_KEY = "@anonymous_user_id";
+
+// Lazy-loaded Firebase modules
+let firebaseModules: {
+  getFirestore: () => any;
+  collection: any;
+  doc: any;
+  getDocs: any;
+  getDoc: any;
+  setDoc: any;
+  addDoc: any;
+  updateDoc: any;
+  deleteDoc: any;
+  increment: any;
+  orderBy: any;
+  query: any;
+  serverTimestamp: any;
+} | null = null;
+
+function loadFirebase(): typeof firebaseModules {
+  if (firebaseModules !== null) return firebaseModules;
+
+  try {
+    // Lazy load Firebase only when needed
+    const firebaseModule = require("@umituz/react-native-firebase");
+    const firestoreModule = require("firebase/firestore");
+
+    firebaseModules = {
+      getFirestore: firebaseModule.getFirestore,
+      collection: firestoreModule.collection,
+      doc: firestoreModule.doc,
+      getDocs: firestoreModule.getDocs,
+      getDoc: firestoreModule.getDoc,
+      setDoc: firestoreModule.setDoc,
+      addDoc: firestoreModule.addDoc,
+      updateDoc: firestoreModule.updateDoc,
+      deleteDoc: firestoreModule.deleteDoc,
+      increment: firestoreModule.increment,
+      orderBy: firestoreModule.orderBy,
+      query: firestoreModule.query,
+      serverTimestamp: firestoreModule.serverTimestamp,
+    };
+    return firebaseModules;
+  } catch (error) {
+    // Firebase not installed - return null to disable features
+    if (__DEV__) {
+      console.warn(
+        "[useFeatureRequests] @umituz/react-native-firebase not installed. Feature requests disabled.",
+      );
+    }
+    firebaseModules = null;
+    return null;
+  }
+}
+
+/**
+ * Get or create a persistent anonymous user ID
+ */
+async function getAnonymousUserId(): Promise<string> {
+  try {
+    const existingId = await AsyncStorage.getItem(ANONYMOUS_USER_ID_KEY);
+    if (existingId) return existingId;
+
+    // Create a new anonymous ID using device UUID
+    const randomBytes = await Crypto.getRandomBytesAsync(16);
+    const newId = Array.from(randomBytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    await AsyncStorage.setItem(ANONYMOUS_USER_ID_KEY, newId);
+    return newId;
+  } catch (error) {
+    // Fallback to timestamp-based ID if crypto fails
+    const fallbackId = `anon_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    await AsyncStorage.setItem(ANONYMOUS_USER_ID_KEY, fallbackId);
+    return fallbackId;
+  }
+}
 
 export interface UseFeatureRequestsResult {
   requests: FeatureRequestItem[];
@@ -41,12 +109,18 @@ export interface UseFeatureRequestsResult {
 }
 
 export function useFeatureRequests(): UseFeatureRequestsResult {
-  const { user } = useAuth();
-  const userId = user?.uid ?? null;
+  const [userId, setUserId] = useState<string | null>(null);
 
   const [requests, setRequests] = useState<FeatureRequestItem[]>([]);
   const [userVotes, setUserVotes] = useState<Record<string, VoteType>>({});
   const [isLoading, setIsLoading] = useState(true);
+
+  // Initialize anonymous user ID
+  useEffect(() => {
+    getAnonymousUserId().then((id) => {
+      setUserId(id);
+    });
+  }, []);
 
   // Ref to avoid stale closure in vote()
   const userVotesRef = useRef(userVotes);
@@ -56,7 +130,13 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
   const votingInProgress = useRef(new Set<string>());
 
   const fetchAll = useCallback(async () => {
-    const db = getFirestore();
+    const fb = loadFirebase();
+    if (!fb) {
+      setIsLoading(false);
+      return;
+    }
+
+    const db = fb.getFirestore();
     if (!db) {
       setIsLoading(false);
       return;
@@ -65,8 +145,8 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
     try {
       setIsLoading(true);
 
-      const q = query(collection(db, COLLECTION), orderBy("votes", "desc"));
-      const snapshot = await getDocs(q);
+      const q = fb.query(fb.collection(db, COLLECTION), fb.orderBy("votes", "desc"));
+      const snapshot = await fb.getDocs(q);
 
       const items: FeatureRequestItem[] = snapshot.docs.map((d) => {
         const data = d.data();
@@ -91,8 +171,8 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
       // Fetch user votes in parallel (not N+1 sequential)
       if (userId && snapshot.docs.length > 0) {
         const votePromises = snapshot.docs.map(async (reqDoc) => {
-          const voteRef = doc(db, COLLECTION, reqDoc.id, "votes", userId);
-          const voteSnap = await getDoc(voteRef);
+          const voteRef = fb.doc(db, COLLECTION, reqDoc.id, "votes", userId);
+          const voteSnap = await fb.getDoc(voteRef);
           if (voteSnap.exists()) {
             return [reqDoc.id, voteSnap.data().type as VoteType] as const;
           }
@@ -120,13 +200,14 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
   }, [fetchAll]);
 
   const vote = useCallback(async (requestId: string, type: VoteType) => {
-    if (!userId) return;
+    const fb = loadFirebase();
+    if (!fb || !userId) return;
 
     // Prevent rapid double-tap on the same request
     if (votingInProgress.current.has(requestId)) return;
     votingInProgress.current.add(requestId);
 
-    const db = getFirestore();
+    const db = fb.getFirestore();
     if (!db) {
       votingInProgress.current.delete(requestId);
       return;
@@ -154,22 +235,22 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
     );
 
     try {
-      const voteRef = doc(db, COLLECTION, requestId, "votes", userId);
-      const requestRef = doc(db, COLLECTION, requestId);
-      const existing = await getDoc(voteRef);
+      const voteRef = fb.doc(db, COLLECTION, requestId, "votes", userId);
+      const requestRef = fb.doc(db, COLLECTION, requestId);
+      const existing = await fb.getDoc(voteRef);
 
       if (existing.exists()) {
         const prev = existing.data().type as VoteType;
         if (prev === type) {
-          await deleteDoc(voteRef);
-          await updateDoc(requestRef, { votes: increment(type === "up" ? -1 : 1) });
+          await fb.deleteDoc(voteRef);
+          await fb.updateDoc(requestRef, { votes: fb.increment(type === "up" ? -1 : 1) });
         } else {
-          await setDoc(voteRef, { type, votedAt: serverTimestamp() });
-          await updateDoc(requestRef, { votes: increment(type === "up" ? 2 : -2) });
+          await fb.setDoc(voteRef, { type, votedAt: fb.serverTimestamp() });
+          await fb.updateDoc(requestRef, { votes: fb.increment(type === "up" ? 2 : -2) });
         }
       } else {
-        await setDoc(voteRef, { type, votedAt: serverTimestamp() });
-        await updateDoc(requestRef, { votes: increment(type === "up" ? 1 : -1) });
+        await fb.setDoc(voteRef, { type, votedAt: fb.serverTimestamp() });
+        await fb.updateDoc(requestRef, { votes: fb.increment(type === "up" ? 1 : -1) });
       }
     } catch (error) {
       if (__DEV__) console.warn("[useFeatureRequests] Vote failed:", error);
@@ -186,12 +267,14 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
   }, [userId, fetchAll]);
 
   const submitRequest = useCallback(async (data: { title: string; description: string; type: string; rating?: number }) => {
-    const db = getFirestore();
+    const fb = loadFirebase();
+    if (!fb) throw new Error("Firestore not available");
+    const db = fb.getFirestore();
     if (!db) throw new Error("Firestore not available");
-    if (!userId) throw new Error("User not authenticated");
+    if (!userId) throw new Error("User ID not available");
 
     // Create the feature request
-    const docRef = await addDoc(collection(db, COLLECTION), {
+    const docRef = await fb.addDoc(fb.collection(db, COLLECTION), {
       title: data.title,
       description: data.description,
       type: data.type || "feature_request",
@@ -199,21 +282,21 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
       votes: 1,
       commentCount: 0,
       createdBy: userId,
-      isAnonymous: user?.isAnonymous ?? false,
+      isAnonymous: true,
       platform: Platform.OS,
       rating: data.rating ?? null,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
+      createdAt: fb.serverTimestamp(),
+      updatedAt: fb.serverTimestamp(),
     });
 
     // Create the creator's upvote doc so votes count matches reality
-    await setDoc(doc(db, COLLECTION, docRef.id, "votes", userId), {
+    await fb.setDoc(fb.doc(db, COLLECTION, docRef.id, "votes", userId), {
       type: "up" as VoteType,
-      votedAt: serverTimestamp(),
+      votedAt: fb.serverTimestamp(),
     });
 
     await fetchAll();
-  }, [userId, user?.isAnonymous, fetchAll]);
+  }, [userId, fetchAll]);
 
   return { requests, userVotes, isLoading, vote, submitRequest, reload: fetchAll, userId };
 }

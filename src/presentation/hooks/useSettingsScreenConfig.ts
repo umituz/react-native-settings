@@ -2,12 +2,10 @@
  * useSettingsScreenConfig Hook
  *
  * One-stop hook for settings screen configuration.
- * Handles auth, feedback, and all settings config internally.
- * Apps pass subscription config from subscription package.
+ * Auth has been removed - this is a no-auth version.
  */
 
 import { useMemo } from "react";
-import { useAuth, useUserProfile, useAuthHandlers } from "@umituz/react-native-auth";
 import { createUserProfileDisplay } from "../utils/userProfileUtils";
 import { createAccountConfig, type AccountTranslations } from "../utils/accountConfigUtils";
 import { useSettingsConfigFactory } from "../utils/settingsConfigFactory";
@@ -67,12 +65,27 @@ export const useSettingsScreenConfig = (
     subscription: showSubscription = true,
   } = features;
 
-  const { user, loading, isAuthReady } = useAuth();
-  const userProfileData = useUserProfile({});
+  // No-auth version - always ready
+  const loading = false;
+  const isAuthReady = true;
 
-  // Use centralized auth handlers
-  const { handleRatePress, handleSignOut, handleDeleteAccount, handleSignIn } =
-    useAuthHandlers(appInfo, translations?.errors);
+  // Default handlers (no-ops for no-auth version)
+  const handleRatePress = useMemo(() => async () => {
+    // Default rate behavior - could be implemented with expo-store-review
+    console.warn("[useSettingsScreenConfig] Rate press handler not implemented in no-auth version");
+  }, []);
+
+  const handleSignOut = useMemo(() => async () => {
+    // No-op in no-auth version
+  }, []);
+
+  const handleDeleteAccount = useMemo(() => async () => {
+    // No-op in no-auth version
+  }, []);
+
+  const handleSignIn = useMemo(() => async () => {
+    // No-op in no-auth version
+  }, []);
 
   // Use settings config factory
   const baseSettingsConfig = useSettingsConfigFactory({
@@ -133,30 +146,24 @@ export const useSettingsScreenConfig = (
     return config;
   }, [baseSettingsConfig, translations]);
 
+  // Empty user profile (no-auth version)
   const userProfile = useMemo(() => createUserProfileDisplay({
-    profileData: userProfileData,
+    profileData: null,
     onSignIn: handleSignIn,
-  }), [userProfileData, handleSignIn]);
+  }), [handleSignIn]);
 
+  // Minimal account config (no-auth version)
   const accountConfig = useMemo(() => createAccountConfig({
-    displayName: userProfileData?.displayName || user?.displayName || undefined,
-    userId: userProfileData?.userId || user?.uid || undefined,
-    photoURL: user?.photoURL || undefined,
-    isAnonymous: user?.isAnonymous,
-    avatarUrl: userProfileData?.avatarUrl,
+    displayName: undefined,
+    userId: undefined,
+    photoURL: undefined,
+    isAnonymous: true,
+    avatarUrl: undefined,
     onSignIn: handleSignIn,
     onLogout: handleSignOut,
     onDeleteAccount: handleDeleteAccount,
-    translations: (translations?.account?.logout &&
-      translations?.account?.deleteAccount &&
-      translations?.account?.logoutConfirmTitle &&
-      translations?.account?.logoutConfirmMessage &&
-      translations?.account?.deleteConfirmTitle &&
-      translations?.account?.deleteConfirmMessage &&
-      translations?.account?.cancel)
-      ? translations.account as AccountTranslations
-      : undefined,
-  }), [user, userProfileData, handleSignIn, handleSignOut, handleDeleteAccount, translations]);
+    translations: undefined,
+  }), [handleSignIn, handleSignOut, handleDeleteAccount]);
 
   return {
     settingsConfig,

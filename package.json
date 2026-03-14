@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "5.3.51",
+  "version": "5.3.53",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, localization, about, legal, appearance, feedback, FAQs, rating, and gamification",
   "main": "./src/index.ts",
   "types": "./dist/index.d.ts",
@@ -140,6 +140,9 @@
   "peerDependenciesMeta": {
     "@umituz/react-native-auth": {
       "optional": true
+    },
+    "@umituz/react-native-firebase": {
+      "optional": true
     }
   },
   "devDependencies": {
@@ -166,7 +169,6 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-native": "^5.0.0",
     "expo-apple-authentication": "^8.0.8",
-    "expo-auth-session": "^5.0.0",
     "expo-clipboard": "^8.0.8",
     "expo-crypto": "^15.0.8",
     "expo-device": "~7.0.0",

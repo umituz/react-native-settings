@@ -1,34 +1,38 @@
 /**
  * @umituz/react-native-settings/account
  *
- * Subpath export for apps that use @umituz/react-native-auth.
- * Import auth-dependent hooks and components from here.
+ * NOTE: Auth has been removed from this application.
+ * This file now provides empty exports for backward compatibility.
  *
- * Usage:
- *   import {
- *     useSettingsScreenConfig,
- *     AccountScreen,
- *     ProfileSection,
- *   } from '@umituz/react-native-settings/account';
- *
- *   // Pass AccountScreen and ProfileSection as props to SettingsStackNavigator:
- *   <SettingsStackNavigator
- *     AccountScreenComponent={AccountScreen}
- *     ProfileSectionComponent={ProfileSection}
- *     ...
- *   />
+ * Apps that use @umituz/react-native-auth should import directly from that package:
+ *   import { AccountScreen, ProfileSection } from '@umituz/react-native-auth';
  */
 
-// Auth components - inject these into SettingsStackNavigator props
-export { AccountScreen, ProfileSection } from "@umituz/react-native-auth";
+// Empty exports for backward compatibility
+export const AccountScreen: React.ComponentType<any> | null = null;
+export const ProfileSection: React.ComponentType<any> | null = null;
 
-// Auth hooks (re-export for direct use if needed)
-export { useAuth, useUserProfile, useAuthHandlers } from "@umituz/react-native-auth";
+// Stub hooks that return default values
+export const useAuth = () => ({
+  user: null,
+  loading: false,
+  isAuthReady: true,
+  isAnonymous: true,
+});
 
-// Auth types
-export type { AccountScreenConfig } from "@umituz/react-native-auth";
+export const useUserProfile = () => null;
 
-// Base hook (already handles auth internally via useAuth/useUserProfile/useAuthHandlers)
+export const useAuthHandlers = () => ({
+  handleRatePress: async () => {},
+  handleSignOut: async () => {},
+  handleDeleteAccount: async () => {},
+  handleSignIn: async () => {},
+});
+
+// Empty types
+export type AccountScreenConfig = any;
+
+// Base hook (no auth version)
 export { useSettingsScreenConfig } from './presentation/hooks/useSettingsScreenConfig';
 
 // Re-export types

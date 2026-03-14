@@ -2,16 +2,18 @@ import React, { useMemo } from 'react';
 import type { StackScreen } from "@umituz/react-native-design-system/molecules";
 import { LanguageSelectionScreen } from "../../../domains/localization";
 import { NotificationSettingsScreen } from "../../../domains/notifications";
+import { SettingsScreen } from "../../screens/SettingsScreen";
+
 // AccountScreen is an optional peer — lazy require so the package works without @umituz/react-native-auth
-const AccountScreen: React.ComponentType<any> | null = (() => {
+// Returns null if @umituz/react-native-auth is not installed
+const getAccountScreen = (): React.ComponentType<any> | null => {
   try {
     return require("@umituz/react-native-auth").AccountScreen ?? null;
-  } catch (error) {
-    if (__DEV__) console.warn("[useSettingsScreens] @umituz/react-native-auth not available:", error);
+  } catch {
+    // Auth package not available, silently return null
     return null;
   }
-})();
-import { SettingsScreen } from "../../screens/SettingsScreen";
+};
 import { AppearanceScreen } from "../../screens/AppearanceScreen";
 import { FAQScreen } from "../../../domains/faqs";
 import { AboutScreen } from "../../../domains/about";
@@ -132,8 +134,11 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     });
 
     const accountScreen = createConditionalScreen(
-      !!accountConfig && !!AccountScreen,
-      () => createScreenWithProps("Account", AccountScreen, { config: accountConfig })
+      !!accountConfig && !!getAccountScreen(),
+      () => {
+        const AccountScreen = getAccountScreen();
+        return AccountScreen ? createScreenWithProps("Account", AccountScreen, { config: accountConfig }) : null;
+      }
     );
 
     const videoTutorialScreen = createScreenWithProps("VideoTutorial", VideoTutorialsScreen, {

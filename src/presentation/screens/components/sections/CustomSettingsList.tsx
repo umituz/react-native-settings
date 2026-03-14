@@ -5,6 +5,7 @@ import type { CustomSettingsSection } from "../../types";
 
 interface CustomSettingsListProps {
     customSections?: CustomSettingsSection[];
+    navigation?: any;
 }
 
 const EMPTY_SECTIONS: CustomSettingsSection[] = [];

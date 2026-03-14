@@ -51,6 +51,8 @@ export interface SettingsScreenProps {
   showHeader?: boolean;
   /** Password prompt modal component */
   PasswordPromptComponent?: React.ReactNode;
+  /** Navigation object for custom sections */
+  navigation?: any;
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
@@ -70,6 +72,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
     devSettings,
     gamificationConfig,
     PasswordPromptComponent,
+    navigation,
   } = props;
 
   const {
@@ -109,6 +112,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
             customSections={customSections}
             devSettings={devSettings}
             gamificationConfig={gamificationConfig}
+            navigation={navigation}
           />
         )}
       </ScreenLayout>

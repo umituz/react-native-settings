@@ -38,6 +38,7 @@ export interface UseSettingsScreensProps extends SettingsStackNavigatorProps {
   legalProps: LegalScreenProps;
   notificationTranslations: NotificationSettingsTranslations;
   quietHoursTranslations: QuietHoursTranslations;
+  navigation?: any;
 }
 
 export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[] => {
@@ -60,6 +61,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     gamificationConfig,
     videoTutorialConfig,
     accountConfig,
+    navigation,
   } = props;
 
   const translations = config?.translations;
@@ -79,6 +81,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
         showHeader,
         showCloseButton,
         onClose,
+        navigation,
       }
     );
 
@@ -198,5 +201,6 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     gamificationConfig,
     videoTutorialConfig,
     accountConfig,
+    navigation,
   ]);
 };

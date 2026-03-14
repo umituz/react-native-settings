@@ -29,6 +29,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   emptyStateText,
   devSettings,
   gamificationConfig,
+  navigation,
 }) => {
   const translations = normalizedConfig.translations;
   const { level } = useGamification(gamificationConfig);
@@ -54,7 +55,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         />
       )}
 
-      <CustomSettingsList customSections={customSections} />
+      <CustomSettingsList customSections={customSections} navigation={navigation} />
 
       {features.subscription && (normalizedConfig.subscription.config?.route || normalizedConfig.subscription.config?.onPress) && (
         <SettingsSection title={translations?.sections?.subscription || ''}>

@@ -48,4 +48,5 @@ export interface SettingsContentProps {
   emptyStateText?: string;
   devSettings?: DevSettingsProps;
   gamificationConfig?: GamificationSettingsConfig;
+  navigation?: any;
 }

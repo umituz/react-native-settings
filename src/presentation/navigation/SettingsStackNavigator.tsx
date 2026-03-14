@@ -6,6 +6,7 @@
  */
 
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { StackNavigator, type StackNavigatorConfig } from "@umituz/react-native-design-system/molecules";
 import { useNavigationHandlers, useSettingsScreens } from "./hooks";
 import {
@@ -41,12 +42,16 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
     [translations, handlePrivacyPress, handleTermsPress, handleEulaPress]
   );
 
+  // Get navigation for custom sections
+  const navigation = useNavigation();
+
   const screens = useSettingsScreens({
     ...props,
     aboutConfig,
     legalProps: legalScreenProps,
     notificationTranslations,
     quietHoursTranslations,
+    navigation,
   });
 
   const navigatorConfig: StackNavigatorConfig<SettingsStackParamList> = {

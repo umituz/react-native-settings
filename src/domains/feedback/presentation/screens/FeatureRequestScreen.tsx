@@ -151,7 +151,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
 
   if (isLoading) {
     return (
-      <ScreenLayout header={header} edges={['top', 'bottom']}>
+      <ScreenLayout header={header} edges={['top', 'bottom', 'left', 'right']}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={tokens.colors.primary} />
         </View>

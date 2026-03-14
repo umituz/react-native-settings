@@ -48,7 +48,7 @@ export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({
   return (
     <ScreenLayout
       scrollable={true}
-      edges={['bottom']}
+      edges={['top', 'bottom', 'left', 'right']}
       contentContainerStyle={styles.scrollContent}
       hideScrollIndicator={false}
       header={

@@ -51,6 +51,7 @@ export const LegalScreen: React.FC<LegalScreenProps> = React.memo((props) => {
   return (
     <ScreenLayout
       testID={testID}
+      edges={['top', 'bottom', 'left', 'right']}
       hideScrollIndicator
       header={
         <NavigationHeader

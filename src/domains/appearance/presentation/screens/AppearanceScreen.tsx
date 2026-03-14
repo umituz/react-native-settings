@@ -153,7 +153,8 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
   ]);
 
   return (
-    <ScreenLayout 
+    <ScreenLayout
+      edges={['top', 'bottom', 'left', 'right']}
       hideScrollIndicator
       header={
         <NavigationHeader 

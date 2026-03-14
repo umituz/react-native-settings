@@ -79,7 +79,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
 
   return (
     <ScreenLayout
-      edges={['bottom']}
+      edges={['top', 'bottom', 'left', 'right']}
       scrollable={true}
       header={header}
       contentContainerStyle={customStyles?.content}

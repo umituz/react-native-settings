@@ -51,7 +51,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = (props) => {
 
   if (loading) {
     return (
-      <ScreenLayout header={header} testID={testID}>
+      <ScreenLayout edges={['top', 'bottom', 'left', 'right']} header={header} testID={testID}>
         <AtomicSpinner fullContainer size="lg" />
       </ScreenLayout>
     );
@@ -60,7 +60,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = (props) => {
   if (error || !appInfo) {
     const errorText = error ? `${config.texts?.errorPrefix || ""} ${error}` : (config.texts?.noInfo || "");
     return (
-      <ScreenLayout header={header} testID={testID}>
+      <ScreenLayout edges={['top', 'bottom', 'left', 'right']} header={header} testID={testID}>
         <AtomicText type="bodyMedium" color="error" style={{ textAlign: 'center', marginTop: 20 }}>
           {errorText}
         </AtomicText>
@@ -69,7 +69,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = (props) => {
   }
 
   return (
-    <ScreenLayout header={header} testID={testID}>
+    <ScreenLayout edges={['top', 'bottom', 'left', 'right']} header={header} testID={testID}>
       <AboutScreenContent
         {...props}
         appInfo={appInfo}

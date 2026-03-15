@@ -42,19 +42,20 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
   const themedStyles = useMemo(() => ({
     languageItem: {
       padding: tokens.spacing.md,
-      borderRadius: tokens.borders.radius.md,
-      backgroundColor: tokens.colors.backgroundSecondary,
+      borderRadius: tokens.borders.radius.lg,
+      backgroundColor: tokens.colors.surface,
       borderColor: tokens.colors.border,
-      marginBottom: tokens.spacing.sm,
+      borderWidth: 1,
+      marginBottom: tokens.spacing.md,
     } as ViewStyle,
     selectedLanguageItem: {
       borderColor: tokens.colors.primary,
-      backgroundColor: tokens.colors.primaryContainer,
-      borderWidth: 2,
+      backgroundColor: tokens.colors.surfaceVariant,
+      borderWidth: 1.5,
     } as ViewStyle,
     nativeName: {
       color: tokens.colors.textPrimary,
-      marginBottom: tokens.spacing.xs / 2,
+      marginBottom: 2,
     } as TextStyle,
     languageName: {
       color: tokens.colors.textSecondary,
@@ -76,12 +77,12 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
       activeOpacity={0.7}
     >
       <View style={[styles.languageContent, customStyles?.languageContent]}>
-        <AtomicText style={[styles.flag, customStyles?.flag]}>
+        <AtomicText style={[styles.flag, { fontSize: 28, fontFamily: undefined }, customStyles?.flag]}>
           {item.flag || '🌐'}
         </AtomicText>
-        <View style={[styles.languageText, { gap: tokens.spacing.xs / 2 }, customStyles?.languageText]}>
+        <View style={[styles.languageText, { gap: 4 }, customStyles?.languageText]}>
           <AtomicText 
-            type="bodyMedium" 
+            type="bodyLarge"
             style={[themedStyles.nativeName, { fontWeight: '700' }, customStyles?.nativeName]}
           >
             {item.nativeName}

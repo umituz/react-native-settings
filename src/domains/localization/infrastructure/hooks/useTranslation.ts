@@ -44,12 +44,21 @@ export const useTranslationFunction = () => {
       ? `${key.substring(0, firstDotIndex)}:${key.substring(firstDotIndex + 1)}`
       : key;
 
+    // Check if key exists in either format
+    const keyToUse = i18n.exists(i18nextKey) ? i18nextKey : key;
+
     // Missing translation is a critical issue — warn in development
-    if (!i18n.exists(i18nextKey)) {
+    if (!i18n.exists(keyToUse)) {
       devWarn(`[i18n] Missing translation: "${key}"`);
     }
 
-    const result = i18nextT(i18nextKey, options);
+    const result = i18nextT(keyToUse, options);
+    
+    // Support returnObjects (for appearance texts etc)
+    if (options.returnObjects) {
+      return result as any;
+    }
+
     return typeof result === 'string' ? result : (options.defaultValue ?? key);
   }, [i18nextT, ready]);
 

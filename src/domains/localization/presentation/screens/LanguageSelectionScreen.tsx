@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
 import { SearchBar, NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
@@ -13,6 +13,10 @@ import { LanguageItem } from '../components/LanguageItem';
 import type { Language } from '../../infrastructure/storage/types/Language';
 import type { LanguageSelectionScreenProps } from './LanguageSelectionScreen.types';
 import { styles } from './LanguageSelectionScreen.styles';
+
+export interface LanguageSelectionProps extends LanguageSelectionScreenProps {
+  showHeader?: boolean;
+}
 
 interface LanguageListItemProps {
   item: Language;
@@ -67,26 +71,45 @@ const LanguageSearchComponent: React.FC<LanguageSearchComponentProps> = ({
   }
 
   return (
-    <SearchBar
-      value={searchQuery}
-      onChangeText={setSearchQuery}
-      placeholder={searchPlaceholder}
-      containerStyle={[
-        { marginBottom: tokens.spacing.md },
-        customStyles?.searchContainer
-      ]}
-      inputStyle={customStyles?.searchInput}
-    />
+    <View style={{ paddingHorizontal: tokens.spacing.lg }}>
+      <SearchBar
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder={searchPlaceholder}
+        containerStyle={[
+          {
+            marginBottom: tokens.spacing.md,
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0,
+            paddingHorizontal: 0,
+          },
+          customStyles?.searchContainer
+        ]}
+        inputStyle={[
+          {
+            backgroundColor: tokens.colors.surface,
+            borderRadius: tokens.borders.radius.full,
+            color: tokens.colors.textPrimary,
+            paddingHorizontal: tokens.spacing.md,
+            height: 52,
+            borderWidth: 1,
+            borderColor: tokens.colors.border,
+          },
+          customStyles?.searchInput
+        ]}
+      />
+    </View>
   );
 };
 
-export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = ({
+export const LanguageSelectionScreen: React.FC<LanguageSelectionProps> = ({
   renderLanguageItem,
   renderSearchInput,
   headerTitle,
   onBackPress,
   styles: customStyles,
   searchPlaceholder,
+  showHeader = true,
   testID = 'language-selection-screen',
 }) => {
   const tokens = useAppDesignTokens();
@@ -130,10 +153,12 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionScreenProps> = (
       edges={['top', 'bottom', 'left', 'right']}
       backgroundColor={tokens.colors.backgroundPrimary}
       header={
-        <NavigationHeader
-          title={headerTitle || ""}
-          onBackPress={handleBack}
-        />
+        showHeader ? (
+          <NavigationHeader
+            title={headerTitle || ""}
+            onBackPress={handleBack}
+          />
+        ) : null
       }
       containerStyle={customStyles?.container}
     >

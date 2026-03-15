@@ -1,7 +1,7 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "5.3.59",
-  "description": "Complete settings hub for React Native apps - consolidated package with settings, localization, about, legal, appearance, feedback, FAQs, rating, and gamification",
+  "version": "5.3.61",
+  "description": "Complete settings hub for React Native apps - consolidated package with settings, localization, about, legal, appearance, feedback, FAQs, rating, and gamification - expo-store-review and expo-device now lazy loaded",
   "main": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
@@ -116,6 +116,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/umituz/react-native-settings"
+  },
+  "optionalDependencies": {
+    "expo-store-review": "~6.0.0",
+    "expo-device": "~8.0.0"
   },
   "peerDependencies": {
     "@expo/vector-icons": ">=14.0.0",

@@ -1,10 +1,10 @@
 /**
  * useAppRating Hook
  * React hook for app rating system
+ * Lazy loads expo-store-review to reduce bundle size
  */
 
 import React, { useState, useCallback, useMemo } from "react";
-import * as StoreReview from "expo-store-review";
 import type {
   RatingConfig,
   UseAppRatingResult,
@@ -67,6 +67,8 @@ export function useAppRating(config: RatingConfig): UseAppRatingResult {
     await RatingService.markRated();
 
     try {
+      // Lazy load expo-store-review
+      const StoreReview = await import('expo-store-review');
       const isAvailable = await StoreReview.isAvailableAsync();
 
       if (isAvailable) {

@@ -6,6 +6,9 @@ const reactHooks = require('eslint-plugin-react-hooks');
 
 module.exports = [
   {
+    ignores: ["dist/**", "node_modules/**"],
+  },
+  {
     files: ['src/**/*.{ts,tsx}'],
     plugins: {
       react,

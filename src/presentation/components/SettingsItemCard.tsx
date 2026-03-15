@@ -12,7 +12,7 @@ import { SettingsItemCardSection } from "./settings/SettingsItemCardSection";
 export interface SettingsItemCardProps {
   title: string;
   description?: string;
-  icon: IconName;
+  icon?: IconName;
   onPress?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   sectionTitle?: string;

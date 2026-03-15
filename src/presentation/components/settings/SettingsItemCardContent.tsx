@@ -4,7 +4,7 @@ import { AtomicIcon, AtomicText, type IconName } from "@umituz/react-native-desi
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 
 export interface SettingsItemCardContentProps {
-  icon: IconName;
+  icon?: IconName;
   title: string;
   description?: string;
   iconBgColor: string;
@@ -26,9 +26,11 @@ export const SettingsItemCardContent: React.FC<SettingsItemCardContentProps> = R
 
   return (
     <View style={styles.content}>
-      <View style={[styles.iconContainer, { backgroundColor: iconBgColor, borderRadius: tokens.borders.radius.md }]}>
-        <AtomicIcon name={icon} size="lg" customColor={iconColor} />
-      </View>
+      {!!icon && (
+        <View style={[styles.iconContainer, { backgroundColor: iconBgColor, borderRadius: tokens.borders.radius.md }]}>
+          <AtomicIcon name={icon} size="lg" customColor={iconColor} />
+        </View>
+      )}
       <View style={styles.textContainer}>
         <AtomicText
           type="bodyLarge"

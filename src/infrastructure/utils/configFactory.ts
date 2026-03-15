@@ -21,7 +21,7 @@ export interface BaseConfigType {
  * Configuration parameters for creating a settings item config
  */
 export interface ConfigCreatorParams {
-  icon: string;
+  icon?: string;
   routeOrOnPress?: string | (() => void);
   defaultRoute?: string;
 }

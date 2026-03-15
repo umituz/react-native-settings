@@ -21,7 +21,6 @@ export const createSubscriptionConfig = (
   routeOrOnPress: keyof SettingsStackParamList | (() => void),
 ): SubscriptionConfig => ({
   enabled: true,
-  icon: "diamond",
   route: typeof routeOrOnPress === "function" ? undefined : routeOrOnPress,
   onPress: typeof routeOrOnPress === "function" ? routeOrOnPress : undefined,
   isPremium,

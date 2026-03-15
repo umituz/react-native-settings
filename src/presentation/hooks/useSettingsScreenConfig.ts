@@ -35,6 +35,21 @@ export interface UseSettingsScreenConfigParams {
   additionalScreens?: AdditionalScreen[];
   features?: SettingsFeatures;
   translations?: SettingsTranslations;
+  /** Optional auth data for apps that use authentication */
+  auth?: {
+    user: {
+      displayName?: string;
+      userId?: string;
+      photoURL?: string;
+      isAnonymous?: boolean;
+    } | null;
+    isLoading?: boolean;
+    isAuthReady?: boolean;
+    onSignIn: () => void;
+    onLogout: () => Promise<void>;
+    onDeleteAccount: () => Promise<void>;
+    accountTranslations?: AccountTranslations;
+  };
 }
 
 export interface SettingsScreenConfigResult {
@@ -49,7 +64,15 @@ export interface SettingsScreenConfigResult {
 export const useSettingsScreenConfig = (
   params: UseSettingsScreenConfigParams
 ): SettingsScreenConfigResult => {
-  const { appInfo, faqData, isPremium, onFeedbackSubmit, features = {}, translations } = params;
+  const { 
+    appInfo, 
+    faqData, 
+    isPremium, 
+    onFeedbackSubmit, 
+    features = {}, 
+    translations,
+    auth
+  } = params;
 
   const {
     notifications: showNotifications = true,
@@ -65,26 +88,13 @@ export const useSettingsScreenConfig = (
     subscription: showSubscription = true,
   } = features;
 
-  // No-auth version - always ready
-  const loading = false;
-  const isAuthReady = true;
+  // Auth orchestration
+  const loading = auth?.isLoading ?? false;
+  const isAuthReady = auth?.isAuthReady ?? true;
 
-  // Default handlers (no-ops for no-auth version)
   const handleRatePress = useMemo(() => async () => {
-    // Default rate behavior - could be implemented with expo-store-review
-    console.warn("[useSettingsScreenConfig] Rate press handler not implemented in no-auth version");
-  }, []);
-
-  const handleSignOut = useMemo(() => async () => {
-    // No-op in no-auth version
-  }, []);
-
-  const handleDeleteAccount = useMemo(() => async () => {
-    // No-op in no-auth version
-  }, []);
-
-  const handleSignIn = useMemo(() => async () => {
-    // No-op in no-auth version
+    // Default rate behavior - typically handled by app or a separate rating hook
+    console.log("[useSettingsScreenConfig] Rate pressed");
   }, []);
 
   // Use settings config factory
@@ -114,11 +124,11 @@ export const useSettingsScreenConfig = (
       translations,
     };
 
+    // Apply translations to specific features if available
     if (config.subscription && typeof config.subscription === 'object') {
       config.subscription = {
         ...config.subscription,
-        enabled: true,
-        title: translations?.features?.subscription?.title || config.subscription.title || "Subscription",
+        title: translations?.features?.subscription?.title || config.subscription.title,
         description: translations?.features?.subscription?.description || config.subscription.description,
       };
     }
@@ -127,8 +137,7 @@ export const useSettingsScreenConfig = (
       const existingConfig = typeof config.gamification === 'object' ? config.gamification : { enabled: true };
       config.gamification = {
         ...existingConfig,
-        enabled: true,
-        title: translations?.features?.gamification?.title || existingConfig.title || "Your Progress",
+        title: translations?.features?.gamification?.title || existingConfig.title,
         description: translations?.features?.gamification?.description || existingConfig.description,
       };
     }
@@ -137,8 +146,7 @@ export const useSettingsScreenConfig = (
       const existingConfig = typeof config.videoTutorial === 'object' ? config.videoTutorial : { enabled: true };
       config.videoTutorial = {
         ...existingConfig,
-        enabled: true,
-        title: translations?.features?.videoTutorial?.title || existingConfig.title || "Video Tutorials",
+        title: translations?.features?.videoTutorial?.title || existingConfig.title,
         description: translations?.features?.videoTutorial?.description || existingConfig.description,
       };
     }
@@ -146,24 +154,28 @@ export const useSettingsScreenConfig = (
     return config;
   }, [baseSettingsConfig, translations]);
 
-  // Empty user profile (no-auth version)
+  // User profile display configuration
   const userProfile = useMemo(() => createUserProfileDisplay({
-    profileData: null,
-    onSignIn: handleSignIn,
-  }), [handleSignIn]);
+    profileData: auth?.user ? {
+      displayName: auth.user.displayName,
+      userId: auth.user.userId,
+      isAnonymous: auth.user.isAnonymous,
+      avatarUrl: auth.user.photoURL,
+    } : null,
+    onSignIn: auth?.onSignIn || (() => {}),
+  }), [auth?.user, auth?.onSignIn]);
 
-  // Minimal account config (no-auth version)
+  // Account screen configuration
   const accountConfig = useMemo(() => createAccountConfig({
-    displayName: undefined,
-    userId: undefined,
-    photoURL: undefined,
-    isAnonymous: true,
-    avatarUrl: undefined,
-    onSignIn: handleSignIn,
-    onLogout: handleSignOut,
-    onDeleteAccount: handleDeleteAccount,
-    translations: undefined,
-  }), [handleSignIn, handleSignOut, handleDeleteAccount]);
+    displayName: auth?.user?.displayName,
+    userId: auth?.user?.userId,
+    photoURL: auth?.user?.photoURL,
+    isAnonymous: auth?.user?.isAnonymous,
+    onSignIn: auth?.onSignIn || (() => {}),
+    onLogout: auth?.onLogout || (async () => {}),
+    onDeleteAccount: auth?.onDeleteAccount || (async () => {}),
+    translations: auth?.accountTranslations,
+  }), [auth?.user, auth?.onSignIn, auth?.onLogout, auth?.onDeleteAccount, auth?.accountTranslations]);
 
   return {
     settingsConfig,

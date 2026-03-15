@@ -25,13 +25,6 @@ interface ThemeOptionProps {
 // Valid theme modes for validation
 const VALID_THEME_MODES: readonly ThemeMode[] = ["light", "dark", "auto"];
 
-// Icon names mapping for type safety
-const THEME_ICONS: Record<ThemeMode, string> = {
-  light: "sunny-outline",
-  dark: "moon-outline",
-  auto: "desktop-outline",
-};
-
 // Utility function to add opacity to hex color
 const addOpacityToHex = (hexColor: string, opacity: string): string => {
   // Remove # if present
@@ -54,14 +47,6 @@ export const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({
   // Memoize styles to prevent unnecessary re-creation
   const styles = useMemo(() => getStyles(tokens), [tokens]);
 
-  // Type-safe icon name selection with validation
-  const iconName: string = useMemo(() => {
-    if (VALID_THEME_MODES.includes(mode)) {
-      return THEME_ICONS[mode];
-    }
-    // Fallback for invalid mode
-    return THEME_ICONS.auto;
-  }, [mode]);
 
   return (
     <TouchableOpacity
@@ -72,9 +57,6 @@ export const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({
       accessibilityState={{ selected: isSelected }}
     >
       <View style={styles.header}>
-        <View style={styles.iconContainer}>
-          <AtomicIcon name={iconName} customSize={24} customColor={tokens.colors.primary} />
-        </View>
         <View style={styles.textContainer}>
           <AtomicText type="titleLarge" color="primary">
             {title}
@@ -148,15 +130,6 @@ const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
       flexDirection: "row",
       alignItems: "center",
       marginBottom: 12,
-    },
-    iconContainer: {
-      width: 48,
-      height: 48,
-      borderRadius: 24,
-      backgroundColor: addOpacityToHex(tokens.colors.primary, "15"),
-      justifyContent: "center",
-      alignItems: "center",
-      marginRight: 12,
     },
     textContainer: {
       flex: 1,

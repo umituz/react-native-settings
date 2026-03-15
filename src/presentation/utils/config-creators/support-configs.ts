@@ -17,7 +17,6 @@ export const createFeedbackConfig = (
   onSubmit: (data: FeedbackFormData) => Promise<void>,
 ): FeedbackConfig => ({
   enabled: true,
-  icon: "chatbubble-outline",
   onSubmit,
 });
 
@@ -39,5 +38,4 @@ export const createRatingConfig = (
  */
 export const createFAQConfig = (): FAQConfig => ({
   enabled: true,
-  icon: "help-circle-outline",
 });

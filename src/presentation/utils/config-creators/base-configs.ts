@@ -20,7 +20,6 @@ export const createAppearanceConfig = (
   routeOrOnPress?: string | (() => void),
 ): AppearanceConfig => {
   return createBaseConfig<AppearanceConfig>({
-    icon: "color-palette-outline",
     routeOrOnPress,
   });
 };
@@ -32,7 +31,6 @@ export const createLanguageConfig = (
   routeOrOnPress?: string | (() => void),
 ): LanguageConfig => {
   return createBaseConfig<LanguageConfig>({
-    icon: "globe-outline",
     routeOrOnPress,
   });
 };
@@ -45,7 +43,6 @@ export const createNotificationsConfig = (
 ): NotificationsConfig => {
   return createConfigWithExtensions<NotificationsConfig>(
     {
-      icon: "notifications-outline",
       routeOrOnPress,
       defaultRoute: "Notifications",
     },
@@ -62,7 +59,6 @@ export const createAboutConfig = (
   routeOrOnPress?: string | (() => void),
 ): AboutConfig => {
   return createBaseConfig<AboutConfig>({
-    icon: "information-circle-outline",
     routeOrOnPress,
   });
 };
@@ -74,7 +70,6 @@ export const createLegalConfig = (
   routeOrOnPress?: string | (() => void),
 ): LegalConfig => {
   return createBaseConfig<LegalConfig>({
-    icon: "document-text-outline",
     routeOrOnPress,
   });
 };

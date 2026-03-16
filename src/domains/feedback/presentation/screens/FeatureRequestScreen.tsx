@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
   ActivityIndicator,
 } from "react-native";
 import {
@@ -83,7 +83,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
     }
   };
 
-  const filteredRequests = (() => {
+  const filteredRequests = useMemo(() => {
     switch (activeTab) {
       case 'my':
         return requests.filter(r => r.createdBy === userId);
@@ -92,9 +92,9 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       default:
         return requests;
     }
-  })();
+  }, [requests, activeTab, userId]);
 
-  const renderRequestCard = (item: FeatureRequestItem) => {
+  const renderRequestCard = useCallback(({ item }: { item: FeatureRequestItem }) => {
     const voted = userVotes[item.id] || null;
 
     return (
@@ -144,9 +144,13 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
         </View>
       </View>
     );
-  };
+  }, [userVotes, vote, tokens.colors, getStatusColor, statusLabels, t]);
 
-  const header = (
+  const keyExtractor = useCallback((item: FeatureRequestItem) => item.id, []);
+
+  const tabs = useMemo(() => (['all', 'my', 'roadmap'] as const), []);
+
+  const header = useMemo(() => (
     <View style={styles.header}>
       <AtomicText style={styles.headerTitle}>{screenTitle}</AtomicText>
       <TouchableOpacity
@@ -160,7 +164,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
         />
       </TouchableOpacity>
     </View>
-  );
+  ), [screenTitle, tokens.colors.primary, tokens.colors.onPrimary]);
 
   if (isLoading) {
     return (
@@ -175,7 +179,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
   return (
     <ScreenLayout header={header} edges={['top', 'bottom']}>
       <View style={styles.tabsContainer}>
-        {(['all', 'my', 'roadmap'] as const).map((tab) => (
+        {tabs.map((tab) => (
           <TouchableOpacity
             key={tab}
             onPress={() => setActiveTab(tab)}
@@ -188,28 +192,34 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
         ))}
       </View>
 
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <View style={[styles.banner, { backgroundColor: tokens.colors.primary + '10', borderColor: tokens.colors.primary + '20' }]}>
-          <View style={styles.bannerIconContainer}>
-            <AtomicIcon
-              svgPath={ICON_PATHS['users']}
-              customSize={24}
-              customColor={tokens.colors.primary}
-            />
-            <View style={styles.pulseDot} />
-          </View>
-          <View>
-            <AtomicText style={styles.bannerTitle}>{bannerTitle}</AtomicText>
-            <AtomicText style={[styles.bannerSub, { color: tokens.colors.textSecondary }]}>
-              {bannerSub}
-            </AtomicText>
-          </View>
-        </View>
+      <FlatList
+        data={filteredRequests}
+        renderItem={renderRequestCard}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={
+          <View style={styles.container}>
+            <View style={[styles.banner, { backgroundColor: tokens.colors.primary + '10', borderColor: tokens.colors.primary + '20' }]}>
+              <View style={styles.bannerIconContainer}>
+                <AtomicIcon
+                  svgPath={ICON_PATHS['users']}
+                  customSize={24}
+                  customColor={tokens.colors.primary}
+                />
+                <View style={styles.pulseDot} />
+              </View>
+              <View>
+                <AtomicText style={styles.bannerTitle}>{bannerTitle}</AtomicText>
+                <AtomicText style={[styles.bannerSub, { color: tokens.colors.textSecondary }]}>
+                  {bannerSub}
+                </AtomicText>
+              </View>
+            </View>
 
-        <AtomicText style={styles.sectionTitle}>{trendingTitle}</AtomicText>
-
-        {filteredRequests.length === 0 ? (
-          <View style={styles.emptyState}>
+            <AtomicText style={styles.sectionTitle}>{trendingTitle}</AtomicText>
+          </View>
+        }
+        ListEmptyComponent={
+          <View style={[styles.emptyState, { paddingHorizontal: tokens.spacing.md }]}>
             <AtomicIcon
               svgPath={ICON_PATHS['chatbubble-outline']}
               customSize={32}
@@ -219,12 +229,13 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
               {t.empty || "No requests yet. Be the first!"}
             </AtomicText>
           </View>
-        ) : (
-          <View style={styles.listContent}>
-            {filteredRequests.map(renderRequestCard)}
-          </View>
-        )}
-      </ScrollView>
+        }
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+      />
 
       {isModalVisible && (
         <FeedbackModal

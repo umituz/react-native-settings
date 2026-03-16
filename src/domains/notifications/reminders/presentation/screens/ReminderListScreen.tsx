@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { AtomicText, AtomicIcon, AtomicSpinner } from '@umituz/react-native-design-system/atoms';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
@@ -54,10 +54,45 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
 
   const fab = canAddMore ? (
     <TouchableOpacity style={styles.fab} onPress={onAddPress} activeOpacity={0.8}>
-      <AtomicIcon name="add" size="md" color="onPrimary" />
+      <AtomicIcon
+        svgPath="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+        customSize={20}
+        customColor={tokens.colors.onPrimary}
+      />
       <AtomicText type="bodyMedium" style={styles.fabText}>{translations.addButtonLabel}</AtomicText>
     </TouchableOpacity>
-  ) : undefined;
+  ) : null;
+
+  const renderEmptyState = useCallback(() => (
+    <View style={styles.emptyContainer}>
+      <View style={styles.emptyIconContainer}>
+        <AtomicIcon
+          svgPath="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 18c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+          customSize={48}
+          customColor={tokens.colors.secondary}
+        />
+      </View>
+      <AtomicText type="bodyLarge" style={styles.emptyTitle}>{translations.emptyTitle}</AtomicText>
+      <AtomicText type="bodySmall" style={styles.emptyDescription}>{translations.emptyDescription}</AtomicText>
+    </View>
+  ), [translations.emptyTitle, translations.emptyDescription, tokens.colors]);
+
+  const renderItem = useCallback(({ item }: { item: Reminder }) => (
+    <ReminderItem
+      reminder={item}
+      translations={{
+        frequencyOnce: translations.frequencyOnce,
+        frequencyDaily: translations.frequencyDaily,
+        frequencyWeekly: translations.frequencyWeekly,
+        frequencyMonthly: translations.frequencyMonthly,
+      }}
+      onToggle={handleToggle}
+      onEdit={onEditPress}
+      onDelete={handleDelete}
+    />
+  ), [translations, handleToggle, onEditPress, handleDelete]);
+
+  const keyExtractor = useCallback((item: Reminder) => item.id, []);
 
   if (isLoading) {
     return (
@@ -68,32 +103,20 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
   }
 
   return (
-    <ScreenLayout footer={fab} contentContainerStyle={styles.listContent}>
-      {reminders.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <View style={styles.emptyIconContainer}>
-            <AtomicIcon name="notifications-off" size="xl" color="secondary" />
-          </View>
-          <AtomicText type="bodyLarge" style={styles.emptyTitle}>{translations.emptyTitle}</AtomicText>
-          <AtomicText type="bodySmall" style={styles.emptyDescription}>{translations.emptyDescription}</AtomicText>
-        </View>
-      ) : (
-        reminders.map((reminder) => (
-          <ReminderItem
-            key={reminder.id}
-            reminder={reminder}
-            translations={{
-              frequencyOnce: translations.frequencyOnce,
-              frequencyDaily: translations.frequencyDaily,
-              frequencyWeekly: translations.frequencyWeekly,
-              frequencyMonthly: translations.frequencyMonthly,
-            }}
-            onToggle={handleToggle}
-            onEdit={onEditPress}
-            onDelete={handleDelete}
-          />
-        ))
-      )}
+    <ScreenLayout footer={fab} scrollable={false}>
+      <FlatList
+        data={reminders}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        ListEmptyComponent={renderEmptyState}
+        contentContainerStyle={reminders.length === 0 ? styles.listEmptyContent : styles.listContent}
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        updateCellsBatchingPeriod={50}
+        initialNumToRender={8}
+        windowSize={5}
+      />
     </ScreenLayout>
   );
 };
@@ -101,6 +124,7 @@ export const ReminderListScreen: React.FC<ReminderListScreenProps> = ({
 const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     listContent: { padding: 16, flexGrow: 1 },
+    listEmptyContent: { flexGrow: 1 },
     emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 32, paddingTop: 100 },
     emptyIconContainer: {
       width: 80,

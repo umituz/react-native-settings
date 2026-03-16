@@ -11,6 +11,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Platform } from "react-native";
 import * as Crypto from "expo-crypto";
+import { devWarn } from "../../../utils/devUtils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type {
   FeatureRequestItem,
@@ -64,11 +65,9 @@ function loadFirebase(): typeof firebaseModules {
     return firebaseModules;
   } catch (error) {
     // Firebase not installed - return null to disable features
-    if (__DEV__) {
-      console.warn(
-        "[useFeatureRequests] @umituz/react-native-firebase not installed. Feature requests disabled.",
-      );
-    }
+    devWarn(
+      "[useFeatureRequests] @umituz/react-native-firebase not installed. Feature requests disabled.",
+    );
     firebaseModules = null;
     return null;
   }
@@ -92,7 +91,7 @@ async function getAnonymousUserId(): Promise<string> {
     return newId;
   } catch (error) {
     // Fallback to timestamp-based ID if crypto fails
-    const fallbackId = `anon_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const fallbackId = `anon_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
     await AsyncStorage.setItem(ANONYMOUS_USER_ID_KEY, fallbackId);
     return fallbackId;
   }
@@ -189,7 +188,7 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
         setUserVotes({});
       }
     } catch (error) {
-      if (__DEV__) console.warn("[useFeatureRequests] Load failed:", error);
+      devWarn("[useFeatureRequests] Load failed:", error);
     } finally {
       setIsLoading(false);
     }
@@ -253,7 +252,7 @@ export function useFeatureRequests(): UseFeatureRequestsResult {
         await fb.updateDoc(requestRef, { votes: fb.increment(type === "up" ? 1 : -1) });
       }
     } catch (error) {
-      if (__DEV__) console.warn("[useFeatureRequests] Vote failed:", error);
+      devWarn("[useFeatureRequests] Vote failed:", error);
       // Rollback using previous known state
       setUserVotes((prev) => {
         const next = { ...prev };

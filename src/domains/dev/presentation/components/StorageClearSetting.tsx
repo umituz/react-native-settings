@@ -6,6 +6,7 @@
 
 import React from "react";
 import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
+import { isDev } from "../../../../utils/devUtils";
 
 export interface StorageClearSettingProps {
   title?: string;
@@ -21,7 +22,7 @@ export const StorageClearSetting: React.FC<StorageClearSettingProps> = ({
   iconColor,
 }) => {
   // Only render in DEV mode
-  if (!__DEV__) {
+  if (!isDev()) {
     return null;
   }
 

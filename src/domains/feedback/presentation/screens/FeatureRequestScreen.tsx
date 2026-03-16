@@ -11,6 +11,7 @@ import {
   AtomicIcon,
 } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { devWarn } from "../../../../utils/devUtils";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { FeedbackModal } from "../components/FeedbackModal";
 import { ICON_PATHS } from "../../../../utils/iconPaths";
@@ -66,7 +67,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       });
       setIsModalVisible(false);
     } catch (error) {
-      if (__DEV__) console.warn("[FeatureRequestScreen] Submit failed:", error);
+      devWarn("[FeatureRequestScreen] Submit failed:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -145,8 +146,6 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       </View>
     );
   }, [userVotes, vote, tokens.colors, getStatusColor, statusLabels, t]);
-
-  const keyExtractor = useCallback((item: FeatureRequestItem) => item.id, []);
 
   const tabs = useMemo(() => (['all', 'my', 'roadmap'] as const), []);
 

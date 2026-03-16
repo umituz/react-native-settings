@@ -12,6 +12,7 @@ import { Alert } from "react-native";
 import { storageRepository } from "@umituz/react-native-design-system/storage";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { SettingsSection } from "../../../../presentation/components/SettingsSection";
+import { isDev } from "../../../../utils/devUtils";
 import { SettingsItemCard } from "../../../../presentation/components/SettingsItemCard";
 
 // Default texts (English only - DEV feature)
@@ -55,7 +56,7 @@ export const DevSettingsSection: React.FC<DevSettingsProps> = ({
   const t = { ...DEFAULT_TEXTS, ...texts };
 
   // Only render in development mode and when enabled
-  if (!__DEV__ || !enabled) {
+  if (!isDev() || !enabled) {
     return null;
   }
 

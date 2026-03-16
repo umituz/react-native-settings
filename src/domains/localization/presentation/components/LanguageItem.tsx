@@ -16,6 +16,7 @@ import {
 import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import type { Language } from '../../infrastructure/storage/types/Language';
+import { ICON_PATHS } from '../../../../utils/iconPaths';
 import { styles } from './LanguageItem.styles';
 
 interface LanguageItemProps {
@@ -90,15 +91,23 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
     >
       <View style={[styles.languageContent, customStyles?.languageContent]}>
         <View style={themedStyles.flagContainer}>
-          <AtomicText 
-            style={[
-              styles.flag, 
-              { fontSize: 24, marginRight: 0, fontFamily: undefined }, 
-              customStyles?.flag
-            ]}
-          >
-            {item.flag || '🌐'}
-          </AtomicText>
+          {item.flag && item.flag !== '🌐' ? (
+            <AtomicText
+              style={[
+                styles.flag,
+                { fontSize: 24, marginRight: 0, fontFamily: undefined },
+                customStyles?.flag
+              ]}
+            >
+              {item.flag}
+            </AtomicText>
+          ) : (
+            <AtomicIcon
+              svgPath={ICON_PATHS['globe']}
+              customSize={24}
+              customColor={tokens.colors.primary}
+            />
+          )}
         </View>
         <View style={[styles.languageText, customStyles?.languageText]}>
           <AtomicText 
@@ -116,11 +125,13 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
         </View>
       </View>
       {isSelected && (
-        <AtomicIcon
-          svgPath={CHECKMARK_PATH}
-          customSize={24}
-          customColor={tokens.colors.primary}
-        />
+        <View style={themedStyles.flagContainer}>
+          <AtomicIcon
+            svgPath={CHECKMARK_PATH}
+            customSize={24}
+            customColor={tokens.colors.primary}
+          />
+        </View>
       )}
     </TouchableOpacity>
   );

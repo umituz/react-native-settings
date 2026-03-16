@@ -2,15 +2,15 @@
  * @umituz/react-native-settings/account
  *
  * NOTE: Auth has been removed from this application.
- * This file now provides empty exports for backward compatibility.
+ * This file provides empty exports for compatibility.
  *
  * Apps that use @umituz/react-native-auth should import directly from that package:
  *   import { AccountScreen, ProfileSection } from '@umituz/react-native-auth';
  */
 
-// Empty exports for backward compatibility
-export const AccountScreen: React.ComponentType<any> | null = null;
-export const ProfileSection: React.ComponentType<any> | null = null;
+// Empty exports
+export const AccountScreen: React.ComponentType<Record<string, never>> | null = null;
+export const ProfileSection: React.ComponentType<Record<string, never>> | null = null;
 
 // Stub hooks that return default values
 export const useAuth = () => ({
@@ -30,7 +30,7 @@ export const useAuthHandlers = () => ({
 });
 
 // Empty types
-export type AccountScreenConfig = any;
+export type AccountScreenConfig = Record<string, never>;
 
 // Base hook (no auth version)
 export { useSettingsScreenConfig } from './presentation/hooks/useSettingsScreenConfig';

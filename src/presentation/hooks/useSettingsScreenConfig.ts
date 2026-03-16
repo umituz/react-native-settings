@@ -94,7 +94,6 @@ export const useSettingsScreenConfig = (
 
   const handleRatePress = useMemo(() => async () => {
     // Default rate behavior - typically handled by app or a separate rating hook
-    console.log("[useSettingsScreenConfig] Rate pressed");
   }, []);
 
   // Use settings config factory

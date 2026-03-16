@@ -148,7 +148,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
     const styles = getStyles(tokens);
 
     const [state, dispatch] = useReducer(feedbackFormReducer, {
-        selectedType: initialType || texts.feedbackTypes[0].type,
+        selectedType: initialType || (texts.feedbackTypes[0]?.type ?? 'general'),
         rating: 5,
         description: "",
         title: "",

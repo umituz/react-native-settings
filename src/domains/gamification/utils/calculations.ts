@@ -11,6 +11,16 @@ export const calculateLevel = (
 ): LevelState => {
   const sortedLevels = [...levels].sort((a, b) => a.minPoints - b.minPoints);
 
+  if (sortedLevels.length === 0) {
+    // Return default level state if no levels are defined
+    return {
+      currentLevel: 1,
+      currentPoints: points,
+      pointsToNext: 0,
+      progress: 0,
+    };
+  }
+
   let currentLevelDef = sortedLevels[0];
   let nextLevelDef: LevelDefinition | null = null;
 

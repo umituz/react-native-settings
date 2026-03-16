@@ -6,7 +6,7 @@ import { SettingsScreen } from "../../screens/SettingsScreen";
 
 // AccountScreen is an optional peer — lazy require so the package works without @umituz/react-native-auth
 // Returns null if @umituz/react-native-auth is not installed
-const getAccountScreen = (): React.ComponentType<any> | null => {
+const getAccountScreen = (): React.ComponentType<Record<string, unknown>> | null => {
   try {
     return require("@umituz/react-native-auth").AccountScreen ?? null;
   } catch {
@@ -40,7 +40,7 @@ export interface UseSettingsScreensProps extends SettingsStackNavigatorProps {
   legalProps: LegalScreenProps;
   notificationTranslations: NotificationSettingsTranslations;
   quietHoursTranslations: QuietHoursTranslations;
-  navigation?: any;
+  navigation?: Record<string, unknown>;
 }
 
 export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[] => {
@@ -116,7 +116,7 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
     const faqScreen = createConditionalScreen(
       !!(faqData && faqData.categories?.length > 0),
       () => createScreenWithProps("FAQ", FAQScreen, {
-        categories: faqData!.categories,
+        categories: faqData?.categories ?? [],
         searchPlaceholder: featureTranslations?.faqs?.searchPlaceholder || "",
         emptySearchTitle: featureTranslations?.faqs?.emptySearchTitle || "",
         emptySearchMessage: featureTranslations?.faqs?.emptySearchMessage || "",

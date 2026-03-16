@@ -8,6 +8,7 @@ import React, { useMemo } from 'react';
 import { View, TextInput, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { AtomicIcon } from '@umituz/react-native-design-system/atoms';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
+import { ICON_PATHS } from '../../../../utils/iconPaths';
 
 export interface FAQSearchBarStyles {
     container?: ViewStyle;
@@ -58,7 +59,11 @@ export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
     return (
         <View style={[styles.container, customStyles?.container]}>
             <View style={styles.iconContainer}>
-                <AtomicIcon name="search" size="md" color="secondary" />
+                <AtomicIcon
+                    svgPath={ICON_PATHS['search']}
+                    customSize={20}
+                    customColor={tokens.colors.secondary}
+                />
             </View>
             <TextInput
                 style={[styles.input, customStyles?.input]}

@@ -10,6 +10,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { isDev } from "../../../../utils/devUtils";
+import { ICON_PATHS } from "../../../../utils/iconPaths";
 
 interface ColorPickerProps {
   label: string;
@@ -64,7 +65,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           accessibilityHint={`Select ${color} color`}
         >
           {isSelected && (
-            <AtomicIcon name="checkmark" size="sm" customColor={tokens.colors.textInverse} />
+            <AtomicIcon
+              svgPath={ICON_PATHS['checkmark']}
+              customSize={16}
+              customColor={tokens.colors.textInverse}
+            />
           )}
         </TouchableOpacity>
       );

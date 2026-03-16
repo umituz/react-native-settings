@@ -27,6 +27,10 @@ export interface FAQItemProps {
     styles?: FAQItemStyles;
 }
 
+// SVG paths for chevron icons
+const CHEVRON_UP_PATH = "M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z";
+const CHEVRON_DOWN_PATH = "M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z";
+
 export const FAQItemComponent: React.FC<FAQItemProps> = React.memo(({
     item,
     isExpanded,
@@ -96,9 +100,9 @@ export const FAQItemComponent: React.FC<FAQItemProps> = React.memo(({
                 </View>
                 <View style={styles.iconContainer}>
                     <AtomicIcon
-                        name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                        size={20}
-                        color={isExpanded ? "onPrimary" : "secondary"}
+                        svgPath={isExpanded ? CHEVRON_UP_PATH : CHEVRON_DOWN_PATH}
+                        customSize={20}
+                        customColor={isExpanded ? tokens.colors.onPrimary : tokens.colors.secondary}
                     />
                 </View>
             </TouchableOpacity>

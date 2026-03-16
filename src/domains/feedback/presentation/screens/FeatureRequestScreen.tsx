@@ -13,6 +13,7 @@ import {
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { FeedbackModal } from "../components/FeedbackModal";
+import { ICON_PATHS } from "../../../../utils/iconPaths";
 import { useFeatureRequests } from "../../infrastructure/useFeatureRequests";
 import type { FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import type { FeatureRequestItem } from "../../domain/entities/FeatureRequestEntity";
@@ -100,13 +101,21 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       <View key={item.id} style={[styles.card, { backgroundColor: tokens.colors.surfaceSecondary, borderColor: tokens.colors.borderLight }]}>
         <View style={styles.voteColumn}>
           <TouchableOpacity onPress={() => vote(item.id, 'up')}>
-            <AtomicIcon name="chevron-up" size="md" color={voted === 'up' ? "primary" : "textSecondary"} />
+            <AtomicIcon
+              svgPath={ICON_PATHS['chevron-up']}
+              customSize={20}
+              customColor={voted === 'up' ? tokens.colors.primary : tokens.colors.textSecondary}
+            />
           </TouchableOpacity>
           <AtomicText style={[styles.voteCount, { color: voted === 'up' ? tokens.colors.primary : tokens.colors.textPrimary }]}>
             {item.votes}
           </AtomicText>
           <TouchableOpacity onPress={() => vote(item.id, 'down')}>
-            <AtomicIcon name="chevron-down" size="md" color={voted === 'down' ? "primary" : "textSecondary"} />
+            <AtomicIcon
+              svgPath={ICON_PATHS['chevron-down']}
+              customSize={20}
+              customColor={voted === 'down' ? tokens.colors.primary : tokens.colors.textSecondary}
+            />
           </TouchableOpacity>
         </View>
 
@@ -144,7 +153,11 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
         style={[styles.addButton, { backgroundColor: tokens.colors.primary }]}
         onPress={() => setIsModalVisible(true)}
       >
-        <AtomicIcon name="plus" size="sm" color="onPrimary" />
+        <AtomicIcon
+          svgPath={ICON_PATHS['plus']}
+          customSize={16}
+          customColor={tokens.colors.onPrimary}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -178,7 +191,11 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={[styles.banner, { backgroundColor: tokens.colors.primary + '10', borderColor: tokens.colors.primary + '20' }]}>
           <View style={styles.bannerIconContainer}>
-            <AtomicIcon name="users" size="lg" color="primary" />
+            <AtomicIcon
+              svgPath={ICON_PATHS['users']}
+              customSize={24}
+              customColor={tokens.colors.primary}
+            />
             <View style={styles.pulseDot} />
           </View>
           <View>
@@ -193,7 +210,11 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
 
         {filteredRequests.length === 0 ? (
           <View style={styles.emptyState}>
-            <AtomicIcon name="chatbubble-outline" size="xl" color="textTertiary" />
+            <AtomicIcon
+              svgPath={ICON_PATHS['chatbubble-outline']}
+              customSize={32}
+              customColor={tokens.colors.textTertiary}
+            />
             <AtomicText style={[styles.emptyText, { color: tokens.colors.textTertiary }]}>
               {t.empty || "No requests yet. Be the first!"}
             </AtomicText>

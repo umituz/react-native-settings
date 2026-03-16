@@ -5,10 +5,10 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, useWindowDimensions, FlatList } from 'react-native';
 import { getContentMaxWidth } from '@umituz/react-native-design-system/device';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
-import { useAppNavigation } from '@umituz/react-native-design-system/molecules';
+import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { FAQCategory } from '../../domain/entities/FAQEntity';
 import { useFAQSearch } from '../hooks/useFAQSearch';
@@ -75,45 +75,59 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     }
   };
 
-  const header = renderHeader ? renderHeader({ onBack: handleBack }) : null;
+  const header = renderHeader ? renderHeader({ onBack: handleBack }) : (
+    <NavigationHeader title={headerTitle} onBackPress={handleBack} />
+  );
+
+  // Render search bar as list header
+  const ListHeader = useMemo(() => (
+    <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
+      <View style={[styles.searchBar, customStyles?.header]}>
+        <FAQSearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder={searchPlaceholder}
+          styles={customStyles?.searchBar}
+        />
+      </View>
+
+      {searchQuery && !hasResults && (
+        <FAQEmptyState
+          title={emptySearchTitle}
+          message={emptySearchMessage}
+          styles={customStyles?.emptyState}
+        />
+      )}
+    </View>
+  ), [searchQuery, hasResults, searchPlaceholder, emptySearchTitle, emptySearchMessage, customStyles, tokens, contentMaxWidth]);
+
+  const renderCategory = ({ item }: { item: FAQCategory }) => (
+    <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
+      <FAQCategoryComponent
+        category={item}
+        isExpanded={isExpanded}
+        onToggleItem={toggleExpansion}
+        styles={customStyles?.category}
+      />
+    </View>
+  );
 
   return (
     <ScreenLayout
       edges={['top', 'bottom', 'left', 'right']}
-      scrollable={true}
+      scrollable={false}
       header={header}
-      contentContainerStyle={customStyles?.content}
     >
-      <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
-        <View style={[styles.searchBar, customStyles?.header]}>
-          <FAQSearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder={searchPlaceholder}
-            styles={customStyles?.searchBar}
-          />
-        </View>
-
-        {searchQuery && !hasResults ? (
-          <FAQEmptyState
-            title={emptySearchTitle}
-            message={emptySearchMessage}
-            styles={customStyles?.emptyState}
-          />
-        ) : (
-          filteredCategories.map((cat) => (
-            <FAQCategoryComponent
-              key={cat.id}
-              category={cat}
-              isExpanded={isExpanded}
-              onToggleItem={toggleExpansion}
-              styles={customStyles?.category}
-            />
-          ))
-        )}
-
-        <View style={styles.footer} />
-      </View>
+      <FlatList
+        data={filteredCategories}
+        renderItem={renderCategory}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={hasResults ? ListHeader : null}
+        ListEmptyComponent={!hasResults ? ListHeader : null}
+        ListFooterComponent={<View style={styles.footer} />}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: tokens.spacing.xl }}
+      />
     </ScreenLayout>
   );
 };

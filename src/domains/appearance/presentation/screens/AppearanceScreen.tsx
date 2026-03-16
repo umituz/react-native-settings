@@ -6,7 +6,7 @@
  */
 
 import React, { useMemo, useCallback } from "react";
-import { View, ScrollView } from "react-native";
+import { View, FlatList } from "react-native";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { NavigationHeader, useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
@@ -153,10 +153,31 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
     texts?.previewSectionDescription,
   ]);
 
-  const contentStyle = useMemo(() => ({
-    paddingHorizontal: tokens.spacing.lg,
-    paddingBottom: tokens.spacing['2xl'],
-  }), [tokens.spacing]);
+  // Prepare data for FlatList
+  const sectionsData = useMemo(() => {
+    const items: Array<{ id: string; component: React.ReactNode }> = [];
+
+    if (headerComponentMemo) {
+      items.push({ id: 'header', component: headerComponentMemo });
+    }
+    if (themeSectionMemo) {
+      items.push({ id: 'theme', component: themeSectionMemo });
+    }
+    if (colorsSectionMemo) {
+      items.push({ id: 'colors', component: colorsSectionMemo });
+    }
+    if (previewSectionMemo) {
+      items.push({ id: 'preview', component: previewSectionMemo });
+    }
+
+    return items;
+  }, [headerComponentMemo, themeSectionMemo, colorsSectionMemo, previewSectionMemo]);
+
+  const renderItem = useCallback(({ item }: { item: { id: string; component: React.ReactNode } }) => {
+    return <View style={{ paddingHorizontal: tokens.spacing.lg }}>{item.component}</View>;
+  }, [tokens.spacing.lg]);
+
+  const keyExtractor = useCallback((item: { id: string; component: React.ReactNode }) => item.id, []);
 
   return (
     <ScreenLayout
@@ -168,15 +189,15 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
         />
       }
     >
-      <ScrollView
+      <FlatList
+        data={sectionsData}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={contentStyle}
-      >
-        {headerComponentMemo}
-        {themeSectionMemo}
-        {colorsSectionMemo}
-        {previewSectionMemo}
-      </ScrollView>
+        contentContainerStyle={{
+          paddingBottom: tokens.spacing['2xl'],
+        }}
+      />
     </ScreenLayout>
   );
 };

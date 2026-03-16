@@ -41,34 +41,43 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
 
   const themedStyles = useMemo(() => ({
     languageItem: {
-      padding: tokens.spacing.md,
+      paddingHorizontal: tokens.spacing.md,
+      paddingVertical: tokens.spacing.md,
       borderRadius: tokens.borders.radius.lg,
-      backgroundColor: tokens.colors.surface,
-      borderColor: tokens.colors.border,
-      borderWidth: 1,
+      backgroundColor: tokens.colors.surfaceSecondary,
       marginBottom: tokens.spacing.md,
+      flexDirection: 'row' as const,
+      alignItems: 'center' as const,
+      justifyContent: 'space-between' as const,
     } as ViewStyle,
     selectedLanguageItem: {
+      backgroundColor: tokens.colors.surface,
       borderColor: tokens.colors.primary,
-      backgroundColor: tokens.colors.surfaceVariant,
       borderWidth: 1.5,
     } as ViewStyle,
     nativeName: {
       color: tokens.colors.textPrimary,
-      marginBottom: 2,
     } as TextStyle,
     languageName: {
       color: tokens.colors.textSecondary,
     } as TextStyle,
+    flagContainer: {
+      width: 44,
+      height: 44,
+      borderRadius: tokens.borders.radius.md,
+      backgroundColor: tokens.colors.backgroundPrimary,
+      alignItems: 'center' as const,
+      justifyContent: 'center' as const,
+      marginRight: tokens.spacing.md,
+    } as ViewStyle,
   }), [tokens]);
 
   return (
     <TouchableOpacity
       testID="language-item-test"
       style={[
-        styles.languageItem,
         themedStyles.languageItem,
-        isSelected ? [styles.selectedLanguageItem, themedStyles.selectedLanguageItem] : undefined,
+        isSelected && themedStyles.selectedLanguageItem,
         customStyles?.languageItem,
       ]}
       onPress={() => {
@@ -77,13 +86,21 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
       activeOpacity={0.7}
     >
       <View style={[styles.languageContent, customStyles?.languageContent]}>
-        <AtomicText style={[styles.flag, { fontSize: 28, fontFamily: undefined }, customStyles?.flag]}>
-          {item.flag || '🌐'}
-        </AtomicText>
-        <View style={[styles.languageText, { gap: 4 }, customStyles?.languageText]}>
+        <View style={themedStyles.flagContainer}>
+          <AtomicText 
+            style={[
+              styles.flag, 
+              { fontSize: 24, marginRight: 0, fontFamily: undefined }, 
+              customStyles?.flag
+            ]}
+          >
+            {item.flag || '🌐'}
+          </AtomicText>
+        </View>
+        <View style={[styles.languageText, customStyles?.languageText]}>
           <AtomicText 
             type="bodyLarge"
-            style={[themedStyles.nativeName, { fontWeight: '700' }, customStyles?.nativeName]}
+            style={[themedStyles.nativeName, { fontWeight: '600' }, customStyles?.nativeName]}
           >
             {item.nativeName}
           </AtomicText>
@@ -96,7 +113,7 @@ export const LanguageItem: React.FC<LanguageItemProps> = ({
         </View>
       </View>
       {isSelected && (
-        <AtomicIcon name="checkmark" size="sm" color="primary" />
+        <AtomicIcon name="checkmark-circle" size="md" color="primary" />
       )}
     </TouchableOpacity>
   );

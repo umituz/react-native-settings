@@ -81,6 +81,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
     shouldShowUserProfile,
     appVersion,
     handleClose,
+    currentLanguage,
   } = useSettingsScreen({
     config,
     showUserProfile,
@@ -113,6 +114,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = (props) => {
             devSettings={devSettings}
             gamificationConfig={gamificationConfig}
             navigation={navigation}
+            currentLanguage={currentLanguage}
           />
         )}
       </ScreenLayout>

@@ -8,6 +8,7 @@ import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { normalizeSettingsConfig } from "../utils/normalizeConfig";
 import { useFeatureDetection } from "./useFeatureDetection";
 import { getAppVersion } from "../../../utils/appUtils";
+import { useLocalization } from "../../../domains/localization";
 import type { SettingsConfig } from "../types";
 
 export interface UseSettingsScreenParams {
@@ -28,6 +29,7 @@ export function useSettingsScreen({
   onClose,
 }: UseSettingsScreenParams) {
   const navigation = useAppNavigation();
+  const localization = useLocalization();
 
   // Normalize config
   const normalizedConfig = useMemo(
@@ -60,5 +62,6 @@ export function useSettingsScreen({
     shouldShowUserProfile,
     appVersion,
     handleClose,
+    currentLanguage: localization.currentLanguage,
   };
 }

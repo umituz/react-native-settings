@@ -165,7 +165,7 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@umituz/react-native-auth": "^4.3.39",
-    "@umituz/react-native-design-system": "^4.25.34",
+    "@umituz/react-native-design-system": "latest",
     "@umituz/react-native-firebase": "^2.4.55",
     "@umituz/react-native-sentry": "latest",
     "eslint": "^8.57.0",

@@ -79,21 +79,18 @@ const LanguageSearchComponent: React.FC<LanguageSearchComponentProps> = ({
         containerStyle={[
           {
             marginBottom: tokens.spacing.md,
-            backgroundColor: 'transparent',
-            borderBottomWidth: 0,
-            paddingHorizontal: 0,
+            backgroundColor: tokens.colors.surfaceSecondary,
+            borderWidth: 0,
+            paddingHorizontal: tokens.spacing.md,
+            height: 52,
+            borderRadius: tokens.borders.radius.lg,
           },
           customStyles?.searchContainer
         ]}
         inputStyle={[
           {
-            backgroundColor: tokens.colors.surface,
-            borderRadius: tokens.borders.radius.full,
             color: tokens.colors.textPrimary,
-            paddingHorizontal: tokens.spacing.md,
-            height: 52,
-            borderWidth: 1,
-            borderColor: tokens.colors.border,
+            fontSize: tokens.typography.bodyMedium.responsiveFontSize,
           },
           customStyles?.searchInput
         ]}
@@ -150,13 +147,14 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionProps> = ({
     <ScreenLayout
       testID={testID}
       scrollable={false}
-      edges={['top', 'bottom', 'left', 'right']}
+      edges={['bottom', 'left', 'right']}
       backgroundColor={tokens.colors.backgroundPrimary}
       header={
         showHeader ? (
           <NavigationHeader
             title={headerTitle || ""}
             onBackPress={handleBack}
+            centerTitle={true}
           />
         ) : null
       }

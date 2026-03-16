@@ -19,7 +19,7 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { code: 'hi-IN', name: 'Hindi', nativeName: 'हिन्दी', flag: '🇮🇳', isRTL: false },
   { code: 'hr-HR', name: 'Croatian', nativeName: 'Hrvatski', flag: '🇭🇷', isRTL: false },
   { code: 'hu-HU', name: 'Hungarian', nativeName: 'Magyar', flag: '🇭🇺', isRTL: false },
-  { code: 'id-ID', name: 'Indonesian', nativeName: 'Bahasa Indonesia', flag: '🇮', isRTL: false },
+  { code: 'id-ID', name: 'Indonesian', nativeName: 'Bahasa Indonesia', flag: '🇮🇩', isRTL: false },
   { code: 'it-IT', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹', isRTL: false },
   { code: 'ja-JP', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', isRTL: false },
   { code: 'ko-KR', name: 'Korean', nativeName: '한국어', flag: '🇰🇷', isRTL: false },

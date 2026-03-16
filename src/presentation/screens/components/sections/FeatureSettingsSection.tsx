@@ -39,7 +39,8 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   
   const languageDisplayName = React.useMemo(() => {
     if (!currentLanguageData) return langCode;
-    return `${currentLanguageData.flag} ${currentLanguageData.nativeName}`;
+    // Native flag rendering fix: ensure no custom font breaks emojis
+    return `${currentLanguageData.flag || ''} ${currentLanguageData.nativeName}`;
   }, [currentLanguageData, langCode]);
 
   if (!features.appearance && !features.language && !features.notifications) return null;

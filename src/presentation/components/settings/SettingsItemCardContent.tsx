@@ -41,7 +41,12 @@ export const SettingsItemCardContent: React.FC<SettingsItemCardContentProps> = R
           {title}
         </AtomicText>
         {!!description && (
-          <AtomicText type="bodyMedium" color="textSecondary" numberOfLines={2}>
+          <AtomicText 
+            type="bodyMedium" 
+            color="textSecondary" 
+            numberOfLines={2}
+            style={{ fontFamily: undefined }}
+          >
             {description}
           </AtomicText>
         )}

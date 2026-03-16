@@ -49,4 +49,5 @@ export interface SettingsContentProps {
   devSettings?: DevSettingsProps;
   gamificationConfig?: GamificationSettingsConfig;
   navigation?: any;
+  currentLanguage?: string;
 }

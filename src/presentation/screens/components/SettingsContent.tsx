@@ -30,6 +30,7 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
   devSettings,
   gamificationConfig,
   navigation,
+  currentLanguage,
 }) => {
   const translations = normalizedConfig.translations;
   const { level } = useGamification(gamificationConfig);
@@ -73,7 +74,11 @@ export const SettingsContent: React.FC<SettingsContentProps> = ({
         />
       )}
 
-      <FeatureSettingsSection normalizedConfig={normalizedConfig} features={features} />
+      <FeatureSettingsSection 
+        normalizedConfig={normalizedConfig} 
+        features={features} 
+        currentLanguage={currentLanguage}
+      />
 
       {features.gamification && (
         <SettingsSection title={translations?.sections?.progress || ''}>

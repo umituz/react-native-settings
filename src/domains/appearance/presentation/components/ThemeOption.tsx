@@ -22,9 +22,6 @@ interface ThemeOptionProps {
   onSelect: () => void;
 }
 
-// Valid theme modes for validation
-const VALID_THEME_MODES: readonly ThemeMode[] = ["light", "dark", "auto"];
-
 // Utility function to add opacity to hex color
 const addOpacityToHex = (hexColor: string, opacity: string): string => {
   // Remove # if present
@@ -33,7 +30,7 @@ const addOpacityToHex = (hexColor: string, opacity: string): string => {
 };
 
 export const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({
-  mode,
+  mode: _mode,
   title,
   subtitle,
   description,

@@ -154,7 +154,6 @@ export const LanguageSelectionScreen: React.FC<LanguageSelectionProps> = ({
           <NavigationHeader
             title={headerTitle || ""}
             onBackPress={handleBack}
-            centerTitle={true}
           />
         ) : null
       }

@@ -43,6 +43,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
   searchPlaceholder,
   emptySearchTitle,
   emptySearchMessage,
+  headerTitle,
   onBack,
   renderHeader,
   styles: customStyles,

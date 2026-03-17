@@ -1,28 +1,32 @@
 /**
- * Typed Settings Navigation Hook
+ * Settings Navigation Hook
  *
- * Provides type-safe navigation for Settings stack screens.
- * Replaces unsafe `as never` casts throughout the codebase.
- */
-
-import { useNavigation } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
-import type { SettingsStackParamList } from '../types';
-
-/**
- * Type for Settings navigation prop
- */
-export type SettingsNavigationProp = StackNavigationProp<SettingsStackParamList>;
-
-/**
- * Hook to get typed navigation for Settings screens
+ * Provides standardized navigation for Settings stack screens.
+ * Uses useAppNavigation from design system for consistency.
  *
  * @example
  * ```typescript
- * const navigation = useSettingsNavigation();
- * navigation.navigate('LanguageSelection'); // Fully typed!
+ * import { useSettingsNavigation } from '@umituz/react-native-settings/presentation/navigation';
+ *
+ * function LanguageSelectionScreen() {
+ *   const navigation = useSettingsNavigation();
+ *   navigation.navigate('Appearance');
+ *   navigation.goBack();
+ * }
  * ```
  */
-export const useSettingsNavigation = () => {
-  return useNavigation<SettingsNavigationProp>();
+
+import { useAppNavigation } from '@umituz/react-native-design-system/molecules';
+
+/**
+ * Navigation result type inferred from useAppNavigation
+ */
+type SettingsNavigation = ReturnType<typeof useAppNavigation>;
+
+/**
+ * Hook to get navigation for Settings screens
+ * Delegates to useAppNavigation for consistent API
+ */
+export const useSettingsNavigation = (): SettingsNavigation => {
+  return useAppNavigation();
 };

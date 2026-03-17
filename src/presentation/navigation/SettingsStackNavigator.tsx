@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { StackNavigator, type StackNavigatorConfig } from "@umituz/react-native-design-system/molecules";
 import { useNavigationHandlers, useSettingsScreens } from "./hooks";
 import {
@@ -43,7 +43,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
   );
 
   // Get navigation for custom sections
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
 
   const screens = useSettingsScreens({
     ...props,
@@ -51,7 +51,7 @@ export const SettingsStackNavigator: React.FC<SettingsStackNavigatorProps> = (pr
     legalProps: legalScreenProps,
     notificationTranslations,
     quietHoursTranslations,
-    navigation,
+    navigation: navigation as unknown as Record<string, unknown>,
   });
 
   const navigatorConfig: StackNavigatorConfig<SettingsStackParamList> = {

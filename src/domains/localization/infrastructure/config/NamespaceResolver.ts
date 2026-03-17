@@ -32,7 +32,7 @@ export class NamespaceResolver {
         appNamespaces = Object.keys(langTranslations);
       }
     } else {
-      // If structured by namespace (legacy/simple), keys are namespaces
+      // If structured by namespace, keys are namespaces
       appNamespaces = Object.keys(appTranslations);
     }
 

@@ -54,13 +54,16 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({
     );
   }, [achievements]);
 
+  // Memoize empty state check to avoid recalculation
+  const showEmptyState = achievements.length === 0 && emptyAchievementsText;
+
   return (
     <View style={styles.section}>
       <AtomicText style={[styles.sectionTitle, { color: textColor }, sectionTitleStyle]}>
         {achievementsTitle}
       </AtomicText>
 
-      {achievements.length === 0 && emptyAchievementsText ? (
+      {showEmptyState ? (
         <AtomicText style={[styles.emptyText, { color: subtextColor }]}>
           {emptyAchievementsText}
         </AtomicText>

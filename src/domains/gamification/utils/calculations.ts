@@ -5,6 +5,11 @@
 
 import type { LevelDefinition, LevelState, AchievementDefinition } from "../types";
 
+// Constants for gamification calculations
+export const DEFAULT_LEVEL_RANGE = 100;
+export const DEFAULT_POINTS_PER_LEVEL = 50;
+export const MAX_PROGRESS = 100;
+
 export const calculateLevel = (
   points: number,
   levels: LevelDefinition[]
@@ -16,7 +21,7 @@ export const calculateLevel = (
     return {
       currentLevel: 1,
       currentPoints: points,
-      pointsToNext: 0,
+      pointsToNext: DEFAULT_POINTS_PER_LEVEL,
       progress: 0,
     };
   }
@@ -34,8 +39,8 @@ export const calculateLevel = (
   const pointsInLevel = points - currentLevelDef.minPoints;
   const levelRange = nextLevelDef
     ? nextLevelDef.minPoints - currentLevelDef.minPoints
-    : 100;
-  const progress = Math.min(100, (pointsInLevel / levelRange) * 100);
+    : DEFAULT_LEVEL_RANGE;
+  const progress = Math.min(MAX_PROGRESS, (pointsInLevel / levelRange) * MAX_PROGRESS);
   const pointsToNext = nextLevelDef
     ? nextLevelDef.minPoints - points
     : 0;
@@ -70,7 +75,7 @@ export const updateAchievementProgress = (
   currentStreak: number
 ): number => {
   const value = definition.type === "streak" ? currentStreak : tasksCompleted;
-  return Math.min(100, (value / definition.threshold) * 100);
+  return Math.min(MAX_PROGRESS, (value / definition.threshold) * MAX_PROGRESS);
 };
 
 /**

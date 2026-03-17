@@ -5,7 +5,7 @@
 
 import { useCallback, useEffect, useMemo } from "react";
 import { useGamificationStore } from "../store/gamificationStore";
-import { calculateLevel } from "../utils/calculations";
+import { calculateLevel, DEFAULT_POINTS_PER_LEVEL, MAX_PROGRESS } from "../utils/calculations";
 import type { GamificationConfig, LevelState, Achievement } from "../types";
 
 export interface UseGamificationReturn {
@@ -33,9 +33,13 @@ export const useGamification = (
   // Auto-initialize if config provided
   useEffect(() => {
     if (config && !store.isInitialized) {
-      store.initialize(config);
+      store.initialize(config).catch((error) => {
+        // Log error but don't crash - initialization is not critical
+        console.error('[useGamification] Failed to initialize:', error);
+      });
     }
-  }, [config, store.isInitialized, store.initialize]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config, store.isInitialized]);
 
   // Calculate level from config
   const level = useMemo((): LevelState => {
@@ -43,8 +47,8 @@ export const useGamification = (
       return {
         currentLevel: 1,
         currentPoints: store.points,
-        pointsToNext: 50,
-        progress: Math.min(100, (store.points / 50) * 100),
+        pointsToNext: DEFAULT_POINTS_PER_LEVEL,
+        progress: Math.min(MAX_PROGRESS, (store.points / DEFAULT_POINTS_PER_LEVEL) * MAX_PROGRESS),
       };
     }
     return calculateLevel(store.points, config.levels);

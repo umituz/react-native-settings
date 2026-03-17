@@ -11,26 +11,26 @@ export const useQuietHoursActions = () => {
   const quietHours = useQuietHours();
   const { updateQuietHours } = useNotificationStore();
 
-  const setQuietHoursEnabled = useCallback(async (enabled: boolean): Promise<void> => {
+  const setQuietHoursEnabled = useCallback((enabled: boolean): void => {
     // Use getState() to avoid stale closure and race conditions
     const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
-    await updateQuietHours({ ...currentQuietHours, enabled });
+    updateQuietHours({ ...currentQuietHours, enabled });
   }, [updateQuietHours]);
 
-  const setStartTime = useCallback(async (hour: number, minute: number): Promise<void> => {
+  const setStartTime = useCallback((hour: number, minute: number): void => {
     // Use getState() to avoid stale closure and race conditions
     const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
-    await updateQuietHours({ ...currentQuietHours, startHour: hour, startMinute: minute });
+    updateQuietHours({ ...currentQuietHours, startHour: hour, startMinute: minute });
   }, [updateQuietHours]);
 
-  const setEndTime = useCallback(async (hour: number, minute: number): Promise<void> => {
+  const setEndTime = useCallback((hour: number, minute: number): void => {
     // Use getState() to avoid stale closure and race conditions
     const currentQuietHours = useNotificationStore.getState().preferences.quietHours;
-    await updateQuietHours({ ...currentQuietHours, endHour: hour, endMinute: minute });
+    updateQuietHours({ ...currentQuietHours, endHour: hour, endMinute: minute });
   }, [updateQuietHours]);
 
-  const setQuietHours = useCallback(async (config: QuietHoursConfig): Promise<void> => {
-    await updateQuietHours(config);
+  const setQuietHours = useCallback((config: QuietHoursConfig): void => {
+    updateQuietHours(config);
   }, [updateQuietHours]);
 
   const isInQuietHours = useCallback((): boolean => {

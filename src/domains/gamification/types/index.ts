@@ -78,6 +78,8 @@ export interface GamificationState {
   streak: StreakState;
   isLoading: boolean;
   isInitialized: boolean;
+  // Internal config storage (not persisted, kept in memory)
+  _config?: GamificationConfig;
 }
 
 // Store Actions

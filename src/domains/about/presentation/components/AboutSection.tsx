@@ -3,6 +3,7 @@ import { ViewStyle } from 'react-native';
 import { AboutConfig } from '../../domain/entities/AppInfo';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';
+import { createRouteOrPressHandler } from '../../../../presentation/navigation/utils/navigationHelpers';
 
 export interface AboutSectionProps {
     config?: AboutConfig;
@@ -29,20 +30,14 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
 
     const navigation = useSettingsNavigation();
 
-    const route = config?.route || config?.defaultRoute || 'About';
     const title = propsTitle || config?.title;
     const description = propsDescription || config?.description;
     const sectionTitle = propsSectionTitle;
 
-    const handlePress = () => {
-        if (onPress) {
-            onPress();
-        } else if (config?.onPress) {
-            config.onPress();
-        } else {
-            navigation.navigate(route as 'About');
-        }
-    };
+    const handlePress = createRouteOrPressHandler(navigation.navigate, {
+        route: config?.route || config?.defaultRoute || 'About',
+        onPress: onPress || config?.onPress,
+    });
 
     if (!title) return null;
 

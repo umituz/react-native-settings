@@ -8,7 +8,7 @@
 
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n from '../config/i18n';
+import { i18n } from '../config/i18n';
 import { devWarn } from '../../../../utils/devUtils';
 
 export interface TranslationOptions {

@@ -11,7 +11,7 @@ type NavigateFunction = <RouteName extends keyof SettingsStackParamList>(
 ) => void;
 
 interface RouteOrPressConfig<T extends keyof SettingsStackParamList = keyof SettingsStackParamList> {
-  route?: T;
+  route?: T | string;
   onPress?: () => void;
   fallback?: T;
 }
@@ -26,7 +26,7 @@ export const createRouteOrPressHandler = <T extends keyof SettingsStackParamList
     } else {
       const targetRoute = config.route || config.fallback;
       if (targetRoute) {
-        navigate(targetRoute);
+        navigate(targetRoute as T);
       }
     }
   };

@@ -62,13 +62,18 @@ export const useTimePicker = ({
   }, [onStartTimeChange, onEndTimeChange]);
 
   const getPickerDate = useCallback((): Date => {
-    const date = new Date();
     if (pickerMode === 'start') {
-      date.setHours(quietHours.startHour, quietHours.startMinute);
-    } else if (pickerMode === 'end') {
-      date.setHours(quietHours.endHour, quietHours.endMinute);
+      // Don't mutate - create new Date with hours/minutes
+      return new Date(
+        new Date().setHours(quietHours.startHour, quietHours.startMinute, 0, 0)
+      );
     }
-    return date;
+    if (pickerMode === 'end') {
+      return new Date(
+        new Date().setHours(quietHours.endHour, quietHours.endMinute, 0, 0)
+      );
+    }
+    return new Date();
   }, [pickerMode, quietHours]);
 
   return {

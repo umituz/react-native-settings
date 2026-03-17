@@ -19,7 +19,7 @@ export { LanguageSection } from './presentation/components/LanguageSection';
 export type { LanguageSectionProps, LanguageSectionConfig } from './presentation/components/LanguageSection';
 
 // Configuration
-export { default as i18n } from './infrastructure/config/i18n';
+export { i18n } from './infrastructure/config/i18n';
 export { I18nInitializer } from './infrastructure/config/I18nInitializer';
 export {
   DEFAULT_LANGUAGE,

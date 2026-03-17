@@ -3,6 +3,7 @@ import { ViewStyle } from 'react-native';
 import { AppearanceSectionConfig } from '../../types';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';
+import { createRouteOrPressHandler } from '../../../../presentation/navigation/utils/navigationHelpers';
 
 export interface AppearanceSectionProps {
     config?: AppearanceSectionConfig;
@@ -31,19 +32,13 @@ export const AppearanceSection: React.FC<AppearanceSectionProps> = ({
 
     const navigation = useSettingsNavigation();
 
-    const route = config?.route || config?.defaultRoute || 'Appearance';
     const title = titleProp || config?.title;
     const description = descriptionProp || config?.description;
 
-    const handlePress = () => {
-        if (onPress) {
-            onPress();
-        } else if (config?.onPress) {
-            config.onPress();
-        } else {
-            navigation.navigate(route as 'Appearance');
-        }
-    };
+    const handlePress = createRouteOrPressHandler(navigation.navigate, {
+        route: config?.route || config?.defaultRoute || 'Appearance',
+        onPress: onPress || config?.onPress,
+    });
 
     if (!title) return null;
 

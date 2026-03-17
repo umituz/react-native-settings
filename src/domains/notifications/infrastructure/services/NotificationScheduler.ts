@@ -7,36 +7,43 @@ export class NotificationScheduler {
     try {
       const { title, body, data = {}, trigger, sound = true, badge, categoryIdentifier } = options;
 
-      let notificationTrigger: Notifications.NotificationTriggerInput = null;
+      let notificationTrigger: Notifications.NotificationTriggerInput;
 
-      if (trigger.type === 'date') {
-        notificationTrigger = {
-          date: trigger.date,
-          channelId: categoryIdentifier || 'default',
-        };
-      } else if (trigger.type === 'daily') {
-        notificationTrigger = {
-          hour: trigger.hour,
-          minute: trigger.minute,
-          repeats: true,
-          channelId: categoryIdentifier || 'reminders',
-        };
-      } else if (trigger.type === 'weekly') {
-        notificationTrigger = {
-          weekday: trigger.weekday,
-          hour: trigger.hour,
-          minute: trigger.minute,
-          repeats: true,
-          channelId: categoryIdentifier || 'reminders',
-        };
-      } else if (trigger.type === 'monthly') {
-        notificationTrigger = {
-          day: trigger.day,
-          hour: trigger.hour,
-          minute: trigger.minute,
-          repeats: true,
-          channelId: categoryIdentifier || 'reminders',
-        };
+      switch (trigger.type) {
+        case 'date':
+          notificationTrigger = {
+            date: trigger.date,
+            channelId: categoryIdentifier || 'default',
+          };
+          break;
+        case 'daily':
+          notificationTrigger = {
+            hour: trigger.hour,
+            minute: trigger.minute,
+            repeats: true,
+            channelId: categoryIdentifier || 'reminders',
+          };
+          break;
+        case 'weekly':
+          notificationTrigger = {
+            weekday: trigger.weekday,
+            hour: trigger.hour,
+            minute: trigger.minute,
+            repeats: true,
+            channelId: categoryIdentifier || 'reminders',
+          };
+          break;
+        case 'monthly':
+          notificationTrigger = {
+            day: trigger.day,
+            hour: trigger.hour,
+            minute: trigger.minute,
+            repeats: true,
+            channelId: categoryIdentifier || 'reminders',
+          };
+          break;
+        default:
+          throw new Error(`Unsupported trigger type: ${(trigger as { type: string }).type}`);
       }
 
       const notificationId = await Notifications.scheduleNotificationAsync({

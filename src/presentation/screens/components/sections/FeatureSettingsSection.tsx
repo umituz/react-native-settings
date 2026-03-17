@@ -6,6 +6,7 @@ import { SettingsItemCard } from "../../../components/SettingsItemCard";
 import type { NormalizedConfig } from "../../utils/normalizeConfig";
 import { SettingsSection } from "../../../components/SettingsSection";
 import { useSettingsNavigation } from "../../../navigation/hooks/useSettingsNavigation";
+import { createRouteOrPressHandler } from "../../../navigation/utils/navigationHelpers";
 
 interface FeatureSettingsSectionProps {
   normalizedConfig: NormalizedConfig;
@@ -25,14 +26,10 @@ export const FeatureSettingsSection: React.FC<FeatureSettingsSectionProps> = ({
   const translations = normalizedConfig.translations;
   const navigation = useSettingsNavigation();
 
-  const handleLanguagePress = React.useCallback(() => {
-    if (normalizedConfig.language.config?.onPress) {
-      normalizedConfig.language.config.onPress();
-    } else {
-      const route = normalizedConfig.language.config?.route || "LanguageSelection";
-      navigation.navigate(route as 'LanguageSelection');
-    }
-  }, [navigation, normalizedConfig.language.config]);
+  const handleLanguagePress = createRouteOrPressHandler(navigation.navigate, {
+    route: normalizedConfig.language.config?.route || "LanguageSelection",
+    onPress: normalizedConfig.language.config?.onPress,
+  });
 
   const langCode = currentLanguage || "en-US";
   const currentLanguageData = React.useMemo(() => getLanguageByCode(langCode), [langCode]);

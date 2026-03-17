@@ -24,6 +24,29 @@ export interface FAQCategoryProps {
     styles?: FAQCategoryStyles;
 }
 
+// Memoized FAQ items list to prevent unnecessary re-renders when other categories update
+const FAQItemsList: React.FC<{
+    items: FAQCategoryType['items'];
+    isExpanded: (itemId: string) => boolean;
+    onToggleItem: (itemId: string) => void;
+    customStyles?: FAQCategoryStyles;
+}> = React.memo(({ items, isExpanded, onToggleItem, customStyles }) => (
+    <>
+        {items.map((item, index) => (
+            <FAQItemComponent
+                key={item.id}
+                item={item}
+                isExpanded={isExpanded(item.id)}
+                onToggle={() => onToggleItem(item.id)}
+                isLast={index === items.length - 1}
+                styles={customStyles?.itemStyles}
+            />
+        ))}
+    </>
+));
+
+FAQItemsList.displayName = "FAQItemsList";
+
 export const FAQCategoryComponent: React.FC<FAQCategoryProps> = ({
     category,
     isExpanded,
@@ -66,16 +89,12 @@ export const FAQCategoryComponent: React.FC<FAQCategoryProps> = ({
                 </AtomicText>
                 <View style={styles.titleLine} />
             </View>
-            {category.items.map((item, index) => (
-                <FAQItemComponent
-                    key={item.id}
-                    item={item}
-                    isExpanded={isExpanded(item.id)}
-                    onToggle={() => onToggleItem(item.id)}
-                    isLast={index === category.items.length - 1}
-                    styles={customStyles?.itemStyles}
-                />
-            ))}
+            <FAQItemsList
+                items={category.items}
+                isExpanded={isExpanded}
+                onToggleItem={onToggleItem}
+                customStyles={customStyles}
+            />
         </View>
     );
 };

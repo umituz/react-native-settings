@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { SettingsItemCard } from '../../../../presentation/components/SettingsItemCard';
 import { useSettingsNavigation } from '../../../../presentation/navigation/hooks/useSettingsNavigation';
+import { createRouteOrPressHandler } from '../../../../presentation/navigation/utils/navigationHelpers';
 
 export interface NotificationsSectionConfig {
   route?: string;
@@ -26,14 +27,10 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
 }) => {
   const navigation = useSettingsNavigation();
 
-  const handlePress = useCallback(() => {
-    if (config?.onPress) {
-      config.onPress();
-    } else {
-      const route = config?.route || 'Notifications';
-      navigation.navigate(route as 'Notifications');
-    }
-  }, [config?.route, config?.onPress, navigation]);
+  const handlePress = createRouteOrPressHandler(navigation.navigate, {
+    route: config?.route || ('Notifications' as const),
+    onPress: config?.onPress,
+  });
 
   const title = config?.title || "";
   const description = config?.description || "";

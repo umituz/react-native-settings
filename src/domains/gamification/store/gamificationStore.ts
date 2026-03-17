@@ -30,8 +30,6 @@ const DEFAULT_STATE: GamificationState = {
   isInitialized: false,
 };
 
-let currentConfig: GamificationConfig | null = null;
-
 export const useGamificationStore = createStore<GamificationState, GamificationActions>({
   name: "gamification-storage",
   initialState: DEFAULT_STATE,
@@ -45,11 +43,14 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
     streak: state.streak,
     isLoading: false,
     isInitialized: false,
+    // Don't persist _config - it's runtime only
   }),
   actions: (set, get) => ({
     initialize: async (config: GamificationConfig) => {
-      currentConfig = config;
       const state = get();
+
+      // Store config in state (not module-level)
+      set({ _config: config, isInitialized: true });
 
       // Initialize achievements from config
       const achievements: Achievement[] = config.achievements.map((def) => ({
@@ -67,7 +68,7 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
         return ach;
       });
 
-      set({ achievements: mergedAchievements, isInitialized: true });
+      set({ achievements: mergedAchievements });
     },
 
     addPoints: (amount: number) => {
@@ -77,7 +78,7 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
 
     completeTask: () => {
       const state = get();
-      const pointsToAdd = currentConfig?.pointsPerAction ?? 15;
+      const pointsToAdd = state._config?.pointsPerAction ?? 15;
 
       const newTotalTasks = state.totalTasksCompleted + 1;
 
@@ -86,9 +87,63 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
         points: state.points + pointsToAdd,
       });
 
-      const actions = get() as GamificationActions;
-      actions.updateStreak();
-      actions.checkAchievements();
+      // Update streak
+      const currentStreak = state.streak.lastActivityDate
+        ? new Date(state.streak.lastActivityDate)
+        : null;
+      const now = new Date();
+
+      let newStreak = state.streak.current;
+
+      if (!currentStreak || !isSameDay(currentStreak, now)) {
+        if (isStreakActive(state.streak.lastActivityDate)) {
+          newStreak = state.streak.current + 1;
+        } else {
+          newStreak = 1;
+        }
+      }
+
+      set({
+        streak: {
+          current: newStreak,
+          longest: Math.max(state.streak.longest, newStreak),
+          lastActivityDate: now.toISOString(),
+        },
+      });
+
+      // Check achievements
+      if (!state.achievements || state.achievements.length === 0) {
+        return;
+      }
+
+      const updatedAchievements = state.achievements.map((ach: Achievement) => {
+        if (ach.isUnlocked) return ach;
+
+        const progress = updateAchievementProgress(
+          ach,
+          newTotalTasks,
+          newStreak
+        );
+
+        const shouldUnlock = checkAchievementUnlock(
+          ach,
+          newTotalTasks,
+          newStreak
+        );
+
+        if (shouldUnlock) {
+          return {
+            ...ach,
+            isUnlocked: true,
+            unlockedAt: new Date().toISOString(),
+            progress: 100,
+          };
+        }
+
+        return { ...ach, progress };
+      });
+
+      set({ achievements: updatedAchievements });
     },
 
     updateStreak: () => {
@@ -118,8 +173,6 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
     },
 
     checkAchievements: (): Achievement[] => {
-      if (!currentConfig) return [];
-
       const state = get();
 
       if (!state.achievements || state.achievements.length === 0) {
@@ -143,7 +196,7 @@ export const useGamificationStore = createStore<GamificationState, GamificationA
           state.streak.current
         );
 
-        if (shouldUnlock && !ach.isUnlocked) {
+        if (shouldUnlock) {
           const unlocked = {
             ...ach,
             isUnlocked: true,

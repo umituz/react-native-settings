@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-settings",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "description": "Complete settings hub for React Native apps - consolidated package with settings, localization, about, legal, appearance, feedback, FAQs, rating, and gamification - expo-store-review and expo-device now lazy loaded",
   "main": "./src/index.ts",
   "types": "./dist/index.d.ts",

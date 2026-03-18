@@ -1,10 +1,14 @@
 /**
  * Rating Service
- * Core business logic for app rating system
+ *
+ * Core business logic for app rating system.
+ * Refactored to extend BaseService for consistent error handling.
+ *
+ * @module RatingService
  */
 
 import type { RatingConfig, RatingState } from "../../domain/entities/RatingConfig";
-import { isDev } from "../../../../utils/devUtils";
+import { BaseService } from "../../../../core/base/BaseService";
 import {
   getEventCount,
   incrementEventCount,
@@ -35,112 +39,113 @@ function toISOString(date: Date = new Date()): string {
 }
 
 /**
- * Track an event occurrence
+ * Rating Service Class
  */
-export async function trackEvent(eventType: string): Promise<void> {
-  try {
-    await incrementEventCount(eventType);
-  } catch (error) {
-    if (isDev()) {
-      console.error('[RatingService] Failed to track event:', eventType, error);
-    }
+export class RatingService extends BaseService {
+  protected serviceName = "RatingService";
+
+  /**
+   * Track an event occurrence
+   */
+  async trackEvent(eventType: string): Promise<void> {
+    await this.execute("trackEvent", async () => {
+      await incrementEventCount(eventType);
+    });
   }
-}
 
-/**
- * Check if prompt should be shown based on criteria
- */
-export async function shouldShowPrompt(config: RatingConfig): Promise<boolean> {
-  try {
-    const hasRated = await getHasRated();
-    if (hasRated) {
-      return false;
-    }
+  /**
+   * Check if prompt should be shown based on criteria
+   */
+  async shouldShowPrompt(config: RatingConfig): Promise<boolean> {
+    const result = await this.execute("shouldShowPrompt", async () => {
+      const hasRated = await getHasRated();
+      if (hasRated) return false;
 
-    const dismissed = await getDismissed();
-    if (dismissed) {
-      return false;
-    }
+      const dismissed = await getDismissed();
+      if (dismissed) return false;
 
-    const eventCount = await getEventCount(config.eventType);
-    const minCount = config.minEventCount ?? 3;
+      const eventCount = await getEventCount(config.eventType);
+      const minCount = config.minEventCount ?? 3;
 
-    if (eventCount < minCount) {
-      return false;
-    }
+      if (eventCount < minCount) return false;
 
-    const lastPromptDate = await getLastPromptDate(config.eventType);
+      const lastPromptDate = await getLastPromptDate(config.eventType);
 
-    if (lastPromptDate) {
-      const cooldownDays = config.cooldownDays ?? 90;
-      const daysSinceLastPrompt = daysBetween(lastPromptDate, new Date());
+      if (lastPromptDate) {
+        const cooldownDays = config.cooldownDays ?? 90;
+        const daysSinceLastPrompt = daysBetween(lastPromptDate, new Date());
 
-      if (daysSinceLastPrompt < cooldownDays) {
-        return false;
+        if (daysSinceLastPrompt < cooldownDays) {
+          return false;
+        }
       }
-    }
 
-    return true;
-  } catch (error) {
-    return false;
+      return true;
+    });
+
+    return result.success ? result.data : false;
+  }
+
+  /**
+   * Mark that prompt was shown to user
+   */
+  async markPromptShown(eventType: string): Promise<void> {
+    await this.execute("markPromptShown", async () => {
+      await setLastPromptDate(eventType, toISOString());
+    });
+  }
+
+  /**
+   * Mark that user has rated the app
+   */
+  async markRated(): Promise<void> {
+    await this.execute("markRated", async () => {
+      await setHasRated(true);
+    });
+  }
+
+  /**
+   * Mark that user permanently dismissed the prompt
+   */
+  async markDismissed(): Promise<void> {
+    await this.execute("markDismissed", async () => {
+      await setDismissed(true);
+    });
+  }
+
+  /**
+   * Get current rating state for event type
+   */
+  async getState(eventType: string): Promise<RatingState> {
+    return getRatingState(eventType);
+  }
+
+  /**
+   * Reset rating data (for testing or specific event type)
+   */
+  async reset(eventType?: string): Promise<void> {
+    await this.execute("reset", async () => {
+      await resetStorage(eventType);
+    });
   }
 }
 
 /**
- * Mark that prompt was shown to user
+ * Singleton instance
  */
-export async function markPromptShown(eventType: string): Promise<void> {
-  try {
-    await setLastPromptDate(eventType, toISOString());
-  } catch (error) {
-    if (isDev()) {
-      console.error('[RatingService] Failed to mark prompt shown:', eventType, error);
-    }
+let ratingServiceInstance: RatingService | null = null;
+
+/**
+ * Get rating service singleton instance
+ */
+export function getRatingService(): RatingService {
+  if (!ratingServiceInstance) {
+    ratingServiceInstance = new RatingService();
   }
+  return ratingServiceInstance;
 }
 
 /**
- * Mark that user has rated the app
+ * Default export for backward compatibility
  */
-export async function markRated(): Promise<void> {
-  try {
-    await setHasRated(true);
-  } catch (error) {
-    if (isDev()) {
-      console.error('[RatingService] Failed to mark as rated:', error);
-    }
-  }
-}
-
-/**
- * Mark that user permanently dismissed the prompt
- */
-export async function markDismissed(): Promise<void> {
-  try {
-    await setDismissed(true);
-  } catch (error) {
-    if (isDev()) {
-      console.error('[RatingService] Failed to mark as dismissed:', error);
-    }
-  }
-}
-
-/**
- * Get current rating state for event type
- */
-export async function getState(eventType: string): Promise<RatingState> {
-  return getRatingState(eventType);
-}
-
-/**
- * Reset rating data (for testing or specific event type)
- */
-export async function reset(eventType?: string): Promise<void> {
-  try {
-    await resetStorage(eventType);
-  } catch (error) {
-    if (isDev()) {
-      console.error('[RatingService] Failed to reset:', eventType, error);
-    }
-  }
-}
+export const ratingService = getRatingService();

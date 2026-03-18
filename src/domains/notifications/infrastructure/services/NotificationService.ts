@@ -1,14 +1,15 @@
 /**
- * NotificationService
+ * Notification Service
  *
  * Simple facade for offline notification system.
  * Works in ALL apps - offline, online, hybrid - no backend required.
+ * Refactored to extend BaseService.
  *
  * @module NotificationService
  */
 
 import { NotificationManager } from './NotificationManager';
-import { isDev } from '../../../../utils/devUtils';
+import { BaseService } from '../../../../core/base/BaseService';
 
 export * from './types';
 
@@ -16,26 +17,24 @@ export * from './types';
  * Notification service singleton
  * Provides simple access to notification manager
  */
-export class NotificationService {
+export class NotificationService extends BaseService {
+  protected serviceName = 'NotificationService';
   private static instance: NotificationService | null = null;
   private isConfigured = false;
 
   readonly notifications = new NotificationManager();
 
   private constructor() {
+    super();
     // Configuration deferred to first use
   }
 
   private ensureConfigured() {
     if (!this.isConfigured) {
-      try {
+      this.executeUnsafe('ensureConfigured', () => {
         NotificationManager.configure();
         this.isConfigured = true;
-      } catch (error) {
-        if (isDev()) {
-          console.error('[NotificationService] Failed to configure NotificationManager:', error);
-        }
-      }
+      });
     }
   }
 
@@ -51,7 +50,10 @@ export class NotificationService {
    */
   async requestPermissions(): Promise<boolean> {
     this.ensureConfigured();
-    return await this.notifications.requestPermissions();
+    const result = await this.execute('requestPermissions', async () => {
+      return await this.notifications.requestPermissions();
+    });
+    return result.success ? result.data : false;
   }
 
   /**
@@ -59,7 +61,10 @@ export class NotificationService {
    */
   async hasPermissions(): Promise<boolean> {
     this.ensureConfigured();
-    return await this.notifications.hasPermissions();
+    const result = await this.execute('hasPermissions', async () => {
+      return await this.notifications.hasPermissions();
+    });
+    return result.success ? result.data : false;
   }
 }
 

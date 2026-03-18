@@ -37,8 +37,8 @@ export type { StarRatingProps } from './presentation/components/StarRating';
 // PRESENTATION LAYER - Components (App Store Rating)
 // =============================================================================
 
-export { RatingPromptModal } from './presentation/components/RatingPromptModal';
-export type { RatingPromptModalProps } from './presentation/components/RatingPromptModal';
+export { useRatingPromptModal } from './presentation/hooks/useRatingPromptModal';
+export type { RatingPromptOptions } from './presentation/hooks/useRatingPromptModal';
 
 // =============================================================================
 // PRESENTATION LAYER - Hooks (App Store Rating)

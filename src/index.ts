@@ -36,6 +36,12 @@ export {
   useUpdateSettingsMutation,
   useResetSettingsMutation
 } from './presentation/hooks/mutations/useSettingsMutations';
+export {
+  useSettingsScreenConfig,
+  type SettingsFeatures,
+  type UseSettingsScreenConfigParams,
+  type SettingsScreenConfigResult
+} from './presentation/hooks/useSettingsScreenConfig';
 
 // =============================================================================
 // PRESENTATION LAYER - Screens

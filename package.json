@@ -208,6 +208,7 @@
   "files": [
     "dist",
     "src",
+    ".agents",
     "README.md"
   ]
 }

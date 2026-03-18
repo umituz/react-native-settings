@@ -83,7 +83,8 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "vp": "npm version patch && npm publish && git push",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsc --project tsconfig.build.json",
+    "setup:skill": "node -e \"const fs = require('fs'); const path = require('path'); const skillDir = path.join(process.env.HOME, '.claude', 'skills', 'react-native-settings'); fs.mkdirSync(skillDir, {recursive: true}); fs.copyFileSync(path.join(__dirname, 'skills/SKILL.md'), path.join(skillDir, 'SKILL.md')); console.log('✅ @umituz/react-native-settings setup skill installed to Claude Code!');\""
   },
   "keywords": [
     "react-native",

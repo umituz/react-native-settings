@@ -4,7 +4,7 @@
  * Uses design system tokens for theming
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, useWindowDimensions, FlatList } from 'react-native';
 import { getContentMaxWidth } from '@umituz/react-native-design-system/device';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
@@ -102,7 +102,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
     </View>
   ), [searchQuery, hasResults, searchPlaceholder, emptySearchTitle, emptySearchMessage, customStyles, tokens, contentMaxWidth]);
 
-  const renderCategory = ({ item }: { item: FAQCategory }) => (
+  const renderCategory = useCallback(({ item }: { item: FAQCategory }) => (
     <View style={{ alignSelf: 'center', width: '100%', maxWidth: contentMaxWidth }}>
       <FAQCategoryComponent
         category={item}
@@ -111,7 +111,7 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
         styles={customStyles?.category}
       />
     </View>
-  );
+  ), [contentMaxWidth, isExpanded, toggleExpansion, customStyles?.category]);
 
   return (
     <ScreenLayout
@@ -128,6 +128,10 @@ export const FAQScreen: React.FC<FAQScreenProps> = ({
         ListFooterComponent={<View style={styles.footer} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: tokens.spacing.xl }}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        initialNumToRender={8}
       />
     </ScreenLayout>
   );

@@ -12,7 +12,6 @@ import {
 } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
-import { devWarn } from "../../../../utils/devUtils";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { ICON_PATHS } from "../../../../utils/iconPaths";
 import { useFeatureRequests } from "../../infrastructure/useFeatureRequests";
@@ -30,7 +29,7 @@ interface FeatureRequestScreenProps {
 export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ config, texts }) => {
   const tokens = useAppDesignTokens();
   const navigation = useAppNavigation();
-  const { requests, userVotes, isLoading, vote, submitRequest, userId } = useFeatureRequests();
+  const { requests, userVotes, isLoading, vote, submitRequest: _submitRequest, userId } = useFeatureRequests();
 
   const [activeTab, setActiveTab] = useState<'all' | 'my' | 'roadmap'>('all');
 
@@ -41,21 +40,21 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
   const bannerSub = t.banner?.subtitle || `${requests.length} feature requests`;
   const newIdeaLabel = t.new_idea || "NEW IDEA?";
 
-  const tabLabels = {
+  const tabLabels = useMemo(() => ({
     all: t.tabs?.all || "All Requests",
     my: t.tabs?.my || "My Feedback",
     roadmap: t.tabs?.roadmap || "Roadmap",
-  };
+  }), [t.tabs?.all, t.tabs?.my, t.tabs?.roadmap]);
 
-  const statusLabels: Record<string, string> = {
+  const statusLabels = useMemo(() => ({
     planned: t.status?.planned || "Planned",
     review: t.status?.review || "Under Review",
     completed: t.status?.completed || "Completed",
     pending: t.status?.pending || "Pending",
     dismissed: t.status?.dismissed || "Dismissed",
-  };
+  }), [t.status?.planned, t.status?.review, t.status?.completed, t.status?.pending, t.status?.dismissed]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = useCallback((status: string) => {
     switch (status) {
       case 'planned': return '#3b82f6';
       case 'review': return '#f59e0b';
@@ -64,7 +63,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       case 'dismissed': return '#ef4444';
       default: return tokens.colors.textSecondary;
     }
-  };
+  }, [tokens.colors.textSecondary]);
 
   const filteredRequests = useMemo(() => {
     switch (activeTab) {
@@ -127,7 +126,7 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
         </View>
       </View>
     );
-  }, [userVotes, vote, tokens.colors, getStatusColor, statusLabels, t]);
+  }, [userVotes, vote, tokens.colors, getStatusColor, statusLabels, t.comment_count]);
 
   const tabs = useMemo(() => (['all', 'my', 'roadmap'] as const), []);
 

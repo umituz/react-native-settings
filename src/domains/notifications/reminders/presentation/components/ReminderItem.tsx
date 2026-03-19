@@ -39,7 +39,7 @@ const getFrequencyIcon = (frequency: ReminderFrequency): string => {
   return icons[frequency] || 'notifications';
 };
 
-export const ReminderItem: React.FC<ReminderItemProps> = ({
+export const ReminderItem: React.FC<ReminderItemProps> = React.memo(({
   reminder,
   translations,
   onToggle,
@@ -97,7 +97,7 @@ export const ReminderItem: React.FC<ReminderItemProps> = ({
       </View>
     </View>
   );
-};
+});
 
 const createStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({

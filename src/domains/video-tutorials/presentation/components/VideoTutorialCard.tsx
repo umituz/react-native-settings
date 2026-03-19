@@ -3,11 +3,17 @@
  * Single Responsibility: Display individual video tutorial card
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { AtomicText } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
 import type { VideoTutorial } from "../../types";
+
+const formatDuration = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+};
 
 interface VideoTutorialCardProps {
   readonly tutorial: VideoTutorial;
@@ -15,19 +21,13 @@ interface VideoTutorialCardProps {
   readonly horizontal?: boolean;
 }
 
-export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
+export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = React.memo(({
   tutorial,
   onPress,
   horizontal = false,
 }) => {
   const tokens = useAppDesignTokens();
-  const styles = getStyles(tokens);
-
-  const formatDuration = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-  };
+  const styles = useMemo(() => getStyles(tokens), [tokens]);
 
   return (
     <TouchableOpacity
@@ -84,7 +84,7 @@ export const VideoTutorialCard: React.FC<VideoTutorialCardProps> = ({
       </View>
     </TouchableOpacity>
   );
-};
+});
 
 const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) => StyleSheet.create({
   container: { borderRadius: 12, borderWidth: 1, marginBottom: 12, overflow: "hidden" },

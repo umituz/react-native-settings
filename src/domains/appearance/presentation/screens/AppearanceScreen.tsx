@@ -197,6 +197,10 @@ export const AppearanceScreen: React.FC<AppearanceScreenProps> = ({
         contentContainerStyle={{
           paddingBottom: tokens.spacing['2xl'],
         }}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={5}
+        windowSize={3}
+        initialNumToRender={3}
       />
     </ScreenLayout>
   );

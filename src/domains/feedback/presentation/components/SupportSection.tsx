@@ -8,7 +8,6 @@ import React, { useCallback } from "react";
 import { Linking } from "react-native";
 import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import type { FeedbackType } from "../../domain/entities/FeedbackEntity";
-import { isDev } from "../../../../utils/devUtils";
 
 export interface FeedbackConfig {
     enabled?: boolean;

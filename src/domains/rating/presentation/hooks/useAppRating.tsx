@@ -4,7 +4,7 @@
  * Lazy loads expo-store-review to reduce bundle size
  */
 
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type {
   RatingConfig,
   UseAppRatingResult,

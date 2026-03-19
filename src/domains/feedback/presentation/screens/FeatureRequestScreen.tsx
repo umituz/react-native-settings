@@ -11,12 +11,12 @@ import {
   AtomicIcon,
 } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { devWarn } from "../../../../utils/devUtils";
 import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
-import { FeedbackModal } from "../components/FeedbackModal";
 import { ICON_PATHS } from "../../../../utils/iconPaths";
 import { useFeatureRequests } from "../../infrastructure/useFeatureRequests";
-import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
+import type { FeedbackType } from "../../domain/entities/FeedbackEntity";
 import type { FeatureRequestItem } from "../../domain/entities/FeatureRequestEntity";
 import type { FeedbackFormTexts } from "../components/FeedbackFormProps";
 
@@ -29,11 +29,10 @@ interface FeatureRequestScreenProps {
 
 export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ config, texts }) => {
   const tokens = useAppDesignTokens();
+  const navigation = useAppNavigation();
   const { requests, userVotes, isLoading, vote, submitRequest, userId } = useFeatureRequests();
 
   const [activeTab, setActiveTab] = useState<'all' | 'my' | 'roadmap'>('all');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const t = config?.translations || {};
   const screenTitle = t.screen_title || "Feedback & Features";
@@ -55,23 +54,6 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
     pending: t.status?.pending || "Pending",
     dismissed: t.status?.dismissed || "Dismissed",
   };
-
-  const handleSubmit = useCallback(async (data: { title?: string; description: string; type?: string; rating?: number }) => {
-    setIsSubmitting(true);
-    try {
-      await submitRequest({
-        title: data.title || "New Request",
-        description: data.description,
-        type: (data.type || "feature_request") as FeedbackType,
-        rating: data.rating as FeedbackRating,
-      });
-      setIsModalVisible(false);
-    } catch (error) {
-      devWarn("[FeatureRequestScreen] Submit failed:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [submitRequest]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -154,7 +136,11 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
       <AtomicText style={styles.headerTitle}>{screenTitle}</AtomicText>
       <TouchableOpacity
         style={[styles.addButton, { backgroundColor: tokens.colors.primary }]}
-        onPress={() => setIsModalVisible(true)}
+        onPress={() => navigation.push('Feedback' as never, {
+          initialType: 'feature_request' as FeedbackType,
+          title: texts?.title,
+          texts: texts,
+        })}
       >
         <AtomicIcon
           svgPath={ICON_PATHS['plus']}
@@ -236,22 +222,14 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
         windowSize={5}
       />
 
-      {isModalVisible && (
-        <FeedbackModal
-          visible={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
-          title={texts?.title}
-          onSubmit={handleSubmit}
-          texts={texts}
-          initialType="feature_request"
-          isSubmitting={isSubmitting}
-        />
-      )}
-
       <View style={styles.floatingHint}>
         <TouchableOpacity
           style={[styles.hintBadge, { backgroundColor: tokens.colors.primary }]}
-          onPress={() => setIsModalVisible(true)}
+          onPress={() => navigation.push('Feedback' as never, {
+            initialType: 'feature_request' as FeedbackType,
+            title: texts?.title,
+            texts: texts,
+          })}
         >
           <AtomicText style={styles.hintText}>{newIdeaLabel}</AtomicText>
         </TouchableOpacity>

@@ -20,7 +20,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
 import {
   NavigationHeader,
@@ -88,11 +88,6 @@ export function GenericScreen<T>({
     <NavigationHeader
       title={header?.title || ''}
       onBackPress={showBackButton ? onBackPress : undefined}
-      actions={header?.actions?.map((action) => ({
-        icon: action.icon,
-        onPress: action.onPress,
-        testID: action.testID,
-      }))}
     />
   ) : undefined;
 

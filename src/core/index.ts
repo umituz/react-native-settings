@@ -43,6 +43,7 @@ export { ModalPresets, confirmed, dismissed } from './patterns/Modal/ModalConfig
 // =============================================================================
 
 export { useScreenData, useSimpleScreenData } from './patterns/Screen/useScreenData';
+export type { UseScreenDataOptions } from './patterns/Screen/useScreenData';
 export type {
   ScreenData,
   ScreenDataState,
@@ -54,7 +55,6 @@ export type {
   ScreenError,
   ScreenEmpty,
   ScreenLayout,
-  UseScreenDataOptions,
 } from './patterns/Screen/ScreenConfig';
 
 export { ScreenPresets } from './patterns/Screen/ScreenConfig';

@@ -31,10 +31,8 @@ export class NotificationService extends BaseService {
 
   private ensureConfigured() {
     if (!this.isConfigured) {
-      this.executeUnsafe('ensureConfigured', () => {
-        NotificationManager.configure();
-        this.isConfigured = true;
-      });
+      NotificationManager.configure();
+      this.isConfigured = true;
     }
   }
 

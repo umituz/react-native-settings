@@ -4,7 +4,7 @@
  * Lazy loads expo-store-review to reduce bundle size
  */
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import type {
   RatingConfig,
   UseAppRatingResult,
@@ -12,14 +12,14 @@ import type {
 } from "../../domain/entities/RatingConfig";
 import { DEFAULT_RATING_CONFIG } from "../../domain/entities/RatingConfig";
 import * as RatingService from "../../application/services/RatingService";
-import { RatingPromptModal } from "../components/RatingPromptModal";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import { isDev } from "../../../../utils/devUtils";
 
 /**
- * App rating hook with 2-step prompt flow
+ * App rating hook with navigation-based prompt flow
  */
 export function useAppRating(config: RatingConfig): UseAppRatingResult {
-  const [isVisible, setIsVisible] = useState(false);
+  const navigation = useAppNavigation();
 
   const mergedConfig = useMemo<RatingConfig>(() => ({
     ...DEFAULT_RATING_CONFIG,
@@ -35,13 +35,48 @@ export function useAppRating(config: RatingConfig): UseAppRatingResult {
   }, [mergedConfig]);
 
   const showPrompt = useCallback(async (): Promise<void> => {
-    setIsVisible(true);
     await RatingService.markPromptShown(mergedConfig.eventType);
+
+    navigation.push('RatingPrompt' as never, {
+      appName: mergedConfig.appName,
+      translations: mergedConfig.translations,
+      onPositive: async () => {
+        await RatingService.markRated();
+
+        try {
+          // Lazy load expo-store-review
+          const StoreReview = await import('expo-store-review');
+          const isAvailable = await StoreReview.isAvailableAsync();
+
+          if (isAvailable) {
+            await StoreReview.requestReview();
+          }
+        } catch (error) {
+          if (isDev()) {
+            console.error('[useAppRating] Failed to request review:', error);
+          }
+        }
+
+        if (mergedConfig.onPositiveFeedback) {
+          await mergedConfig.onPositiveFeedback();
+        }
+      },
+      onNegative: async () => {
+        if (mergedConfig.onNegativeFeedback) {
+          await mergedConfig.onNegativeFeedback();
+        }
+      },
+      onLater: async () => {
+        if (mergedConfig.onPromptDismissed) {
+          await mergedConfig.onPromptDismissed();
+        }
+      },
+    });
 
     if (mergedConfig.onPromptShown) {
       await mergedConfig.onPromptShown();
     }
-  }, [mergedConfig]);
+  }, [mergedConfig, navigation]);
 
   const checkAndShow = useCallback(async (): Promise<boolean> => {
     const should = await shouldShow();
@@ -62,62 +97,6 @@ export function useAppRating(config: RatingConfig): UseAppRatingResult {
     return RatingService.getState(mergedConfig.eventType);
   }, [mergedConfig.eventType]);
 
-  const handlePositive = useCallback(async () => {
-    setIsVisible(false);
-    await RatingService.markRated();
-
-    try {
-      // Lazy load expo-store-review
-      const StoreReview = await import('expo-store-review');
-      const isAvailable = await StoreReview.isAvailableAsync();
-
-      if (isAvailable) {
-        await StoreReview.requestReview();
-      }
-    } catch (error) {
-      if (isDev()) {
-        console.error('[useAppRating] Failed to request review:', error);
-      }
-    }
-
-    if (mergedConfig.onPositiveFeedback) {
-      await mergedConfig.onPositiveFeedback();
-    }
-  }, [mergedConfig]);
-
-  const handleNegative = useCallback(async () => {
-    setIsVisible(false);
-
-    if (mergedConfig.onNegativeFeedback) {
-      await mergedConfig.onNegativeFeedback();
-    }
-  }, [mergedConfig]);
-
-  const handleLater = useCallback(() => {
-    setIsVisible(false);
-  }, []);
-
-  const handleDismiss = useCallback(async () => {
-    setIsVisible(false);
-    await RatingService.markDismissed();
-
-    if (mergedConfig.onPromptDismissed) {
-      await mergedConfig.onPromptDismissed();
-    }
-  }, [mergedConfig]);
-
-  const modal = (
-    <RatingPromptModal
-      visible={isVisible}
-      onPositive={handlePositive}
-      onNegative={handleNegative}
-      onLater={handleLater}
-      onDismiss={handleDismiss}
-      translations={mergedConfig.translations}
-      appName={mergedConfig.appName}
-    />
-  );
-
   return {
     trackEvent,
     checkAndShow,
@@ -125,7 +104,5 @@ export function useAppRating(config: RatingConfig): UseAppRatingResult {
     showPrompt,
     reset,
     getState,
-    isVisible,
-    modal,
-  } as UseAppRatingResult & { modal: React.ReactNode };
+  } as UseAppRatingResult;
 }

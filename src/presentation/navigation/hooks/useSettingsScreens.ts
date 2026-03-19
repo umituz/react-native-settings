@@ -3,6 +3,9 @@ import type { StackScreen } from "@umituz/react-native-design-system/molecules";
 import { LanguageSelectionScreen } from "../../../domains/localization";
 import { NotificationSettingsScreen } from "../../../domains/notifications";
 import { SettingsScreen } from "../../screens/SettingsScreen";
+import { DisclaimerScreen } from "../../../domains/disclaimer/presentation/screens/DisclaimerScreen";
+import { FeedbackScreen } from "../../../domains/feedback/presentation/screens/FeedbackScreen";
+import { RatingPromptScreen } from "../../../domains/rating/presentation/screens/RatingPromptScreen";
 
 // AccountScreen is an optional peer — lazy require so the package works without @umituz/react-native-auth
 // Returns null if @umituz/react-native-auth is not installed
@@ -176,6 +179,25 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       }
     });
 
+    // New screens to replace modals
+    const disclaimerScreen = {
+      name: "Disclaimer" as const,
+      component: DisclaimerScreen,
+      options: { headerShown: false },
+    };
+
+    const feedbackScreen = {
+      name: "Feedback" as const,
+      component: FeedbackScreen,
+      options: { headerShown: false },
+    };
+
+    const ratingPromptScreen = {
+      name: "RatingPrompt" as const,
+      component: RatingPromptScreen,
+      options: { headerShown: false },
+    };
+
     return combineScreens(
       baseScreens,
       faqScreen,
@@ -184,7 +206,10 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       languageScreen,
       accountScreen,
       videoTutorialScreen,
-      featureRequestScreen
+      featureRequestScreen,
+      disclaimerScreen,
+      feedbackScreen,
+      ratingPromptScreen
     );
   }, [
     translations,

@@ -4,9 +4,9 @@
  * Agnostic of UI implementation via render props
  */
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Linking } from "react-native";
-import { FeedbackModal } from "./FeedbackModal";
+import { useAppNavigation } from "@umituz/react-native-design-system/molecules";
 import type { FeedbackType } from "../../domain/entities/FeedbackEntity";
 import { isDev } from "../../../../utils/devUtils";
 
@@ -47,7 +47,7 @@ export interface SupportSectionProps {
         onPress: () => void;
         isLast?: boolean
     }) => React.ReactElement | null;
-    /** Texts for the feedback modal */
+    /** Texts for the feedback screen */
     feedbackModalTexts?: FeedbackModalTexts;
 }
 
@@ -58,27 +58,19 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
     renderItem,
     feedbackModalTexts
 }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigation = useAppNavigation();
 
-    const handleFeedbackSubmit = async (data: { type: FeedbackType; rating: number; description: string; title: string }) => {
-        if (feedbackConfig.config?.onSubmit) {
-            setIsSubmitting(true);
-            try {
-                await feedbackConfig.config.onSubmit(data);
-                setModalVisible(false);
-            } catch (error) {
-                if (isDev()) {
-                    console.error('[SupportSection] Failed to submit feedback:', error);
-                }
-                setModalVisible(false);
-            } finally {
-                setIsSubmitting(false);
-            }
-        } else {
-            setModalVisible(false);
+    const handleFeedbackPress = useCallback(() => {
+        if (feedbackConfig.config?.onPress) {
+            feedbackConfig.config.onPress();
+        } else if (feedbackModalTexts) {
+            navigation.push('Feedback' as never, {
+                initialType: feedbackConfig.config?.initialType,
+                title: feedbackModalTexts.title,
+                texts: feedbackModalTexts,
+            });
         }
-    };
+    }, [navigation, feedbackConfig.config, feedbackModalTexts]);
 
     const handleRateApp = useCallback(async () => {
         const config = ratingConfig.config;
@@ -122,7 +114,7 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                         {showFeedback && feedbackConfig.config?.description && renderItem({
                             title: feedbackConfig.config.description,
                             icon: "mail",
-                            onPress: feedbackConfig.config.onPress || (() => setModalVisible(true)),
+                            onPress: handleFeedbackPress,
                             isLast: !showRating
                         })}
 
@@ -135,25 +127,6 @@ export const SupportSection: React.FC<SupportSectionProps> = ({
                     </>
                 )
             })}
-
-            {showFeedback && feedbackModalTexts && (
-                <FeedbackModal
-                    visible={modalVisible}
-                    onClose={() => setModalVisible(false)}
-                    onSubmit={handleFeedbackSubmit}
-                    initialType={feedbackConfig.config?.initialType}
-                    isSubmitting={isSubmitting}
-                    title={feedbackModalTexts.title}
-                    texts={{
-                        ratingLabel: feedbackModalTexts.ratingLabel,
-                        descriptionPlaceholder: feedbackModalTexts.descriptionPlaceholder,
-                        submitButton: feedbackModalTexts.submitButton,
-                        submittingButton: feedbackModalTexts.submittingButton,
-                        feedbackTypes: feedbackModalTexts.feedbackTypes,
-                        defaultTitle: feedbackModalTexts.defaultTitle,
-                    }}
-                />
-            )}
         </>
     );
 };

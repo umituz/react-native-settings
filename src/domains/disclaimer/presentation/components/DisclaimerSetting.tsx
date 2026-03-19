@@ -5,10 +5,9 @@
  * Used in About screens for apps that require disclaimers
  *
  * Features:
- * - Tappable card that opens full disclaimer modal
+ * - Tappable card that opens full disclaimer screen
  * - Warning icon with background color
  * - Internationalized title and message
- * - Full-screen modal with scrollable content
  * - NO shadows (CLAUDE.md compliance)
  * - Universal across iOS, Android, Web (NO Platform.OS checks)
  *
@@ -17,12 +16,11 @@
  * - Requires translations: settings.disclaimer.title, settings.disclaimer.message, settings.disclaimer.shortMessage
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Modal } from 'react-native';
+import React, { useCallback } from 'react';
 
 import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system/theme';
+import { useAppNavigation } from '@umituz/react-native-design-system/molecules';
 import { DisclaimerCard } from './DisclaimerCard';
-import { DisclaimerModal } from './DisclaimerModal';
 
 export interface DisclaimerSettingProps {
   /** Custom title */
@@ -48,50 +46,27 @@ export const DisclaimerSetting: React.FC<DisclaimerSettingProps> = ({
   backgroundColor,
 }) => {
   const tokens = useAppDesignTokens();
-  const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      setModalVisible(false);
-    };
-  }, []);
+  const navigation = useAppNavigation();
 
   const finalIconColor = iconColor || tokens.colors.warning;
   const finalBackgroundColor = backgroundColor || withAlpha(finalIconColor, 0.1);
 
-  const handleOpenModal = useCallback(() => {
-    setModalVisible(true);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setModalVisible(false);
-  }, []);
+  const handleOpenDisclaimer = useCallback(() => {
+    navigation.push('Disclaimer' as never, {
+      title,
+      content,
+    });
+  }, [navigation, title, content]);
 
   return (
-    <>
-      <DisclaimerCard
-        title={title}
-        shortMessage={shortMessage}
-        iconName={iconName}
-        iconColor={finalIconColor}
-        backgroundColor={finalBackgroundColor}
-        onPress={handleOpenModal}
-      />
-
-      <Modal
-        visible={modalVisible}
-        animationType="none"
-        presentationStyle="pageSheet"
-        onRequestClose={handleCloseModal}
-      >
-        <DisclaimerModal
-          visible={modalVisible}
-          title={title}
-          content={content}
-          onClose={handleCloseModal}
-        />
-      </Modal>
-    </>
+    <DisclaimerCard
+      title={title}
+      shortMessage={shortMessage}
+      iconName={iconName}
+      iconColor={finalIconColor}
+      backgroundColor={finalBackgroundColor}
+      onPress={handleOpenDisclaimer}
+    />
   );
 };
 

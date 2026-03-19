@@ -19,21 +19,15 @@ export class SettingsService extends BaseService {
   }
 
   async getSettings(userId: string): Promise<SettingsResult<UserSettings>> {
-    return this.execute('getSettings', async () => {
-      return await this.repository.getSettings(userId);
-    });
+    return await this.repository.getSettings(userId);
   }
 
   async saveSettings(settings: UserSettings): Promise<SettingsResult<void>> {
-    return this.execute('saveSettings', async () => {
-      return await this.repository.saveSettings(settings);
-    });
+    return await this.repository.saveSettings(settings);
   }
 
   async resetSettings(userId: string): Promise<SettingsResult<void>> {
-    return this.execute('resetSettings', async () => {
-      return await this.repository.deleteSettings(userId);
-    });
+    return await this.repository.deleteSettings(userId);
   }
 }
 

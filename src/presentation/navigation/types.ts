@@ -6,6 +6,9 @@ import type React from 'react';
 import type { SettingsConfig, CustomSettingsSection } from "../screens/types";
 import type { DevSettingsProps } from "../../domains/dev";
 import type { FAQCategory } from "../../domains/faqs";
+import type { DisclaimerScreenParams } from "../../domains/disclaimer/presentation/screens/DisclaimerScreen";
+import type { FeedbackScreenParams } from "../../domains/feedback/presentation/screens/FeedbackScreen";
+import type { RatingPromptScreenParams } from "../../domains/rating/presentation/screens/RatingPromptScreen";
 
 /**
  * App Info passed from main app (APP_INFO constant)
@@ -48,6 +51,9 @@ export type SettingsStackParamList = {
   Account: undefined;
   VideoTutorial: undefined;
   FeatureRequest: undefined;
+  Disclaimer: DisclaimerScreenParams;
+  Feedback: FeedbackScreenParams;
+  RatingPrompt: RatingPromptScreenParams;
   PasswordPrompt: {
     onComplete: (password: string | null) => void;
     title?: string;

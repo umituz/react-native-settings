@@ -149,3 +149,34 @@ export function getRatingService(): RatingService {
  * Default export for backward compatibility
  */
 export const ratingService = getRatingService();
+
+/**
+ * Static convenience functions that delegate to singleton
+ */
+export async function trackEvent(eventType: string): Promise<void> {
+  await ratingService.trackEvent(eventType);
+}
+
+export async function shouldShowPrompt(config: RatingConfig): Promise<boolean> {
+  return await ratingService.shouldShowPrompt(config);
+}
+
+export async function markPromptShown(eventType: string): Promise<void> {
+  await ratingService.markPromptShown(eventType);
+}
+
+export async function markRated(): Promise<void> {
+  await ratingService.markRated();
+}
+
+export async function markDismissed(): Promise<void> {
+  await ratingService.markDismissed();
+}
+
+export async function getState(eventType: string): Promise<RatingState> {
+  return await ratingService.getState(eventType);
+}
+
+export async function reset(eventType?: string): Promise<void> {
+  await ratingService.reset(eventType);
+}

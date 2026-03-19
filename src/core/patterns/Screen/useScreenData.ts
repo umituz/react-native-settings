@@ -21,7 +21,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
   ScreenData,
   ScreenDataState,
-  ScreenDataActions,
   ScreenFetchFunction,
 } from './ScreenConfig';
 

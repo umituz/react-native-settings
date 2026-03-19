@@ -1,115 +1,65 @@
 /**
- * DisclaimerScreen Component
+ * Disclaimer Screen
  *
- * Full-screen disclaimer display for navigation-based usage
- * Can be registered as a screen in navigation stack
- *
- * Features:
- * - SafeAreaView wrapper for proper display
- * - Scrollable content for long disclaimers
- * - Customizable title and content via props or translations
- * - NO shadows (CLAUDE.md compliance)
- * - Universal across iOS, Android, Web
+ * Full screen for displaying disclaimer/important legal notice.
+ * Replaces modal approach with native navigation.
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { AtomicText, AtomicIcon, type IconName } from '@umituz/react-native-design-system/atoms';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenLayout } from '@umituz/react-native-design-system/layouts';
-import { useAppNavigation, NavigationHeader } from '@umituz/react-native-design-system/molecules';
-import { useAppDesignTokens, withAlpha } from '@umituz/react-native-design-system/theme';
+import { AtomicText } from '@umituz/react-native-design-system/atoms';
+import { NavigationHeader, useAppNavigation } from '@umituz/react-native-design-system/molecules';
 
-export interface DisclaimerScreenProps {
-  /** Custom title (overrides translation) */
-  title?: string;
-  /** Custom title translation key */
-  titleKey?: string;
-  /** Custom content (overrides translation) */
-  content?: string;
-  /** Custom content translation key */
-  contentKey?: string;
-  /** Custom icon name */
-  iconName?: string;
+export interface DisclaimerScreenParams {
+  title: string;
+  content: string;
+  [key: string]: unknown;
 }
 
-export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({
-  title,
-  content,
-  iconName = 'alert-triangle',
-}) => {
-  const tokens = useAppDesignTokens();
-  const styles = getStyles(tokens);
+export interface DisclaimerScreenProps {
+  route: {
+    params: DisclaimerScreenParams;
+  };
+}
 
-  const displayTitle = title || "";
-  const displayContent = content || "";
-
+export const DisclaimerScreen: React.FC<DisclaimerScreenProps> = ({ route }) => {
   const navigation = useAppNavigation();
+  const { title, content } = route.params;
 
   return (
     <ScreenLayout
       scrollable={true}
       edges={['top', 'bottom', 'left', 'right']}
-      contentContainerStyle={styles.scrollContent}
       hideScrollIndicator={false}
-      header={
-        <NavigationHeader
-          title={displayTitle}
-          onBackPress={() => navigation.goBack()}
-        />
-      }
     >
-      {/* Icon Header */}
-      <View style={styles.iconHeader}>
-        <View
-          style={[
-            styles.iconContainer,
-            {
-              backgroundColor: withAlpha(tokens.colors.warning, 0.1),
-              borderColor: withAlpha(tokens.colors.warning, 0.3),
-            },
-          ]}
-        >
-          <AtomicIcon name={iconName as IconName} color="warning" size="xl" />
-        </View>
+      <NavigationHeader
+        title={title || 'Disclaimer'}
+        onBackPress={() => navigation.goBack()}
+      />
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+          <AtomicText style={styles.content}>{content}</AtomicText>
+        </ScrollView>
       </View>
-
-      {/* Title */}
-      <AtomicText type="headlineMedium" color="primary" style={styles.title}>
-        {displayTitle}
-      </AtomicText>
-
-      {/* Content */}
-      <AtomicText type="bodyMedium" color="secondary" style={styles.content}>
-        {displayContent}
-      </AtomicText>
     </ScreenLayout>
   );
 };
 
-const getStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
-  StyleSheet.create({
-    scrollContent: {
-      padding: tokens.spacing.lg,
-      paddingTop: tokens.spacing.xl,
-    },
-    iconHeader: {
-      alignItems: 'center',
-      marginBottom: tokens.spacing.lg,
-    },
-    iconContainer: {
-      width: 72,
-      height: 72,
-      borderRadius: 36,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 2,
-    },
-    title: {
-      textAlign: 'center',
-      marginBottom: tokens.spacing.lg,
-    },
-    content: {
-      lineHeight: 24,
-      textAlign: 'left',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  content: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
+});

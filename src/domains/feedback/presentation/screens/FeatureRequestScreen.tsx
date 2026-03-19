@@ -16,7 +16,7 @@ import { ScreenLayout } from "@umituz/react-native-design-system/layouts";
 import { FeedbackModal } from "../components/FeedbackModal";
 import { ICON_PATHS } from "../../../../utils/iconPaths";
 import { useFeatureRequests } from "../../infrastructure/useFeatureRequests";
-import type { FeedbackRating } from "../../domain/entities/FeedbackEntity";
+import type { FeedbackType, FeedbackRating } from "../../domain/entities/FeedbackEntity";
 import type { FeatureRequestItem } from "../../domain/entities/FeatureRequestEntity";
 import type { FeedbackFormTexts } from "../components/FeedbackFormProps";
 
@@ -56,14 +56,14 @@ export const FeatureRequestScreen: React.FC<FeatureRequestScreenProps> = ({ conf
     dismissed: t.status?.dismissed || "Dismissed",
   };
 
-  const handleSubmit = useCallback(async (data: { title?: string; description: string; type?: string; rating?: FeedbackRating }) => {
+  const handleSubmit = useCallback(async (data: { title?: string; description: string; type?: string; rating?: number }) => {
     setIsSubmitting(true);
     try {
       await submitRequest({
         title: data.title || "New Request",
         description: data.description,
-        type: data.type || "feature_request",
-        rating: data.rating,
+        type: (data.type || "feature_request") as FeedbackType,
+        rating: data.rating as FeedbackRating,
       });
       setIsModalVisible(false);
     } catch (error) {

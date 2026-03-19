@@ -18,9 +18,6 @@ export type { DisclaimerSettingProps } from './presentation/components/Disclaime
 export { DisclaimerCard } from './presentation/components/DisclaimerCard';
 export type { DisclaimerCardProps } from './presentation/components/DisclaimerCard';
 
-export { useDisclaimerModal } from './presentation/hooks/useDisclaimerModal';
-export type { DisclaimerModalOptions } from './presentation/hooks/useDisclaimerModal';
-
 // =============================================================================
 // PRESENTATION LAYER - Screens
 // =============================================================================

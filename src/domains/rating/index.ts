@@ -34,11 +34,11 @@ export { StarRating } from './presentation/components/StarRating';
 export type { StarRatingProps } from './presentation/components/StarRating';
 
 // =============================================================================
-// PRESENTATION LAYER - Components (App Store Rating)
+// PRESENTATION LAYER - Screens
 // =============================================================================
 
-export { useRatingPromptModal } from './presentation/hooks/useRatingPromptModal';
-export type { RatingPromptOptions } from './presentation/hooks/useRatingPromptModal';
+export { RatingPromptScreen } from './presentation/screens/RatingPromptScreen';
+export type { RatingPromptScreenProps, RatingPromptScreenParams } from './presentation/screens/RatingPromptScreen';
 
 // =============================================================================
 // PRESENTATION LAYER - Hooks (App Store Rating)

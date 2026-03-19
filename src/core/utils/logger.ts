@@ -17,7 +17,7 @@ import { isDev } from '../../utils/devUtils';
 
 export type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
-interface LogContext {
+export interface LogContext {
   component?: string;
   service?: string;
   domain?: string;
@@ -39,7 +39,7 @@ export class Logger {
    */
   info(message: string, ...args: unknown[]): void {
     if (isDev()) {
-      const prefix = this.formatPrefix('INFO');
+      const prefix = this.formatPrefix('info');
       console.log(prefix, message, ...args);
     }
   }
@@ -49,7 +49,7 @@ export class Logger {
    */
   warn(message: string, ...args: unknown[]): void {
     if (isDev()) {
-      const prefix = this.formatPrefix('WARN');
+      const prefix = this.formatPrefix('warn');
       console.warn(prefix, message, ...args);
     }
   }
@@ -59,7 +59,7 @@ export class Logger {
    */
   error(message: string, error?: unknown, ...args: unknown[]): void {
     if (isDev()) {
-      const prefix = this.formatPrefix('ERROR');
+      const prefix = this.formatPrefix('error');
       console.error(prefix, message, error, ...args);
     }
   }
@@ -69,7 +69,7 @@ export class Logger {
    */
   debug(message: string, ...args: unknown[]): void {
     if (isDev()) {
-      const prefix = this.formatPrefix('DEBUG');
+      const prefix = this.formatPrefix('debug');
       console.log(prefix, message, ...args);
     }
   }

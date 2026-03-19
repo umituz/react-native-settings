@@ -18,12 +18,12 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { BaseModal } from '@umituz/react-native-design-system/molecules';
 import { AtomicText, AtomicButton, AtomicIcon } from '@umituz/react-native-design-system/atoms';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { useResponsive } from '@umituz/react-native-design-system/responsive';
-import type { ModalConfig, ModalState } from '../../core/patterns/Modal/ModalConfig';
+import type { ModalState } from '../../core/patterns/Modal/ModalConfig';
 
 export interface GenericModalProps {
   /**
@@ -68,8 +68,6 @@ export const GenericModal: React.FC<GenericModalProps> = ({
     footer,
     actions = [],
     dismissible = true,
-    closeOnBackdropPress = true,
-    closeOnBackPress = true,
     maxWidth,
   } = config;
 
@@ -85,8 +83,6 @@ export const GenericModal: React.FC<GenericModalProps> = ({
     <BaseModal
       visible={visible}
       onClose={handleDismiss}
-      closeOnBackdropPress={closeOnBackdropPress}
-      closeOnBackPress={closeOnBackPress}
     >
       <View
         style={[
@@ -113,7 +109,7 @@ export const GenericModal: React.FC<GenericModalProps> = ({
                 <AtomicIcon
                   name={icon}
                   size="xl"
-                  color={iconColor || 'primary'}
+                  color={iconColor as any || 'primary'}
                 />
               </View>
             )}

@@ -141,6 +141,9 @@ export * from "./domains/gamification";
 // Localization Domain - i18n, language selection, translations
 export * from "./domains/localization";
 
+// AI Consent Domain - AI technology disclosure and consent
+export * from "./domains/ai-consent";
+
 // =============================================================================
 // PRESENTATION LAYER - Config Creator Utilities
 // =============================================================================

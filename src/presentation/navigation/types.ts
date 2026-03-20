@@ -9,6 +9,7 @@ import type { FAQCategory } from "../../domains/faqs";
 import type { DisclaimerScreenParams } from "../../domains/disclaimer/presentation/screens/DisclaimerScreen";
 import type { FeedbackScreenParams } from "../../domains/feedback/presentation/screens/FeedbackScreen";
 import type { RatingPromptScreenParams } from "../../domains/rating/presentation/screens/RatingPromptScreen";
+import type { AIConsentScreenParams } from "../../domains/ai-consent/presentation/screens/AIConsentScreen";
 
 /**
  * App Info passed from main app (APP_INFO constant)
@@ -54,6 +55,7 @@ export type SettingsStackParamList = {
   Disclaimer: DisclaimerScreenParams;
   Feedback: FeedbackScreenParams;
   RatingPrompt: RatingPromptScreenParams;
+  AIConsent: AIConsentScreenParams;
   PasswordPrompt: {
     onComplete: (password: string | null) => void;
     title?: string;

@@ -6,6 +6,7 @@ import { SettingsScreen } from "../../screens/SettingsScreen";
 import { DisclaimerScreen } from "../../../domains/disclaimer/presentation/screens/DisclaimerScreen";
 import { FeedbackScreen } from "../../../domains/feedback/presentation/screens/FeedbackScreen";
 import { RatingPromptScreen } from "../../../domains/rating/presentation/screens/RatingPromptScreen";
+import { AIConsentScreen } from "../../../domains/ai-consent/presentation/screens/AIConsentScreen";
 
 // AccountScreen is an optional peer — lazy require so the package works without @umituz/react-native-auth
 // Returns null if @umituz/react-native-auth is not installed
@@ -198,6 +199,12 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       options: { headerShown: false },
     };
 
+    const aiConsentScreen = {
+      name: "AIConsent" as const,
+      component: AIConsentScreen,
+      options: { headerShown: false },
+    };
+
     return combineScreens(
       baseScreens,
       faqScreen,
@@ -209,7 +216,8 @@ export const useSettingsScreens = (props: UseSettingsScreensProps): StackScreen[
       featureRequestScreen,
       disclaimerScreen,
       feedbackScreen,
-      ratingPromptScreen
+      ratingPromptScreen,
+      aiConsentScreen
     );
   }, [
     translations,

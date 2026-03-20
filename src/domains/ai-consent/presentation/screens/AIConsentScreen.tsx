@@ -15,7 +15,6 @@
 import React, { memo } from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -31,7 +30,8 @@ import {
   NavigationHeader,
   useAppNavigation,
 } from '@umituz/react-native-design-system/molecules';
-import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
+import { useThemedStyleSheet } from '@umituz/react-native-design-system/theme';
+import type { Theme } from '@umituz/react-native-design-system/theme';
 
 export interface AIProvider {
   name: string;
@@ -85,7 +85,7 @@ export const AIConsentScreen: React.FC<AIConsentScreenProps> = memo(({
   standalone = false,
 }) => {
   const navigation = useAppNavigation();
-  const tokens = useAppDesignTokens();
+  const styles = useThemedStyleSheet(createStyles);
   const [loading, setLoading] = React.useState(false);
 
   // Get params from route or use props
@@ -289,7 +289,7 @@ export const AIConsentScreen: React.FC<AIConsentScreenProps> = memo(({
 
 AIConsentScreen.displayName = 'AIConsentScreen';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => ({
   scrollView: {
     flex: 1,
   },
@@ -300,32 +300,32 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 24,
-    color: '#374151',
+    color: theme.colors.textSecondary,
   },
   section: {
     marginBottom: 24,
     padding: 16,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: 12,
   },
   sectionTitle: {
     fontSize: 17,
     fontWeight: '600',
-    color: '#111827',
+    color: theme.colors.textPrimary,
     marginBottom: 12,
   },
   providerList: {
     gap: 12,
   },
   providerItem: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.surface,
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: theme.colors.borderLight,
   },
   providerHeader: {
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 4,
@@ -333,26 +333,26 @@ const styles = StyleSheet.create({
   providerName: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111827',
+    color: theme.colors.textPrimary,
   },
   privacyLink: {
     fontSize: 13,
-    color: '#3B82F6',
+    color: theme.colors.primary,
   },
   providerPurpose: {
     fontSize: 14,
-    color: '#6B7280',
+    color: theme.colors.textTertiary,
   },
   bullet: {
     fontSize: 15,
-    color: '#374151',
+    color: theme.colors.textSecondary,
     lineHeight: 22,
     marginLeft: 8,
   },
   note: {
     fontSize: 13,
-    color: '#6B7280',
-    fontStyle: 'italic',
+    color: theme.colors.textTertiary,
+    fontStyle: 'italic' as const,
     marginLeft: 8,
     marginTop: 4,
   },
@@ -362,15 +362,15 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 15,
-    color: '#3B82F6',
+    color: theme.colors.primary,
     fontWeight: '500',
   },
   declarationSection: {
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     alignItems: 'flex-start',
     marginTop: 8,
     padding: 12,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: theme.colors.primaryBackground || 'rgba(90, 175, 127, 0.15)',
     borderRadius: 8,
   },
   checkbox: {
@@ -383,26 +383,26 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 4,
-    backgroundColor: '#3B82F6',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: theme.colors.primary,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
   },
   checkmark: {
-    color: '#FFFFFF',
+    color: theme.colors.onPrimary || '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
   },
   declarationText: {
     flex: 1,
     fontSize: 14,
-    color: '#1E3A8A',
+    color: theme.colors.textPrimary,
     lineHeight: 20,
   },
   footer: {
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+    borderTopColor: theme.colors.borderLight,
     gap: 12,
   },
   declineButton: {

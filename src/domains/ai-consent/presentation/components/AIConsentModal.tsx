@@ -16,8 +16,10 @@
  */
 
 import React, { memo } from 'react';
-import { Modal, View, StyleSheet } from 'react-native';
+import { Modal, View } from 'react-native';
 import { AIConsentScreen, type AIProvider } from '../screens/AIConsentScreen';
+import { useThemedStyleSheet } from '@umituz/react-native-design-system/theme';
+import type { Theme } from '@umituz/react-native-design-system/theme';
 
 export interface AIConsentModalProps {
   visible: boolean;
@@ -34,6 +36,8 @@ export const AIConsentModal: React.FC<AIConsentModalProps> = memo(({
   providers,
   customMessage,
 }) => {
+  const styles = useThemedStyleSheet(createStyles);
+
   return (
     <Modal
       visible={visible}
@@ -56,9 +60,9 @@ export const AIConsentModal: React.FC<AIConsentModalProps> = memo(({
 
 AIConsentModal.displayName = 'AIConsentModal';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => ({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.backgroundPrimary,
   },
 });

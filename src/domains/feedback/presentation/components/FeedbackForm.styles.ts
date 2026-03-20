@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 import type { useAppDesignTokens } from "@umituz/react-native-design-system/theme";
+import { withAlpha } from "@umituz/react-native-design-system/theme";
 
-export const getFeedbackFormStyles = (_tokens: ReturnType<typeof useAppDesignTokens>) =>
+export const getFeedbackFormStyles = (tokens: ReturnType<typeof useAppDesignTokens>) =>
   StyleSheet.create({
     container: {
         width: "100%",
@@ -25,7 +26,7 @@ export const getFeedbackFormStyles = (_tokens: ReturnType<typeof useAppDesignTok
         alignItems: "center",
         marginVertical: 32,
         paddingVertical: 16,
-        backgroundColor: "rgba(255,255,255,0.02)",
+        backgroundColor: withAlpha(tokens.colors.primary, 0.05),
         borderRadius: 16,
     },
     ratingLabel: {
@@ -34,6 +35,7 @@ export const getFeedbackFormStyles = (_tokens: ReturnType<typeof useAppDesignTok
         letterSpacing: 1,
         marginBottom: 16,
         textTransform: "uppercase",
+        color: tokens.colors.textSecondary,
     },
     stars: {
         flexDirection: "row",
@@ -52,10 +54,14 @@ export const getFeedbackFormStyles = (_tokens: ReturnType<typeof useAppDesignTok
         borderRadius: 16,
         padding: 16,
         fontSize: 15,
+        color: tokens.colors.textPrimary,
+        backgroundColor: tokens.colors.surfaceSecondary,
+        borderColor: tokens.colors.border,
     },
     errorText: {
         marginTop: 8,
         fontWeight: "600",
+        color: tokens.colors.error,
     },
     submitButton: {
         width: "100%",

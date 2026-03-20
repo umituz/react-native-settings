@@ -14,7 +14,7 @@ import { LevelProgress } from "../LevelProgress";
 import { StreakDisplay } from "../StreakDisplay";
 import { StatsGrid } from "./StatsGrid";
 import { AchievementsList } from "./AchievementsList";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import type { GamificationScreenProps } from "./types";
 
 /**
@@ -39,6 +39,7 @@ export const GamificationScreenInner: React.FC<GamificationScreenProps> = ({
 }) => {
   const _navigation = useAppNavigation();
   const tokens = useAppDesignTokens();
+  const styles = createStyles(tokens);
 
   // Use tokens for fallbacks
   const finalAccentColor = accentColor || tokens.colors.primary;

@@ -8,7 +8,7 @@ import { TouchableOpacity, type StyleProp, type ViewStyle, type TextStyle } from
 import { AtomicText } from '@umituz/react-native-design-system/atoms';
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import { useLanguageSwitcher } from './useLanguageSwitcher';
-import { styles, DEFAULT_CONFIG_VALUES } from './LanguageSwitcher.styles';
+import { createLanguageSwitcherStyles, DEFAULT_CONFIG_VALUES } from './LanguageSwitcher.styles';
 
 export interface LanguageSwitcherProps {
   showName?: boolean;
@@ -36,6 +36,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   accessibilityLabel,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = createLanguageSwitcherStyles(tokens);
   const { currentLang, handlePress } = useLanguageSwitcher({ onPress, disabled });
 
   const accessibilityProps = useMemo(() => ({
@@ -50,9 +51,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   return (
     <TouchableOpacity
       style={[
-        styles.container, 
-        { gap: tokens.spacing.xs },
-        style, 
+        styles.container,
+        style,
         disabled && styles.disabled
       ]}
       onPress={handlePress}
@@ -68,8 +68,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         </AtomicText>
       )}
       {showName && (
-        <AtomicText 
-          type="bodySmall" 
+        <AtomicText
+          type="bodySmall"
           style={[styles.languageName, { color: textColor, fontWeight: '600' }, textStyle]}
         >
           {currentLang.nativeName}

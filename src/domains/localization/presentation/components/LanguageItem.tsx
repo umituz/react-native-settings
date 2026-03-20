@@ -17,7 +17,7 @@ import { AtomicText, AtomicIcon } from '@umituz/react-native-design-system/atoms
 import { useAppDesignTokens } from '@umituz/react-native-design-system/theme';
 import type { Language } from '../../infrastructure/storage/types/Language';
 import { ICON_PATHS } from '../../../../utils/iconPaths';
-import { styles } from './LanguageItem.styles';
+import { createLanguageItemStyles } from './LanguageItem.styles';
 
 interface LanguageItemProps {
   item: Language;
@@ -42,29 +42,9 @@ export const LanguageItem: React.FC<LanguageItemProps> = React.memo(({
   customStyles,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = createLanguageItemStyles(tokens);
 
   const themedStyles = useMemo(() => ({
-    languageItem: {
-      paddingHorizontal: tokens.spacing.md,
-      paddingVertical: tokens.spacing.md,
-      borderRadius: tokens.borders.radius.lg,
-      backgroundColor: tokens.colors.surfaceSecondary,
-      marginBottom: tokens.spacing.md,
-      flexDirection: 'row' as const,
-      alignItems: 'center' as const,
-      justifyContent: 'space-between' as const,
-    } as ViewStyle,
-    selectedLanguageItem: {
-      backgroundColor: tokens.colors.surface,
-      borderColor: tokens.colors.primary,
-      borderWidth: 1.5,
-    } as ViewStyle,
-    nativeName: {
-      color: tokens.colors.textPrimary,
-    } as TextStyle,
-    languageName: {
-      color: tokens.colors.textSecondary,
-    } as TextStyle,
     flagContainer: {
       width: 44,
       height: 44,
@@ -80,8 +60,8 @@ export const LanguageItem: React.FC<LanguageItemProps> = React.memo(({
     <TouchableOpacity
       testID="language-item-test"
       style={[
-        themedStyles.languageItem,
-        isSelected && themedStyles.selectedLanguageItem,
+        styles.languageItem,
+        isSelected && styles.selectedLanguageItem,
         customStyles?.languageItem,
       ]}
       onPress={() => {
@@ -110,15 +90,15 @@ export const LanguageItem: React.FC<LanguageItemProps> = React.memo(({
           )}
         </View>
         <View style={[styles.languageText, customStyles?.languageText]}>
-          <AtomicText 
+          <AtomicText
             type="bodyLarge"
-            style={[themedStyles.nativeName, { fontWeight: '600' }, customStyles?.nativeName]}
+            style={[styles.nativeName, { fontWeight: '600' }, customStyles?.nativeName]}
           >
             {item.nativeName}
           </AtomicText>
-          <AtomicText 
-            type="labelMedium" 
-            style={[themedStyles.languageName, customStyles?.nativeName]}
+          <AtomicText
+            type="labelMedium"
+            style={[styles.languageName, customStyles?.nativeName]}
           >
             {item.name}
           </AtomicText>

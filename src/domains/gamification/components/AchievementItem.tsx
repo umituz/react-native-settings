@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { AtomicText, AtomicIcon } from "@umituz/react-native-design-system/atoms";
 import { useAppDesignTokens, withAlpha } from "@umituz/react-native-design-system/theme";
 import type { AchievementItemProps } from "./types/AchievementItemProps";
-import { achievementItemStyles as styles } from "./styles/achievementItemStyles";
+import { createAchievementItemStyles } from "./styles/achievementItemStyles";
 
 export const AchievementItem: React.FC<AchievementItemProps> = ({
   title,
@@ -28,6 +28,7 @@ export const AchievementItem: React.FC<AchievementItemProps> = ({
   lockedOpacity,
 }) => {
   const tokens = useAppDesignTokens();
+  const styles = createAchievementItemStyles(tokens);
   const finalAccentColor = accentColor || tokens.colors.primary;
   const finalBackgroundColor = backgroundColor || tokens.colors.surface;
   const finalTextColor = textColor || tokens.colors.textPrimary;
@@ -61,7 +62,7 @@ export const AchievementItem: React.FC<AchievementItemProps> = ({
           </AtomicText>
           {isUnlocked && (
             <View style={[styles.checkmark, { backgroundColor: finalAccentColor }]}>
-              <AtomicText style={[styles.checkmarkText, { color: tokens.colors.background }]}>
+              <AtomicText style={[styles.checkmarkText, { color: tokens.colors.onPrimary || '#FFFFFF' }]}>
                 ✓
               </AtomicText>
             </View>

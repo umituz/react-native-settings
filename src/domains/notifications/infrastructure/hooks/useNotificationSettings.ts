@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { createStore, zustandStorage } from '@umituz/react-native-design-system/storage';
+import { createStore, storageService } from '@umituz/react-native-design-system/storage';
 
 interface NotificationSettingsState {
   notificationsEnabled: boolean;
@@ -23,7 +23,7 @@ const useNotificationSettingsStore = createStore<NotificationSettingsState, Noti
     isLoading: true,
   },
   persist: true,
-  storage: zustandStorage,
+  storage: storageService,
   actions: (set) => ({
     setNotificationsEnabled: (value: boolean) => set({ notificationsEnabled: value }),
     setLoading: (value: boolean) => set({ isLoading: value }),
